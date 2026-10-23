@@ -1,0 +1,10 @@
+source/xinqicheng/assets/
+target/xinqicheng/tools/ljd/
+target/xinqicheng/tools/texture-deps/
+target/xinqicheng/love-probe/
+target/xinqicheng/analysis/decompiled/
+target/xinqicheng/analysis/rea-evidence.json
+target/xinqicheng/web/assets/textures/
+releases/
+__pycache__/
+.DS_Store

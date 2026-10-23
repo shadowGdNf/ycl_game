@@ -1,0 +1,7791 @@
+[
+  {
+    "path": "conf.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 72,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "features.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 2936,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "log_levels_release.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 37,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "version.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 274,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "main_globals.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 62,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_yodo1_sdk.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.178,
+    "bytes": 6474,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_news_ih.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.233,
+    "bytes": 7744,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_gpiab.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.449,
+    "bytes": 19304,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "main.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.609,
+    "bytes": 24054,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_glvl2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 3168,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_gps.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 6868,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_yodo1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 3610,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_15_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1867,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/scripts_game.lua",
+    "state": "handled-by-parent"
+  },
+  {
+    "path": "all-phone/data/kui_templates/game_editor_gui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.289,
+    "bytes": 27121,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_hwpms.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.338,
+    "bytes": 13024,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-phone/platform_services_fullads.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.339,
+    "bytes": 15758,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_04_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1865,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/kviews_game_gui_game.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 5340,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_13_end_cn.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 2358,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/game_gui_cheats.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.304,
+    "bytes": 11048,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/kviews_screen_loading_game.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.19,
+    "bytes": 2757,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_13_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 1867,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_proxy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 3012,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/game_settings.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 10623,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/achievements_handlers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.29,
+    "bytes": 11543,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_01_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1865,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_11_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1867,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_18_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 2727,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_08_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 1865,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/screen_level_10_end.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1867,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/tower_menus_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.863,
+    "bytes": 107798,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/slot_template.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 3391,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/game_debug_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 2080,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/font_subst.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 10877,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/modes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1573,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/upgrades.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.654,
+    "bytes": 187298,
+    "asserts": 0,
+    "errors": 178
+  },
+  {
+    "path": "kr6/data/achievements_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 6676,
+    "asserts": 0,
+    "errors": 12
+  },
+  {
+    "path": "kr6/data/game_animations.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 636,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_victorytext.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1207,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_equipped_tower_slot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 3005,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_close.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 250,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_offer_title_x2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 795,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_room_tutorial_hero_points.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1365,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_reinforcements.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 4115,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_equipped.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 824,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_4_z.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 206,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_square.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 101,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_stage_hero_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1398,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_room_big_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 860,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/hero_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 686,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_special_polaroid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 364,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_small.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 6857,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_rally_point.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 7259,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_map_hud.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.449,
+    "bytes": 37938,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_encyclopedia_room_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.389,
+    "bytes": 31198,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/timeline_group_equip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.237,
+    "bytes": 8621,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_bundle_spiders.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1875,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_purchasing.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 740,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/kviews_screen_map_game.lua",
+    "state": "failed",
+    "code": 1,
+    "seconds": 5.263,
+    "bytes": 0,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/remote_balance_view.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 4005,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tw_upgrade_tower_type.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 398,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_bg_pager_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1036,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/map_path_dot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 448,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_autoupgrades.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1685,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_ingame_shop_gems_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 6820,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_upgrades_reset.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 250,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tw_upgrade_tower_type.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 497,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_room_done.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.138,
+    "bytes": 208,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_rooms_lvlup_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 257,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_lvl_connection_disabled_t.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1741,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_confirm.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 5886,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_logo.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 195,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/view_done_button.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 427,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_reinforcements.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.179,
+    "bytes": 3356,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/item_winter_age.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 1264,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_level_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 268,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_achievement_room_achievement.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.121,
+    "bytes": 3195,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_achievements_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 3482,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_rain_of_fire.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 4098,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_heroes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 3772,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_crocs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1615,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_difficulty_level.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 2022,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/upgrades_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 569,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_e2w.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 9079,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_2_z.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 226,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_map_stage_flag.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 3010,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_loading_doors_top.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 44,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.12,
+    "bytes": 1034,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_upgrade.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 5382,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_tutorial_equip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 1007,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_room_big_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 843,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_3_with_patch.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 232,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_shop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 3939,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_power_lvl_tree.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 7973,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_tutorial.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 845,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_ingame_shop_item_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 5580,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/timeline_equip_confirm.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 3790,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/balance/balance.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 6.196,
+    "bytes": 179780,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_towers_title.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1422,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.395,
+    "bytes": 27060,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_info_panel_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.618,
+    "bytes": 55829,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_difficulty_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1951,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_special_offer_title_X2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 851,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_title_skills.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 831,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_name_lvl_xp.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 171,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.884,
+    "bytes": 59707,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_big_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 794,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_restore.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.289,
+    "bytes": 15978,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_button_done.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 830,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_options.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 1490,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_title_equipped_towers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 662,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_name_towers_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 179,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_r_reward_claim_template.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 4157,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_info_panel_level_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1838,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_name_towers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 171,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_vd_smallcardtimeline.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.229,
+    "bytes": 13860,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_towers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3361,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_room_item_equip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 826,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_encyclopedia_pager.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 980,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_big_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 784,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_fight.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 856,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_buy_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 240,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_r_reward_card.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 2443,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/map_kr6_t3_coming_soon_sign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.287,
+    "bytes": 17001,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_message_generic.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 6637,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_slider_knob.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 443,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_specials.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 3571,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 5166,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_small.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 761,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_shortcut_config.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 6937,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_dwarves.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 3227,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 187,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_message_china.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 3239,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_lvlup_towers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 4155,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_victorytext1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 879,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_3_h.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 198,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_alliance.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 3998,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrade_room_tutorial_souls.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1468,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/victory_defeat_kui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.444,
+    "bytes": 32005,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_room_big_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 812,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_tutorial_slots.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1020,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_loadingtext.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 636,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_room_tutorial_equip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1016,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_map_stage_shadow_flag.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 3017,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 847,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_upgrades.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.188,
+    "bytes": 11318,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_bundle_hw.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1875,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_news_position_marker.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 380,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_skill.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 772,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_armored_enemies.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 5063,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offer_card_spiders.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 1665,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pr_stars.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 829,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_room_big_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 859,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_bgdark.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 264,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/template_upgrade_tooltip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 2775,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_custom_offer_title.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1111,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_advanced_settings.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 7602,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_heroroom_tutorial.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 855,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_special_offer_title.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 849,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_roster_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 433,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_ingame_shop_item_price.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 826,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_bg_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 7801,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/power_royal_edict.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 1746,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_hw.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 4192,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_normal_title_crocs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 716,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_map_flags.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 2342,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_achievement_room_achievement_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 5848,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_bg.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.176,
+    "bytes": 6827,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_power_roster_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_achievement_room_claim.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 5069,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 986,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_select_fx_particles.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 300,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_roster_powers_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 431,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pr_rewardprogression2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 11019,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_skill.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 3233,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_l_up.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 226,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/remote_balance_wave_row.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 455,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pr_rewardprogression3.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 11019,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_room_tutorial_navigate.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1015,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_1_with_patch.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 233,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/shop_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1975,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_name.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 3382,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_pack.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 3718,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/ingame_notifications.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 1048,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_main_.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.241,
+    "bytes": 16570,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_tower.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.613,
+    "bytes": 49274,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_dlc_title_dwarves.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 834,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_room_tutorial_power.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1432,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_slots_menu.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 7678,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_locale_list.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.288,
+    "bytes": 19504,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_encyclopedia_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.243,
+    "bytes": 11904,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_horizontal.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 236,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_towers_wheel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1123,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_room_big_locked.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 864,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_1_l.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 227,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_big.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 7179,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offer_card.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 2171,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_1_z_l.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 225,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_gems_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 4517,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_cn_censored.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 6313,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_tutorial_power.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1441,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_info_panel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.612,
+    "bytes": 54890,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_lvlup_gems_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1173,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_news.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 4684,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_achievement_room_amount_indicator.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1095,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_message.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 7169,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrade_room_tutorial_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1014,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_dlc_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3412,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_portrait_roster.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 4232,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_title_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 646,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_glare_polaroid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 366,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_ingame_shop_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 813,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_level_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 11367,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_roster_thumb_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 2223,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_hero.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.178,
+    "bytes": 7788,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_privacy_policy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1022,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_accept_privacy_policy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.24,
+    "bytes": 14182,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_roster_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 634,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/screen_slots.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 11173,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_defeattext.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1243,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_encyclopedia.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1930,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 1011,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/ingame_achievement_ui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 3030,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_cheats.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 14630,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_room_tutorial.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 640,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_price.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 771,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_magic_resistant_enemies.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 5142,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_advanced_settings_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 7910,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_equipped_slot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 710,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_roster.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 780,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/level_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 232,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_glare.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 3473,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_difficulty_room_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 10359,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_achievements.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 8665,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/map_flags.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 275,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_tutorial_navigate.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1023,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_roster_thumb.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.121,
+    "bytes": 2955,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offer_card_crocs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1657,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_roster_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_up_plus.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 236,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_room_small.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 788,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_item_description.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 14578,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_up_minus.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 238,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_bag_item_button.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 2067,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_loading_doors_bottom.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.078,
+    "bytes": 215,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_normal_title_spiders.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 728,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_acceptpp_ageyear.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 606,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_roster_thumb_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 2197,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_icon_frame.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 566,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_room_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 840,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/UI_main_menu.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 9627,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_defeattext1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 889,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_power_button.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 3065,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_enemy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3910,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_normal_title_dwarves.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 725,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tw_upgrade_lvl_tree.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 4216,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_button_room_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 4907,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 2393,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_news.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 971,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_message_long.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 6696,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_vertical.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 223,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/UI_settings.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 2300,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/power_wintersongs_wrath.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1957,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_l_left_down.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 204,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/timeline_encyclopedia_room_mobile.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.232,
+    "bytes": 10494,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 839,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/ingame_shop_kui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.556,
+    "bytes": 49655,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_power_upgrade_slot_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 3356,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_victorytextchallenges.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 528,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_portrait_roster.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 6180,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_total_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 548,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_card.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 3825,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.235,
+    "bytes": 15032,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_ingame_shop_item_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 820,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_get_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1115,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/screen_map.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.338,
+    "bytes": 18845,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 3939,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_main.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.226,
+    "bytes": 11592,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_progression.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 6885,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/item_room_button_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 641,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_loading_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 534,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/kr6_map_flags.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 238,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_ingame_options_bg.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 235,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_checkbox_options.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 305,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_3.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 5488,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_generic_tower_lvl_tree.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1670,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_big_locked.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 792,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1195,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/item_bomb.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 695,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_encyclopedia_thumb_mobile.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 821,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_lvl_xp_name.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.173,
+    "bytes": 4324,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_bundle_crocs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1822,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_options_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.627,
+    "bytes": 143149,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_skill_tooltip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1629,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_special_offer_title_croc.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 842,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/screen_consent.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 968,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_room_big_locked.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 859,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_power_upgrade_slot_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.121,
+    "bytes": 4012,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pr_baroutside.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 410,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_encyclopedia_thumb_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 787,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_special_offer_title_hw.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 844,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_map_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.501,
+    "bytes": 48669,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_ring_sel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1058,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_items_wheel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 618,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/splash_screen.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 375,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_level_mode.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 751,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_victory.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 2927,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_offer_title.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 790,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_upgrade.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3564,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_tower_upgrade.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.4,
+    "bytes": 28812,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_horizontal_long.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 240,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_power_3.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 220,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_power_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 220,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_x2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1778,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_ring_quantity.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 484,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_keyboardbutton_mid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1026,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_room_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 803,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_keyboardbutton_long.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 1028,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_error.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 8205,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_lvlup_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 4814,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.237,
+    "bytes": 14825,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_hero_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 2116,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_skills.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 465,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_map_hud_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.34,
+    "bytes": 30353,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_underage.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 9903,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_icon.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 167,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_bugreport.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.241,
+    "bytes": 12149,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/screen_cards_main.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 552,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_upgrades_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.241,
+    "bytes": 13855,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_roster.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 2723,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_pack.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 3470,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_4.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 7029,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tooltip_get_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 972,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_power_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 220,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/gui_popups.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1921,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_button_lvlup_with_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 367,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/ingame_notifications_kr6.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1352,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 1861,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_lvlup_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1171,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_tower_menu_tooltip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 4475,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_notification_bottom_info.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.179,
+    "bytes": 6358,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 9686,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_info_panel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1969,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_portrait_big.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 5044,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_spiders.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 3735,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_gems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 783,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_ring_sel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1113,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 9024,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_portrait_roster_no_xp.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 3124,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_room_tutorial_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1012,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_back.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 750,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_room_item_price.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 805,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_card_bundle.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 2360,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_x2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 4482,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_normal_title.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 894,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/item_veznan_wrath.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 1641,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/toggle_achievements_desktop_dot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 366,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/loading_screen.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3769,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_modes_hero_slot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 511,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_room_big_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 807,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_main_cn_censored.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 7521,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_6.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1043,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/map_dlc_special_flag.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 6088,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_baloon_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 872,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_side_nav_bar.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 208,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_upgrades_room_small.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 789,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_ingame_options.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.187,
+    "bytes": 7347,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_yes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1038,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_tower_room_confirm_ok.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 823,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/gui_tower_menu_tooltip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 10821,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_spider.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.123,
+    "bytes": 1622,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 221,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 393,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_room_big_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 838,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_3.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 198,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_lvl_connection_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 1520,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_heroroom.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.398,
+    "bytes": 28918,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_info_panel.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 2877,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/item_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 358,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_options_page_general_main_underage.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.175,
+    "bytes": 6459,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_defeat.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 2303,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_big_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 780,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pr_rewardprogression.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.233,
+    "bytes": 13017,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_5.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1038,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_hero_baloon_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 903,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_4.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1036,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_pager_bg_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 429,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_dlc_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 7855,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_achievements_room_bg_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.298,
+    "bytes": 13647,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_vd_cardtimeline.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.243,
+    "bytes": 13175,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_room_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 852,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/screen_splash.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 200,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/modes_button_red.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 265,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_enemy_polaroid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 389,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/tower_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 468,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_equip_portrait.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 551,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_type.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 2410,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 199,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_popup_overlay.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 239,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_title_equipped_items.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 658,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_small.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.232,
+    "bytes": 9025,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_slot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.179,
+    "bytes": 6268,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 855,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_keyboardbutton_short.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1025,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_message_wishlist.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 121,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/window_level_select.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.931,
+    "bytes": 116051,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgrades_room_tutorial.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 449,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_roster_thumb.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 691,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_demo_sign_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 955,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_room_tutorial_navigate.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1007,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/game_gui_cheats_map.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 4206,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/room_claim_rewards.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.453,
+    "bytes": 35419,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_start_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 4247,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_lvl_xp_name_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 4362,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_selected_towers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 2956,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1035,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/slider_options_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 634,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_gems_special_offer_title_dwarves.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 843,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 44,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_roster_item_quantity.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 572,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 5168,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_normal_title_hw.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 717,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_gems_card.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 3334,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offers_halloween.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1603,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_encyclopedia_room_mobile.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 203,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_more_games.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 1006,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_equip_confirm.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 1003,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/slider_options.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 604,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_room_tutorial_buy.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1432,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_vd_cardtimeline_gainpoint.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1694,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/loading.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 2791,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_equip.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 809,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/equipped_tower_slot.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 369,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_room_towers_title_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1420,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_upgades_roster_bars.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 584,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_skill_ultimate.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 3211,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_keyboardbutton_mid_window.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1035,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_lvl_connection_disabled.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1985,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_shop_offers_crocs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 3711,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_shop_offer_card_hw.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1641,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_item_room_item_equipped.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 852,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_no.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1035,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_3.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1039,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_connection_enabled_1_z_l_long.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 225,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/tutorial_rooms.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.298,
+    "bytes": 18564,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_level_select_mode_locked.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1071,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_item_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 1397,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/difficulty_room.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 711,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_upgrades_reset_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 265,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_options_wide_2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1038,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/button_hero_roster_thumb.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 3002,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_tower_room_bg.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 250,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_slider_knob_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 478,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_8plus.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 278,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/popup_acceptpp_agemonth.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 579,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/level_select_debug.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 229,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/news_item_view.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1066,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/kui_templates/group_selected_towers_desktop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 5161,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_jenkins_hitDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 2262,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_05Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.194,
+    "bytes": 17765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_03Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.237,
+    "bytes": 17765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_small_02Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 18765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_7_ambush_bushDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.665,
+    "bytes": 104293,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_jenkinsDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.205,
+    "bytes": 197681,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_04Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 17765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_06Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 17765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/SplashScreenAnimationCnCensoredDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.344,
+    "bytes": 44345,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_small_03Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 18765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_jenkins_runDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 17358,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_3_sheep_02Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.232,
+    "bytes": 17765,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/ScreenLoadingDoorsDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 3.164,
+    "bytes": 609596,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_7_ambush_out_fxDef.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.496,
+    "bytes": 77770,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level07_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level02_waves_iron.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 14603,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level05_waves_iron.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.241,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level03_waves_iron.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 14603,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level04_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level09_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level02_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.235,
+    "bytes": 27160,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level06_waves_iron.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.232,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_4_water_1Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 4.401,
+    "bytes": 846294,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level99_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 7410,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level03_waves_heroic.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.189,
+    "bytes": 12648,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level07_waves_iron.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level01_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 22087,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level11_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.233,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level10_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.245,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level03_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level13_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.23,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level05_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level08_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.242,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level09.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1202,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/waves/level06_waves_campaign.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 26633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18_fase_2_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.403,
+    "bytes": 35744,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level01_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.397,
+    "bytes": 37784,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level05_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.176,
+    "bytes": 12467,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18_fase_3_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.399,
+    "bytes": 35936,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level04_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.187,
+    "bytes": 15476,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level99_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.407,
+    "bytes": 34088,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level08.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.438,
+    "bytes": 33502,
+    "asserts": 0,
+    "errors": 141
+  },
+  {
+    "path": "kr6/data/levels/level02_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.024,
+    "bytes": 84110,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level16_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.402,
+    "bytes": 36230,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level17_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.394,
+    "bytes": 35776,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level16_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.881,
+    "bytes": 160918,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level13_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 10846,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level12_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.292,
+    "bytes": 25655,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.828,
+    "bytes": 39839,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level09_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.005,
+    "bytes": 177400,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.235,
+    "bytes": 17380,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level19_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 10980,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level10_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.724,
+    "bytes": 152044,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level11_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.341,
+    "bytes": 32166,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level04_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.872,
+    "bytes": 67223,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level10_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.445,
+    "bytes": 36537,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level15_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.234,
+    "bytes": 17021,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level14_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 11578,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/exoskeletons/stage_4_water_2Def.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 15.018,
+    "bytes": 2324373,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level06_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.447,
+    "bytes": 36168,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level07_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.39,
+    "bytes": 35858,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level03_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.368,
+    "bytes": 107978,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level02_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 19713,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level03_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 11814,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level08_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.235,
+    "bytes": 18295,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level09_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.247,
+    "bytes": 14585,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level17_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.334,
+    "bytes": 187162,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level08_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.803,
+    "bytes": 146521,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level11_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.207,
+    "bytes": 93085,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level05_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.37,
+    "bytes": 104194,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level15_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.45,
+    "bytes": 36452,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level14_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.444,
+    "bytes": 36360,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level11_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.299,
+    "bytes": 16885,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level10_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.4,
+    "bytes": 28484,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level19_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.619,
+    "bytes": 120377,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level08_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.445,
+    "bytes": 36308,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level9000.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 979,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level09_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.448,
+    "bytes": 37873,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level99_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.414,
+    "bytes": 20150,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level14_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.52,
+    "bytes": 112166,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level02_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.396,
+    "bytes": 36184,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level03_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.511,
+    "bytes": 35482,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level06_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 10539,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level07_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 9494,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level06_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.88,
+    "bytes": 56418,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level99_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1743,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level12_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.894,
+    "bytes": 138355,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level01.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.346,
+    "bytes": 12183,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level15.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.288,
+    "bytes": 7142,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level17.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 600,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level05_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.457,
+    "bytes": 35842,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level04_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.457,
+    "bytes": 34650,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level01_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.178,
+    "bytes": 8174,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level01_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.505,
+    "bytes": 33394,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level16.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 4213,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level02.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.256,
+    "bytes": 5517,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level06.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 685,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level12.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 633,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level15_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.456,
+    "bytes": 110485,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.447,
+    "bytes": 35804,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level13.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.314,
+    "bytes": 4357,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level19_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.521,
+    "bytes": 36310,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level18_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 3.328,
+    "bytes": 257624,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level11.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 3817,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level12_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.391,
+    "bytes": 33000,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level05.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.231,
+    "bytes": 3880,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level13_grid.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.454,
+    "bytes": 32738,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level16_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.232,
+    "bytes": 11450,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level17_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 19273,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level04.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1605,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level10.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 4599,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level07_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.309,
+    "bytes": 96896,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage14/easter_egg_stage_14_goat_fall.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 424,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage14/decal_stage_14_goat.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 681,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage14/soldier_stage_14_armory.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 731,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage14/bullet_stage_14_tavern_beer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 342,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage13/tower_sunray_obelisk.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.21,
+    "bytes": 88,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage13/boss_trollboss.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.269,
+    "bytes": 124,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage13/soldier_sorcerer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1172,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage13/tower_sunray.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 278,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_connor/hero_connor.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 885,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_rain_of_fire/power_rain_of_fire.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 676,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_myriath/hero_myriath.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1170,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_sunray_master/tower_sunray_master.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 22265,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage15/easter_egg_stage_15_the_simpsons.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 571,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage15/easter_egg_stage_15_the_ring.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 376,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage15/enemy_boss_stage_15_layers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.139,
+    "bytes": 584,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage15/decal_stage_15_bubbles.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 283,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/levels/level13_paths.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.447,
+    "bytes": 169674,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_light_priestess/tower_light_priestess.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.196,
+    "bytes": 5542,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_wintersongs_wrath/power_wintersongs_wrath.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.169,
+    "bytes": 2259,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_tree/tower_tree.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.153,
+    "bytes": 1099,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_ashbite/hero_ashbite.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 2255,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_soaring_shop/power_soaring_shop.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1759,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_forger/tower_forger.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 9215,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_culverine/tower_culverine.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 812,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_archers/tower_archers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 232,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_illiana/hero_illiana.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3174,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_sniper/tower_sniper.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 1452,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_knights/tower_knights.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3906,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_miners/tower_miners.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 4163,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_crossbows/tower_crossbows.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 8304,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_oni/hero_oni.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 907,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_malik/hero_malik.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 656,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_drakkan/hero_drakkan.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1418,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_items_bomb/item_bomb.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 291,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/all/ray_tesla.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.124,
+    "bytes": 205,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_aspect_of_sol/power_aspect_of_sol.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 2255,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_engineer_kr1/tower_engineer_kr1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 2447,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_champion.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.192,
+    "bytes": 1839,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_pathfinder.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.192,
+    "bytes": 1147,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_wildcat/tower_wildcat.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.291,
+    "bytes": 8107,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_glider.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 953,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_chieftain.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1131,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_frost_brute.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1880,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_crusher.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1130,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_troll_warrior.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1752,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_frost_icecaller.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 1489,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T2/enemy_frost_baiter.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1584,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage06/stage_06_nivus.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 4506,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage01/go_old_king_projectiles.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1704,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage01/go_stage01_tutorial.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 113,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage08/stage_08_templars.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1340,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage08/stage_08_cloud_of_crows.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 417,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage08/stage_08_goblin_catapult.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 267,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage08/stage_08_boss.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 120,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_barrack_kr1/tower_barrack_kr1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.137,
+    "bytes": 4693,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_bolin/hero_bolin.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1082,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_skeleton.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 745,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_cloud_of_crows.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 417,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_skeleton_goat.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 719,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_dark_construct.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 984,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_shadow_archer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.138,
+    "bytes": 863,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_dark_disciple.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.151,
+    "bytes": 2985,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_gargoyle.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.199,
+    "bytes": 1568,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_brigand.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 668,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_tainted_wolf.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 598,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_exalted_shadow_archer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1627,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_exalted_shadow_blades.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 879,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_skeleton_big.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 921,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_dark_sapper.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 1007,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_crowcaller.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 1309,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_exalted_crowcaller.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1497,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_necromancer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 1415,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_dark_slayer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 818,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_darkling.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1092,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_death_rider.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 627,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_swamp_husk.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 910,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_swamp_thing.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 728,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3/enemy_dark_knight.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.138,
+    "bytes": 815,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage07/soldier_stage_07_barn.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 763,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage07/decal_stage_07_bonfire.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 297,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_time_prison/go_power_time_prison.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 835,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_decals/decals_common.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 207,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_decals/decals_tap_finger.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.197,
+    "bytes": 90,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage10/stage_10_water_splash.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.147,
+    "bytes": 122,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage10/stage_10_boss.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.204,
+    "bytes": 434,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage10/stage_10_jt_icicles.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 576,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage10/stage_10_water_shadow.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 255,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage10/stage_10_waterfall.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 121,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage17/soldier_stage_17_paladins.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 979,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage17/mods_stage_17.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 634,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage17/decals_stage_17.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 300,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_demon_lord.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 891,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_demon_imp.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 446,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_demon_flareon.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.136,
+    "bytes": 1033,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_magma_elemental.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 1214,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_demon_spawn.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 553,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T3_demons/enemy_demon_hound.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 552,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/templates_game.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 59.823,
+    "bytes": 1180810,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_rhodes/hero_rhodes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.139,
+    "bytes": 1480,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage16/decals_stage_16_treants_common.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.143,
+    "bytes": 1901,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage16/decal_easter_egg_deku_sprout.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.142,
+    "bytes": 390,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage16/decal_stage_16_bubbles.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 283,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_leaper_spider.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 966,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_spider_matriarch.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 995,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/proxy_rappel_silk.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.15,
+    "bytes": 280,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_son_of_sarelgaz.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.2,
+    "bytes": 1495,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_giant_spider.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.206,
+    "bytes": 1187,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/soldier_stage_11_camp.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.206,
+    "bytes": 319,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_stage_11_spider_eyes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.206,
+    "bytes": 509,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_boss_stage_11.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 694,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/enemy_spiderling.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 544,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage11/archer_stage_11_camp.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 713,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage18/hero_denas.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 5191,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage18/veznan_fx.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 2417,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage18/boss_moloch.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 781,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_wizard/tower_wizard.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1464,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_archer_kr1/tower_archer_kr1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 9705,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_zefira/hero_zefira.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 130,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_musketeers/power_musketeers.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 3448,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_catapult/tower_catapult.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 3775,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers/towers_common.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 2178,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers/tower_mods.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 368,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_power_reinforcements/power_reinforcement.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 4778,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_wulf.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 472,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_alchemist/tower_alchemist.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 13736,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_shadow_blades.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 955,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_mage_kr1/tower_mage_kr1.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 8041,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_shadow_archer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.134,
+    "bytes": 863,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_orc_shaman.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 1332,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_worg.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 472,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_blackguard.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 637,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_orc_wildling.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 873,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_goblin.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 656,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_crowcaller.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 1309,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_orc_warrior.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 844,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_ogre.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.136,
+    "bytes": 553,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_headhunter.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.192,
+    "bytes": 825,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_rider_goblin.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 568,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_enemies_T1/enemy_bandit.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.138,
+    "bytes": 543,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_stage05/hero_stage_05_alleria.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.138,
+    "bytes": 2386,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_hero_ignus/hero_ignus.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.126,
+    "bytes": 913,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/director_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 2575,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6/data/animations/go_towers_ranger/tower_ranger.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.187,
+    "bytes": 12155,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/iap_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 637,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/credits_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 3838,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/platform_services_ids.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 7248,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/remote_config_defaults.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.346,
+    "bytes": 34105,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_e2w_rc.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 2989,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/device_presets.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 802,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/game_gui_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.438,
+    "bytes": 31037,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/achievements.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.296,
+    "bytes": 5992,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_ih_overseervice.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.354,
+    "bytes": 11184,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-phone/data/map_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.914,
+    "bytes": 129416,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/kviews_game_editor.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.656,
+    "bytes": 19392,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/jni_android.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.88,
+    "bytes": 48805,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/kviews_gg.lua",
+    "state": "failed",
+    "code": 1,
+    "seconds": 0.997,
+    "bytes": 0,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/gui_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.477,
+    "bytes": 14222,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_iap_china.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.41,
+    "bytes": 27125,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/jni.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 20672,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_icloud.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 7554,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/privacy_policy_consent.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.345,
+    "bytes": 10749,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_e2w_aa.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 2125,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_firebase_a.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.447,
+    "bytes": 16045,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/templates.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.905,
+    "bytes": 42981,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/game.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 3.042,
+    "bytes": 40159,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_mc_goliath.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.655,
+    "bytes": 29430,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_deep_links.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.205,
+    "bytes": 3338,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/entity_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.189,
+    "bytes": 8919,
+    "asserts": 0,
+    "errors": 30
+  },
+  {
+    "path": "all/platform_services_ads.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 5471,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/remote_config.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 2720,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/path_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.459,
+    "bytes": 49458,
+    "asserts": 0,
+    "errors": 217
+  },
+  {
+    "path": "all/challenges.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.554,
+    "bytes": 29291,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/sound_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.502,
+    "bytes": 68346,
+    "asserts": 0,
+    "errors": 326
+  },
+  {
+    "path": "all/platform_services_appstore_rating.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1242,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_storekit.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.401,
+    "bytes": 15756,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_kvideo.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.205,
+    "bytes": 1373,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_http.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.291,
+    "bytes": 8431,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_age_range.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 4241,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/constants.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.365,
+    "bytes": 16837,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_news_ih_https.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.237,
+    "bytes": 6932,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_iap_premium.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 3183,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/grid_a_star.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 4446,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_gump.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.179,
+    "bytes": 5670,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_rbgs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.24,
+    "bytes": 6383,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/safe_frame_override.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 1405,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/window_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 2921,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/modes.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.179,
+    "bytes": 7973,
+    "asserts": 0,
+    "errors": 39
+  },
+  {
+    "path": "all/components.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.996,
+    "bytes": 29962,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/scripts.lua",
+    "state": "failed",
+    "code": 1,
+    "seconds": 4.436,
+    "bytes": 0,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_firebase_dl.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 1314,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/i18n.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 2609,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/marketing.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.29,
+    "bytes": 28125,
+    "asserts": 0,
+    "errors": 113
+  },
+  {
+    "path": "all/platform_services_appsflyer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 5365,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_gamecenter.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 5615,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_xbox.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.4,
+    "bytes": 15166,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_firebase_rc.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 3333,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/storage.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.561,
+    "bytes": 21371,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_firebase_m.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.193,
+    "bytes": 2619,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/kviews_remote_balance.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.238,
+    "bytes": 6102,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/grid_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.293,
+    "bytes": 10180,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/difficulty.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 2692,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/wave_db.lua",
+    "state": "failed",
+    "code": 1,
+    "seconds": 0.499,
+    "bytes": 0,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/storage_io_generic.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 2381,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/script_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.224,
+    "bytes": 313848,
+    "asserts": 0,
+    "errors": 1367
+  },
+  {
+    "path": "all/screen_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.289,
+    "bytes": 7719,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/exoskeleton.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.616,
+    "bytes": 13342,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/storage_mappings.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.826,
+    "bytes": 88537,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.151,
+    "bytes": 45210,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/debug_tools.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.342,
+    "bytes": 14688,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/level_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.396,
+    "bytes": 21259,
+    "asserts": 0,
+    "errors": 33
+  },
+  {
+    "path": "all/director.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.778,
+    "bytes": 104009,
+    "asserts": 0,
+    "errors": 458
+  },
+  {
+    "path": "all/render_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.458,
+    "bytes": 8801,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.178,
+    "bytes": 4394,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/http_download_thread.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 690,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/debug_view_editor.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.29,
+    "bytes": 5869,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 3262,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/platform_services_e2w_android.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.568,
+    "bytes": 26575,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/game_editor_gui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.985,
+    "bytes": 43666,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-tablet/platform_services_gps.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 6868,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-tablet/platform_services_gpiab.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.443,
+    "bytes": 19304,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all-tablet/platform_services_glvl2.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 3168,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/director_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.136,
+    "bytes": 2575,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/main_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.816,
+    "bytes": 25349,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/iap_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.15,
+    "bytes": 637,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/credits_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 3838,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/platform_services_ids.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 7248,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/remote_config_defaults.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.3,
+    "bytes": 34105,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/vscode-mobdebug.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.078,
+    "bytes": 27,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/game_gui_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.393,
+    "bytes": 31037,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/middleclass.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 5921,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/json.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.239,
+    "bytes": 7582,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/xmlSimple.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.187,
+    "bytes": 4289,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "all/systems.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.502,
+    "bytes": 91307,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "kr6-tablet/data/map_data.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.786,
+    "bytes": 129416,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/dkjson.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.502,
+    "bytes": 19755,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/md5.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.359,
+    "bytes": 10541,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/uuid4.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 1871,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/plc/rc4.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1277,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/serpent.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.398,
+    "bytes": 7810,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/plc/bin.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 833,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/tsv.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.131,
+    "bytes": 1721,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/crypto.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.127,
+    "bytes": 558,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/plc/base64.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.188,
+    "bytes": 2255,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/vector.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.129,
+    "bytes": 1082,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/dump.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.184,
+    "bytes": 3567,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/shell.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.187,
+    "bytes": 4378,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/macros.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 3598,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/lfs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.19,
+    "bytes": 471,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/plist.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.402,
+    "bytes": 11325,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/dotnet_bfds.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.394,
+    "bytes": 11193,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/string.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 975,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/persistence.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.18,
+    "bytes": 4441,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/log.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.181,
+    "bytes": 5525,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/nolfs.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 612,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/types.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 806,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klua/table.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 4007,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/utf8_string.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.125,
+    "bytes": 307,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/utf8_tables.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.185,
+    "bytes": 12105,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/simulation.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 4204,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/font_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.228,
+    "bytes": 6833,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/animation_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.28,
+    "bytes": 7327,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/sso.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.19,
+    "bytes": 4706,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/mobdebug.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.28,
+    "bytes": 71682,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/tween.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.177,
+    "bytes": 2035,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/kui_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.24,
+    "bytes": 4949,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/input_state_machine.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.405,
+    "bytes": 36820,
+    "asserts": 0,
+    "errors": 162
+  },
+  {
+    "path": "lib/klove/shader_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 2800,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/class.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.122,
+    "bytes": 1476,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/gamestate.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.132,
+    "bytes": 2001,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/signal.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 1323,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/image_db.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.455,
+    "bytes": 54515,
+    "asserts": 0,
+    "errors": 247
+  },
+  {
+    "path": "lib/hump/vector.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 4199,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/timer.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 4983,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/vector-light.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.133,
+    "bytes": 2409,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/hump/camera.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.186,
+    "bytes": 4456,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/sha1/init.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 4730,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/sha1/pure_lua_ops.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.189,
+    "bytes": 3432,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/sha1/bit_ops.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.135,
+    "bytes": 378,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/sha1/common.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.128,
+    "bytes": 324,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/sha1/bit32_ops.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.13,
+    "bytes": 394,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "lib/klove/kui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.317,
+    "bytes": 156245,
+    "asserts": 0,
+    "errors": 674
+  },
+  {
+    "path": "sequels/screen_comics.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.45,
+    "bytes": 9584,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_slots.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.145,
+    "bytes": 50249,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/kviews_game_gui_sequels.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.24,
+    "bytes": 7250,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_consent.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.337,
+    "bytes": 12758,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_splash_message.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 3352,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_map.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 1.68,
+    "bytes": 68187,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/kviews_screen_map_sequels.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.183,
+    "bytes": 3973,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/tutorial_utils.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.236,
+    "bytes": 7103,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_loading.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.288,
+    "bytes": 6433,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/kviews_gg_sequels.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 2.763,
+    "bytes": 115258,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/game_gui_cheats_map.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.182,
+    "bytes": 5617,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_splash.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.402,
+    "bytes": 10916,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/screen_credits.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 0.892,
+    "bytes": 22403,
+    "asserts": 0,
+    "errors": 0
+  },
+  {
+    "path": "sequels/game_gui.lua",
+    "state": "decompiled",
+    "code": 0,
+    "seconds": 8.325,
+    "bytes": 658727,
+    "asserts": 0,
+    "errors": 2096
+  }
+]

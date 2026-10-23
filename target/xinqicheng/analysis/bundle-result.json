@@ -1,0 +1,1740 @@
+{
+  "format": "atb-reviewed-static-v1",
+  "game_id": "xinqicheng",
+  "files": [
+    {
+      "path": ".nojekyll",
+      "source": null,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app.js",
+      "source": "dist/app.js",
+      "bytes": 26043,
+      "sha256": "65c360f3c7281e090c367c573d6e0a6973abe03f85ba7b2af185363885386cd1"
+    },
+    {
+      "path": "app.webmanifest",
+      "source": "dist/app.webmanifest",
+      "bytes": 286,
+      "sha256": "2df835a5675b78bed3c8e412f2d306ec39b266883467ee98d4576ae0e6b1e1c6"
+    },
+    {
+      "path": "assets/animations/exo/JT_stage10_unitDef.json",
+      "source": "dist/assets/animations/exo/JT_stage10_unitDef.json",
+      "bytes": 198995,
+      "sha256": "4d72042e48e9affe8e46d88291772e99647a1bf7f38c29384c71be5d290bf7e0"
+    },
+    {
+      "path": "assets/animations/exo/archer1Def.json",
+      "source": "dist/assets/animations/exo/archer1Def.json",
+      "bytes": 28587,
+      "sha256": "b5ce78aed4a00e641c39d6020140979b1a5667e6bf57ebdee10a7d935bbb115f"
+    },
+    {
+      "path": "assets/animations/exo/archer1_overborderDef.json",
+      "source": "dist/assets/animations/exo/archer1_overborderDef.json",
+      "bytes": 4589,
+      "sha256": "d345f20c34775831d79d12c7eb7629893de8027bccd642717cabe1c2c972ed6a"
+    },
+    {
+      "path": "assets/animations/exo/archer1_torreDef.json",
+      "source": "dist/assets/animations/exo/archer1_torreDef.json",
+      "bytes": 438,
+      "sha256": "412e5f0b9fcbb53744785d6460e18dc08576b0e12914075658daf704e7bd15a0"
+    },
+    {
+      "path": "assets/animations/exo/archer1_torre_borderDef.json",
+      "source": "dist/assets/animations/exo/archer1_torre_borderDef.json",
+      "bytes": 462,
+      "sha256": "fb2957fe895a64a06974e7f1e820a831d606e5d4567b52ad686baa061885cf82"
+    },
+    {
+      "path": "assets/animations/exo/archer1_torre_buildDef.json",
+      "source": "dist/assets/animations/exo/archer1_torre_buildDef.json",
+      "bytes": 462,
+      "sha256": "f16b137f5770f3b605cd3049b5657f3960c29ebb74ad11f1ffdc6c504e58f51b"
+    },
+    {
+      "path": "assets/animations/exo/archer1_torre_previewDef.json",
+      "source": "dist/assets/animations/exo/archer1_torre_previewDef.json",
+      "bytes": 1322,
+      "sha256": "722763d89b5b78d505689417016bc34ceed3c424f179d4c01d3d52adebdd5796"
+    },
+    {
+      "path": "assets/animations/exo/archer2Def.json",
+      "source": "dist/assets/animations/exo/archer2Def.json",
+      "bytes": 28580,
+      "sha256": "626ad5a451a57d63c7bd201424820d82addbaec69d1d78969a30c956acbba6a4"
+    },
+    {
+      "path": "assets/animations/exo/archer2_overborderDef.json",
+      "source": "dist/assets/animations/exo/archer2_overborderDef.json",
+      "bytes": 4574,
+      "sha256": "343f7fb6d2d7e33e22068843b1d3a9d6f58ca14e531ef442469ee6668be62756"
+    },
+    {
+      "path": "assets/animations/exo/archer2_torreDef.json",
+      "source": "dist/assets/animations/exo/archer2_torreDef.json",
+      "bytes": 433,
+      "sha256": "affb5e1e6f9b4d5ff2de0113bea6bcfeadb77657904c6c5ac9693593124643e6"
+    },
+    {
+      "path": "assets/animations/exo/archer2_torre_borderDef.json",
+      "source": "dist/assets/animations/exo/archer2_torre_borderDef.json",
+      "bytes": 478,
+      "sha256": "e2af81a7ec1b19351a26b1db0abd67867ef3b677a110cb25f5889e18bfaafd0e"
+    },
+    {
+      "path": "assets/animations/exo/archer3Def.json",
+      "source": "dist/assets/animations/exo/archer3Def.json",
+      "bytes": 28642,
+      "sha256": "87a0d4a97233360df15bdb00e9050bcd52eadc6dda9f0e62be77a434cf8df507"
+    },
+    {
+      "path": "assets/animations/exo/archer3_overborderDef.json",
+      "source": "dist/assets/animations/exo/archer3_overborderDef.json",
+      "bytes": 4573,
+      "sha256": "14234233ec46b9881d87751e4158b147e5c1da1401f74730c38cbd186cf7373a"
+    },
+    {
+      "path": "assets/animations/exo/archer3_torreDef.json",
+      "source": "dist/assets/animations/exo/archer3_torreDef.json",
+      "bytes": 437,
+      "sha256": "aa8f5670b17746b8cfd1f4b9fe2754bbfb6c1b51ba4743fe85bb36a7505190d7"
+    },
+    {
+      "path": "assets/animations/exo/archer3_torre_borderDef.json",
+      "source": "dist/assets/animations/exo/archer3_torre_borderDef.json",
+      "bytes": 463,
+      "sha256": "638f9ce0401aaa93bed24274e3613ac934160d072f7d8ee45d3999198c292ef6"
+    },
+    {
+      "path": "assets/animations/exo/archer4Def.json",
+      "source": "dist/assets/animations/exo/archer4Def.json",
+      "bytes": 67719,
+      "sha256": "3e6f3b9191ceb417cca1b8a5cb207db2a2c46699e495a23cc2df32eeddbc90a3"
+    },
+    {
+      "path": "assets/animations/exo/archer4_overborderDef.json",
+      "source": "dist/assets/animations/exo/archer4_overborderDef.json",
+      "bytes": 13029,
+      "sha256": "5522d3ccf9f2a0784d8523e9a17f51562836be49233a5346702ad3b2238cdba1"
+    },
+    {
+      "path": "assets/animations/exo/archer4_torreDef.json",
+      "source": "dist/assets/animations/exo/archer4_torreDef.json",
+      "bytes": 436,
+      "sha256": "83d41a943877168f427a9692a3a87574eacdcacc5dbe0eacf3e6a82f15e7ad6f"
+    },
+    {
+      "path": "assets/animations/exo/archer4_torre_borderDef.json",
+      "source": "dist/assets/animations/exo/archer4_torre_borderDef.json",
+      "bytes": 59038,
+      "sha256": "63b38bbf96320f7f9018628f0a32a009264ca62360cdf4e3affefcd28cbbebd4"
+    },
+    {
+      "path": "assets/animations/exo/archer4_torre_pillarDef.json",
+      "source": "dist/assets/animations/exo/archer4_torre_pillarDef.json",
+      "bytes": 1834,
+      "sha256": "6bace230b23d419fddea15ad48b851c86a289efa69a8939be0ac4f44437f6ca5"
+    },
+    {
+      "path": "assets/animations/exo/archer_buffbirdDef.json",
+      "source": "dist/assets/animations/exo/archer_buffbirdDef.json",
+      "bytes": 10856,
+      "sha256": "7228bca8e8f6f742011961e8e5e738e8988f4ad5834d2f5ded87f9f7bb71523f"
+    },
+    {
+      "path": "assets/animations/exo/archer_buffdecalDef.json",
+      "source": "dist/assets/animations/exo/archer_buffdecalDef.json",
+      "bytes": 2185,
+      "sha256": "6ef45310a32da23f1eefa4b8ba6b0f5c7997a801fb4d3c192eb907ff373a345b"
+    },
+    {
+      "path": "assets/animations/exo/archer_buffdecal_2Def.json",
+      "source": "dist/assets/animations/exo/archer_buffdecal_2Def.json",
+      "bytes": 446,
+      "sha256": "a711b776ffe06aa285ed14ee99aea45ef188f3e91524d9a1e2619f8cb1104ef4"
+    },
+    {
+      "path": "assets/animations/exo/archer_markDef.json",
+      "source": "dist/assets/animations/exo/archer_markDef.json",
+      "bytes": 6627,
+      "sha256": "888d95b2914c33a53891fc74a2cb81b92754f39bca985e0c4bf3f69456926383"
+    },
+    {
+      "path": "assets/animations/exo/archer_markbirdDef.json",
+      "source": "dist/assets/animations/exo/archer_markbirdDef.json",
+      "bytes": 17381,
+      "sha256": "85db4e4f77f5773e74badff00fb3f1fdbb008ff483b2dd50671faf295817b097"
+    },
+    {
+      "path": "assets/animations/exo/archer_ultbgDef.json",
+      "source": "dist/assets/animations/exo/archer_ultbgDef.json",
+      "bytes": 29184,
+      "sha256": "8b24328fc6bd86e2c665d12b520c481f4765ffa295736f2170b5a9cef985a3a5"
+    },
+    {
+      "path": "assets/animations/exo/archerarrow1Def.json",
+      "source": "dist/assets/animations/exo/archerarrow1Def.json",
+      "bytes": 1134,
+      "sha256": "e5a6b8d29f7b1af98db97fc7680078e7a57b6b94b59e23e35384656735c14084"
+    },
+    {
+      "path": "assets/animations/exo/archerarrow2Def.json",
+      "source": "dist/assets/animations/exo/archerarrow2Def.json",
+      "bytes": 1139,
+      "sha256": "efc4f45dc2fa821b71672b8667eee4a3c641d344d81cf805d7b4085c90911e6b"
+    },
+    {
+      "path": "assets/animations/exo/archerarrow3Def.json",
+      "source": "dist/assets/animations/exo/archerarrow3Def.json",
+      "bytes": 1139,
+      "sha256": "e408d81699f9eaff9b7f896e1d62b8917f31d4b892e10154d46801ecaacb9dcc"
+    },
+    {
+      "path": "assets/animations/exo/archerarrow3_hitDef.json",
+      "source": "dist/assets/animations/exo/archerarrow3_hitDef.json",
+      "bytes": 4526,
+      "sha256": "1f7dd4513abdf26b6ddaa4ef8c7f08dcce15b83b44fa3abe602078454e1617f5"
+    },
+    {
+      "path": "assets/animations/exo/archerarrow3_trailDef.json",
+      "source": "dist/assets/animations/exo/archerarrow3_trailDef.json",
+      "bytes": 1111,
+      "sha256": "2b6fb6f753ed8285693ce11898fe0da725552e4450d2e87a8253736b5d3e59e0"
+    },
+    {
+      "path": "assets/animations/exo/auraDef.json",
+      "source": "dist/assets/animations/exo/auraDef.json",
+      "bytes": 4599,
+      "sha256": "cb7d250a384d71ed344cac32ce1684720cf38b43ad5692a94b8760cbb7b771c5"
+    },
+    {
+      "path": "assets/animations/exo/aura_bossDef.json",
+      "source": "dist/assets/animations/exo/aura_bossDef.json",
+      "bytes": 708,
+      "sha256": "f433ea7cb2032f4ea7b85a7ab7e385b847a50df159c258c5689fa0ae3627c225"
+    },
+    {
+      "path": "assets/animations/exo/aura_rayDef.json",
+      "source": "dist/assets/animations/exo/aura_rayDef.json",
+      "bytes": 1834,
+      "sha256": "a6655f42ec6f43205dade4521ad66d4d0fc5cd9328d3f86d5869384b57b9b32e"
+    },
+    {
+      "path": "assets/animations/exo/blackburnDef.json",
+      "source": "dist/assets/animations/exo/blackburnDef.json",
+      "bytes": 414392,
+      "sha256": "4cfc19cc2e1251a8a574a7134ffd3f57c8483fa121a828d40d7c2413c6be4c02"
+    },
+    {
+      "path": "assets/animations/exo/boss_stage_08_cartDef.json",
+      "source": "dist/assets/animations/exo/boss_stage_08_cartDef.json",
+      "bytes": 2769600,
+      "sha256": "521fcdea818058f71b5651c32a9897d00747cb499ea81b47bafb8648b406d119"
+    },
+    {
+      "path": "assets/animations/exo/boss_stage_11Def.json",
+      "source": "dist/assets/animations/exo/boss_stage_11Def.json",
+      "bytes": 293632,
+      "sha256": "4a876692856ab870ffc87362a22b9361660449854f00612b97e25219875feac7"
+    },
+    {
+      "path": "assets/animations/exo/hero_geraldDef.json",
+      "source": "dist/assets/animations/exo/hero_geraldDef.json",
+      "bytes": 612330,
+      "sha256": "fed7b6a822c5b2ba4f83771b38b4d6912280f60fff0b61c49d9245cf4c130141"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_fated_survivor_decalDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_fated_survivor_decalDef.json",
+      "bytes": 948,
+      "sha256": "3f7ec9ecac2fcb5f02761c323ab8dc82c8646a2796951f72a780ca1b72794674"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_fated_survivor_teleportDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_fated_survivor_teleportDef.json",
+      "bytes": 1035,
+      "sha256": "8a4b7baf12db2479e74f7d4f1af1985addb8e6ded40483b1e3dd3b9cff317796"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_hit_fxDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_hit_fxDef.json",
+      "bytes": 1552,
+      "sha256": "e0042718e8f9c3c0a28d5121c3c0af26f133a0f1d304c84f5d9c5b180b9117e1"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_inspire_courage_buff_decalDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_inspire_courage_buff_decalDef.json",
+      "bytes": 1278,
+      "sha256": "34d76c402d09a76ee6562be15a964845ac90cdabad725e7d1c548db177a8f81a"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_inspire_courage_buff_fxDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_inspire_courage_buff_fxDef.json",
+      "bytes": 5556,
+      "sha256": "9400e83e4da30bb858bb0e4f2eee4ff10fb06c3b1306795f990cc4ed375d1ead"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_inspire_courage_fxDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_inspire_courage_fxDef.json",
+      "bytes": 5643,
+      "sha256": "966a481dde459f063f418e4db07c8368f8e35410ae434d36406b50b93e893072"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_kr1Def.json",
+      "source": "dist/assets/animations/exo/hero_gerald_kr1Def.json",
+      "bytes": 616141,
+      "sha256": "f02a316ab70c989e9a57193265682d78ff892190129e052738a1198c1cfa7d96"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_shield_of_retribution_fxDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_shield_of_retribution_fxDef.json",
+      "bytes": 26927,
+      "sha256": "0bdef841c4880c4fd067a6cf84d00045bda493ed483fd3be227940c3c4a3c5f0"
+    },
+    {
+      "path": "assets/animations/exo/hero_gerald_ultimate_decalDef.json",
+      "source": "dist/assets/animations/exo/hero_gerald_ultimate_decalDef.json",
+      "bytes": 2356,
+      "sha256": "748878b744d7ec3e6c994a5c2312675d229dff7c191f451ce90e55c36d44f57f"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_1Def.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_1Def.json",
+      "bytes": 625486,
+      "sha256": "78d3c1b264a3073ec5ac92fb8f3786eeb75ece25a9bd318590d337004b7d2d58"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_1_rockyDef.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_1_rockyDef.json",
+      "bytes": 134190,
+      "sha256": "aca6174cc59f852c2d9e5932a1c7ba32640969da416f7e181b7e81a8fc64bc72"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_2Def.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_2Def.json",
+      "bytes": 630148,
+      "sha256": "aabd4d0a8fe6cec6e1c5f93694c0ef6965a1e5767e10a2aee3d60d141039f532"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_2_rockyDef.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_2_rockyDef.json",
+      "bytes": 139076,
+      "sha256": "a3663d03234ac332affe672093b7abafdf68daa69da3459f8949b113db27c924"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_3Def.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_3Def.json",
+      "bytes": 631390,
+      "sha256": "fea1575779ebc43d2633d168622e94d66e0ea42120af278a75d88c801346cde2"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_3_rockyDef.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_3_rockyDef.json",
+      "bytes": 159548,
+      "sha256": "ab999625dc48f79cb5ec0a6851b3b0a28b07763844b57b301af6b01e7d15fc51"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_4Def.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_4Def.json",
+      "bytes": 2556299,
+      "sha256": "975bfd92b97b5143a82fe7fc5d94158f8a6029eb59bf9d89709868064fc57879"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_4_ballsDef.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_4_ballsDef.json",
+      "bytes": 5523,
+      "sha256": "7e23f3887afb608b38abb9a73e6205cb5bc7a33999db1259ef3b86141b1830e0"
+    },
+    {
+      "path": "assets/animations/exo/tower_catapult_level_4_rockyDef.json",
+      "source": "dist/assets/animations/exo/tower_catapult_level_4_rockyDef.json",
+      "bytes": 81388,
+      "sha256": "43ac543b7d54783b9e1afa9dbec242d7508ee7b24788e77a627c02fd56909ef6"
+    },
+    {
+      "path": "assets/animations/exo/trollbossDef.json",
+      "source": "dist/assets/animations/exo/trollbossDef.json",
+      "bytes": 635779,
+      "sha256": "4a1aaaa808cdea5a0affcb78f26df6a878ae0b10c8684b2d9bc6b5c3d9bd7db3"
+    },
+    {
+      "path": "assets/animations/exo/veznan_fase2Def.json",
+      "source": "dist/assets/animations/exo/veznan_fase2Def.json",
+      "bytes": 1420187,
+      "sha256": "c090edee228de93e2a8217f5f2c6e4d933d7e62c93fde83ca4de2d4f8aa2deef"
+    },
+    {
+      "path": "assets/animations/exo/wizard1Def.json",
+      "source": "dist/assets/animations/exo/wizard1Def.json",
+      "bytes": 165037,
+      "sha256": "5f31178265700e5f53197136e744c7ec166ceb8b929d787ff61f6ddadd54d533"
+    },
+    {
+      "path": "assets/animations/exo/wizard1_shine1Def.json",
+      "source": "dist/assets/animations/exo/wizard1_shine1Def.json",
+      "bytes": 89371,
+      "sha256": "14952ed5e765f123e6b338eef10962735ef8dae66df17074ecf4351dd1d5f859"
+    },
+    {
+      "path": "assets/animations/exo/wizard1_stars1Def.json",
+      "source": "dist/assets/animations/exo/wizard1_stars1Def.json",
+      "bytes": 40395,
+      "sha256": "221a12f83535a3af2a180debb7f1c33b9c94486c31eef227e5b4a612e23eec95"
+    },
+    {
+      "path": "assets/animations/exo/wizard1_tower1Def.json",
+      "source": "dist/assets/animations/exo/wizard1_tower1Def.json",
+      "bytes": 525,
+      "sha256": "946e15b04c6862b1c83162837eb0d774d920a1031e55f3dcda33a87a4507ebe0"
+    },
+    {
+      "path": "assets/animations/exo/wizard2Def.json",
+      "source": "dist/assets/animations/exo/wizard2Def.json",
+      "bytes": 164951,
+      "sha256": "a33546c19b298b70a1746b69f9e96cded239bcccb5bb59811ce2a05633af5271"
+    },
+    {
+      "path": "assets/animations/exo/wizard3Def.json",
+      "source": "dist/assets/animations/exo/wizard3Def.json",
+      "bytes": 167480,
+      "sha256": "a2ba76e96a68f1f3bba82e1e9c6c45a09d37e53ee581161ad8d739083713341e"
+    },
+    {
+      "path": "assets/animations/exo/wizard4Def.json",
+      "source": "dist/assets/animations/exo/wizard4Def.json",
+      "bytes": 404203,
+      "sha256": "191201225d65f8db20e2c39d9f733220472986b6a660c859c78bb3ed7249bfa6"
+    },
+    {
+      "path": "assets/animations/exo/wizard4ultiDef.json",
+      "source": "dist/assets/animations/exo/wizard4ultiDef.json",
+      "bytes": 75367,
+      "sha256": "f15b90a962d03112113df68669cf5012edebda0b6048518abeae952f14a33c23"
+    },
+    {
+      "path": "assets/animations/exo/wizard4ultidecalDef.json",
+      "source": "dist/assets/animations/exo/wizard4ultidecalDef.json",
+      "bytes": 555,
+      "sha256": "5a2a3c46ce532e0f26816647466ca15c414d4f44b65770eed7adf554010fef48"
+    },
+    {
+      "path": "assets/animations/exo/wizard_buildDef.json",
+      "source": "dist/assets/animations/exo/wizard_buildDef.json",
+      "bytes": 439,
+      "sha256": "fedf5f928cf832fb3136460885dbb01dba7fe18cd61b3ecb71cb98bfed03bd50"
+    },
+    {
+      "path": "assets/animations/exo/wizard_previewDef.json",
+      "source": "dist/assets/animations/exo/wizard_previewDef.json",
+      "bytes": 1437,
+      "sha256": "6058e6a212187bb847a7c7cf79e65b2a84e58d6851edd17f0d57d7a37d4035ca"
+    },
+    {
+      "path": "assets/animations/exo/wizard_scroll4Def.json",
+      "source": "dist/assets/animations/exo/wizard_scroll4Def.json",
+      "bytes": 158229,
+      "sha256": "6b6ef9bacc79aa8e5671883ea40baaf317070c46cefae04985380caa49a25476"
+    },
+    {
+      "path": "assets/animations/exo/wizard_shine4Def.json",
+      "source": "dist/assets/animations/exo/wizard_shine4Def.json",
+      "bytes": 170698,
+      "sha256": "45cd689138076bf79c7d550191f3ba546135840979e78f285007e238cbbe6a97"
+    },
+    {
+      "path": "assets/animations/exo/wizard_stars2Def.json",
+      "source": "dist/assets/animations/exo/wizard_stars2Def.json",
+      "bytes": 52896,
+      "sha256": "fcd41157a7c8ce924d2bf225e8642e504749083a54ce9a454adf121dcdc1ad7e"
+    },
+    {
+      "path": "assets/animations/exo/wizard_stars3Def.json",
+      "source": "dist/assets/animations/exo/wizard_stars3Def.json",
+      "bytes": 52866,
+      "sha256": "76ae2ec8163992e0485b5e9abd488c4bc876aba044403ae9dd603dd245f857c7"
+    },
+    {
+      "path": "assets/animations/exo/wizard_stars4Def.json",
+      "source": "dist/assets/animations/exo/wizard_stars4Def.json",
+      "bytes": 81116,
+      "sha256": "f26927c483669578e6f3a63288d1716f7a59aa82a0834903a37bbbee3b0b141a"
+    },
+    {
+      "path": "assets/animations/exo/wizard_tower2Def.json",
+      "source": "dist/assets/animations/exo/wizard_tower2Def.json",
+      "bytes": 565,
+      "sha256": "0b46584fd1136abc7055f59970562f8d6eede56f9cec660f860f2c91e9a155f9"
+    },
+    {
+      "path": "assets/animations/exo/wizard_tower3Def.json",
+      "source": "dist/assets/animations/exo/wizard_tower3Def.json",
+      "bytes": 524,
+      "sha256": "edb7190998c85f686cb1365b687477f9947f14f58372fcf9f7df8e5b28b1de9e"
+    },
+    {
+      "path": "assets/animations/exo/wizard_tower4Def.json",
+      "source": "dist/assets/animations/exo/wizard_tower4Def.json",
+      "bytes": 529,
+      "sha256": "d603a191c8f59c6fa28efc246fb0f23eadc6d12baaf8a1282c8e25bb0abebbf3"
+    },
+    {
+      "path": "assets/animations/exo/wizardbookDef.json",
+      "source": "dist/assets/animations/exo/wizardbookDef.json",
+      "bytes": 11887,
+      "sha256": "d21e70eddf7bd5172a4dcc02fbfde327ba7c756dbe448d086cebc27ac8656685"
+    },
+    {
+      "path": "assets/animations/exo/wizardbookhitDef.json",
+      "source": "dist/assets/animations/exo/wizardbookhitDef.json",
+      "bytes": 689,
+      "sha256": "ff72d8fb6adf7827addb830afe84ec3e485ba78b7203c3fa4c67ded7ad3edcf2"
+    },
+    {
+      "path": "assets/animations/exo/wizardbookpaper1Def.json",
+      "source": "dist/assets/animations/exo/wizardbookpaper1Def.json",
+      "bytes": 3952,
+      "sha256": "db7cab2dff1366380c0adeff8b77699c93bd611e12b3f6e373196a8d7dfac51b"
+    },
+    {
+      "path": "assets/animations/exo/wizardbookpaper2Def.json",
+      "source": "dist/assets/animations/exo/wizardbookpaper2Def.json",
+      "bytes": 2837,
+      "sha256": "065292ce775d95083bc3a9a68680e3f73be63028ee3443b41097537740a8d7b8"
+    },
+    {
+      "path": "assets/animations/exo/wizardbuffDef.json",
+      "source": "dist/assets/animations/exo/wizardbuffDef.json",
+      "bytes": 3478,
+      "sha256": "19fe6a00bbe86fbdddddd409032d2e1e68b18e608169a90efd3b05b9c1808bf0"
+    },
+    {
+      "path": "assets/animations/exo/wizardfireballDef.json",
+      "source": "dist/assets/animations/exo/wizardfireballDef.json",
+      "bytes": 783,
+      "sha256": "7de364fd1d6c1585b13c82d0df77a82bca9c5c9b30b8523f0f8488d4f6c708b4"
+    },
+    {
+      "path": "assets/animations/exo/wizardfireballdecalDef.json",
+      "source": "dist/assets/animations/exo/wizardfireballdecalDef.json",
+      "bytes": 477,
+      "sha256": "97885cd32ab768ddf66b23608b700861bbfebc74e9f62a8baf2a142553123fa4"
+    },
+    {
+      "path": "assets/animations/exo/wizardfireballexplosionDef.json",
+      "source": "dist/assets/animations/exo/wizardfireballexplosionDef.json",
+      "bytes": 8576,
+      "sha256": "0b4e8bc40916d00621ff67e6678a57f3c40637e3f49fb3ddefba8f02802ea16c"
+    },
+    {
+      "path": "assets/animations/exo/wizardfireballmodifierDef.json",
+      "source": "dist/assets/animations/exo/wizardfireballmodifierDef.json",
+      "bytes": 1113,
+      "sha256": "f9773a53b349a6e1dad2b0ff49317bd34415087f1fa8f3f911a9d807f19d3e2e"
+    },
+    {
+      "path": "assets/animations/exo/wizardfireballtrailDef.json",
+      "source": "dist/assets/animations/exo/wizardfireballtrailDef.json",
+      "bytes": 2033,
+      "sha256": "eadc6d80d68aa6fdab53a0923abddf49b7f9670ef894825405cca55e548ccf7d"
+    },
+    {
+      "path": "assets/animations/exo/wizardproyectileDef.json",
+      "source": "dist/assets/animations/exo/wizardproyectileDef.json",
+      "bytes": 881,
+      "sha256": "da8a8916654b1a4c6cd160bba63b9e44287e46e0b899caf33c26719c279fe6f9"
+    },
+    {
+      "path": "assets/animations/exo/wizardproyectilehitDef.json",
+      "source": "dist/assets/animations/exo/wizardproyectilehitDef.json",
+      "bytes": 1096,
+      "sha256": "11ab668283d45d3fad0cae9cc95aa71f9dace8a24423f91e8346fb664362a272"
+    },
+    {
+      "path": "assets/animations/exo/wizardproyectiletrailDef.json",
+      "source": "dist/assets/animations/exo/wizardproyectiletrailDef.json",
+      "bytes": 818,
+      "sha256": "dd32c901d781bb9d526feacfc3e2faed53716a188beb7ac30b8257dc299219a8"
+    },
+    {
+      "path": "assets/animations/hero_gerald.json",
+      "source": "dist/assets/animations/hero_gerald.json",
+      "bytes": 612339,
+      "sha256": "0185dedb87068d3ce33732700172992fb7019da35239a3df7d892dbf4df62756"
+    },
+    {
+      "path": "assets/animations/index.json",
+      "source": "dist/assets/animations/index.json",
+      "bytes": 2407372,
+      "sha256": "7f30c0667b6771c00d1ebcef0be3709634492b458465857c70f5b78db329582f"
+    },
+    {
+      "path": "assets/atlases/go_commons.json",
+      "source": "dist/assets/atlases/go_commons.json",
+      "bytes": 53132,
+      "sha256": "78bcdc23fa20e52247a13fc93cc86839d58916ea90ad3ac3bf7ae01c4c15cdb3"
+    },
+    {
+      "path": "assets/atlases/go_decals.json",
+      "source": "dist/assets/atlases/go_decals.json",
+      "bytes": 11073,
+      "sha256": "47f04f6f260e92bbd3fd00b4f01aa81057367d65b2d75cfd27b1d102c47c39eb"
+    },
+    {
+      "path": "assets/atlases/go_enemies_T1.json",
+      "source": "dist/assets/atlases/go_enemies_T1.json",
+      "bytes": 510793,
+      "sha256": "60030ddc57277e28ea89b8791a8bd90bd96f11110fde551973ac9a5f5fed43ac"
+    },
+    {
+      "path": "assets/atlases/go_enemies_T2.json",
+      "source": "dist/assets/atlases/go_enemies_T2.json",
+      "bytes": 514932,
+      "sha256": "3236498be21ea6dac204e64313e712ec4a228a648a0940cceff8bf2915d3da25"
+    },
+    {
+      "path": "assets/atlases/go_enemies_T3.json",
+      "source": "dist/assets/atlases/go_enemies_T3.json",
+      "bytes": 948066,
+      "sha256": "fecd33b7e8730a571ada4d1a683d7b0aa8fde6acd84e450b42bcffb51f7f6110"
+    },
+    {
+      "path": "assets/atlases/go_enemies_T3_demons.json",
+      "source": "dist/assets/atlases/go_enemies_T3_demons.json",
+      "bytes": 242433,
+      "sha256": "f6d1886be727b18dfe375307181f8b5af59fd02ec6275f4facb07390c1173ff5"
+    },
+    {
+      "path": "assets/atlases/go_enemies_spiders.json",
+      "source": "dist/assets/atlases/go_enemies_spiders.json",
+      "bytes": 179423,
+      "sha256": "9ccac8465017542e477b6cedf9acb142ff47c72cc911f729677f64a69e68fcc3"
+    },
+    {
+      "path": "assets/atlases/go_hero_gerald.json",
+      "source": "dist/assets/atlases/go_hero_gerald.json",
+      "bytes": 122253,
+      "sha256": "d06061c3cfc7fda8226c1ef661bc152331ab4049f8144d006c6859d342db6698"
+    },
+    {
+      "path": "assets/atlases/go_power_rain_of_fire.json",
+      "source": "dist/assets/atlases/go_power_rain_of_fire.json",
+      "bytes": 22936,
+      "sha256": "18f5d3b8fb807852a4928124eaee37357968148e3ecbdd73ed36c9b8101e5558"
+    },
+    {
+      "path": "assets/atlases/go_power_reinforcements.json",
+      "source": "dist/assets/atlases/go_power_reinforcements.json",
+      "bytes": 190565,
+      "sha256": "50251f92aa5f130b4b65ec5682d9d6f0e6315f8534d8f50121079004f20d3a86"
+    },
+    {
+      "path": "assets/atlases/go_stage01.json",
+      "source": "dist/assets/atlases/go_stage01.json",
+      "bytes": 126940,
+      "sha256": "f996bfe33a793a7972ab986c22a8e9ef23125566e3bd05e088ef69b7094ef40c"
+    },
+    {
+      "path": "assets/atlases/go_stage01_bg.json",
+      "source": "dist/assets/atlases/go_stage01_bg.json",
+      "bytes": 311,
+      "sha256": "0d371d17f3b58c30e2a73675caf1f2b2d628f5f01593265752e0b811063fee5d"
+    },
+    {
+      "path": "assets/atlases/go_stage02.json",
+      "source": "dist/assets/atlases/go_stage02.json",
+      "bytes": 97992,
+      "sha256": "abd2623151a388c612be9c80010114634c6a60a117374b27805b23711fae43ca"
+    },
+    {
+      "path": "assets/atlases/go_stage02_bg.json",
+      "source": "dist/assets/atlases/go_stage02_bg.json",
+      "bytes": 311,
+      "sha256": "ed62fa8bf58f5b966fb4046b9f6537f0e7567d885004c7287bb23f00a57a9079"
+    },
+    {
+      "path": "assets/atlases/go_stage03.json",
+      "source": "dist/assets/atlases/go_stage03.json",
+      "bytes": 56512,
+      "sha256": "39e24c6fa02070a1aa48e41536ac62c2b95964079b8d5105f09cb39cf8d1b16b"
+    },
+    {
+      "path": "assets/atlases/go_stage03_bg.json",
+      "source": "dist/assets/atlases/go_stage03_bg.json",
+      "bytes": 311,
+      "sha256": "9b2330bad8d2a9be41262cc037f9866b871c16d71df834f35abcf802bf8d5da1"
+    },
+    {
+      "path": "assets/atlases/go_stage04.json",
+      "source": "dist/assets/atlases/go_stage04.json",
+      "bytes": 61279,
+      "sha256": "1a94074f387e38ed4601cf72af19736d69e90a0483fa8c9a534323c409f612af"
+    },
+    {
+      "path": "assets/atlases/go_stage04_bg.json",
+      "source": "dist/assets/atlases/go_stage04_bg.json",
+      "bytes": 311,
+      "sha256": "c79567a1f28f777620a3f76ff5e48bc0a41169c9517bb3406ad7ccde709f05a3"
+    },
+    {
+      "path": "assets/atlases/go_stage05.json",
+      "source": "dist/assets/atlases/go_stage05.json",
+      "bytes": 163878,
+      "sha256": "044ab84d2b812d35609763aa5148dde540c3950d81be8c1afdefdc545a87b249"
+    },
+    {
+      "path": "assets/atlases/go_stage05_bg.json",
+      "source": "dist/assets/atlases/go_stage05_bg.json",
+      "bytes": 311,
+      "sha256": "1fd82f272f9efe4d514947f67427f5267144d3d39a20d0063fc61242bcb8558c"
+    },
+    {
+      "path": "assets/atlases/go_stage06.json",
+      "source": "dist/assets/atlases/go_stage06.json",
+      "bytes": 222816,
+      "sha256": "bfff644df4b2c584b9dedc2889354f49d9c29715498cd3850c243b695524eb59"
+    },
+    {
+      "path": "assets/atlases/go_stage06_bg.json",
+      "source": "dist/assets/atlases/go_stage06_bg.json",
+      "bytes": 311,
+      "sha256": "e4b20d564640691d7e1492df836c468b227b6e9e8fb4d4116288ed925137ab78"
+    },
+    {
+      "path": "assets/atlases/go_stage07.json",
+      "source": "dist/assets/atlases/go_stage07.json",
+      "bytes": 58713,
+      "sha256": "7d31637671d9461262f149807ba4fd1bd9ebd3b4f3ae2ba96edfb273d9328625"
+    },
+    {
+      "path": "assets/atlases/go_stage07_bg.json",
+      "source": "dist/assets/atlases/go_stage07_bg.json",
+      "bytes": 311,
+      "sha256": "4a77fe369cf4d40247112a778ceed271f89dcb2c149609e3366fa72d9ae255a5"
+    },
+    {
+      "path": "assets/atlases/go_stage08.json",
+      "source": "dist/assets/atlases/go_stage08.json",
+      "bytes": 214300,
+      "sha256": "ee53f51d6084d53d61bf174870a0cbe49135b185c3f9cd202a2ceeeef7300510"
+    },
+    {
+      "path": "assets/atlases/go_stage08_bg.json",
+      "source": "dist/assets/atlases/go_stage08_bg.json",
+      "bytes": 311,
+      "sha256": "e11fbcc66ddb55cf6b06369b3934f88ba9734df21da69aa54827a1b7aea24944"
+    },
+    {
+      "path": "assets/atlases/go_stage09.json",
+      "source": "dist/assets/atlases/go_stage09.json",
+      "bytes": 54064,
+      "sha256": "6eefe367d858bb1e1307525db2b81eabdf69094cd8e29727f5874abf37e324a0"
+    },
+    {
+      "path": "assets/atlases/go_stage09_bg.json",
+      "source": "dist/assets/atlases/go_stage09_bg.json",
+      "bytes": 311,
+      "sha256": "19d0c6a856b49183ac1b0c3bd6f65536800fa21b4e4b4838a0069508465365d5"
+    },
+    {
+      "path": "assets/atlases/go_stage10.json",
+      "source": "dist/assets/atlases/go_stage10.json",
+      "bytes": 112804,
+      "sha256": "09eb3b7cf2964254fddec0e2ddb3a91bc2e0d7cad011be28af318cd573b1ce8a"
+    },
+    {
+      "path": "assets/atlases/go_stage10_bg.json",
+      "source": "dist/assets/atlases/go_stage10_bg.json",
+      "bytes": 311,
+      "sha256": "98233f60cee1784db756ada666098e495a5ddfe4e5838f1d8f560f3296d8a47f"
+    },
+    {
+      "path": "assets/atlases/go_stage11.json",
+      "source": "dist/assets/atlases/go_stage11.json",
+      "bytes": 105278,
+      "sha256": "507bdec468a9f7f1fa2c06c49c35b4c22d5957ad88d0edda2ccb6a5a85543e9b"
+    },
+    {
+      "path": "assets/atlases/go_stage11_bg.json",
+      "source": "dist/assets/atlases/go_stage11_bg.json",
+      "bytes": 311,
+      "sha256": "49c86370f6774156b348914e5b14a5f44fb117a032f7f79f44199b5e3ac27c86"
+    },
+    {
+      "path": "assets/atlases/go_stage12.json",
+      "source": "dist/assets/atlases/go_stage12.json",
+      "bytes": 55470,
+      "sha256": "4ba8fbec738ee1d985c257216df57c5f9f1528dad05599c79d3cc5e3b93361f4"
+    },
+    {
+      "path": "assets/atlases/go_stage12_bg.json",
+      "source": "dist/assets/atlases/go_stage12_bg.json",
+      "bytes": 311,
+      "sha256": "3ae3a11ecdf8634bf542a945b79fe9de97e7d70e9231597c6ca56f99007895f2"
+    },
+    {
+      "path": "assets/atlases/go_stage13.json",
+      "source": "dist/assets/atlases/go_stage13.json",
+      "bytes": 161993,
+      "sha256": "e54cc6628f7234fe0c0d1a1bf266ecdb7d66354d205ca7e1d8dbf6f6a537d378"
+    },
+    {
+      "path": "assets/atlases/go_stage13_bg.json",
+      "source": "dist/assets/atlases/go_stage13_bg.json",
+      "bytes": 311,
+      "sha256": "34c3babd08bc69648560086765b43bc4bb0cbf1a52e8ffa64284e971de399ccc"
+    },
+    {
+      "path": "assets/atlases/go_stage14.json",
+      "source": "dist/assets/atlases/go_stage14.json",
+      "bytes": 131425,
+      "sha256": "1baaaab7ad0e4819c7595ea5c72a07d7d00d3b1639173c804397b527f0dec07e"
+    },
+    {
+      "path": "assets/atlases/go_stage14_bg.json",
+      "source": "dist/assets/atlases/go_stage14_bg.json",
+      "bytes": 311,
+      "sha256": "986f2038827d711afe7ab0e8d9f7429857eebc4421562bfb221df636bfe7818d"
+    },
+    {
+      "path": "assets/atlases/go_stage15.json",
+      "source": "dist/assets/atlases/go_stage15.json",
+      "bytes": 370956,
+      "sha256": "a56eba32d6cc1939bee91418083e03f9950e5852b6308a4c3630d1f13b2057c6"
+    },
+    {
+      "path": "assets/atlases/go_stage15_bg.json",
+      "source": "dist/assets/atlases/go_stage15_bg.json",
+      "bytes": 311,
+      "sha256": "232afda4e90ac76adc262e383ebc7c2e804700a7b023590b6b9333328c8bb8cd"
+    },
+    {
+      "path": "assets/atlases/go_stage16.json",
+      "source": "dist/assets/atlases/go_stage16.json",
+      "bytes": 160033,
+      "sha256": "4ab90c196ca4424e6d9f959207d30bd3fe7b5c70a9df36ef83da4a66fa9427db"
+    },
+    {
+      "path": "assets/atlases/go_stage16_bg.json",
+      "source": "dist/assets/atlases/go_stage16_bg.json",
+      "bytes": 311,
+      "sha256": "c0e91422381f3c0425d6ed0686d47d5d74cdd4cbb576c54cef24dc9f33444111"
+    },
+    {
+      "path": "assets/atlases/go_stage17.json",
+      "source": "dist/assets/atlases/go_stage17.json",
+      "bytes": 241302,
+      "sha256": "57a768f1cef4af34ac80b60317e9206de1c9a7b60d6e46690bd7c5965d4bc5b7"
+    },
+    {
+      "path": "assets/atlases/go_stage17_bg.json",
+      "source": "dist/assets/atlases/go_stage17_bg.json",
+      "bytes": 311,
+      "sha256": "0b29739da55d4b715611a41314e73a413bf511ce6d0629b8b13719d6e9554679"
+    },
+    {
+      "path": "assets/atlases/go_stage18.json",
+      "source": "dist/assets/atlases/go_stage18.json",
+      "bytes": 195804,
+      "sha256": "75e3070e61e2dbd9b7f5f177a827989cbf8bc710730e0dd760135335d43c7080"
+    },
+    {
+      "path": "assets/atlases/go_stage18_bg.json",
+      "source": "dist/assets/atlases/go_stage18_bg.json",
+      "bytes": 496,
+      "sha256": "1e0abfdc829a033e7c3365ae41c57a90e75c2e8acfb48c8553c170a1f858d328"
+    },
+    {
+      "path": "assets/atlases/go_stage18_denas.json",
+      "source": "dist/assets/atlases/go_stage18_denas.json",
+      "bytes": 108460,
+      "sha256": "7b187c881529c5c20eacf8de9d3e6c9cd6b59e828f035102f98f00f8048ebe71"
+    },
+    {
+      "path": "assets/atlases/go_stage18_moloch.json",
+      "source": "dist/assets/atlases/go_stage18_moloch.json",
+      "bytes": 154596,
+      "sha256": "3ef59120991c125d4d1702bbdc886ae8cc36680a5c91c55772d0a6afaf5a5515"
+    },
+    {
+      "path": "assets/atlases/go_stage18_veznan.json",
+      "source": "dist/assets/atlases/go_stage18_veznan.json",
+      "bytes": 319296,
+      "sha256": "c360455e13bf5cd76c7d2ca4f48916fd039e5886a2360a6b8e79fd328727a766"
+    },
+    {
+      "path": "assets/atlases/go_towers.json",
+      "source": "dist/assets/atlases/go_towers.json",
+      "bytes": 143337,
+      "sha256": "39df6d4713ded67c4b5f5e4f7785f1259f6b8527610ec793947d95e528e6d0d8"
+    },
+    {
+      "path": "assets/atlases/go_towers_archer_kr1.json",
+      "source": "dist/assets/atlases/go_towers_archer_kr1.json",
+      "bytes": 270789,
+      "sha256": "6219267f5b95f7c5eb5a8c14b57cbb82af73f6e26cf2881cc73df0267cc56f0b"
+    },
+    {
+      "path": "assets/atlases/go_towers_archers.json",
+      "source": "dist/assets/atlases/go_towers_archers.json",
+      "bytes": 58833,
+      "sha256": "9d22260ea28af8e75642e1fd681fc8814c7fbf8a9c59385acdad6e98af461a04"
+    },
+    {
+      "path": "assets/atlases/go_towers_barrack_kr1.json",
+      "source": "dist/assets/atlases/go_towers_barrack_kr1.json",
+      "bytes": 174449,
+      "sha256": "af06dcdf66d1018d9e918c2efe833d176e23bbae8789714ba94f112801efe1d2"
+    },
+    {
+      "path": "assets/atlases/go_towers_catapult.json",
+      "source": "dist/assets/atlases/go_towers_catapult.json",
+      "bytes": 158566,
+      "sha256": "d3fc7e58b6b36d4e0a2800892a017fc7ad4d839c2a4eb749433f324ae625aaf7"
+    },
+    {
+      "path": "assets/atlases/go_towers_engineer_kr1.json",
+      "source": "dist/assets/atlases/go_towers_engineer_kr1.json",
+      "bytes": 116889,
+      "sha256": "66109878149ce47ce26e6082233a2219abbae78b949204b28672443cb65ed8e6"
+    },
+    {
+      "path": "assets/atlases/go_towers_knights.json",
+      "source": "dist/assets/atlases/go_towers_knights.json",
+      "bytes": 101224,
+      "sha256": "d6862ca6cf13a58ea8faff1562d1392f98a32b097994ac5960f46b7f64162bce"
+    },
+    {
+      "path": "assets/atlases/go_towers_mage_kr1.json",
+      "source": "dist/assets/atlases/go_towers_mage_kr1.json",
+      "bytes": 462587,
+      "sha256": "640e4f75817e750eadbef36d46e44bfceb30faacd2a95f8783185c67e885e52c"
+    },
+    {
+      "path": "assets/atlases/go_towers_wizard.json",
+      "source": "dist/assets/atlases/go_towers_wizard.json",
+      "bytes": 137348,
+      "sha256": "561a532a7da2d73a9d2349be2f37a8493b7682ed0f27f82dd14e79517128b45e"
+    },
+    {
+      "path": "assets/atlases/gui_common.json",
+      "source": "dist/assets/atlases/gui_common.json",
+      "bytes": 226469,
+      "sha256": "278ac0bfc1e5d5eba8166ef34e180a35584603c9bf5af894bf62e36c07df9ccf"
+    },
+    {
+      "path": "assets/atlases/gui_extra_portraits.json",
+      "source": "dist/assets/atlases/gui_extra_portraits.json",
+      "bytes": 1375,
+      "sha256": "bab95a8a92d82e3156e13778b887ba947140a1fe96db05c206c23917f9751473"
+    },
+    {
+      "path": "assets/atlases/gui_portraits.json",
+      "source": "dist/assets/atlases/gui_portraits.json",
+      "bytes": 57403,
+      "sha256": "103212089c15036202bbc0906715bd096924feac673adbda38c12c1a5ed033c6"
+    },
+    {
+      "path": "assets/atlases/room_level_select.json",
+      "source": "dist/assets/atlases/room_level_select.json",
+      "bytes": 39686,
+      "sha256": "3b3d3c5fe59a1502f4324dee26a959b1ee040eee14f1c8419437938fde9dc741"
+    },
+    {
+      "path": "assets/atlases/screen_main_menu.json",
+      "source": "dist/assets/atlases/screen_main_menu.json",
+      "bytes": 12306,
+      "sha256": "cb8584ea832d8cf0192792f45da624c3c3d34b27be45ebbf57f9e91f6513478a"
+    },
+    {
+      "path": "assets/atlases/screen_main_menu_anim.json",
+      "source": "dist/assets/atlases/screen_main_menu_anim.json",
+      "bytes": 24095,
+      "sha256": "0df1c04ba9f1c1233fe88c143b8fd58a3682d6c1af7d9cfcc9a4a42dcefbc312"
+    },
+    {
+      "path": "assets/atlases/screen_main_menu_bg.json",
+      "source": "dist/assets/atlases/screen_main_menu_bg.json",
+      "bytes": 362,
+      "sha256": "2540b584a42c0eaa3fee43f4dd237685fd7ae8acc3ba4d625ab87e74034758db"
+    },
+    {
+      "path": "assets/atlases/screen_map.json",
+      "source": "dist/assets/atlases/screen_map.json",
+      "bytes": 124572,
+      "sha256": "3753426b7a4f87ef7197cd9b5605213e5a30fc5280a349e57b30813a930b047a"
+    },
+    {
+      "path": "assets/atlases/screen_map_bg.json",
+      "source": "dist/assets/atlases/screen_map_bg.json",
+      "bytes": 494,
+      "sha256": "3f5158819004003ccd03eeb80a5520e82593ece8329926caa08c0d113a405c24"
+    },
+    {
+      "path": "assets/atlases/screen_map_decos.json",
+      "source": "dist/assets/atlases/screen_map_decos.json",
+      "bytes": 212137,
+      "sha256": "23232709dd3785e76cb29cd2658aae550914abcea9a68ff4b529de39509962d7"
+    },
+    {
+      "path": "assets/atlases/screen_map_hud.json",
+      "source": "dist/assets/atlases/screen_map_hud.json",
+      "bytes": 86248,
+      "sha256": "44ea43fcc4404aabf46bfa62aded12c1e444656b71a82bc6b1b231fc886cd89c"
+    },
+    {
+      "path": "assets/audio/battle.mp3",
+      "source": "dist/assets/audio/battle.mp3",
+      "bytes": 988517,
+      "sha256": "46086edce8659be22687884c3d8544e230798fe9829b449d4f657bd697a30770"
+    },
+    {
+      "path": "assets/audio/build.mp3",
+      "source": "dist/assets/audio/build.mp3",
+      "bytes": 18852,
+      "sha256": "253f203c894fa7767e2e92d5c7093cb67099b8685ae601f5abe91b8f905e8cd3"
+    },
+    {
+      "path": "assets/audio/explosion.mp3",
+      "source": "dist/assets/audio/explosion.mp3",
+      "bytes": 11328,
+      "sha256": "77335533887f806c6b39c5187e8d09d9dc926871a4be9240be9a1ea67ea35e17"
+    },
+    {
+      "path": "assets/audio/manifest.json",
+      "source": "dist/assets/audio/manifest.json",
+      "bytes": 2203,
+      "sha256": "305599b67280c3c68e37cd982e366c16f06c5d6f7c7b3537ce4a906f4e8b5ea9"
+    },
+    {
+      "path": "assets/audio/map.mp3",
+      "source": "dist/assets/audio/map.mp3",
+      "bytes": 1160298,
+      "sha256": "9d875c760969285dc838ee5c644807ce08fd72bb35609803a717e22806fe0483"
+    },
+    {
+      "path": "assets/audio/wave.mp3",
+      "source": "dist/assets/audio/wave.mp3",
+      "bytes": 68171,
+      "sha256": "c80ec49a6e3b42dff229fc4b5eb3b8110fe1001c44ce36047a1dca550fe5b576"
+    },
+    {
+      "path": "assets/branding/icon-256.png",
+      "source": "dist/assets/branding/icon-256.png",
+      "bytes": 63110,
+      "sha256": "65a8ad72f97b461e84c6df2c38deca29d8597312ba58a0d46854ce87a9623408"
+    },
+    {
+      "path": "assets/branding/icon-android.png",
+      "source": "dist/assets/branding/icon-android.png",
+      "bytes": 40209,
+      "sha256": "5bfcb3eba1cfa2737f45000f016ac57bd5dd2bd7c80fa8235313f4103b89b534"
+    },
+    {
+      "path": "assets/branding/icon-round.png",
+      "source": "dist/assets/branding/icon-round.png",
+      "bytes": 46191,
+      "sha256": "d0286c7652e72ee488486bea7f6867903b1dfe74940ea73d3e5f7a397e9b124b"
+    },
+    {
+      "path": "assets/branding/icons.provenance.json",
+      "source": "dist/assets/branding/icons.provenance.json",
+      "bytes": 438,
+      "sha256": "7ae0ef00e1576d465abdcd4f9fb77a44d3b7061ba00767a0c65fa3957419e419"
+    },
+    {
+      "path": "assets/branding/logo.png",
+      "source": "dist/assets/branding/logo.png",
+      "bytes": 286894,
+      "sha256": "b8aac3962939c86998385adc3371c2a46cbdb87e742f4e497caa853e713503e5"
+    },
+    {
+      "path": "assets/branding/logo.provenance.json",
+      "source": "dist/assets/branding/logo.provenance.json",
+      "bytes": 407,
+      "sha256": "37e949fcda221498d4f97b01c38292e12d7229c8626f423051d57c5ac844bae2"
+    },
+    {
+      "path": "assets/frames-index.json",
+      "source": "dist/assets/frames-index.json",
+      "bytes": 1901770,
+      "sha256": "6783ec2ad8e25bd1da55d8d3cac27aa73cc4ae2e2b762d56eff02563e8381247"
+    },
+    {
+      "path": "assets/manifest.json",
+      "source": "dist/assets/manifest.json",
+      "bytes": 72980,
+      "sha256": "c8e90fc4b2c7893b60c12f54a5e3a27d59c44aae66645ad18f8aa709a664e62f"
+    },
+    {
+      "path": "assets/textures/go_commons-1.webp",
+      "source": "dist/assets/textures/go_commons-1.webp",
+      "bytes": 1632934,
+      "sha256": "cd859a98c7b4ea34b67d7505a7ac637af7cadb6a65a7aae3551815277253a8b6"
+    },
+    {
+      "path": "assets/textures/go_commons_victory_defeat_exo-1.webp",
+      "source": "dist/assets/textures/go_commons_victory_defeat_exo-1.webp",
+      "bytes": 683570,
+      "sha256": "5e4fbc9ded0318dcd568ba27c09d1d145b7c740f1a70f276c8613449c0674ea6"
+    },
+    {
+      "path": "assets/textures/go_commons_victory_defeat_exo-2.webp",
+      "source": "dist/assets/textures/go_commons_victory_defeat_exo-2.webp",
+      "bytes": 419070,
+      "sha256": "70a2d0b0b681a7304072cdde490e372ff52800baf3ab105e8adc13eee4eaa17c"
+    },
+    {
+      "path": "assets/textures/go_decals-1.webp",
+      "source": "dist/assets/textures/go_decals-1.webp",
+      "bytes": 403862,
+      "sha256": "bca2c3223de36a0cfd4c6d87f7370c3a4f86692d075633934753b2d3b04c5641"
+    },
+    {
+      "path": "assets/textures/go_enemies_T1-1.webp",
+      "source": "dist/assets/textures/go_enemies_T1-1.webp",
+      "bytes": 4812478,
+      "sha256": "3db13cc32347f9a25ff6988ae95f92a9297fd7fe05c72e1dd6ca9ac880560285"
+    },
+    {
+      "path": "assets/textures/go_enemies_T2-1.webp",
+      "source": "dist/assets/textures/go_enemies_T2-1.webp",
+      "bytes": 6450442,
+      "sha256": "65ffe3df0dafd2530718ebb8209964871fa24503cd57f06bef9299f171e8dc16"
+    },
+    {
+      "path": "assets/textures/go_enemies_T2-2.webp",
+      "source": "dist/assets/textures/go_enemies_T2-2.webp",
+      "bytes": 1865752,
+      "sha256": "e0e5e8d9e16d54df1b8acf6a8d6719c36fa9873892c1278d7c8581ff5cfed694"
+    },
+    {
+      "path": "assets/textures/go_enemies_T3-1.webp",
+      "source": "dist/assets/textures/go_enemies_T3-1.webp",
+      "bytes": 6566722,
+      "sha256": "fba5ac3264cd10a603012fea51cb0c5948c098c08a0b68f9c8153f04426f7e42"
+    },
+    {
+      "path": "assets/textures/go_enemies_T3-2.webp",
+      "source": "dist/assets/textures/go_enemies_T3-2.webp",
+      "bytes": 6627776,
+      "sha256": "bbb3852b9fe79018c00eb53176cf5d1bedb0cdbc7cc07cc48c27a25e8a600452"
+    },
+    {
+      "path": "assets/textures/go_enemies_T3_demons-1.webp",
+      "source": "dist/assets/textures/go_enemies_T3_demons-1.webp",
+      "bytes": 4029786,
+      "sha256": "97053cc359e7dee9be297dd19716cbc1db45b870664490c471c0aec91c972045"
+    },
+    {
+      "path": "assets/textures/go_enemies_spiders-1.webp",
+      "source": "dist/assets/textures/go_enemies_spiders-1.webp",
+      "bytes": 1534204,
+      "sha256": "07578c522b7eaa8e46562d54da7ff488a8bdfcfd6cdc8646989119cf5df6c687"
+    },
+    {
+      "path": "assets/textures/go_hero_gerald-1.webp",
+      "source": "dist/assets/textures/go_hero_gerald-1.webp",
+      "bytes": 481056,
+      "sha256": "6d632d7a77a60e4894d0c596a3e3bbb2839e77e953a8b93ff14da2174db59d7d"
+    },
+    {
+      "path": "assets/textures/go_power_rain_of_fire-1.webp",
+      "source": "dist/assets/textures/go_power_rain_of_fire-1.webp",
+      "bytes": 276014,
+      "sha256": "b85028b660983f61f859402a40f4334b90647d9feb02e0e1df0699a707bd8b92"
+    },
+    {
+      "path": "assets/textures/go_power_reinforcements-1.webp",
+      "source": "dist/assets/textures/go_power_reinforcements-1.webp",
+      "bytes": 1323372,
+      "sha256": "1be94a59a7fdf1004520b198fa828c35bf537bf6e775513bb18a1451d3f1b4c4"
+    },
+    {
+      "path": "assets/textures/go_stage01-1.webp",
+      "source": "dist/assets/textures/go_stage01-1.webp",
+      "bytes": 1939560,
+      "sha256": "55691bc6d1f46c388393638c5f34e39458403e2c51fc3989afcf9fcc86fdd44b"
+    },
+    {
+      "path": "assets/textures/go_stage01_bg-1.webp",
+      "source": "dist/assets/textures/go_stage01_bg-1.webp",
+      "bytes": 644476,
+      "sha256": "8275980bdc99f5c02aec57f3cde910865e3790f86e22ed45059a733833374182"
+    },
+    {
+      "path": "assets/textures/go_stage02-1.webp",
+      "source": "dist/assets/textures/go_stage02-1.webp",
+      "bytes": 841570,
+      "sha256": "36bb05e769556d3c02a9cf053699ecfe57f67468ab404e1d93a031ba985153cb"
+    },
+    {
+      "path": "assets/textures/go_stage02_bg-1.webp",
+      "source": "dist/assets/textures/go_stage02_bg-1.webp",
+      "bytes": 769878,
+      "sha256": "6cf18785c9aa3ae3882f2517d8b45fcf690caf2d668802974fdc939895d3201c"
+    },
+    {
+      "path": "assets/textures/go_stage03-1.webp",
+      "source": "dist/assets/textures/go_stage03-1.webp",
+      "bytes": 473304,
+      "sha256": "932a8848442f71feb1c16d9ed5d7eabacdd2dc33f16c389373fecdccf71e0273"
+    },
+    {
+      "path": "assets/textures/go_stage03_bg-1.webp",
+      "source": "dist/assets/textures/go_stage03_bg-1.webp",
+      "bytes": 633948,
+      "sha256": "347bea602d9e1a9a70487a001b9a6da53afa86878bcb528fb8b069b9d2af586a"
+    },
+    {
+      "path": "assets/textures/go_stage04-1.webp",
+      "source": "dist/assets/textures/go_stage04-1.webp",
+      "bytes": 935500,
+      "sha256": "5ebef81de7d141a69ff6e39f0b0258e2947010bdfa84b03ad8bc36e1ded84e3e"
+    },
+    {
+      "path": "assets/textures/go_stage04_bg-1.webp",
+      "source": "dist/assets/textures/go_stage04_bg-1.webp",
+      "bytes": 643006,
+      "sha256": "ad7962f99d8f363e066124f9bc250caf53de746e9607af1372c7bdaa069f4a74"
+    },
+    {
+      "path": "assets/textures/go_stage05-1.webp",
+      "source": "dist/assets/textures/go_stage05-1.webp",
+      "bytes": 2048936,
+      "sha256": "4e59180f420457812240dd7edbfd9871346a86095619aae60b018276aec76c06"
+    },
+    {
+      "path": "assets/textures/go_stage05_bg-1.webp",
+      "source": "dist/assets/textures/go_stage05_bg-1.webp",
+      "bytes": 514086,
+      "sha256": "8c07a5e126c71a6554c5a65de1c8ac7c265a930cf6be74823be074f6517072df"
+    },
+    {
+      "path": "assets/textures/go_stage06-1.webp",
+      "source": "dist/assets/textures/go_stage06-1.webp",
+      "bytes": 3695114,
+      "sha256": "fbf8ca05ac057124760086e8487d23bf059570529875f2915f94d48064b44061"
+    },
+    {
+      "path": "assets/textures/go_stage06_bg-1.webp",
+      "source": "dist/assets/textures/go_stage06_bg-1.webp",
+      "bytes": 782446,
+      "sha256": "01384d2647315c0836c8df05262b55b89656c3f347a320239f189c5eea184f3b"
+    },
+    {
+      "path": "assets/textures/go_stage07-1.webp",
+      "source": "dist/assets/textures/go_stage07-1.webp",
+      "bytes": 674960,
+      "sha256": "f5aa419af7d54173af2f18477ca5013b182e0f1869cf3c82da2eb152fedbdded"
+    },
+    {
+      "path": "assets/textures/go_stage07_bg-1.webp",
+      "source": "dist/assets/textures/go_stage07_bg-1.webp",
+      "bytes": 656102,
+      "sha256": "fd42b261a9fd96314d33bbfe8090b3ae39f4c65d098bfbded249d1fe51a9406e"
+    },
+    {
+      "path": "assets/textures/go_stage08-1.webp",
+      "source": "dist/assets/textures/go_stage08-1.webp",
+      "bytes": 3184194,
+      "sha256": "432638980e7bce5fb2f8745cae5ad0c3b1bdc4ee6c03ac170965e40f36c91432"
+    },
+    {
+      "path": "assets/textures/go_stage08-2.webp",
+      "source": "dist/assets/textures/go_stage08-2.webp",
+      "bytes": 1118550,
+      "sha256": "2d9fdb982597762d8ff2816de962a9c5a4637dd1d346588abbcc0c62f1ead592"
+    },
+    {
+      "path": "assets/textures/go_stage08_bg-1.webp",
+      "source": "dist/assets/textures/go_stage08_bg-1.webp",
+      "bytes": 458112,
+      "sha256": "7040afe927647769cafdde5f6d38bbdba3b3f1aa723bee7c43cdc94c82960d4a"
+    },
+    {
+      "path": "assets/textures/go_stage08_boss-1.webp",
+      "source": "dist/assets/textures/go_stage08_boss-1.webp",
+      "bytes": 331786,
+      "sha256": "8ed281e3a119782ed3dce380e0a92ce5f13a3b40c2fd872444b8e8046751be6e"
+    },
+    {
+      "path": "assets/textures/go_stage09-1.webp",
+      "source": "dist/assets/textures/go_stage09-1.webp",
+      "bytes": 651296,
+      "sha256": "f9bb49c5086c175a027ff0d38433f047afa7648edb355ca7a396b13eb182d4a6"
+    },
+    {
+      "path": "assets/textures/go_stage09_bg-1.webp",
+      "source": "dist/assets/textures/go_stage09_bg-1.webp",
+      "bytes": 451970,
+      "sha256": "b1dea5a331314e4b47e4380ffd9d110076c2495e260ece3a816f0cdfa472d701"
+    },
+    {
+      "path": "assets/textures/go_stage10-1.webp",
+      "source": "dist/assets/textures/go_stage10-1.webp",
+      "bytes": 2003564,
+      "sha256": "9714d9d27ac49b199f340f45bcd5b33abe331b3e4b2c58fd86afa7cfb508b91f"
+    },
+    {
+      "path": "assets/textures/go_stage10_bg-1.webp",
+      "source": "dist/assets/textures/go_stage10_bg-1.webp",
+      "bytes": 632630,
+      "sha256": "a3ad363d168a7341129240658c19dea941b9c64f82975c547d6f83ab347ca226"
+    },
+    {
+      "path": "assets/textures/go_stage11-1.webp",
+      "source": "dist/assets/textures/go_stage11-1.webp",
+      "bytes": 1464308,
+      "sha256": "ae390ba841c59e18e39a1cc360aded60d7be574c48d24187a403e270dc09e189"
+    },
+    {
+      "path": "assets/textures/go_stage11_bg-1.webp",
+      "source": "dist/assets/textures/go_stage11_bg-1.webp",
+      "bytes": 494252,
+      "sha256": "7bff6863dffa057bb0dcc8d2e449f6a4142c783231653610d4f86ff6209a7bce"
+    },
+    {
+      "path": "assets/textures/go_stage12-1.webp",
+      "source": "dist/assets/textures/go_stage12-1.webp",
+      "bytes": 734892,
+      "sha256": "55430dd04b14499efda3c2a7cbdd68bf8ab794f0eef20e6c5e591323e5db6161"
+    },
+    {
+      "path": "assets/textures/go_stage12_bg-1.webp",
+      "source": "dist/assets/textures/go_stage12_bg-1.webp",
+      "bytes": 789592,
+      "sha256": "aeca025241e0b167181116ad2a51af3665794c8d8ae5db6ca2a581e775e590e9"
+    },
+    {
+      "path": "assets/textures/go_stage13-1.webp",
+      "source": "dist/assets/textures/go_stage13-1.webp",
+      "bytes": 2137238,
+      "sha256": "cf09cf580b960f163e33f005f9eb71304c55c69e5eaeab7664b3004f5d859bcc"
+    },
+    {
+      "path": "assets/textures/go_stage13_bg-1.webp",
+      "source": "dist/assets/textures/go_stage13_bg-1.webp",
+      "bytes": 539700,
+      "sha256": "0ead5ef27cfae5d136b5c9142f44b73e52933ad29ab43d93a211be68debfaacd"
+    },
+    {
+      "path": "assets/textures/go_stage14-1.webp",
+      "source": "dist/assets/textures/go_stage14-1.webp",
+      "bytes": 1182658,
+      "sha256": "1de3025f38aa65f07039b3b8c16fa6e3388c312f91585372f80a0503a490e848"
+    },
+    {
+      "path": "assets/textures/go_stage14_bg-1.webp",
+      "source": "dist/assets/textures/go_stage14_bg-1.webp",
+      "bytes": 985422,
+      "sha256": "2dad6f77235cf4b6ddd8bc10176ba5ec90adace85de008d32ab039572d29403b"
+    },
+    {
+      "path": "assets/textures/go_stage15-1.webp",
+      "source": "dist/assets/textures/go_stage15-1.webp",
+      "bytes": 5271408,
+      "sha256": "f3a80e2e96523614a17b858416c6fa472d75c7c50ee19ceb23f6e9b932a91737"
+    },
+    {
+      "path": "assets/textures/go_stage15_bg-1.webp",
+      "source": "dist/assets/textures/go_stage15_bg-1.webp",
+      "bytes": 937928,
+      "sha256": "998ea60f74906c0fc4a5ddca5d0d90481ce96119bafc282ea26f7512fbe62886"
+    },
+    {
+      "path": "assets/textures/go_stage16-1.webp",
+      "source": "dist/assets/textures/go_stage16-1.webp",
+      "bytes": 3939646,
+      "sha256": "87ce37c7a49ea1d001be3af5ff951fb615a74218d6d485a4c18a2547f88275a3"
+    },
+    {
+      "path": "assets/textures/go_stage16-2.webp",
+      "source": "dist/assets/textures/go_stage16-2.webp",
+      "bytes": 352052,
+      "sha256": "892f4dc920474bec4b05f2ccf96a3b2e93d7ba8063c350e0e21346f881bb84ba"
+    },
+    {
+      "path": "assets/textures/go_stage16_bg-1.webp",
+      "source": "dist/assets/textures/go_stage16_bg-1.webp",
+      "bytes": 794062,
+      "sha256": "3fad61316b856e5c26ec6dd8d9bf517475b6d00d958ce1a7a51bc4414af28d66"
+    },
+    {
+      "path": "assets/textures/go_stage17-1.webp",
+      "source": "dist/assets/textures/go_stage17-1.webp",
+      "bytes": 4092544,
+      "sha256": "71de6445052d0c4e895b5fc31ad4f79fc6a694539b8705ff11ea324dda04caa0"
+    },
+    {
+      "path": "assets/textures/go_stage17_bg-1.webp",
+      "source": "dist/assets/textures/go_stage17_bg-1.webp",
+      "bytes": 983690,
+      "sha256": "f677c6362cc34461ddb72aaec787c2a781eb3181d6586d909e5bbbf10e32aa9f"
+    },
+    {
+      "path": "assets/textures/go_stage18-1.webp",
+      "source": "dist/assets/textures/go_stage18-1.webp",
+      "bytes": 1510632,
+      "sha256": "aa6ff048fc3d7cd828547ef1c2a6ea8b7a128a208cc449ebdb3967ef485e41df"
+    },
+    {
+      "path": "assets/textures/go_stage18_bg-1.webp",
+      "source": "dist/assets/textures/go_stage18_bg-1.webp",
+      "bytes": 1853864,
+      "sha256": "d8c04bc105dbdfd106f40b081d09e55b64eeec723790d0604f0d19f32a15c2ba"
+    },
+    {
+      "path": "assets/textures/go_stage18_denas-1.webp",
+      "source": "dist/assets/textures/go_stage18_denas-1.webp",
+      "bytes": 1095716,
+      "sha256": "ca20e5a94abc8d3e85c574970b21f6da45b7b1cc660f67d67f9c9c45e4c16f55"
+    },
+    {
+      "path": "assets/textures/go_stage18_moloch-1.webp",
+      "source": "dist/assets/textures/go_stage18_moloch-1.webp",
+      "bytes": 1528344,
+      "sha256": "9840a77d6f141e13cc329b7583b4199c0da06a5add245b45387a9a9a4d694f0e"
+    },
+    {
+      "path": "assets/textures/go_stage18_veznan-1.webp",
+      "source": "dist/assets/textures/go_stage18_veznan-1.webp",
+      "bytes": 3192930,
+      "sha256": "d4d62dd389e507226bc21c32db86db830a8b9ef389ef87ca079a61b36fae1d23"
+    },
+    {
+      "path": "assets/textures/go_towers-1.webp",
+      "source": "dist/assets/textures/go_towers-1.webp",
+      "bytes": 1195696,
+      "sha256": "72b7b822d43ea2c2aae2bf2ffb37a5d9d1a6690499285f8e69599e42d3e8a434"
+    },
+    {
+      "path": "assets/textures/go_towers_archer_kr1-1.webp",
+      "source": "dist/assets/textures/go_towers_archer_kr1-1.webp",
+      "bytes": 1372934,
+      "sha256": "0f6798bb46ac1813c4626d2c25f673529227fb73da501bfcece133154f963a44"
+    },
+    {
+      "path": "assets/textures/go_towers_archers-1.webp",
+      "source": "dist/assets/textures/go_towers_archers-1.webp",
+      "bytes": 244054,
+      "sha256": "923325414a6e5b22590af080d04d883c33e3da762f9d87bc3eb4d18a49f49c06"
+    },
+    {
+      "path": "assets/textures/go_towers_barrack_kr1-1.webp",
+      "source": "dist/assets/textures/go_towers_barrack_kr1-1.webp",
+      "bytes": 1781232,
+      "sha256": "7690e2e0720d892fac770ae1ff9fd51e887737c5419b9e03d401ceb1fdc6788b"
+    },
+    {
+      "path": "assets/textures/go_towers_catapult-1.webp",
+      "source": "dist/assets/textures/go_towers_catapult-1.webp",
+      "bytes": 1985726,
+      "sha256": "ab0171feb68a5ed00b95bc9cfa1649ceec2ae9a79fd3ec156d76d5f89b82084f"
+    },
+    {
+      "path": "assets/textures/go_towers_engineer_kr1-1.webp",
+      "source": "dist/assets/textures/go_towers_engineer_kr1-1.webp",
+      "bytes": 3043446,
+      "sha256": "7d7a834bc9c1fe00724eca3e2e9c0034e374fc208acf708ef26597bd373bf3d8"
+    },
+    {
+      "path": "assets/textures/go_towers_knights-1.webp",
+      "source": "dist/assets/textures/go_towers_knights-1.webp",
+      "bytes": 808766,
+      "sha256": "f59f136c3eee54ca8326b72c8c124251d5ddcf44378c473ccfb018b8f248c4c7"
+    },
+    {
+      "path": "assets/textures/go_towers_mage_kr1-1.webp",
+      "source": "dist/assets/textures/go_towers_mage_kr1-1.webp",
+      "bytes": 4197544,
+      "sha256": "1a9330f45d01a8e43fd48494eb5245879ae30ed047e1970f88cbeb4a7805f3a9"
+    },
+    {
+      "path": "assets/textures/go_towers_wizard-1.webp",
+      "source": "dist/assets/textures/go_towers_wizard-1.webp",
+      "bytes": 748314,
+      "sha256": "51716938b6964e3f5cd385098c8c658e2ffd31a9bbd6b606f91af56fc91bec7c"
+    },
+    {
+      "path": "assets/textures/gui_common-1.webp",
+      "source": "dist/assets/textures/gui_common-1.webp",
+      "bytes": 3547232,
+      "sha256": "e5ce52e3945d92d802377aabc6cd5177c8dc2e971a4de91b4901e2856e071bfe"
+    },
+    {
+      "path": "assets/textures/gui_common-2.webp",
+      "source": "dist/assets/textures/gui_common-2.webp",
+      "bytes": 641074,
+      "sha256": "104ff8347a0cc73f2f4f3d827d5319913e8773937113773ba2bcdab531d3bfd8"
+    },
+    {
+      "path": "assets/textures/gui_common_victory_defeat-1.webp",
+      "source": "dist/assets/textures/gui_common_victory_defeat-1.webp",
+      "bytes": 276250,
+      "sha256": "c871925dfa65875c2cc227ca0681723edc8afc7c98bc6ed7a4b721ba66c22ef2"
+    },
+    {
+      "path": "assets/textures/gui_common_victory_defeat_exo-1.webp",
+      "source": "dist/assets/textures/gui_common_victory_defeat_exo-1.webp",
+      "bytes": 902980,
+      "sha256": "763d51c8e045c81e376eb6fb74afe09dabbbdcd5a6b87cc3faae138ccac79bec"
+    },
+    {
+      "path": "assets/textures/gui_extra_portraits-1.webp",
+      "source": "dist/assets/textures/gui_extra_portraits-1.webp",
+      "bytes": 83656,
+      "sha256": "82e94b77999c80f72c1f3b5cf9b58394878bcaf69b98f6242cd2afd73064b5d4"
+    },
+    {
+      "path": "assets/textures/gui_portraits-1.webp",
+      "source": "dist/assets/textures/gui_portraits-1.webp",
+      "bytes": 1217184,
+      "sha256": "d8e64d78797ec8e5fa811b8e6040745c8b9909c51eee1bf3e784a642dd81903b"
+    },
+    {
+      "path": "assets/textures/gui_portraits-2.webp",
+      "source": "dist/assets/textures/gui_portraits-2.webp",
+      "bytes": 834008,
+      "sha256": "51c315ef4bb4ac2199c93feaf719e229c6d09035ea34813bccac46e125641b14"
+    },
+    {
+      "path": "assets/textures/room_level_select-1.webp",
+      "source": "dist/assets/textures/room_level_select-1.webp",
+      "bytes": 682482,
+      "sha256": "153db4ee48bf7cce9f28140f09d288efee94bc622dd922f76e5d74aa25849ab7"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-1.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-1.webp",
+      "bytes": 70606,
+      "sha256": "1271e8e42403eac2fc7df19de2053d621b6dbea179223408bf2d229636e289e8"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-10.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-10.webp",
+      "bytes": 256634,
+      "sha256": "c7393b0e05aefea2d3476de5aa6e6ea8b2fa232429c6da1b52502fd78eef8413"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-11.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-11.webp",
+      "bytes": 331578,
+      "sha256": "123c922edf2e3c2e4b455b0764d04a28f6b97b8eac0376ca228098210c392f57"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-12.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-12.webp",
+      "bytes": 398450,
+      "sha256": "b42876677d030e024460eeea4574520abd1ab45ef9c9a37b1f8aa6446f0f9482"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-13.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-13.webp",
+      "bytes": 290690,
+      "sha256": "a7ae58443dbffd93027455a98c01857f5eee34ca26156ad9d9b3ce58d7167d3c"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-14.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-14.webp",
+      "bytes": 448858,
+      "sha256": "af5f2c9ff7351b925392334a131a9d45c1ddcf94a7050bddebe7bde3ede4a723"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-15.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-15.webp",
+      "bytes": 427390,
+      "sha256": "de96dbd88ad56d5f5a1766026f151221acf83da34fc1ca7fd66fea5ab39d276a"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-16.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-16.webp",
+      "bytes": 372512,
+      "sha256": "d3e54b3054682772c12e577654f0f49429ff1bd61c0fe14b7cbb2a5c8d47fea5"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-17.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-17.webp",
+      "bytes": 423498,
+      "sha256": "64b2609e1be9c70945974e9d6eee9c52dae3dd71a953b65ca35c0736167a7eaf"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-18.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-18.webp",
+      "bytes": 431654,
+      "sha256": "8a8b9b3520741f1e76694ee9ed38a4b61929f72d33257d239c0a0b866ea241b7"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-2.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-2.webp",
+      "bytes": 315158,
+      "sha256": "296ba4ec3af78d26e3b714ceb8b2daac4fb8d2e6525c2ada2b3a4204d2555ab4"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-3.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-3.webp",
+      "bytes": 366356,
+      "sha256": "d2c0987872d3b8713637371fd617119bf96f9b7e85c2143749d2f5bba2927d6f"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-4.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-4.webp",
+      "bytes": 298914,
+      "sha256": "d343a2e3995aa345829d7e2b361a0265efd7b6fc5e8ebbaadf43ea74d3304db6"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-5.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-5.webp",
+      "bytes": 292974,
+      "sha256": "2ccd482c168acb77f6010f94d3e42ff7da7c9b7083314bd7b1be619116f73e52"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-6.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-6.webp",
+      "bytes": 279390,
+      "sha256": "fc779007add9605c06de9871040a91e0a4cac1c50a7934c269eb39bd66fec90b"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-7.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-7.webp",
+      "bytes": 349458,
+      "sha256": "464005dc38f06b9db5fa9611bb84cf2080b792bcc7f37b14649b3728364411f7"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-8.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-8.webp",
+      "bytes": 330408,
+      "sha256": "a85baa355338745b08aefbbe2bdd8638a51c8ba1ab3c8b72bfa5f2f529231bed"
+    },
+    {
+      "path": "assets/textures/room_level_select_stage_preview-9.webp",
+      "source": "dist/assets/textures/room_level_select_stage_preview-9.webp",
+      "bytes": 413596,
+      "sha256": "d0bf949161436c59c1b481d912a8d19bd0ad752a400512fdaea7431bc15ad75e"
+    },
+    {
+      "path": "assets/textures/screen_main_menu-1.webp",
+      "source": "dist/assets/textures/screen_main_menu-1.webp",
+      "bytes": 315028,
+      "sha256": "8e88fe94e2336fdb53dcd019d5e00bc8ed289dc46e0bf0ad32c0c73e943f7bcf"
+    },
+    {
+      "path": "assets/textures/screen_main_menu_anim-1.webp",
+      "source": "dist/assets/textures/screen_main_menu_anim-1.webp",
+      "bytes": 1742946,
+      "sha256": "cc261113a65a7cb1f4d6d10010a2a84adf81471b4c4910b3d95884a065c19800"
+    },
+    {
+      "path": "assets/textures/screen_main_menu_anim-2.webp",
+      "source": "dist/assets/textures/screen_main_menu_anim-2.webp",
+      "bytes": 349354,
+      "sha256": "904f9b73c72697b95a62444000f83dacb68c828cab9fab58cfc3fcbb59994b66"
+    },
+    {
+      "path": "assets/textures/screen_main_menu_anim_logo_exo-1.webp",
+      "source": "dist/assets/textures/screen_main_menu_anim_logo_exo-1.webp",
+      "bytes": 1187342,
+      "sha256": "d95a9c74e580556b68025bd846f0e86dc30187396f479a0f4bc32e577652e359"
+    },
+    {
+      "path": "assets/textures/screen_main_menu_bg-1.webp",
+      "source": "dist/assets/textures/screen_main_menu_bg-1.webp",
+      "bytes": 863146,
+      "sha256": "8692110012483aea4f08aea25f5f9bdbf3ca2fca99bde480a4de5d58f2d42d59"
+    },
+    {
+      "path": "assets/textures/screen_map-1.webp",
+      "source": "dist/assets/textures/screen_map-1.webp",
+      "bytes": 2219332,
+      "sha256": "b4d9b69567cfc228172e234a4685e2a4d411d6adf0d046a448df56eeb5cb6a24"
+    },
+    {
+      "path": "assets/textures/screen_map_bg-1.webp",
+      "source": "dist/assets/textures/screen_map_bg-1.webp",
+      "bytes": 2053910,
+      "sha256": "cb7be64001b773f136db05064c65e6a9a3d64a1fa6e5e96a29f333f4a82a70fb"
+    },
+    {
+      "path": "assets/textures/screen_map_bg-2.webp",
+      "source": "dist/assets/textures/screen_map_bg-2.webp",
+      "bytes": 251182,
+      "sha256": "a4696a81df7abadb1a18296813048769f8dc7335591a735098a856ef8a09ae38"
+    },
+    {
+      "path": "assets/textures/screen_map_decos-1.webp",
+      "source": "dist/assets/textures/screen_map_decos-1.webp",
+      "bytes": 3821224,
+      "sha256": "fad4f380249f1ffa7a9b45b6c277a060f09b4f388d830cb665f90d4c06848429"
+    },
+    {
+      "path": "assets/textures/screen_map_decos-2.webp",
+      "source": "dist/assets/textures/screen_map_decos-2.webp",
+      "bytes": 2783396,
+      "sha256": "de3c4ffc0bb84ca099a74884d63eab172d698a4df17b1da8657b0069ac4ef361"
+    },
+    {
+      "path": "assets/textures/screen_map_hud-1.webp",
+      "source": "dist/assets/textures/screen_map_hud-1.webp",
+      "bytes": 829668,
+      "sha256": "d2b05a286bf3f9d8ed0d343526f8cc8bd7dd4cb001e2b12a620bc5140562956b"
+    },
+    {
+      "path": "data/mechanics.json",
+      "source": "dist/data/mechanics.json",
+      "bytes": 2199641,
+      "sha256": "e4c1bdbcd9c34a4e906b59c72efb2ed73e1f550a79e6732f97049361cecdf6de"
+    },
+    {
+      "path": "data/render-models.json",
+      "source": "dist/data/render-models.json",
+      "bytes": 450701,
+      "sha256": "ed7e4ddd38b783fe756201a0f942800427ecb216c52e930533931e882f19d7b0"
+    },
+    {
+      "path": "data/scenery.json",
+      "source": "dist/data/scenery.json",
+      "bytes": 171012,
+      "sha256": "fe56da47f29b4e47ef88de469cf079f382ac3766c257d89c3dd1aaa3c420577e"
+    },
+    {
+      "path": "engine.js",
+      "source": "dist/engine.js",
+      "bytes": 32219,
+      "sha256": "67f382a89ec6bcc0788fc1ed498cfc8b92feaceba38a94398310c8c5377045d6"
+    },
+    {
+      "path": "index.html",
+      "source": "dist/index.html",
+      "bytes": 9391,
+      "sha256": "11c054d08ee2589f3dcd942707ff38b1e8f4eeb4827e3753d2c682df22ff6ec9"
+    },
+    {
+      "path": "render.js",
+      "source": "dist/render.js",
+      "bytes": 14881,
+      "sha256": "eb6d8153664a8cb75374cb62f5cd0e7f166596cdf8d891398c7bb107ffeb64ee"
+    },
+    {
+      "path": "style.css",
+      "source": "dist/style.css",
+      "bytes": 21643,
+      "sha256": "096492dd61dd18626f9ea0bbbc7fec4befef697d526445ad86a18daa3639ef76"
+    }
+  ],
+  "source_bytes": 174105666,
+  "limits": {
+    "max_files": 10000,
+    "max_bytes": 536870912
+  },
+  "scope": "Static file packaging only; no game execution or malware scan",
+  "archive": {
+    "path": "xinqicheng-web.zip",
+    "sha256": "caf6f473aa2c1c74cf83e0c2e9ab53b3886ffd7e6b3136203c59cf46c8c460a6"
+  },
+  "dry_run": false,
+  "output": "/Users/atlasv/game_project/releases/xinqicheng-web-001"
+}

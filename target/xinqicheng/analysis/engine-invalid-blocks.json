@@ -1,0 +1,77 @@
+[
+  {
+    "path": "kr6/upgrades.lua",
+    "invalid_blocks": 178,
+    "lines": 10475
+  },
+  {
+    "path": "kr6/data/achievements_data.lua",
+    "invalid_blocks": 12,
+    "lines": 473
+  },
+  {
+    "path": "kr6/data/levels/level08.lua",
+    "invalid_blocks": 141,
+    "lines": 2013
+  },
+  {
+    "path": "all/entity_db.lua",
+    "invalid_blocks": 30,
+    "lines": 533
+  },
+  {
+    "path": "all/path_db.lua",
+    "invalid_blocks": 217,
+    "lines": 2791
+  },
+  {
+    "path": "all/sound_db.lua",
+    "invalid_blocks": 326,
+    "lines": 3986
+  },
+  {
+    "path": "all/script_utils.lua",
+    "invalid_blocks": 1367,
+    "lines": 17095
+  },
+  {
+    "path": "all/modes.lua",
+    "invalid_blocks": 39,
+    "lines": 426
+  },
+  {
+    "path": "all/marketing.lua",
+    "invalid_blocks": 113,
+    "lines": 1530
+  },
+  {
+    "path": "all/director.lua",
+    "invalid_blocks": 458,
+    "lines": 5544
+  },
+  {
+    "path": "all/level_utils.lua",
+    "invalid_blocks": 33,
+    "lines": 1051
+  },
+  {
+    "path": "lib/klove/input_state_machine.lua",
+    "invalid_blocks": 162,
+    "lines": 2258
+  },
+  {
+    "path": "lib/klove/kui.lua",
+    "invalid_blocks": 674,
+    "lines": 9005
+  },
+  {
+    "path": "lib/klove/image_db.lua",
+    "invalid_blocks": 247,
+    "lines": 3150
+  },
+  {
+    "path": "sequels/game_gui.lua",
+    "invalid_blocks": 2096,
+    "lines": 37507
+  }
+]

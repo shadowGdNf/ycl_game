@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111e20">
+  <meta name="description" content="新启程网页战役：守住利尼维亚，开启你的塔防征程。支持鼠标和触屏。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+  <title>新启程 · 网页战役</title>
+  <link rel="icon" href="assets/branding/icon-round.png">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg class="svg-library" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 14 8-14 8Z"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Zm6-3v15M15 6v15"/></symbol>
+  <symbol id="i-full" viewBox="0 0 24 24"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-5v16l-5-5H4Zm12-1q5 4 0 8M19 4q8 8 0 16"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 1 1 5 2l-2 2v1M12 17v1"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21 3 12C-2 5 8-1 12 6c4-7 14-1 9 6Z"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="10"/><path d="M12 6v12M9 8h6M9 16h6"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V3q5-3 9 0t7 0v10q-3 3-7 0t-9 0"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z"/></symbol>
+  <symbol id="i-sword" viewBox="0 0 24 24"><path d="m5 19 3-3m-4-4 8 8M8 16 20 4V2h-3L6 14M3 21l2-2"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 2c4 7 10 10 8 16-2 7-15 6-16-1-1-4 3-7 5-10 0 5 4 5 3-5Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 9 4v7c-1 5-5 8-9 10-4-2-8-5-9-10V6ZM12 7v10M7 12h10"/></symbol>
+</defs></svg>
+<div id="loading" class="loading-screen"><img src="assets/branding/logo.png" alt="Kingdom Rush Genesis"><div class="loader-track"><span id="load-bar"></span></div><p id="load-status">正在展开远征地图…</p><button id="retry-load" class="primary" hidden>重新加载</button></div>
+<main id="menu" class="screen menu-screen" hidden>
+  <div class="menu-art"></div><div class="menu-shade"></div>
+  <header class="menu-header"><a class="brand" href="#"><img src="assets/branding/icon-round.png" alt=""><span>新启程<small>网页战役</small></span></a><div class="header-tools"><button class="icon-btn sound-toggle" aria-label="开启声音"><svg><use href="#i-sound"/></svg></button><button class="icon-btn help-open" aria-label="游戏说明"><svg><use href="#i-help"/></svg></button><button class="icon-btn fullscreen" aria-label="全屏"><svg><use href="#i-full"/></svg></button></div></header>
+  <section class="menu-content"><p class="eyebrow"><span></span> 利尼维亚需要一位指挥官</p><img class="game-logo" src="assets/branding/logo.png" alt="Kingdom Rush 6 Genesis"><h1>你的传奇，<br><em>从这里启程。</em></h1><p class="menu-description">筑起防线，集结英雄。<br>穿越王国的十八处战场，守住最后的希望。</p><button id="open-campaign" class="primary large">开始远征 <svg><use href="#i-arrow"/></svg></button><button id="continue-game" class="text-btn" hidden>继续上次的征程</button><div class="menu-facts"><span><b>18</b> 战役关卡</span><span><b>4</b> 基础防御塔</span><span><svg><use href="#i-shield"/></svg> 本地保存进度</span></div></section>
+  <footer class="menu-footer"><span>鼠标点击 / 触屏操作</span><button id="about-open" class="text-btn">关于这个版本</button></footer>
+</main>
+<section id="campaign" class="screen campaign-screen" hidden>
+  <header class="campaign-header"><button id="back-menu" class="quiet-btn">‹ 返回</button><div><p class="eyebrow">THE CAMPAIGN</p><h1>王国远征</h1></div><div class="star-total"><svg><use href="#i-star"/></svg><span id="total-stars">0</span><small>/ 54</small></div></header>
+  <div class="campaign-layout"><div class="level-list" id="level-list" aria-label="选择关卡"></div><aside class="level-detail"><div class="level-preview-wrap"><canvas id="level-preview" width="700" height="384"></canvas><span class="level-number" id="level-number">01</span></div><div class="level-copy"><p class="eyebrow" id="level-region">第一场战役</p><h2 id="level-title">利尼维亚城堡</h2><p id="level-history"></p><div class="level-stats"><span><svg><use href="#i-flag"/></svg><b id="level-waves"></b> 波敌人</span><span><svg><use href="#i-coin"/></svg><b id="level-gold"></b> 初始金币</span></div><button id="start-level" class="primary">进入战场 <svg><use href="#i-arrow"/></svg></button><p class="detail-tip" id="level-lock-tip">点击建造点部署防线，准备好后召唤第一波。</p></div></aside></div>
+  <footer class="campaign-footer"><span>完成关卡，解锁下一段旅程。</span><div><button id="export-save" class="text-btn">导出进度</button><button id="import-save" class="text-btn">导入进度</button><input id="save-file" type="file" accept="application/json,.json" hidden></div></footer>
+</section>
+<section id="battle" class="screen battle-screen" hidden>
+  <header class="battle-header"><button id="battle-map" class="icon-btn" aria-label="返回地图"><svg><use href="#i-map"/></svg></button><div class="battle-title"><small id="battle-stage"></small><strong id="battle-name"></strong></div><div class="battle-resources"><span class="heart"><svg><use href="#i-heart"/></svg><b id="hud-lives">20</b></span><span class="gold"><svg><use href="#i-coin"/></svg><b id="hud-gold">175</b></span><span class="wave"><svg><use href="#i-flag"/></svg><b id="hud-wave">0 / 6</b></span></div><div class="battle-tools"><button id="speed" class="compact-btn" aria-label="切换游戏速度">1×</button><button id="pause" class="icon-btn" aria-label="暂停"><svg><use href="#i-pause"/></svg></button><button class="icon-btn fullscreen" aria-label="全屏"><svg><use href="#i-full"/></svg></button></div></header>
+  <div class="battle-middle"><div id="viewport" class="viewport"><canvas id="game-canvas" width="1400" height="768" tabindex="0" aria-label="战场：点击建造点建塔，选中技能后点击目标位置"></canvas><div id="battle-banner" class="battle-banner" hidden></div><div id="target-hint" class="target-hint" hidden><span></span><button id="cancel-target" aria-label="取消选点">×</button></div><div class="zoom-controls"><button id="zoom-out" aria-label="缩小战场">−</button><button id="zoom-reset" aria-label="重置视图">1×</button><button id="zoom-in" aria-label="放大战场">＋</button></div><p class="battle-tip" id="battle-tip">点击金色建造点，建立第一道防线。</p></div>
+  <aside id="selection" class="selection-panel"><div class="selection-heading"><span class="eyebrow" id="selection-label">指挥中心</span><button id="close-selection" class="icon-btn" aria-label="关闭选择" hidden><svg><use href="#i-close"/></svg></button></div><h2 id="selection-title">守住王国</h2><p id="selection-copy">点击战场上的建造点选择防御塔。搭配远程火力和士兵，截住每一支敌军。</p><div id="build-options" class="build-options"></div><div id="tower-actions" hidden></div><div id="enemy-info" hidden></div><div class="field-guide" id="field-guide"><p><b>01</b><span>建造与升级防御塔</span></p><p><b>02</b><span>指挥英雄，施放援军与火雨</span></p><p><b>03</b><span>击败所有波次，赢得战役</span></p></div></aside></div>
+  <footer class="battle-footer"><div class="abilities"><button id="hero" class="ability hero-ability" title="英雄移动 [E]"><span class="ability-art"><svg><use href="#i-sword"/></svg></span><span><b>杰拉尔德</b><small id="hero-status">点击后选择位置</small></span><kbd>E</kbd></button><button id="meteor" class="ability" title="火雨 [Q]"><span class="ability-art fire"><svg><use href="#i-fire"/></svg><i class="cooldown"></i></span><span><b>火雨</b><small>范围打击</small></span><kbd>Q</kbd></button><button id="reinforcements" class="ability" title="援军 [W]"><span class="ability-art shield"><svg><use href="#i-shield"/></svg><i class="cooldown"></i></span><span><b>援军</b><small>阻挡敌军</small></span><kbd>W</kbd></button></div><button id="next-wave" class="primary wave-button"><svg><use href="#i-flag"/></svg><span>召唤第一波</span><kbd>N</kbd></button></footer>
+</section>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="modal"><button id="modal-close" class="icon-btn modal-close" aria-label="关闭"><svg><use href="#i-close"/></svg></button><div id="modal-content"></div></dialog>
+<script src="app.js" type="module"></script>
+</body>
+</html>

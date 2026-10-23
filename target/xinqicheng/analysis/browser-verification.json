@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-23",
+  "livePreview": "http://127.0.0.1:8765/",
+  "lanPreview": "http://192.168.51.74:8765/",
+  "servedDirectory": "/Users/atlasv/game_project/releases/xinqicheng-web-001/site",
+  "desktopViewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "phoneViewports": [
+    [
+      393,
+      852
+    ],
+    [
+      844,
+      390
+    ]
+  ],
+  "browserManualVictory": {
+    "level": 1,
+    "kills": 47,
+    "lives": 3,
+    "stars": 1,
+    "nextLevelOpened": 2
+  },
+  "saveExportImport": true,
+  "rejectedInvalidSave": true,
+  "reloadedProgress": true,
+  "extractedZipPlayed": true,
+  "consoleErrorsObserved": [],
+  "physicalMobileTested": false,
+  "all18FullCampaignsWon": false,
+  "shippingRuntimeMatchesSource": true
+}

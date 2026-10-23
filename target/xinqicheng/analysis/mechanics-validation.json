@@ -1,0 +1,9 @@
+{
+  "scope": "Static recovered data integrity; does not execute original game",
+  "levels": 18,
+  "regularWaves": 245,
+  "regularSpawns": 6879,
+  "towerSlots": 213,
+  "errors": [],
+  "passed": true
+}

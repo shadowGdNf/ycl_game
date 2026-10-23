@@ -1,0 +1,425 @@
+{
+  "love.audio.newSource": [
+    "all/sound_db.lua"
+  ],
+  "love.audio.stop": [
+    "main.lua"
+  ],
+  "love.event.poll": [
+    "main.lua"
+  ],
+  "love.event.pump": [
+    "main.lua"
+  ],
+  "love.event.push": [
+    "all/debug_tools.lua"
+  ],
+  "love.event.quit": [
+    "all-phone/platform_services_hwpms.lua",
+    "all-phone/platform_services_yodo1_sdk.lua",
+    "all/director.lua",
+    "sequels/kviews_gg_sequels.lua",
+    "sequels/screen_splash.lua"
+  ],
+  "love.filesystem.exists": [
+    "all/director.lua",
+    "all/remote_config.lua",
+    "lib/klove/kui_db.lua",
+    "main.lua"
+  ],
+  "love.filesystem.getRealDirectory": [
+    "all/main_utils.lua"
+  ],
+  "love.filesystem.getRequirePath": [
+    "all/main_utils.lua"
+  ],
+  "love.filesystem.getSaveDirectory": [
+    "all/main_utils.lua",
+    "main.lua"
+  ],
+  "love.filesystem.getSourceBaseDirectory": [
+    "all/main_utils.lua",
+    "all/platform_services_utils.lua",
+    "main.lua"
+  ],
+  "love.filesystem.getUserDirectory": [
+    "all/main_utils.lua",
+    "all/platform_services_gamecenter.lua"
+  ],
+  "love.filesystem.getWorkingDirectory": [
+    "all/main_utils.lua",
+    "main.lua"
+  ],
+  "love.filesystem.isDirectory": [
+    "main.lua"
+  ],
+  "love.filesystem.isFile": [
+    "all/director.lua",
+    "all/level_utils.lua",
+    "all/modes.lua",
+    "all/path_db.lua",
+    "all/sound_db.lua",
+    "lib/klove/image_db.lua",
+    "main.lua"
+  ],
+  "love.filesystem.isFused": [
+    "all/platform_services_utils.lua",
+    "main.lua",
+    "sequels/screen_splash.lua"
+  ],
+  "love.filesystem.load": [
+    "all/grid_db.lua",
+    "all/level_utils.lua",
+    "all/path_db.lua"
+  ],
+  "love.filesystem.mount": [
+    "main.lua"
+  ],
+  "love.filesystem.newFileData": [
+    "all-phone/platform_services_news_ih.lua",
+    "all/platform_services_news_ih_https.lua",
+    "lib/klove/image_db.lua"
+  ],
+  "love.filesystem.read": [
+    "all/director.lua",
+    "all/remote_config.lua",
+    "all/storage_io_generic.lua",
+    "kr6/screen_level_01_end.lua",
+    "kr6/screen_level_04_end.lua",
+    "kr6/screen_level_08_end.lua",
+    "kr6/screen_level_10_end.lua",
+    "kr6/screen_level_11_end.lua",
+    "kr6/screen_level_13_end.lua",
+    "kr6/screen_level_13_end_cn.lua",
+    "kr6/screen_level_15_end.lua",
+    "kr6/screen_level_18_end.lua",
+    "lib/klove/kui_db.lua"
+  ],
+  "love.filesystem.remove": [
+    "all/storage_io_generic.lua"
+  ],
+  "love.filesystem.setIdentity": [
+    "all/main_utils.lua",
+    "main.lua"
+  ],
+  "love.filesystem.setRequirePath": [
+    "main.lua"
+  ],
+  "love.filesystem.setSymlinksEnabled": [
+    "main.lua"
+  ],
+  "love.filesystem.write": [
+    "all/storage_io_generic.lua",
+    "main.lua"
+  ],
+  "love.graphics.clear": [
+    "main.lua"
+  ],
+  "love.graphics.getBackgroundColor": [
+    "main.lua"
+  ],
+  "love.graphics.getCompressedImageFormats": [
+    "lib/klove/image_db.lua"
+  ],
+  "love.graphics.getDimensions": [
+    "all/director.lua",
+    "main.lua",
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.graphics.getHeight": [
+    "all/main_utils.lua",
+    "kr6/templates_game.lua",
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.getRendererInfo": [
+    "all/main_utils.lua",
+    "lib/klove/shader_db.lua"
+  ],
+  "love.graphics.getScissor": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.getStats": [
+    "lib/klove/image_db.lua"
+  ],
+  "love.graphics.getSupported": [
+    "all/main_utils.lua"
+  ],
+  "love.graphics.getSystemLimits": [
+    "all/main_utils.lua"
+  ],
+  "love.graphics.getWidth": [
+    "all/main_utils.lua",
+    "lib/hump/camera.lua",
+    "main.lua"
+  ],
+  "love.graphics.isActive": [
+    "lib/klove/image_db.lua",
+    "main.lua"
+  ],
+  "love.graphics.isCreated": [
+    "main.lua"
+  ],
+  "love.graphics.newImage": [
+    "all-phone/platform_services_news_ih.lua",
+    "all/platform_services_news_ih_https.lua"
+  ],
+  "love.graphics.newShader": [
+    "lib/klove/shader_db.lua"
+  ],
+  "love.graphics.newVideo": [
+    "lib/klove/kui.lua"
+  ],
+  "love.graphics.origin": [
+    "main.lua"
+  ],
+  "love.graphics.pop": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.present": [
+    "main.lua"
+  ],
+  "love.graphics.printf": [
+    "main.lua"
+  ],
+  "love.graphics.push": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.reset": [
+    "main.lua"
+  ],
+  "love.graphics.rotate": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.scale": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.setBackgroundColor": [
+    "main.lua"
+  ],
+  "love.graphics.setColor": [
+    "main.lua"
+  ],
+  "love.graphics.setNewFont": [
+    "main.lua"
+  ],
+  "love.graphics.setScissor": [
+    "lib/hump/camera.lua"
+  ],
+  "love.graphics.translate": [
+    "lib/hump/camera.lua"
+  ],
+  "love.image.newCompressedData": [
+    "lib/klove/image_db.lua"
+  ],
+  "love.image.newImageData": [
+    "all-phone/platform_services_news_ih.lua",
+    "all/platform_services_news_ih_https.lua",
+    "lib/klove/image_db.lua",
+    "main.lua"
+  ],
+  "love.joystick.getJoystickCount": [
+    "all/platform_services_xbox.lua"
+  ],
+  "love.joystick.getJoysticks": [
+    "main.lua"
+  ],
+  "love.joystick.loadGamepadMappings": [
+    "all/main_utils.lua"
+  ],
+  "love.keyboard.isDown": [
+    "all/debug_view_editor.lua",
+    "all/director.lua",
+    "all/game.lua",
+    "all/game_editor_gui.lua",
+    "all/kviews_game_editor.lua",
+    "lib/klove/input_state_machine.lua",
+    "lib/klove/kui.lua",
+    "sequels/screen_map.lua",
+    "sequels/screen_splash.lua"
+  ],
+  "love.keyboard.setKeyRepeat": [
+    "all/main_utils.lua"
+  ],
+  "love.math.random": [
+    "main.lua"
+  ],
+  "love.math.setRandomSeed": [
+    "main.lua"
+  ],
+  "love.mouse.getPosition": [
+    "all/game.lua",
+    "all/game_editor_gui.lua",
+    "all/kviews_game_editor.lua",
+    "lib/hump/camera.lua",
+    "lib/klove/kui.lua"
+  ],
+  "love.mouse.hasCursor": [
+    "lib/klove/kui.lua",
+    "main.lua"
+  ],
+  "love.mouse.isDown": [
+    "all/kviews_game_editor.lua",
+    "lib/klove/kui.lua"
+  ],
+  "love.mouse.newCursor": [
+    "all/director.lua"
+  ],
+  "love.mouse.setCursor": [
+    "all/director.lua",
+    "main.lua"
+  ],
+  "love.mouse.setGrabbed": [
+    "main.lua"
+  ],
+  "love.mouse.setPosition": [
+    "lib/klove/input_state_machine.lua"
+  ],
+  "love.mouse.setRelativeMode": [
+    "main.lua"
+  ],
+  "love.mouse.setVisible": [
+    "lib/klove/input_state_machine.lua",
+    "main.lua",
+    "sequels/kviews_game_gui_sequels.lua"
+  ],
+  "love.nx.allocGetTotalFreeSize": [
+    "all/main_utils.lua",
+    "main.lua"
+  ],
+  "love.nx.getDesiredLanguage": [
+    "all/main_utils.lua"
+  ],
+  "love.system.getClipboardText": [
+    "all/debug_tools.lua",
+    "all/game_editor_gui.lua",
+    "kr6/game_gui_cheats.lua"
+  ],
+  "love.system.getOS": [
+    "all/director.lua",
+    "all/main_utils.lua",
+    "all/platform_services_utils.lua",
+    "lib/klove/image_db.lua",
+    "lib/klua/nolfs.lua",
+    "main.lua",
+    "sequels/game_gui_cheats_map.lua"
+  ],
+  "love.system.openURL": [
+    "sequels/kviews_gg_sequels.lua",
+    "sequels/screen_consent.lua",
+    "sequels/screen_map.lua",
+    "sequels/screen_slots.lua"
+  ],
+  "love.system.setClipboardText": [
+    "all/game_editor_gui.lua",
+    "kr6/game_gui_cheats.lua"
+  ],
+  "love.thread.newChannel": [
+    "all-phone/platform_services_news_ih.lua",
+    "all/sound_db.lua",
+    "lib/klove/image_db.lua"
+  ],
+  "love.thread.newThread": [
+    "all-phone/platform_services_news_ih.lua",
+    "all/sound_db.lua",
+    "lib/klove/image_db.lua"
+  ],
+  "love.timer.getDelta": [
+    "lib/hump/camera.lua",
+    "lib/klove/input_state_machine.lua",
+    "main.lua"
+  ],
+  "love.timer.getTime": [
+    "all-phone/platform_services_fullads.lua",
+    "all/director.lua",
+    "all/exoskeleton.lua",
+    "all/jni_android.lua",
+    "all/platform_services.lua",
+    "all/platform_services_iap_china.lua",
+    "all/platform_services_iap_premium.lua",
+    "all/platform_services_ih_overseervice.lua",
+    "all/platform_services_mc_goliath.lua",
+    "all/platform_services_utils.lua",
+    "all/platform_services_xbox.lua",
+    "all/sound_db.lua",
+    "lib/klove/animation_db.lua",
+    "lib/klove/image_db.lua",
+    "lib/klove/input_state_machine.lua",
+    "lib/klove/kui.lua",
+    "lib/klove/shader_db.lua",
+    "lib/klua/log.lua",
+    "main.lua",
+    "sequels/game_gui.lua",
+    "sequels/screen_splash.lua"
+  ],
+  "love.timer.sleep": [
+    "all/director.lua",
+    "main.lua"
+  ],
+  "love.timer.step": [
+    "main.lua"
+  ],
+  "love.touch.getPosition": [
+    "lib/klove/kui.lua"
+  ],
+  "love.touch.getTouches": [
+    "lib/klove/kui.lua"
+  ],
+  "love.window.getDesktopDimensions": [
+    "all/window_utils.lua",
+    "main.lua",
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.window.getDisplayCount": [
+    "all/main_utils.lua",
+    "all/window_utils.lua",
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.window.getDisplayName": [
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.window.getFullscreen": [
+    "all/director.lua"
+  ],
+  "love.window.getFullscreenModes": [
+    "all/main_utils.lua",
+    "all/window_utils.lua",
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.window.getPixelScale": [
+    "all/main_utils.lua",
+    "main.lua",
+    "sequels/game_gui.lua",
+    "sequels/kviews_gg_sequels.lua"
+  ],
+  "love.window.getTitle": [
+    "main.lua"
+  ],
+  "love.window.isCreated": [
+    "main.lua"
+  ],
+  "love.window.isOpen": [
+    "main.lua"
+  ],
+  "love.window.minimize": [
+    "all/director.lua"
+  ],
+  "love.window.setIcon": [
+    "main.lua"
+  ],
+  "love.window.setMode": [
+    "main.lua"
+  ],
+  "love.window.setPosition": [
+    "main.lua"
+  ],
+  "love.window.setTitle": [
+    "all/director.lua",
+    "main.lua"
+  ],
+  "love.window.showMessageBox": [
+    "main.lua"
+  ],
+  "love.window.toPixels": [
+    "main.lua"
+  ]
+}

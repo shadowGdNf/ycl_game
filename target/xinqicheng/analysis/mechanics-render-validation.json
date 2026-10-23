@@ -1,0 +1,3827 @@
+{
+  "models": 143,
+  "levels": 18,
+  "staticDecorations": 147,
+  "ambientAnimations": 100,
+  "backgrounds": [
+    {
+      "level": 1,
+      "frame": "Stage01_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 2,
+      "frame": "Stage02_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 3,
+      "frame": "Stage03_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 4,
+      "frame": "Stage04_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 5,
+      "frame": "Stage05_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 6,
+      "frame": "Stage06_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 7,
+      "frame": "Stage07_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 8,
+      "frame": "Stage08_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 9,
+      "frame": "Stage09_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 10,
+      "frame": "Stage10_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 11,
+      "frame": "Stage11_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 12,
+      "frame": "Stage12_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 13,
+      "frame": "Stage13_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 14,
+      "frame": "Stage14_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 15,
+      "frame": "Stage15_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 16,
+      "frame": "Stage16_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 17,
+      "frame": "Stage17_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 18,
+      "frame": "Stage18_0001",
+      "hidden": false,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    },
+    {
+      "level": 18,
+      "frame": "Stage18_0002",
+      "hidden": true,
+      "drawRect": {
+        "x": -188.0,
+        "y": 0.0,
+        "width": 1400.0,
+        "height": 768.0
+      }
+    }
+  ],
+  "unknownModels": {
+    "tower_holder": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_capture": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_sea_of_trees_capture": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_1_1": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_1_2": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_1_3": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_1_4": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_2_1": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_2_2": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_2_3": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_2_3_ease_in": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_2_4": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_1": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_10": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_2": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_3": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_4": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_5": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_6": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_7": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_8": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ],
+    "tower_holder_terrain_3_9": [
+      {
+        "field": "tt.render.sprites[4]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[5]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[6]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[7]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[8]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[9]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[10]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[11]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[12]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[13]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[14]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[15]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[16]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[17]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[18]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[19]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[20]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      },
+      {
+        "field": "tt.render.sprites[21]",
+        "expression": "table.deepclone(tt.render.sprites[3])",
+        "reason": "Call outside reviewed pure-data allowlist: table.deepclone",
+        "source": {
+          "file": "analysis/mechanics-decompiled/templates_game.lua",
+          "line": 8243
+        }
+      }
+    ]
+  }
+}

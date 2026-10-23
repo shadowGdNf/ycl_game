@@ -1,0 +1,176 @@
+[
+  {
+    "level": "log",
+    "message": "PROBE_BEGIN Lua=Lua 5.1 Love=11",
+    "timestamp": "2026-10-23T09:40:50.043Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.graphics.getCompressedImageFormats",
+    "timestamp": "2026-10-23T09:40:50.043Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.mouse.hasCursor",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.nx.allocGetTotalFreeSize",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.nx.getDesiredLanguage",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.window.getPixelScale",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_MISSING love.window.isCreated",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_API_END direct=102 missing=6",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_FFI_AVAILABLE false",
+    "timestamp": "2026-10-23T09:40:50.044Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/director.lua:363: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.095Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/entity_db.lua:234: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.095Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/level_utils.lua:677: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.095Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/marketing.lua:237: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.095Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/modes.lua:37: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.096Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/path_db.lua:288: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.096Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/script_utils.lua:1405: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.096Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR all/sound_db.lua:218: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.096Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR kr6/data/achievements_data.lua:363: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.096Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR kr6/data/levels/level08.lua:386: unexpected symbol near 'if'",
+    "timestamp": "2026-10-23T09:40:50.551Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR kr6/upgrades.lua:8418: unexpected symbol near 'if'",
+    "timestamp": "2026-10-23T09:40:50.629Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/hump/camera.lua:1: unexpected symbol near ':'",
+    "timestamp": "2026-10-23T09:40:50.633Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/hump/gamestate.lua:28: '=' expected near 'or'",
+    "timestamp": "2026-10-23T09:40:50.634Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/hump/signal.lua:10: 'end' expected (to close 'function' at line 3) near '('",
+    "timestamp": "2026-10-23T09:40:50.634Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/klove/image_db.lua:200: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.637Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/klove/input_state_machine.lua:435: 'do' expected near 'LOOP'",
+    "timestamp": "2026-10-23T09:40:50.637Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/klove/kui.lua:1150: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.638Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR lib/mobdebug.lua:481: unexpected symbol near ')'",
+    "timestamp": "2026-10-23T09:40:50.644Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_PARSE_ERROR sequels/game_gui.lua:11600: '=' expected near ';'",
+    "timestamp": "2026-10-23T09:40:50.650Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  },
+  {
+    "level": "log",
+    "message": "PROBE_END passed=842 failed=19 total=861",
+    "timestamp": "2026-10-23T09:40:50.663Z",
+    "url": "http://127.0.0.1:8768/probe-logging.js"
+  }
+]
