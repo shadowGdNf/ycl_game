@@ -1,0 +1,6 @@
+{
+  "name": "rea-static-integration-fixture",
+  "version": "1.0.0",
+  "main": "main.cjs",
+  "description": "Self-authored fixture for static REA integration verification."
+}

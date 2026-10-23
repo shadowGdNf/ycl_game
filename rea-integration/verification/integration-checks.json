@@ -1,0 +1,149 @@
+{
+  "verified_date": "2026-10-23",
+  "timezone": "Asia/Shanghai",
+  "package": {
+    "name": "rea-agents",
+    "version": "6.7.0",
+    "integrity": "sha512-yhIx2ioJYYT1C/tONfYeitC6LhnKmCh+ZwRUOgYuhSc733lGhkkt73zhug9WmLgxoMdKuqIYGCoBfD4fXkOhFw==",
+    "node": "24.21.0",
+    "platform": "darwin-arm64",
+    "optional_dependencies_omitted": true,
+    "lifecycle_scripts_disabled_during_acquisition": true
+  },
+  "installation": {
+    "status": "ready",
+    "actions": [
+      "configured_codex",
+      "installed_skill"
+    ],
+    "skill_path": "/Users/atlasv/.agents/skills/reverse-engineer-anything",
+    "skill_matches_published_package": true,
+    "managed_skill_file_count": 7,
+    "existing_configuration_preserved": true,
+    "config_backup": "/Users/atlasv/.codex/config.toml.rea.backup"
+  },
+  "readiness": {
+    "healthy_for_codex_and_skill": true,
+    "full_environment_healthy": false,
+    "scope_checks": [
+      {
+        "name": "node",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "24.21.0",
+        "details": {
+          "runtime": "node",
+          "version": "24.21.0"
+        }
+      },
+      {
+        "name": "registration:codex",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/Users/atlasv/.codex/config.toml"
+      },
+      {
+        "name": "skill:identity",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "Installed REA skill identity is aligned."
+      }
+    ],
+    "skill": {
+      "installed_version": "42",
+      "installed_tool_count": 207,
+      "state": "aligned",
+      "remediation": null
+    },
+    "unavailable_engines": [
+      "hopper",
+      "ghidra",
+      "ida-registration",
+      "jadx",
+      "kuna-installation"
+    ]
+  },
+  "mcp": {
+    "healthy": true,
+    "server": {
+      "name": "rea",
+      "version": "6.7.0",
+      "protocol_version": "2025-11-25"
+    },
+    "inventory": {
+      "tools": {
+        "expected": 207,
+        "observed": 207,
+        "missing": [],
+        "unexpected": [],
+        "duplicates": []
+      },
+      "prompts": {
+        "expected": 6,
+        "observed": 6,
+        "missing": [],
+        "unexpected": [],
+        "duplicates": []
+      }
+    },
+    "request_flow": {
+      "tool": "binary_session",
+      "ok": true
+    },
+    "current_chat_connection_verified": false
+  },
+  "static_smoke": {
+    "operation": "analyze_javascript_application",
+    "evidence_id": "ev_b380a78b6a93ca9ad4f282b9d000af255283a4013e2e3bbf1e7353dfe92afb0c",
+    "summary_evidence_id": "ev_f0e8dc5edf02fb9d6d01b039185c3e199f6a4f80d50ac520863ad0d877968a23",
+    "target": "/Users/atlasv/game_project/rea-integration/fixtures/electron-demo",
+    "statistics": {
+      "relevant_files": 5,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 1001,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 3,
+      "skipped_javascript_files": 0,
+      "visited_ast_nodes": 135,
+      "findings": 18,
+      "modules": 0,
+      "parse_failures": 0
+    },
+    "electron": {
+      "browser_windows": 1,
+      "explicit_web_preferences": 1,
+      "preload_entrypoints": 1,
+      "context_bridge_apis": 1,
+      "exposed_api_members": 1,
+      "ipc": {
+        "operations": 2,
+        "literal_channels": 1,
+        "dynamic_channel_operations": 0,
+        "renderer_transmissions": 1,
+        "renderer_listeners": 0,
+        "main_handlers": 1,
+        "paired_renderer_transmissions": 1,
+        "ambiguous_renderer_transmissions": 0,
+        "unpaired_literal_renderer_transmissions": 0
+      },
+      "sender_validation_observations": 0,
+      "utility_processes": 0,
+      "resolved_utility_entrypoints": 0,
+      "native_addon_bindings": 0,
+      "resolved_native_addon_bindings": 0
+    },
+    "application_coverage": {
+      "status": "complete",
+      "truncated": false,
+      "omitted_count": 0,
+      "limits": []
+    },
+    "semantic_coverage": "unknown",
+    "runtime_execution_claimed": false,
+    "initial_sandbox_failure": "Swift helper compilation could not write Clang ModuleCache; the explicitly escalated rerun passed."
+  },
+  "remaining_steps": [
+    "Restart or reconnect Codex to load the registered server into a new live client connection.",
+    "Configure an appropriate analysis engine only when the chosen target requires it."
+  ]
+}
