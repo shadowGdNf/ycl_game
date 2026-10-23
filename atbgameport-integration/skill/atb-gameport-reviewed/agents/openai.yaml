@@ -1,0 +1,4 @@
+interface:
+  display_name: "ATBGamePort 审查版"
+  short_description: "基于 REA 证据移植网页游戏，检查资源边界并生成静态目录和 ZIP 包"
+  default_prompt: "使用 $atb-gameport-reviewed 分析指定游戏并按当前目标完成网页移植、验证或静态打包。"

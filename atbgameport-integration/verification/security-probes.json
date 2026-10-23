@@ -1,0 +1,42 @@
+{
+  "commit": "835a4cf1be874c237aa1a60207bc6ca639448712",
+  "probes": [
+    {
+      "id": "outside_symlink_read",
+      "reproduced": true,
+      "impact": "Outside-root file bytes become part of the distributable VFS."
+    },
+    {
+      "id": "outside_html_reference_read",
+      "reproduced": true,
+      "impact": "A parent-relative script reference embeds a file outside the input root."
+    },
+    {
+      "id": "output_path_traversal",
+      "reproduced": true,
+      "impact": "A crafted game name writes outside the selected output directory."
+    },
+    {
+      "id": "launcher_command_injection",
+      "reproduced": true,
+      "impact": "The interpolated game name executes shell substitution in the generated macOS launcher."
+    },
+    {
+      "id": "workflow_domain_command_injection",
+      "reproduced": true,
+      "impact": "The generated Actions shell step executes command substitution supplied as a domain."
+    },
+    {
+      "id": "dry_run_deletes_existing_stage",
+      "reproduced": true,
+      "impact": "A dry run deletes the pre-existing _stage_verify_tmp directory and its contents."
+    },
+    {
+      "id": "empty_verification_passes",
+      "reproduced": true,
+      "impact": "The package verifier exits successfully when no artifact is specified.",
+      "stdout": "[VERIFY ALL PASSED] All package verifications succeeded!"
+    }
+  ],
+  "all_reproduced": true
+}

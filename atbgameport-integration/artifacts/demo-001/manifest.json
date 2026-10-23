@@ -1,0 +1,40 @@
+{
+  "format": "atb-reviewed-static-v1",
+  "game_id": "demo",
+  "files": [
+    {
+      "path": ".nojekyll",
+      "source": null,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app.js",
+      "source": "web/app.js",
+      "bytes": 602,
+      "sha256": "4d592661744e2b80b0571136b9fddf6be1426de8b998c3f58a87c1e4be854994"
+    },
+    {
+      "path": "assets/config.json",
+      "source": "web/assets/config.json",
+      "bytes": 93,
+      "sha256": "f7a90a314b0444e15d8761b1224d439b63146ded529d37f19616d35646e5ef11"
+    },
+    {
+      "path": "index.html",
+      "source": "web/index.html",
+      "bytes": 659,
+      "sha256": "f8da3444c12dce4ef6d8a374d73385c2acf505d6bc87abf14244cae94d99c258"
+    }
+  ],
+  "source_bytes": 1354,
+  "limits": {
+    "max_files": 10000,
+    "max_bytes": 536870912
+  },
+  "scope": "Static file packaging only; no game execution or malware scan",
+  "archive": {
+    "path": "demo-web.zip",
+    "sha256": "ad80104c7a3901e2efadebd61ae37dbe2f40d62da36e907d40f9c335302d1acd"
+  }
+}

@@ -1,0 +1,408 @@
+{
+  "repository": "atbfun/ATBGamePort",
+  "commit": "835a4cf1be874c237aa1a60207bc6ca639448712",
+  "files": [
+    {
+      "path": ".agents/adr/0001-explicit-prerequisites-for-re-and-grilling.md",
+      "git_sha": "e876afabea0953d04553917e6f0d09f44c32dd06",
+      "bytes": 1997,
+      "sha256": "7fab497658245366e31df5344964d463a69c5b1e2e45aa6fd6209849fbb30488",
+      "mode": "100644"
+    },
+    {
+      "path": ".agents/adr/0002-flat-skills-layout-and-claude-plugin.md",
+      "git_sha": "059c8c4baf7033e08e26bf4abef8f32f9b7fe5e9",
+      "bytes": 1879,
+      "sha256": "8ab037ba2a5b9325f2a9981bca9b4b328a606d013e48f17554751c9e6a00e37b",
+      "mode": "100644"
+    },
+    {
+      "path": ".agents/install-block.md",
+      "git_sha": "ddf6be87a5ade5baef9c245006a118db5c9b7a7c",
+      "bytes": 2243,
+      "sha256": "f1ac49616ccf73c9a00d591dcc9bae9ac228f0f2594d4227b3c1c37930eebd84",
+      "mode": "100644"
+    },
+    {
+      "path": ".agents/rules/env-activate.md",
+      "git_sha": "a5d9acdcf3590d9f8705844927eefe9ea2ee26c6",
+      "bytes": 120,
+      "sha256": "da5df9df5e80b69457fd8634ce4342004575ea1ff5ae87ed70b0b58c481a18cd",
+      "mode": "100644"
+    },
+    {
+      "path": ".changeset/README.md",
+      "git_sha": "6ac8c0d0b0054be0ca2720e4752e309977c50c71",
+      "bytes": 512,
+      "sha256": "be188d67dab91e278dc315c12ef28e1fc51f172fba225de5b84e4cfa94b0c9e4",
+      "mode": "100644"
+    },
+    {
+      "path": ".changeset/config.json",
+      "git_sha": "a5781a128c601ea1abb3e3f433e0ebc68fc2c399",
+      "bytes": 326,
+      "sha256": "af9e494038127a5ccd5117b6aeebd7aa1d9ab61de677c7cfaef42e6b1f50d34f",
+      "mode": "100644"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "git_sha": "aa048ac86611e51d3662987c61a1f85050d3a7fe",
+      "bytes": 660,
+      "sha256": "6277e842fb4ccc4dad2912d7054c5948935cd7f2dabcf340a022cbbeef21f58b",
+      "mode": "100644"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "git_sha": "784a7609ae54ea706cfb4b1ab0cc16e149ac508c",
+      "bytes": 748,
+      "sha256": "ab5639a33ffe66a56a9d50a4fdc7fcf8bcb908bc0b3e8900b82c68b5fb69331f",
+      "mode": "100644"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug.yml",
+      "git_sha": "20e5b611468261104451fbffb16e997c0cc0fb77",
+      "bytes": 1885,
+      "sha256": "7d21286bce963626f3fe01a04279f96df63004979459cd2b511a5f1585a25a82",
+      "mode": "100644"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "git_sha": "07124222e8dd2746a0e311811610335f592bf439",
+      "bytes": 189,
+      "sha256": "6a316fe6fb6dd59a9abe00d04c558e50d70375846f3694e91562c101e07f205a",
+      "mode": "100644"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "git_sha": "3929b28de046fb96c4a7d009b35d73a0b8312a4e",
+      "bytes": 1100,
+      "sha256": "87a73f875c2beb3924f54d26d900db5d04d3d47644719b75d07a6425633f6179",
+      "mode": "100644"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "git_sha": "c8e0ba54aeb4ff713de2645a6a5bcdea0701786b",
+      "bytes": 905,
+      "sha256": "a19858110ae07eb3280f67802ec3e5adffc49229a9860958d2933811ca5115ea",
+      "mode": "100644"
+    },
+    {
+      "path": ".github/workflows/validate.yml",
+      "git_sha": "4672821410fef3b1f5e441ebf14d0487498c2cd1",
+      "bytes": 1207,
+      "sha256": "a2b2000c6521b462fcb53b4f772859a031c809054236273c871757b35bfedc74",
+      "mode": "100644"
+    },
+    {
+      "path": ".gitignore",
+      "git_sha": "28fa8e5f153b7510cce1db0b3098bcc214e1c560",
+      "bytes": 2280,
+      "sha256": "9a747b55dd7b0b2b8b6d25766c369a9cb81e77e8b3deeb3e3c81594fb14668c8",
+      "mode": "100644"
+    },
+    {
+      "path": "AGENTS.md",
+      "git_sha": "ceb2b988dc8aeca264a49eab26ef39e636508c84",
+      "bytes": 10,
+      "sha256": "f8e95b617a27d1d3e0f595ea727640bea69667fab6093561406b45f11f9aeb6e",
+      "mode": "100644"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "git_sha": "2f7e7e7be701aa0fb8c45e1bea8c1ac05eb37773",
+      "bytes": 472,
+      "sha256": "813bc9f5f5caf05848d4dd25db85e14e0ce299b6b08522a81d0480b850647e72",
+      "mode": "100644"
+    },
+    {
+      "path": "CLAUDE.md",
+      "git_sha": "96ce2e640277dff492f541ea7a24a74f0a609a9f",
+      "bytes": 2053,
+      "sha256": "e29aecc43e847fdc878febfc65df27607d6f136b17704c0f245ac511cd4ec9db",
+      "mode": "100644"
+    },
+    {
+      "path": "GLOSSARY.md",
+      "git_sha": "59088444cff45bed75d22807124b2bf306f45d85",
+      "bytes": 2715,
+      "sha256": "9422b7a2047db00972176c832fa6a7e8a982b509906b90e59ff917ba6af20421",
+      "mode": "100644"
+    },
+    {
+      "path": "LICENSE",
+      "git_sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "mode": "100644"
+    },
+    {
+      "path": "README.md",
+      "git_sha": "4c137f279e8c08622dc591daa1639fb82484039f",
+      "bytes": 15332,
+      "sha256": "5ffb2955d5628d70b17e3eb254930323e2d3937ef569d32277ec72c87e6b6702",
+      "mode": "100644"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "git_sha": "3babd258eee72aa2fc4f008727d12e0336aae12c",
+      "bytes": 15979,
+      "sha256": "393af6b37946120715ec5850a27648754b3f13651ecad8b1a46dd3bc86804b79",
+      "mode": "100644"
+    },
+    {
+      "path": "SCOPE.md",
+      "git_sha": "ef18dd727560887f48f37cca6316766d5be6efcd",
+      "bytes": 1791,
+      "sha256": "a90f0359edcee50879cbdae2ca215cc281d80182287fc7c8ddad6b81ed90def7",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/atb-game-package.md",
+      "git_sha": "8c575c4a0a4c41b3f409baaf92e56158b68cdf6c",
+      "bytes": 6168,
+      "sha256": "2b1b3f92ffef6cc3ce7cec0e0de2f303a8386f18fe60279711f23e7874e00f4a",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/atb-game-porting.md",
+      "git_sha": "6a95d2151f134351e861bd36c34a5632be2c9a50",
+      "bytes": 8465,
+      "sha256": "d79190127a1ae84a874171fc300dff44153caaaf2ab161c617d719ae4e3f2d5e",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/atb-game-to-githubpage.md",
+      "git_sha": "d0d23fb9436ac1237c4e5195d563bc94bf5ecfe7",
+      "bytes": 4646,
+      "sha256": "20217d31c6db9c4522503b1135af6b10bf9a1a876e157c92ad29b3b79a2dcfb5",
+      "mode": "100644"
+    },
+    {
+      "path": "package.json",
+      "git_sha": "36f15b8df342796c8b634943ccf25bb7d3041672",
+      "bytes": 854,
+      "sha256": "d93084b4519b02916e0fa41c05517c6ae6bb303963a2a0b2eed9acd69a839f50",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/link-skills.sh",
+      "git_sha": "e3b2040dc2bf648721314701334afefca17fb98f",
+      "bytes": 1389,
+      "sha256": "7817e3c1432f2ad0f2317568ceaca521bc8cd7a6ce630ce18134357af32ea49d",
+      "mode": "100755"
+    },
+    {
+      "path": "scripts/list-skills.sh",
+      "git_sha": "17c193bd6e10cf01b2368489d648ab573e518bb8",
+      "bytes": 173,
+      "sha256": "33a8be1ae32053913c4e328d34b824c4d7a407ae6a66309173588ee0d352c784",
+      "mode": "100755"
+    },
+    {
+      "path": "scripts/sync-plugin-version.mjs",
+      "git_sha": "44063fc0d14a78927caf3990882ea3809157bc21",
+      "bytes": 1429,
+      "sha256": "1ef892ec79e2f41ffe4c4d051f0e29d70401219499b6a11e717e5db337d78984",
+      "mode": "100755"
+    },
+    {
+      "path": "scripts/test-repo.mjs",
+      "git_sha": "13eb442cced62d5718fc2682ef2e0b62d3b622a7",
+      "bytes": 2780,
+      "sha256": "f737bf0aed740232189de128eb04e0eda46fd00e3fdc3fcce968e96d62fcdbc6",
+      "mode": "100755"
+    },
+    {
+      "path": "scripts/validate-skills.mjs",
+      "git_sha": "10e142f5fc1629fe5b3efce58bd3faf023ad3dfb",
+      "bytes": 5138,
+      "sha256": "7466039591fb93927839fa77f92f29eac129cc6298f17108d633ac9b54e3c8a2",
+      "mode": "100755"
+    },
+    {
+      "path": "skills/README.md",
+      "git_sha": "d11bf87778eaedc369270761685a95584da14b23",
+      "bytes": 1108,
+      "sha256": "2855e461881c4c7fc3cd9a4990782c1b994154dcd90112964a3774e82f31f882",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-package/PORTABLE-LAUNCHER-AND-VERIFY.md",
+      "git_sha": "110b8ab0b0e45636baebedd3bf66f04cf900cb8e",
+      "bytes": 3995,
+      "sha256": "19b30a111a3e96b084348f765d119db8e15be0aa0b457ee004f4c861d40b004c",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-package/SINGLE-FILE-VFS.md",
+      "git_sha": "b0d76d9a7625c279bb0adfadd644d517b7082531",
+      "bytes": 3846,
+      "sha256": "ddce67e062b2a192c76b933584e5411d6341cf047ced06c68248415ce2571ff2",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-package/SKILL.md",
+      "git_sha": "c3d33d9a3d765494e45f2ed97a6fb10831ea6182",
+      "bytes": 4266,
+      "sha256": "800aeef31761f815e9173e5c647a0f6f30e24f992ac44fe5384a4623963de21f",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-package/agents/openai.yaml",
+      "git_sha": "b99f8cd19807ecf60071df74bec2dc0cc40ad060",
+      "bytes": 160,
+      "sha256": "49ce98ab10ea5a95e90317a7640e879e72e34b7126cb856289b1ec92519708f9",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-package/scripts/package-game.py",
+      "git_sha": "48a0a9daaa4982eea682da8dce9b8c8ff096c64e",
+      "bytes": 26349,
+      "sha256": "ac480ea0341285d304e6e1de256032d44aa34ce776aeff0f46305fb4311e4153",
+      "mode": "100755"
+    },
+    {
+      "path": "skills/atb-game-package/scripts/verify-package.py",
+      "git_sha": "8f1c74d98da6fda359d21faa89c1be353b16a348",
+      "bytes": 13452,
+      "sha256": "e29574078a80df4167fe0c7a6867a0dab4864e340bfbab0177a505a4701c41fc",
+      "mode": "100755"
+    },
+    {
+      "path": "skills/atb-game-porting/ASSETS-AND-I18N.md",
+      "git_sha": "4798559a27037864da1a0c8442847f67c0eea027",
+      "bytes": 3332,
+      "sha256": "a7e36c20bdfcdf6de0f7f767cd0ca0f11f50d619b170ee349e77eff29aa6577a",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/AUDIO-AND-VERIFICATION.md",
+      "git_sha": "b152ce58c73f64e3909de544fb3a2f87c9c3bfba",
+      "bytes": 4619,
+      "sha256": "5a612ec7dbb08cf7a45becb4960934a2c18353ec3c59ba9f18b9caa82446667e",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/CANVAS-AND-UI.md",
+      "git_sha": "05ac7bbf3800a60b59afadd245be57df7f9ce56e",
+      "bytes": 5470,
+      "sha256": "fc210fe4ce4dad47642f81b30cfa29dc8667bf1d321b611583683b4b3cfa36ff",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/GAMEPLAY-AND-STORAGE.md",
+      "git_sha": "2ac5c019cc4a62766b8ef5cca12b2a7ec9b3f1db",
+      "bytes": 5000,
+      "sha256": "4c8a25be64c340022c5e21fe73e3d9873c9fd4b77859c969b713806f09f7e0b3",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/MIGRATE-TEMPLATE.md",
+      "git_sha": "32f13d2a601bb5ff9753f419c6bb38d991e1c257",
+      "bytes": 12512,
+      "sha256": "80316c79a414c151f244b6bbb93aec64e3353bc6213e31cf948da5dda02ab616",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/REVERSE-ENGINEERING.md",
+      "git_sha": "fb41a48c0eaa7b6c812a12dcfd3caef717f7a86c",
+      "bytes": 4255,
+      "sha256": "5620d1b973038974d6c648c6b3a9a3be8b60370da3b05cabb6701d5fe75ec3c4",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/SKILL.md",
+      "git_sha": "59a99da9eb7899adcd5e7da5ad2ac929060c697f",
+      "bytes": 9931,
+      "sha256": "c2dab43fecf4c5f6aa9c82193a9a9ca1c569e903ef87cc83dc5011a20d9b964b",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/agents/openai.yaml",
+      "git_sha": "9019a901c2cb152e9fecaeee302fc9bfa752ce15",
+      "bytes": 141,
+      "sha256": "f9fc5c8a7b479b8f1d0b3e45530324fac8266c2d4988af85c4918ece5349d28b",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-porting/scripts/verify-headless.py",
+      "git_sha": "b5f81523c61f0ff6862210ee6ad97b7277178719",
+      "bytes": 11247,
+      "sha256": "c1e7f5ca118e46fae021a627045182b46c75713c94f4a7974e7289bae3b3deed",
+      "mode": "100755"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/README.md",
+      "git_sha": "a68a58d69f399b13ae33ee1715d986d4ac4566ed",
+      "bytes": 1733,
+      "sha256": "6d4c7598dc8f8e0f982a550de8b612fbc5653474bc59136bb3de09be46e7dd3e",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/SKILL.md",
+      "git_sha": "699976fabb26330885872f9f202a7fbb304f6c8f",
+      "bytes": 4371,
+      "sha256": "46b8249973b842fa97ccb004fe59912716786fead81d544adf6b676edfd38aa5",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/SYMLINKS-AND-SUBPATHS.md",
+      "git_sha": "7628d619aa392b0730a79c86634f015e8a1dbfee",
+      "bytes": 3001,
+      "sha256": "3c437465f0a26c8625a7322350d1b7aef0fbb098e7cde30bd640f43e2771f632",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/WORKFLOW-AND-PAGES.md",
+      "git_sha": "b171bd291019bd7262cd380306362593ed7775cc",
+      "bytes": 2679,
+      "sha256": "d56c9a81b38ab84487b7c342f9f81ad9ba62255a639bf71fa93309fa34fbcab9",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/agents/openai.yaml",
+      "git_sha": "7995489d90352baeb549239ea899e7d217707c8d",
+      "bytes": 194,
+      "sha256": "620428ace7d9437e70e52d1e8e0f6cdf1ee69bcad671c223cf833cdbf61d955b",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/scripts/deploy.py",
+      "git_sha": "0e85f78ac8edcffec5975083c32de2a009964502",
+      "bytes": 16141,
+      "sha256": "00a39c4c67b1424c177bbfc62442110e3f0963bf2743ca5bb82d83518417068b",
+      "mode": "100755"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/templates/deploy-pages.yml.template",
+      "git_sha": "507531f7f19bff2f44624ccb3d5f00b5aba04a2a",
+      "bytes": 789,
+      "sha256": "a9497d4af3d1d96221166aa2b5f67a29eabf203107ee0551df01d8af69630cde",
+      "mode": "100644"
+    },
+    {
+      "path": "skills/atb-game-to-githubpage/tests/test_deploy.py",
+      "git_sha": "6865204457643bf59295d82d19e1651768888e15",
+      "bytes": 3033,
+      "sha256": "796ed7787684e5fd2621f510bfe48ab4709abcf4e14cfab62b10d6c0f71d4f7c",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/test_deploy.py",
+      "git_sha": "6cd1700c20e86f0ae53cd16606c00a7d3b4558bb",
+      "bytes": 3079,
+      "sha256": "aed7e4f3d4db9a366b63c3836576e20c887620b9d8256a737cffe8d7b5cae149",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/test_package_game.py",
+      "git_sha": "0e7dea3d2cd46feb2168d85be3025751e7a0a3d3",
+      "bytes": 9880,
+      "sha256": "26db693f1c47e68bebf9b288749ea6720bce46e46018597599722e2087c94308",
+      "mode": "100644"
+    }
+  ],
+  "total_files": 57,
+  "total_bytes": 275177,
+  "all_git_blob_hashes_match": true
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "check": 1,
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "004129",
+        "wall_time_seconds": 0.091477042,
+        "exit_code": 0,
+        "original_token_count": 327,
+        "output": "test_audit_absolute_paths (test_deploy.TestGameDeployer) ... ok\ntest_detect_symlinks_and_assets (test_deploy.TestGameDeployer) ... ok\ntest_find_web_dir_in_root (test_deploy.TestGameDeployer) ... ok\ntest_find_web_dir_in_subdirectory (test_deploy.TestGameDeployer) ... ok\ntest_staging_and_verification (test_deploy.TestGameDeployer) ... ok\ntest_normalize_asset_key (test_package_game.TestPackageGame) ... ok\ntest_package_game_end_to_end (test_package_game.TestPackageGame) ... ok\ntest_package_game_root_layout_and_file_symlink (test_package_game.TestPackageGame) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.065s\n\nOK\n[*] Building standalone HTML: mockgame-standalone.html (17 VFS assets)...\n[*] Building portable bundle: mockgame-portable...\n[*] Assembling distribution zip: mockgame-release.zip...\n[+] Packaging complete! Artifacts created in: /private/var/folders/jr/tn4pzbcj2gj37f5cg3w5qbzm0000gn/T/test_pkg_bbjqt3ai/target/mockgame/dist\n[*] Building standalone HTML: rootgame-standalone.html (16 VFS assets)...\n[*] Building portable bundle: rootgame-portable...\n[*] Assembling distribution zip: rootgame-release.zip...\n[+] Packaging complete! Artifacts created in: /private/var/folders/jr/tn4pzbcj2gj37f5cg3w5qbzm0000gn/T/test_pkg_8fsm1t9h/rootgame/dist\n"
+      }
+    }
+  },
+  {
+    "check": 2,
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "2e4bb4",
+        "wall_time_seconds": 0.000007667,
+        "exit_code": 0,
+        "original_token_count": 30,
+        "output": "All skill repository validations passed!\n4/4 repository tests passed!\nplugin.json version is 1.0.0 (already in sync)\n"
+      }
+    }
+  }
+]

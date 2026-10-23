@@ -1,0 +1,56 @@
+{
+  "status": "installed",
+  "installed_path": "/Users/atlasv/.codex/skills/atb-gameport-reviewed",
+  "upstream_commit": "835a4cf1be874c237aa1a60207bc6ca639448712",
+  "adaptation": "reviewed workflow and separately written static bundler; upstream scripts excluded",
+  "installed_files": [
+    {
+      "path": "LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3450,
+      "sha256": "b94897bab09c01c4f6c74b38128f36f02d6bc99f6bccd6582fe737011136a556"
+    },
+    {
+      "path": "agents/openai.yaml",
+      "bytes": 295,
+      "sha256": "b33da2ab60279dc9c5239d810b01b55327c4be648542bdfd05ff3245cf202650"
+    },
+    {
+      "path": "references/packaging-pages.md",
+      "bytes": 3570,
+      "sha256": "0c37b2bb0192a11b001a294e3e5d1ff69f27ebdbf3101ccc96d4af579fbb7b62"
+    },
+    {
+      "path": "references/porting.md",
+      "bytes": 3269,
+      "sha256": "6c49be0cd5fb4a43b8958b4b1bf29d9f89f38252e581c48d6c2baf78d04a936b"
+    },
+    {
+      "path": "references/provenance.md",
+      "bytes": 2135,
+      "sha256": "db321b8d516275094c17d86b430cf900ec636202f8158e015b94464d288a36f5"
+    },
+    {
+      "path": "references/verification.md",
+      "bytes": 1645,
+      "sha256": "162092be1999b9692b56f69c7c1413f8fc16c1f6bf50d6269ecac8b358d02fea"
+    },
+    {
+      "path": "scripts/bundle_web.py",
+      "bytes": 9169,
+      "sha256": "385c1885c6ec2415b8ea1bddc31258df8f1950102827ce11111d5deffdc05bb6"
+    }
+  ],
+  "copy_hashes_match": true,
+  "skill_relative_links_valid": true,
+  "python_syntax_valid": true,
+  "regression_tests_passed": 17,
+  "sample_zip_and_manifest_verified": true,
+  "existing_mcp_configuration_changed": false,
+  "original_upstream_plugin_installed": false,
+  "automatic_upstream_updates": false
+}
