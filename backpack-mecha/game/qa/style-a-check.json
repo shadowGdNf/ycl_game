@@ -1,0 +1,65 @@
+{
+  "version": "0.2.0-dev.2",
+  "date": "2026-10-27",
+  "artDirection": "A — stylized satin metal",
+  "checks": {
+    "typescript": "passed",
+    "tests": {
+      "passed": 64,
+      "failed": 0
+    },
+    "atlas": {
+      "status": "passed",
+      "atlases": 5,
+      "spriteRegions": 86,
+      "alphaEdges": true,
+      "contentCoverage": true,
+      "sha256": true
+    },
+    "bundle": {
+      "status": "passed",
+      "mib": 9.19
+    },
+    "browser": {
+      "engine": "Codex in-app browser",
+      "desktop": {
+        "width": 1280,
+        "height": 720
+      },
+      "mobileViewport": {
+        "width": 390,
+        "height": 844,
+        "horizontalOverflow": false
+      },
+      "inspected": [
+        "home",
+        "four chassis / four directions",
+        "36 modules",
+        "18 enemies and bosses",
+        "twin and carrier subparts",
+        "workshop",
+        "shop",
+        "reward dialog",
+        "live battle",
+        "movement facing",
+        "ground and warning overlays"
+      ],
+      "consoleWarningsAndErrors": [],
+      "testOrigin": "http://localhost:4193",
+      "screenshots": [
+        "style-a-atlas-review.png",
+        "style-a-boss-parts.png",
+        "style-a-home-desktop.png",
+        "style-a-workshop-desktop.png",
+        "style-a-workshop-mobile.png",
+        "style-a-battle-desktop.png",
+        "style-a-battle-mobile.png",
+        "style-a-reward-mobile.png"
+      ]
+    }
+  },
+  "limitations": [
+    "Mobile check is viewport emulation, not a physical phone performance benchmark.",
+    "Appearance uses layered 2D raster sprites with baked 3D-style shading; no new 3D models or skeletal animation."
+  ]
+}

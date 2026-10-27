@@ -1,14 +1,17 @@
 {
   "version": 2,
   "probe": "visible-state-reactive-v1-chapter-legal",
-  "started": "2026-10-26T13:35:37.502Z",
-  "finished": "2026-10-26T13:35:42.039Z",
+  "started": "2026-10-27T03:33:08.291Z",
+  "finished": "2026-10-27T03:33:13.191Z",
   "sourceHashes": {
     "combat.ts": "af2b2b5e8a279c5ba244df6a8605bbcf1735f49eda5f27eba5a3c01893167fca",
     "encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
-    "economy.ts": "fc076b4599dd83d7b459c3e05e9f1c54b0e8bec717844ed31cde9fb96e20e2eb",
+    "economy.ts": "cde8e95c3075db5f5250c6adac3680e2f58e7ec28726599057d3a761fbd3a56e",
     "content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
-    "types.ts": "9f3f8965f4ca381ab3aeda55d4a7ce5951fc8b95fd9e4cef8a7e44558da2f9dd"
+    "types.ts": "2fe6042934c8b670c8929dd6aa35802c6246c0b90d44a8640aa225f0aac01323",
+    "journal.ts": "7a81891880f547a3f5203a61c1304d95acef2dbd87521efb50ee2578160e1a74",
+    "version.ts": "f70462334048669b29b515a71f2accb04f58d1d451c718703dab555c78618b0a",
+    "../scripts/probe-pilot.ts": "d22fc4b75c5ef33ab604d136c8c7d50427c749aaf6c4c2b5f57003b4b993f006"
   },
   "designBaseline": "assets/source/design-baseline.json",
   "sourceChangedDuringRun": false,

@@ -1,23 +1,25 @@
 <!doctype html>
 <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Backpack Mecha · Art integration sheet</title>
+<title>背包机甲 · A 方案素材验收</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#14232b;color:#e8dfc9;font:14px system-ui,sans-serif;padding:24px}h1{font-size:25px;margin:0 0 8px}p{color:#9bb6b6}h2{font-size:15px;letter-spacing:.1em;margin:24px 0 12px}.grid{display:grid;grid-template-columns:repeat(12,minmax(70px,1fr));gap:8px}.card{background:#243741;border:1px solid #3b525b;border-radius:10px;text-align:center;padding:8px}.card canvas{width:100%;aspect-ratio:1;display:block}.card span{font-size:10px;color:#bbcccb}.characters{grid-template-columns:repeat(4,1fr);max-width:840px}.characters canvas{max-height:180px}#battle{display:block;width:min(100%,1000px);height:640px;border:1px solid #49616a;border-radius:12px;margin-top:20px}#status{color:#68d4bf}.hint{max-width:850px;line-height:1.5}@media(max-width:700px){body{padding:12px}.grid{grid-template-columns:repeat(6,1fr)}.characters{grid-template-columns:repeat(4,1fr)}#battle{height:600px}}
 </style>
-<h1>BACKPACK MECHA / ART INTEGRATION</h1>
-<p class="hint">Four chassis · twelve independently aimed weapons · thirty-six modules · twelve enemies · six bosses. Runtime atlas sampling, original transparent raster artwork.</p>
+<h1>背包机甲 / A 方案 · 风格化金属</h1>
+<p class="hint">正式图集实时采样：四机体 × 四朝向、36 模块、12 敌人、6 Boss 与独立部件。下方为程序构造的视觉检查场景。</p>
 <p id="status">Loading production atlases…</p>
-<h2>MODULAR CHASSIS</h2><div class="grid characters" id="chassis"></div>
+<h2>机体装配 / 正面 · 右侧 · 背面 · 左侧</h2><div class="grid characters" id="chassis"></div>
 <h2>WEAPONS / SUPPORT / UTILITY</h2><div class="grid" id="modules"></div>
 <h2>ENEMIES / BOSSES</h2><div class="grid" id="enemies"></div>
+<h2>BOSS 独立部件 / 左双子 · 右双子 · 左货舱 · 右货舱</h2><div class="grid characters" id="parts"></div>
 <h2>WORLD & WARNING OVERLAYS</h2><canvas id="battle" width="1000" height="640"></canvas>
 <script type="module">
 import {Renderer} from './js/renderer.js';
 import {CHASSIS,MODULES,ENEMIES,BOSSES} from './js/content.js';
 const battle=document.querySelector('#battle');const renderer=new Renderer(battle);
 await renderer.load();document.querySelector('#status').textContent='Loaded — actual alpha sprites, no geometry placeholders.';
-function card(root,id,label,portrait=false){const el=document.createElement('div');el.className='card';const c=document.createElement('canvas');c.width=180;c.height=180;el.append(c);const t=document.createElement('span');t.textContent=label;el.append(t);document.querySelector(root).append(el);portrait?renderer.portrait(c,id):renderer.icon(c,id);}
-CHASSIS.forEach(x=>card('#chassis',x.id,x.en,true));MODULES.forEach(x=>card('#modules',x.id,x.id));[...ENEMIES,...BOSSES].forEach(x=>card('#enemies',x.id,x.id));
+function card(root,id,label,portrait=false,direction=0){const el=document.createElement('div');el.className='card';const c=document.createElement('canvas');c.width=180;c.height=180;el.append(c);const t=document.createElement('span');t.textContent=label;el.append(t);document.querySelector(root).append(el);portrait?renderer.portrait(c,id,direction):renderer.icon(c,id);}
+CHASSIS.forEach(x=>[0,1,2,3].forEach(d=>card('#chassis',x.id,`${x.name} · ${['正面','右侧','背面','左侧'][d]}`,true,d)));MODULES.forEach(x=>card('#modules',x.id,x.id));[...ENEMIES,...BOSSES].forEach(x=>card('#enemies',x.id,x.id));
+['B2B.left','B2B.right','B3B.left','B3B.right'].forEach(id=>card('#parts',id,id));
 const stats={damageByModule:{},damageTakenBy:{},kills:0,killedBudget:0,goldEarned:0,maxChain:0,damageTaken:0};
 const state={version:1,tick:0,time:0,wave:4,act:1,difficulty:0,status:'playing',width:1125,height:720,player:{x:550,y:420,hp:100,maxHp:100,shield:40,maxShield:45,radius:14,speed:210,armor:0,angle:0,dashCooldown:0,overloadCooldown:0,dashTime:0,overloadTime:3,invulnerable:0},enemies:ENEMIES.slice(0,6).map((e,i)=>({eid:i+1,id:e.id,x:230+i*145,y:170+(i%2)*65,hp:e.hp*.7,maxHp:e.hp,radius:e.radius,angle:1.57,kind:'normal',phase:0,wet:i===0?2:0,burns:i===4?[1,2]:[]})),bullets:[],zones:[{id:1,kind:'cone',x:700,y:390,radius:180,angle:2.5,width:1.4,remaining:1,duration:2,active:false,color:'#f05b5b',type:'warning'},{id:2,kind:'rect',x:120,y:500,radius:0,w:320,h:70,angle:0,remaining:.7,duration:1,active:false,color:'#f05b5b',type:'warning'},{id:3,kind:'circle',x:870,y:550,radius:65,angle:0,remaining:2,duration:3,active:true,color:'#f05b5b',type:'hazard'}],weapons:[{uid:'i1',id:'W01',x:550,y:420,angle:-2.2,cooldown:0,shotCount:0},{uid:'i2',id:'W03',x:550,y:420,angle:-.7,cooldown:0,shotCount:0},{uid:'i3',id:'W04',x:550,y:420,angle:-1.4,cooldown:0,shotCount:0}],drops:[{id:1,x:460,y:480,value:2},{id:2,x:620,y:380,value:2}],obstacles:[{x:40,y:315,w:130,h:80},{x:915,y:330,w:130,h:80}],events:[],stats,chassis:'scavenger',duration:45,insuranceUsed:false};
 let start=performance.now();function frame(now){state.time=(now-start)/1000;state.player.angle=state.time*.4;state.player.x=550+Math.cos(state.time*.6)*25;state.player.y=420+Math.sin(state.time*.6)*18;state.weapons.forEach((w,i)=>{w.shotCount=Math.floor(state.time*(2+i*.3));w.angle=-2.4+i*.65+Math.sin(state.time*.5)*.2;});renderer.draw(state,{lang:'en',reducedMotion:false,colorAssist:true});requestAnimationFrame(frame)}requestAnimationFrame(frame);

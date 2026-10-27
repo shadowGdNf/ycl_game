@@ -1,0 +1,111 @@
+import type {BattleResult, Run, RunJournal} from './types.ts';
+import {BUILD_VERSION, RULESET_VERSION} from './version.ts';
+import {MODULE_BY_ID,BOSS_BY_ID,PROTOCOL_BY_ID} from './content.ts';
+
+const EVENT_LIMIT = 400;
+export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
+const clone = <T>(value:T):T => structuredClone(value);
+
+export function ensureJournal(run:Run, partial = true):RunJournal {
+ return run.journal ??= {
+  version:1, buildVersion:BUILD_VERSION, rulesVersion:RULESET_VERSION,
+  startedAtWave:run.wave, partial, nextSequence:1, droppedEvents:0,
+  events:[], waves:[], prepSeconds:{}, frames:{},
+ };
+}
+
+/** Local, bounded observations. The journal never consumes game RNG. */
+export function recordAction(run:Run, detail:string):void {
+ const journal = ensureJournal(run);
+ journal.events.push({
+  sequence:journal.nextSequence++, wave:run.wave, action:detail.split(':')[0], detail,
+  gold:run.gold, hp:run.hp, prepSeconds:journal.prepSeconds[run.wave] ?? 0,
+  items:clone(run.items), shop:clone(run.shop), protocols:[...run.protocols],
+  rewardOptions:[...run.rewardOptions],protocolOptions:[...run.protocolOptions],route:run.route,
+  ...(run.eventId?{eventId:run.eventId}:{}),
+ });
+ if(journal.events.length > EVENT_LIMIT) {
+  journal.droppedEvents += journal.events.length - EVENT_LIMIT;
+  journal.events.splice(0, journal.events.length - EVENT_LIMIT);
+ }
+}
+
+export function beginWaveRecord(run:Run):void {
+ const journal = ensureJournal(run);
+ // A damaged combat save may legitimately restart this wave from preparation.
+ journal.waves = journal.waves.filter(w => w.wave !== run.wave);
+ journal.waves.push({
+  wave:run.wave, ...(run.wave % 4 === 0 ? {boss:run.bosses[Math.ceil(run.wave / 4)-1]} : {}),
+  route:run.route, rulesVersion:RULESET_VERSION, prepSeconds:journal.prepSeconds[run.wave] ?? 0,
+  start:{hp:run.hp, shield:run.shield, gold:run.gold, items:clone(run.items), protocols:[...run.protocols]},
+ });
+}
+
+export function finishWaveRecord(run:Run, result:BattleResult, income:number):void {
+ const journal = ensureJournal(run), wave = journal.waves.find(w => w.wave === run.wave);
+ // Legacy saves can resume mid-combat: do not fabricate an opening loadout.
+ if(!wave) { journal.partial = true; return; }
+ wave.end = {
+  won:result.won && result.hp > 0, hp:result.hp, shield:result.shield,
+  gold:run.gold, income, seconds:result.elapsed, ...(result.reason ? {reason:result.reason} : {}),
+  stats:clone(result.stats),
+ };
+}
+
+export function recordPrepTime(run:Run, seconds:number):void {
+ if(!['prep','reward','protocol','expansion'].includes(run.phase) || !Number.isFinite(seconds) || seconds <= 0) return;
+ const journal = ensureJournal(run);
+ journal.prepSeconds[run.wave] = (journal.prepSeconds[run.wave] ?? 0) + Math.min(seconds, 1);
+}
+
+export function recordFrame(run:Run, milliseconds:number):void {
+ if(!Number.isFinite(milliseconds) || milliseconds <= 0) return;
+ const journal = ensureJournal(run);
+ const frame = journal.frames[run.wave] ??= {samples:0, milliseconds:0, over50ms:0, maxMs:0, buckets:FRAME_BUCKETS_MS.map(() => 0)};
+ frame.samples++; frame.milliseconds += milliseconds;
+ frame.over50ms += Number(milliseconds > 50); frame.maxMs = Math.max(frame.maxMs, milliseconds);
+ frame.buckets[FRAME_BUCKETS_MS.findIndex(limit => milliseconds <= limit)]++;
+}
+
+/** Undo changes game state, while elapsed time and the audit of attempted choices stay intact. */
+export function preserveJournal(before:Run, restored:Run, action:string):void {
+ if(before.journal) restored.journal = clone(before.journal);
+ recordAction(restored, action);
+}
+
+export function exportRunReport(run:Run) {
+ const journal = ensureJournal(run);
+ return clone({
+  reportVersion:1, buildVersion:BUILD_VERSION, rulesVersion:RULESET_VERSION,
+  seed:run.seed, mode:run.mode, chassis:run.chassis, difficulty:run.difficulty,
+  status:run.phase, wave:run.wave, battleSeconds:run.elapsed,
+  prepSeconds:Object.values(journal.prepSeconds).reduce((sum, seconds) => sum + seconds, 0),
+  stats:run.stats, items:run.items, history:run.history, journal,
+ });
+}
+
+/** Diagnostics must never make an otherwise valid v0.1 save unusable. */
+export function sanitizeJournal(value:unknown):RunJournal|undefined {
+ if(!value || typeof value !== 'object') return undefined;
+ const j = value as RunJournal;
+ const finite = (v:unknown):v is number => typeof v === 'number' && Number.isFinite(v) && v >= 0;
+ const record = (v:unknown):v is Record<string,unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
+ const wave = (v:unknown) => Number.isInteger(v) && Number(v) >= 1 && Number(v) <= 12;
+ const ids=(v:unknown,known:Record<string,unknown>)=>Array.isArray(v)&&v.every(id=>typeof id==='string'&&!!known[id]);
+ const items=(v:unknown)=>Array.isArray(v)&&v.length<=20&&v.every(i=>record(i)&&typeof i.uid==='string'&&typeof i.id==='string'&&!!MODULE_BY_ID[i.id]&&[1,2,3].includes(Number(i.tier)));
+ const stats=(v:unknown)=>record(v)&&['kills','killedBudget','goldEarned','maxChain','damageTaken'].every(k=>finite(v[k]))&&record(v.damageByModule)&&Object.values(v.damageByModule).every(finite)&&record(v.damageTakenBy)&&Object.values(v.damageTakenBy).every(finite);
+ if(j.version !== 1 || typeof j.buildVersion !== 'string' || typeof j.rulesVersion !== 'string' ||
+  !wave(j.startedAtWave) || typeof j.partial !== 'boolean' || !finite(j.nextSequence) || !finite(j.droppedEvents) ||
+  !Array.isArray(j.events) || j.events.length > EVENT_LIMIT || !Array.isArray(j.waves) || j.waves.length > 12 ||
+  !record(j.prepSeconds) || !Object.entries(j.prepSeconds).every(([k,v]) => wave(Number(k)) && finite(v)) ||
+  !record(j.frames) || !Object.entries(j.frames).every(([k,f]) => wave(Number(k)) && record(f) &&
+   ['samples','milliseconds','over50ms','maxMs'].every(key => finite(f[key])) && Array.isArray(f.buckets) && f.buckets.length === 7 && f.buckets.every(finite)) ||
+  !j.events.every(e => record(e) && finite(e.sequence) && wave(e.wave) && typeof e.action === 'string' && typeof e.detail === 'string' &&
+   finite(e.gold) && finite(e.hp) && finite(e.prepSeconds) && items(e.items) && Array.isArray(e.shop) && ids(e.protocols,PROTOCOL_BY_ID) &&
+   ids(e.rewardOptions,MODULE_BY_ID) && ids(e.protocolOptions,PROTOCOL_BY_ID)) ||
+  !j.waves.every(w => record(w) && wave(w.wave) && typeof w.rulesVersion === 'string' && finite(w.prepSeconds) && record(w.start) &&
+   (w.boss===undefined||typeof w.boss==='string'&&!!BOSS_BY_ID[w.boss]) &&
+   (['hp','shield','gold'] as const).every(k => finite(w.start[k])) && items(w.start.items) && ids(w.start.protocols,PROTOCOL_BY_ID) &&
+   (w.end === undefined || record(w.end) && typeof w.end.won === 'boolean' && ['hp','shield','gold','income','seconds'].every(k => finite(w.end![k as keyof typeof w.end])) && stats(w.end.stats)))) return undefined;
+ return clone(j);
+}

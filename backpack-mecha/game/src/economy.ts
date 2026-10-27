@@ -1,6 +1,7 @@
 import type {BattleResult,CombatStats,Item,Mode,ModuleDef,Point,Result,Run,Tier} from './types.ts';
 import {BOSSES,CHASSIS,CHASSIS_BY_ID,DEMO_IDS,EVENTS,MODULES,MODULE_BY_ID,PROTOCOLS,PROTOTYPE_IDS,WAVES} from './content.ts';
 import {hashSeed,nextRandom} from './random.ts';
+import {ensureJournal,recordAction,beginWaveRecord,finishWaveRecord,preserveJournal} from './journal.ts';
 
 const CORNERS:Point[]=[{x:0,y:0},{x:4,y:0},{x:0,y:4},{x:4,y:4}];
 const ok=():Result=>({ok:true});
@@ -15,7 +16,7 @@ const eligibleIds=(r:Run)=>r.mode==='prototype'?PROTOTYPE_IDS:r.mode==='demo'?DE
 const editable=(r:Run)=>['prep','reward','protocol','expansion'].includes(r.phase);
 const maxHP=(r:Run)=>CHASSIS_BY_ID[r.chassis].hp;
 const finite=(v:number)=>Number.isFinite(v)&&v>=0;
-function log(r:Run,message:string):void {r.history.push(message);if(r.history.length>500)r.history.shift();}
+function log(r:Run,message:string):void {r.history.push(message);if(r.history.length>500)r.history.shift();recordAction(r,message);}
 function replace(target:Run,value:Run):void {for(const key of Object.keys(target))delete (target as unknown as Record<string,unknown>)[key];Object.assign(target,value);}
 function transaction(r:Run,fn:(draft:Run)=>Result):Result {const draft=copy(r);const result=fn(draft);if(result.ok)replace(r,draft);return result;}
 function roll(r:Run,stream:keyof Run['rng']):number {const [state,value]=nextRandom(r.rng[stream]);r.rng[stream]=state;return value;}
@@ -73,6 +74,46 @@ function checkInventory(r:Run,complete:boolean,power=true):Result {
  return ok();
 }
 export function validateLoadout(r:Run):Result {return checkInventory(r,true);}
+export interface PlacementPreview extends Result {item?:Item;linkedWeapon?:Item;power:number;capacity:number;cells:number;ready:boolean}
+/** Copy only rule state: pointer previews never clone growing reports or sale snapshots. */
+function previewRun(r:Run):Run {const {journal,saleUndo,...rules}=r;return copy({...rules,history:[]});}
+export function previewPlacement(r:Run,uid:string,x:number,y:number,rotation:number):PlacementPreview {
+ const d=previewRun(r),item=d.items.find(i=>i.uid===uid);
+ let result:Result=ok();
+ if(!editable(d))result=fail('只能在休整时修改装备','Equipment can only be changed between battles.');
+ else if(!item)result=fail('找不到模块','Module not found.');
+ else if(!Number.isInteger(rotation))result=fail('旋转参数无效','Invalid rotation.');
+ else {Object.assign(item,{x,y,rotation:normalizeRotation(rotation),stored:false});repairLinks(d);result=checkInventory(d,false);}
+ const linkedWeapon=item?.link?d.items.find(w=>w.uid===item.link):undefined;
+ return {...result,item,linkedWeapon,power:active(d).reduce((n,i)=>n+def(i).power,0),capacity:getCapacity(d),cells:active(d).reduce((n,i)=>n+getCells(i).length,0),ready:result.ok&&validateLoadout(d).ok};
+}
+export function placementOptions(r:Run,uid:string,rotation?:number):PlacementPreview[] {
+ const options:PlacementPreview[]=[];
+ for(const rot of rotation===undefined?[0,1,2,3]:[rotation])for(let y=0;y<5;y++)for(let x=0;x<5;x++){
+  const p=previewPlacement(r,uid,x,y,rot);if(p.ok)options.push(p);
+ }
+ return options;
+}
+export function linkOptions(r:Run,uid:string):{weapon:Item;result:Result}[] {
+ const s=r.items.find(i=>i.uid===uid);if(!s||def(s).kind!=='support')return [];
+ return active(r).filter(i=>def(i).kind==='weapon').map(weapon=>({weapon,result:
+  !compatible(def(s),def(weapon))?fail('标签不兼容','Incompatible tags'):
+  active(r).filter(i=>i.uid!==uid&&i.link===weapon.uid).length>=2?fail('连接位已满','Support slots full'):
+  s.stored||!adjacent(s,weapon)?fail('需要边缘相邻','Place along a shared edge'):ok()}));
+}
+export function previewPurchase(r:Run,index:number):{result:Result;placements:PlacementPreview[];canReserve:boolean} {
+ const d=previewRun(r),access=requireShop(d),offer=d.shop[index];
+ if(!access.ok)return {result:access,placements:[],canReserve:false};
+ if(!Number.isInteger(index)||!offer?.id)return {result:fail('该商品已售出','This offer is unavailable.'),placements:[],canReserve:false};
+ const canReserve=d.items.filter(i=>i.stored).length<3;
+ // A full reserve does not prevent a direct board purchase. Keep the hypothetical item
+ // outside reserve for placement checks; every candidate replaces its coordinates.
+ const item=newItem(d,offer.id);d.items.push(item);
+ const placements=placementOptions(d,item.uid);
+ const result=r.gold<MODULE_BY_ID[offer.id].price?fail('碎片不足','Not enough scrap.'):
+  canReserve||placements.length?ok():fail('备件架已满，当前布局也放不下；请先整理','Reserve full and no board placement. Make room first.');
+ return {result,placements,canReserve};
+}
 function inventoryAction(r:Run,fn:(draft:Run)=>Result):Result {if(!editable(r))return fail('只能在休整时修改装备','Equipment can only be changed between battles.');return transaction(r,fn);}
 export function placeItem(r:Run,uid:string,x:number,y:number,rotation:number):Result {return inventoryAction(r,d=>{
  const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
@@ -160,6 +201,7 @@ function generateShop(r:Run,visit:boolean):void {
  }
  r.shop=next;
  if(visit){if(r.shop.some(o=>o.id&&useful(r,MODULE_BY_ID[o.id])))r.shopPity=0;else r.shopPity++;}
+ recordAction(r,visit?'shop:visit':'shop:refresh');
 }
 function requireShop(r:Run):Result {return r.phase==='prep'&&r.wave>1&&r.shop.length===4?ok():fail('当前不在商店','The shop is not available now.');}
 function newItem(r:Run,id:string):Item {return {uid:`i${r.nextUid++}`,id,tier:1,x:-1,y:-1,rotation:0,stored:true};}
@@ -196,7 +238,7 @@ export function undoSale(r:Run):Result {
    Array.isArray(before.unlockedCorners)&&Array.isArray(before.shop)&&before.shop.length===4&&before.shop.every(o=>o&&typeof o.locked==='boolean'&&(!o.id||!!MODULE_BY_ID[o.id]))&&
    before.stats&&before.stats.damageByModule&&before.stats.damageTakenBy&&['kills','killedBudget','goldEarned','maxChain','damageTaken'].every(k=>finite((before.stats as unknown as Record<string,number>)[k]))&&checkInventory(before,false,false).ok;
   if(!valid)return fail('撤销记录不完整，当前装备和碎片已保留','The undo record is incomplete. Current equipment and scrap were preserved.');
-  replace(r,before);return ok();
+  preserveJournal(r,before,'undo-sale');replace(r,before);return ok();
  }catch{return fail('无法读取撤销记录','Unable to read the undo record.');}
 }
 export function upgrade(r:Run,uid:string):Result {return transaction(r,d=>{
@@ -225,6 +267,7 @@ function enterPrep(r:Run):void {
 function rewardOptions(r:Run,rarity:string):string[] {const ids:string[]=[];for(let i=0;i<3;i++){const pool=available(r).filter(m=>!ids.includes(m.id)&&(rarity!=='U'||m.rarity==='U'));if(!pool.length)break;ids.push(weighted(r,pool,'event').id);}return ids;}
 function beginRewards(r:Run,kinds:string[],returnTo:'newPrep'|'existingPrep'):void {
  extra(r).pendingRewardKinds=JSON.stringify(kinds.slice(1));extra(r).rewardReturn=returnTo;r.rewardOptions=rewardOptions(r,kinds[0]);r.phase='reward';
+ recordAction(r,'reward-offer');
 }
 function protocols(r:Run):string[] {
  const pool=PROTOCOLS.filter(p=>!r.protocols.includes(p.id)&&(r.mode==='full'||p.id!=='P05'));
@@ -239,11 +282,12 @@ export function newRun(chassis:string,mode:Mode,difficulty:number,seed:string):R
  const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:1,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{}};
  const gun=newItem(r,'W01'),support=newItem(r,'S01');Object.assign(gun,{x:1,y:0,stored:false});Object.assign(support,{x:0,y:1,stored:false,link:gun.uid});r.items=[gun,support];
  for(let a=1;a<=finalWave(r)/4;a++)r.bosses.push(mode==='full'?pick(r,BOSSES.filter(b=>b.act===a),'map').id:`B${a}A`);
+ ensureJournal(r,false);recordAction(r,'new-run');
  return r;
 }
 export function startWave(r:Run):Result {return transaction(r,d=>{
  if(d.phase!=='prep'||d.wave>finalWave(d))return fail('当前不能开始战斗','A battle cannot start now.');if(d.eventId&&!d.eventResolved)return fail('请先处理事件，或选择离开','Resolve or skip the event first.');
- const valid=validateLoadout(d);if(!valid.ok)return valid;d.shield=getShieldCapacity(d);d.phase='battle';delete d.saleUndo;log(d,`start:${d.wave}:${d.route}`);return ok();
+ const valid=validateLoadout(d);if(!valid.ok)return valid;d.shield=getShieldCapacity(d);d.phase='battle';delete d.saleUndo;beginWaveRecord(d);log(d,`start:${d.wave}:${d.route}`);return ok();
 });}
 function mergeStats(r:Run,s:CombatStats):void {
  for(const key of ['damageByModule','damageTakenBy'] as const)for(const [id,value]of Object.entries(s[key]))if(finite(value))r.stats[key][id]=(r.stats[key][id]??0)+value;
@@ -254,10 +298,11 @@ export function resolveBattle(r:Run,result:BattleResult):Result {return transact
  const wave=WAVES[d.wave-1],completed=d.wave,e=extra(d);if(!wave)return fail('战斗节点无效','Invalid battle node.');
  d.hp=Math.min(maxHP(d),result.hp);d.shield=result.shield;d.elapsed+=result.elapsed;d.insuranceUsed||=result.insuranceUsed;if(result.rng!==undefined)d.rng.combat=result.rng;
  const s=copy(result.stats);s.goldEarned=Math.max(0,Math.min(wave.bonus,Number.isFinite(s.goldEarned)?s.goldEarned:0));mergeStats(d,s);d.gold+=s.goldEarned;
- if(!result.won||d.hp<=0){d.phase='lost';log(d,`lost:${completed}:${result.reason??''}`);return ok();}
+ if(!result.won||d.hp<=0){d.phase='lost';finishWaveRecord(d,{...result,stats:s},s.goldEarned);log(d,`lost:${completed}:${result.reason??''}`);return ok();}
  const riskGold=wave.kind==='normal'?(d.route===1?30:Number(e.eventRewardGold??0)):0;
  const riskModule=wave.kind==='normal'&&(d.route===2||e.eventRewardModule===true);
  d.gold+=wave.base+riskGold;log(d,`won:${completed}:${wave.base+s.goldEarned+riskGold}`);
+ finishWaveRecord(d,{...result,stats:s},wave.base+s.goldEarned+riskGold);
  for(const key of ['eventBudgetBonus','eventExtraElite','eventRewardGold','eventRewardModule','temporaryShield','eventTargetUid','eventTargetTag'])delete e[key];
  d.shield=Math.min(d.shield,getShieldCapacity(d));d.route=0;
  if(completed===finalWave(d)){d.phase='won';return ok();}
@@ -273,7 +318,7 @@ export function chooseReward(r:Run,index:number):Result {return transaction(r,d=
  try{const parsed:unknown=JSON.parse(String(extra(d).pendingRewardKinds??'[]'));if(!Array.isArray(parsed)||!parsed.every(v=>v==='any'||v==='U'))return fail('奖励记录损坏，请从之前的存档恢复','The reward record is damaged. Restore a previous save.');queue=parsed;}catch{return fail('奖励记录损坏，请从之前的存档恢复','The reward record is damaged. Restore a previous save.');}
  if(index===-1)d.gold+=12;else {if(!Number.isInteger(index)||!d.rewardOptions[index])return fail('奖励选项无效','Invalid reward choice.');const received=receive(d,d.rewardOptions[index]);if(!received.ok)return received;}
  log(d,`reward:${index===-1?'scrap':d.rewardOptions[index]}`);
- if(queue.length){const next=queue.shift()!;extra(d).pendingRewardKinds=JSON.stringify(queue);d.rewardOptions=rewardOptions(d,next);return ok();}
+ if(queue.length){const next=queue.shift()!;extra(d).pendingRewardKinds=JSON.stringify(queue);d.rewardOptions=rewardOptions(d,next);recordAction(d,'reward-offer');return ok();}
  d.rewardOptions=[];delete extra(d).pendingRewardKinds;const returnTo=extra(d).rewardReturn;delete extra(d).rewardReturn;if(returnTo==='existingPrep')d.phase='prep';else enterPrep(d);return ok();
 });}
 export function chooseExpansion(r:Run,corners:number[]):Result {return transaction(r,d=>{

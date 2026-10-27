@@ -1,0 +1,44 @@
+
+> backpack-mecha@0.2.0-dev.1 probe
+> node --experimental-strip-types scripts/balance-probe.ts
+
+act1-wet / B1A: 10/10, 23.062 sec mean, 0 anomaly flags
+act1-wet / B1B: 10/10, 22.572 sec mean, 0 anomaly flags
+act1-oil / B1A: 10/10, 19.243 sec mean, 0 anomaly flags
+act1-oil / B1B: 10/10, 17.72 sec mean, 0 anomaly flags
+act1-ballistic / B1A: 10/10, 26.9 sec mean, 0 anomaly flags
+act1-ballistic / B1B: 10/10, 25.897 sec mean, 0 anomaly flags
+act1-fortress / B1A: 10/10, 24.527 sec mean, 0 anomaly flags
+act1-fortress / B1B: 10/10, 22.035 sec mean, 0 anomaly flags
+act1-drone / B1A: 10/10, 35.005 sec mean, 0 anomaly flags
+act1-drone / B1B: 10/10, 34.955 sec mean, 0 anomaly flags
+act1-frost / B1A: 10/10, 32.557 sec mean, 0 anomaly flags
+act1-frost / B1B: 10/10, 32.797 sec mean, 0 anomaly flags
+act2-wet / B2A: 10/10, 32.882 sec mean, 0 anomaly flags
+act2-wet / B2B: 10/10, 35.831 sec mean, 0 anomaly flags
+act2-oil / B2A: 10/10, 25.281 sec mean, 0 anomaly flags
+act2-oil / B2B: 10/10, 26.282 sec mean, 0 anomaly flags
+act2-ballistic / B2A: 10/10, 20.175 sec mean, 0 anomaly flags
+act2-ballistic / B2B: 10/10, 23.357 sec mean, 0 anomaly flags
+act2-fortress / B2A: 10/10, 33.41 sec mean, 0 anomaly flags
+act2-fortress / B2B: 10/10, 43.822 sec mean, 0 anomaly flags
+act2-drone / B2A: 10/10, 29.662 sec mean, 0 anomaly flags
+act2-drone / B2B: 10/10, 33.993 sec mean, 0 anomaly flags
+act2-frost / B2A: 10/10, 32.751 sec mean, 0 anomaly flags
+act2-frost / B2B: 10/10, 38.168 sec mean, 0 anomaly flags
+full-wet / B3A: 10/10, 50.798 sec mean, 0 anomaly flags
+full-wet / B3B: 10/10, 54.672 sec mean, 0 anomaly flags
+full-oil / B3A: 10/10, 39.415 sec mean, 0 anomaly flags
+full-oil / B3B: 10/10, 40.62 sec mean, 0 anomaly flags
+full-ballistic / B3A: 10/10, 29.685 sec mean, 0 anomaly flags
+full-ballistic / B3B: 10/10, 28.845 sec mean, 0 anomaly flags
+full-fortress / B3A: 10/10, 50.67 sec mean, 0 anomaly flags
+full-fortress / B3B: 10/10, 54.087 sec mean, 0 anomaly flags
+full-drone / B3A: 10/10, 43.54 sec mean, 0 anomaly flags
+full-drone / B3B: 10/10, 48.458 sec mean, 0 anomaly flags
+full-frost / B3A: 10/10, 37.795 sec mean, 0 anomaly flags
+full-frost / B3B: 10/10, 32.083 sec mean, 0 anomaly flags
+demo-wet / B2A: 10/10, 32.882 sec mean, 0 anomaly flags
+demo-oil / B2A: 10/10, 24.528 sec mean, 0 anomaly flags
+demo-ballistic / B2A: 10/10, 20.175 sec mean, 0 anomaly flags
+Saved 390 real battles to qa/balance-probe.json

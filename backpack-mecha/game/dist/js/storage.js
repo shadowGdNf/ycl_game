@@ -1,5 +1,6 @@
 import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js";
 import { createBattle } from "./combat.js";
+import { sanitizeJournal } from "./journal.js";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -75,6 +76,11 @@ export function sanitizeSave(raw) {
     const r = x.run;
     if (r && r.version === 1 && CHASSIS_BY_ID[r.chassis] && ['prototype', 'demo', 'full'].includes(r.mode) && ['prep', 'battle', 'reward', 'protocol', 'expansion', 'won', 'lost'].includes(r.phase) && Number.isInteger(r.wave) && r.wave >= 1 && r.wave <= (r.mode === 'full' ? 12 : r.mode === 'demo' ? 8 : 4) && finite(r.gold) && r.gold >= 0 && finite(r.hp) && finite(r.shield) && finite(r.elapsed) && finite(r.nextUid) && [1, 2, 3].includes(r.maxTier) && finite(r.power) && finite(r.refreshes) && finite(r.shopPity) && Array.isArray(r.items) && r.items.length <= 20 && r.items.every(v => v && typeof v.uid === 'string' && MODULE_BY_ID[v.id] && [1, 2, 3].includes(v.tier) && Number.isInteger(v.rotation) && v.rotation >= 0 && v.rotation <= 3 && finite(v.x) && finite(v.y) && typeof v.stored === 'boolean') && new Set(r.items.map(v => v.uid)).size === r.items.length && Array.isArray(r.shop) && r.shop.length <= 4 && r.shop.every(o => o && typeof o.id === 'string' && typeof o.locked === 'boolean' && (!o.id || MODULE_BY_ID[o.id])) && r.rng && ['shop', 'map', 'event', 'combat'].every(k => finite(r.rng[k])) && strings(r.protocols) && r.protocols.every(id => PROTOCOL_BY_ID[id]) && strings(r.rewardOptions) && r.rewardOptions.every(id => MODULE_BY_ID[id] && (r.mode === 'full' || (r.mode === 'demo' ? DEMO_IDS : PROTOTYPE_IDS).includes(id))) && strings(r.protocolOptions) && r.protocolOptions.every(id => PROTOCOL_BY_ID[id]) && (r.phase !== 'reward' || r.rewardOptions.length > 0) && (r.phase !== 'protocol' || r.protocolOptions.length > 0) && (!r.eventId || !!EVENT_BY_ID[r.eventId]) && typeof r.eventResolved === 'boolean' && strings(r.eventsSeen) && strings(r.history) && Array.isArray(r.unlockedCorners) && r.unlockedCorners.every(v => [0, 1, 2, 3].includes(v)) && strings(r.bosses) && r.bosses.length >= (r.mode === 'full' ? 3 : r.mode === 'demo' ? 2 : 1) && r.bosses.every((id, i) => BOSS_BY_ID[id]?.act === i + 1) && r.stats && record(r.stats.damageByModule) && record(r.stats.damageTakenBy) && Object.values(r.stats.damageByModule).every(finite) && Object.values(r.stats.damageTakenBy).every(finite) && ['kills', 'killedBudget', 'goldEarned', 'maxChain', 'damageTaken'].every(k => finite(r.stats[k]))) {
         fresh.run = structuredClone(r);
+        const journal = sanitizeJournal(r.journal);
+        if (journal)
+            fresh.run.journal = journal;
+        else
+            delete fresh.run.journal;
         if (r.phase === 'battle') {
             const b = x.battle;
             if (validBattle(b, r)) {

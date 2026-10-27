@@ -82,7 +82,7 @@ export class Renderer {
     this.dpr=Math.min(2,globalThis.devicePixelRatio||1);
     const w=Math.round(this.cssWidth*this.dpr),h=Math.round(this.cssHeight*this.dpr);
     if(this.canvas.width!==w||this.canvas.height!==h){this.canvas.width=w;this.canvas.height=h;}
-    this.ctx.setTransform(this.dpr,0,0,this.dpr,0,0);this.ctx.imageSmoothingEnabled=true;
+    this.ctx.setTransform(this.dpr,0,0,this.dpr,0,0);this.ctx.imageSmoothingEnabled=true;this.ctx.imageSmoothingQuality='high';
   }
   toWorld(clientX:number,clientY:number):Point{
     const rect=this.canvas.getBoundingClientRect();
@@ -137,6 +137,7 @@ export class Renderer {
       ctx.restore();
     }
     this.drawEffects(state.time);
+    this.playerFeedback(state);
     // Warning geometry is authoritative and always above friendly effects.
     for(const zone of state.zones)if(zone.type!=='friendly')this.zone(zone,state.time,true);
     if(options.target)this.target(options.target,state.time);
@@ -167,7 +168,12 @@ export class Renderer {
     }
   }
   private shadow(x:number,y:number,w:number,h:number,alpha=.28):void{
-    const c=this.ctx;c.save();c.fillStyle=`rgba(0,0,0,${alpha})`;c.beginPath();c.ellipse(x,y,w,h,0,0,TAU);c.fill();c.restore();
+    const c=this.ctx;c.save();c.translate(x,y);c.scale(w,h);
+    const fade=c.createRadialGradient(0,0,0,0,0,1);
+    fade.addColorStop(0,`rgba(4,10,15,${alpha})`);
+    fade.addColorStop(.45,`rgba(4,10,15,${alpha*.7})`);
+    fade.addColorStop(1,'rgba(4,10,15,0)');
+    c.fillStyle=fade;c.fillRect(-1,-1,2,2);c.restore();
   }
   private mech(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,size:number,time:number,dir:number,moving:number,dashing=false):void{
     if(!CHASSIS.includes(id))id='scavenger';
@@ -329,6 +335,23 @@ export class Renderer {
     const r=19+(this.options.reducedMotion?0:Math.sin(time*4)*2);
     for(let i=0;i<4;i++){const a=i*Math.PI/2;c.beginPath();c.arc(0,0,r,a-.22,a+.22);c.stroke();}c.restore();
   }
+  private playerFeedback(state:BattleView):void{
+    const hit=state.events.filter(e=>e.type==='player-hit'&&state.time-e.at<.7).at(-1);
+    const broken=state.events.some(e=>e.type==='shield-break'&&state.time-e.at<1.1);
+    if(!hit&&!broken)return;
+    const c=this.ctx,p=state.player;c.save();c.translate(p.x,p.y);
+    if(hit){
+      c.strokeStyle='#ffc3a0';c.lineWidth=3;c.globalAlpha=this.options.reducedMotion?1:Math.max(.25,1-(state.time-hit.at)/.7);
+      const direction=Math.atan2(hit.y-p.y,hit.x-p.x);
+      c.beginPath();c.arc(0,0,42,direction-.45,direction+.45);c.stroke();
+      if(Math.hypot(hit.x-p.x,hit.y-p.y)>5){c.rotate(direction);c.fillStyle='#ffc3a0';c.beginPath();c.moveTo(49,0);c.lineTo(40,-6);c.lineTo(40,6);c.closePath();c.fill();c.rotate(-direction);}
+    }
+    if(broken){
+      c.globalAlpha=1;c.fillStyle='#17212a';rounded(c,-60,-77,120,23,4);c.fill();
+      c.fillStyle='#ffd3a0';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(this.options.lang==='zh'?'护盾破裂':'SHIELD BROKEN',0,-61);
+    }
+    c.restore();
+  }
   private edgeWarnings(state:BattleView,vw:number,vh:number):void{
     const c=this.ctx,margin=22/this.scale;
     for(const e of state.enemies){
@@ -353,7 +376,7 @@ export class Renderer {
     for(let x=0;x<w;x+=32){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}
     for(let y=0;y<h;y+=32){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
     const size=Math.min(w*.56,h*.67,250),x=w*.5,y=h*.56;
-    c.save();c.fillStyle='rgba(0,0,0,.3)';c.beginPath();c.ellipse(x,y+size*.25,size*.46,size*.16,0,0,TAU);c.fill();c.restore();
+    this.shadow(x,y+size*.25,size*.46,size*.16,.36);
     this.mech(c,chassis,x,y,size,time,0,0);
     this.art.draw(c,'W01',x-size*.39,y+size*.02,size*.42,size*.3,-.18);
     this.art.draw(c,'W04',x+size*.39,y-size*.02,size*.4,size*.3,.18);
@@ -363,14 +386,14 @@ export class Renderer {
     const ctx=canvas.getContext('2d');if(!ctx)return;const rect=canvas.getBoundingClientRect();
     const w=rect.width||canvas.width||80,h=rect.height||canvas.height||80,dpr=Math.min(2,globalThis.devicePixelRatio||1);
     if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
     this.art.draw(ctx,id,w/2,h/2,w*.94,h*.94);
   }
-  portrait(canvas:HTMLCanvasElement,chassis:string):void{
+  portrait(canvas:HTMLCanvasElement,chassis:string,direction:0|1|2|3=0):void{
     const ctx=canvas.getContext('2d');if(!ctx)return;const rect=canvas.getBoundingClientRect();
     const w=rect.width||canvas.width||160,h=rect.height||canvas.height||160,dpr=Math.min(2,globalThis.devicePixelRatio||1);
     if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;
-    this.mech(ctx,CHASSIS_BY_ID[chassis]?chassis:'scavenger',w/2,h*.55,Math.min(w,h)*.92,0,0,0);
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    this.mech(ctx,CHASSIS_BY_ID[chassis]?chassis:'scavenger',w/2,h*.55,Math.min(w,h)*.92,0,direction,0);
   }
 }

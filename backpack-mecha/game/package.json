@@ -1,14 +1,17 @@
 {
   "name": "backpack-mecha",
-  "version": "0.1.0",
+  "version": "0.2.0-dev.2",
   "private": true,
   "type": "module",
   "scripts": {
     "check": "tsc --noEmit",
+    "art:check": "python3 scripts/art-check.py",
+    "bundle:check": "node scripts/check-bundle.mjs",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/serve.mjs",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "probe": "node --experimental-strip-types scripts/balance-probe.ts"
+    "probe": "node --experimental-strip-types scripts/balance-probe.ts",
+    "probe:natural": "node --experimental-strip-types scripts/natural-probe.ts"
   },
   "devDependencies": {
     "typescript": "~5.9.3"

@@ -14,8 +14,23 @@ export interface WaveDef {n:number;act:number;kind:'normal'|'boss';duration:numb
 export interface Item {uid:string;id:string;tier:Tier;x:number;y:number;rotation:number;stored:boolean;link?:string}
 export interface Offer {id:string;locked:boolean}
 export interface CombatStats {damageByModule:Record<string,number>;damageTakenBy:Record<string,number>;kills:number;killedBudget:number;goldEarned:number;maxChain:number;damageTaken:number}
+export interface RunEvent {
+ sequence:number;wave:number;action:string;detail:string;gold:number;hp:number;prepSeconds:number;
+ items:Item[];shop:Offer[];protocols:string[];rewardOptions:string[];protocolOptions:string[];eventId?:string;route:0|1|2;
+}
+export interface WaveRecord {
+ wave:number;boss?:string;route:0|1|2;rulesVersion:string;prepSeconds:number;
+ start:{hp:number;shield:number;gold:number;items:Item[];protocols:string[]};
+ end?:{won:boolean;hp:number;shield:number;gold:number;income:number;seconds:number;reason?:string;stats:CombatStats};
+}
+export interface FrameRecord {samples:number;milliseconds:number;over50ms:number;maxMs:number;buckets:number[]}
+export interface RunJournal {
+ version:1;buildVersion:string;rulesVersion:string;startedAtWave:number;partial:boolean;
+ nextSequence:number;droppedEvents:number;events:RunEvent[];waves:WaveRecord[];
+ prepSeconds:Record<string,number>;frames:Record<string,FrameRecord>;
+}
 export interface Run {
- version:1;mode:Mode;seed:string;chassis:string;difficulty:number;phase:'prep'|'battle'|'reward'|'protocol'|'expansion'|'won'|'lost';wave:number;gold:number;hp:number;shield:number;power:number;maxTier:Tier;unlockedCorners:number[];items:Item[];shop:Offer[];refreshes:number;shopPity:number;protocols:string[];bosses:string[];nextUid:number;rng:{shop:number;map:number;event:number;combat:number};route:0|1|2;rewardOptions:string[];protocolOptions:string[];eventsSeen:string[];eventId?:string;eventResolved:boolean;insuranceUsed:boolean;stats:CombatStats;elapsed:number;history:string[];saleUndo?:string;extra?:Record<string,number|string|boolean>;
+ version:1;mode:Mode;seed:string;chassis:string;difficulty:number;phase:'prep'|'battle'|'reward'|'protocol'|'expansion'|'won'|'lost';wave:number;gold:number;hp:number;shield:number;power:number;maxTier:Tier;unlockedCorners:number[];items:Item[];shop:Offer[];refreshes:number;shopPity:number;protocols:string[];bosses:string[];nextUid:number;rng:{shop:number;map:number;event:number;combat:number};route:0|1|2;rewardOptions:string[];protocolOptions:string[];eventsSeen:string[];eventId?:string;eventResolved:boolean;insuranceUsed:boolean;stats:CombatStats;elapsed:number;history:string[];saleUndo?:string;extra?:Record<string,number|string|boolean>;journal?:RunJournal;
 }
 export interface Result {ok:boolean;reason?:string;reasonEn?:string}
 export interface BattleResult {won:boolean;hp:number;shield:number;stats:CombatStats;elapsed:number;insuranceUsed:boolean;reason?:string;rng?:number}

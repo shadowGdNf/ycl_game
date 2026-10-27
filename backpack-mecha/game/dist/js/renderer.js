@@ -86,6 +86,7 @@ export class Renderer {
         }
         this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
         this.ctx.imageSmoothingEnabled = true;
+        this.ctx.imageSmoothingQuality = 'high';
     }
     toWorld(clientX, clientY) {
         const rect = this.canvas.getBoundingClientRect();
@@ -198,6 +199,7 @@ export class Renderer {
             ctx.restore();
         }
         this.drawEffects(state.time);
+        this.playerFeedback(state);
         // Warning geometry is authoritative and always above friendly effects.
         for (const zone of state.zones)
             if (zone.type !== 'friendly')
@@ -263,10 +265,14 @@ export class Renderer {
     shadow(x, y, w, h, alpha = .28) {
         const c = this.ctx;
         c.save();
-        c.fillStyle = `rgba(0,0,0,${alpha})`;
-        c.beginPath();
-        c.ellipse(x, y, w, h, 0, 0, TAU);
-        c.fill();
+        c.translate(x, y);
+        c.scale(w, h);
+        const fade = c.createRadialGradient(0, 0, 0, 0, 0, 1);
+        fade.addColorStop(0, `rgba(4,10,15,${alpha})`);
+        fade.addColorStop(.45, `rgba(4,10,15,${alpha * .7})`);
+        fade.addColorStop(1, 'rgba(4,10,15,0)');
+        c.fillStyle = fade;
+        c.fillRect(-1, -1, 2, 2);
         c.restore();
     }
     mech(ctx, id, x, y, size, time, dir, moving, dashing = false) {
@@ -653,6 +659,46 @@ export class Renderer {
         }
         c.restore();
     }
+    playerFeedback(state) {
+        const hit = state.events.filter(e => e.type === 'player-hit' && state.time - e.at < .7).at(-1);
+        const broken = state.events.some(e => e.type === 'shield-break' && state.time - e.at < 1.1);
+        if (!hit && !broken)
+            return;
+        const c = this.ctx, p = state.player;
+        c.save();
+        c.translate(p.x, p.y);
+        if (hit) {
+            c.strokeStyle = '#ffc3a0';
+            c.lineWidth = 3;
+            c.globalAlpha = this.options.reducedMotion ? 1 : Math.max(.25, 1 - (state.time - hit.at) / .7);
+            const direction = Math.atan2(hit.y - p.y, hit.x - p.x);
+            c.beginPath();
+            c.arc(0, 0, 42, direction - .45, direction + .45);
+            c.stroke();
+            if (Math.hypot(hit.x - p.x, hit.y - p.y) > 5) {
+                c.rotate(direction);
+                c.fillStyle = '#ffc3a0';
+                c.beginPath();
+                c.moveTo(49, 0);
+                c.lineTo(40, -6);
+                c.lineTo(40, 6);
+                c.closePath();
+                c.fill();
+                c.rotate(-direction);
+            }
+        }
+        if (broken) {
+            c.globalAlpha = 1;
+            c.fillStyle = '#17212a';
+            rounded(c, -60, -77, 120, 23, 4);
+            c.fill();
+            c.fillStyle = '#ffd3a0';
+            c.font = 'bold 12px sans-serif';
+            c.textAlign = 'center';
+            c.fillText(this.options.lang === 'zh' ? '护盾破裂' : 'SHIELD BROKEN', 0, -61);
+        }
+        c.restore();
+    }
     edgeWarnings(state, vw, vh) {
         const c = this.ctx, margin = 22 / this.scale;
         for (const e of state.enemies) {
@@ -714,12 +760,7 @@ export class Renderer {
             c.stroke();
         }
         const size = Math.min(w * .56, h * .67, 250), x = w * .5, y = h * .56;
-        c.save();
-        c.fillStyle = 'rgba(0,0,0,.3)';
-        c.beginPath();
-        c.ellipse(x, y + size * .25, size * .46, size * .16, 0, 0, TAU);
-        c.fill();
-        c.restore();
+        this.shadow(x, y + size * .25, size * .46, size * .16, .36);
         this.mech(c, chassis, x, y, size, time, 0, 0);
         this.art.draw(c, 'W01', x - size * .39, y + size * .02, size * .42, size * .3, -.18);
         this.art.draw(c, 'W04', x + size * .39, y - size * .02, size * .4, size * .3, .18);
@@ -741,9 +782,10 @@ export class Renderer {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, w, h);
         ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
         this.art.draw(ctx, id, w / 2, h / 2, w * .94, h * .94);
     }
-    portrait(canvas, chassis) {
+    portrait(canvas, chassis, direction = 0) {
         const ctx = canvas.getContext('2d');
         if (!ctx)
             return;
@@ -756,6 +798,7 @@ export class Renderer {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, w, h);
         ctx.imageSmoothingEnabled = true;
-        this.mech(ctx, CHASSIS_BY_ID[chassis] ? chassis : 'scavenger', w / 2, h * .55, Math.min(w, h) * .92, 0, 0, 0);
+        ctx.imageSmoothingQuality = 'high';
+        this.mech(ctx, CHASSIS_BY_ID[chassis] ? chassis : 'scavenger', w / 2, h * .55, Math.min(w, h) * .92, 0, direction, 0);
     }
 }

@@ -79,7 +79,9 @@ test('failed purchases preserve cash and RNG; successful buying enters reserve',
 
 test('sale undo restores the entire transaction chain including purchases and refresh RNG',()=>{
  const r=shopRun();r.gold=300;const before=structuredClone(r),uid=r.items[1].uid;
- assert.equal(e.sell(r,uid).ok,true);assert.equal(e.refreshShop(r).ok,true);assert.equal(e.buy(r,0).ok,true);assert.equal(e.undoSale(r).ok,true);assert.deepEqual(r,before);assert.equal(e.undoSale(r).ok,false);
+ assert.equal(e.sell(r,uid).ok,true);assert.equal(e.refreshShop(r).ok,true);assert.equal(e.buy(r,0).ok,true);assert.equal(e.undoSale(r).ok,true);
+ const {journal:afterJournal,...afterRules}=r,{journal:beforeJournal,...beforeRules}=before;
+ assert.deepEqual(afterRules,beforeRules);assert.equal(afterJournal!.events.at(-1)!.action,'undo-sale');assert.ok(afterJournal!.nextSequence>beforeJournal!.nextSequence);assert.equal(e.undoSale(r).ok,false);
  assert.equal(e.sell(r,uid).ok,true);assert.equal(e.startWave(r).ok,true);assert.equal(e.undoSale(r).ok,false);
 });
 

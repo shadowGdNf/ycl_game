@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFile,readdir,stat,access,writeFile,mkdir} from 'node:fs/promises';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const dist=path.join(root,'dist');
@@ -12,7 +13,11 @@ for(const file of all.filter(f=>f.endsWith('.js'))){const js=await readFile(file
 const content=JSON.parse(await readFile(path.join(dist,'assets/content.json'),'utf8'));
 for(const [key,count]of Object.entries({modules:36,chassis:4,enemies:12,bosses:6,protocols:9,events:8,waves:12,demoIds:24})){assert.equal(content[key].length,count,key);}
 const manifest=JSON.parse(await readFile(path.join(dist,'assets/atlas-manifest.json'),'utf8'));
-for(const atlas of Object.values(manifest.atlases))await access(path.join(dist,'assets',atlas));
+for(const [name,atlas] of Object.entries(manifest.atlases)){
+  const buffer=await readFile(path.join(dist,'assets',atlas));
+  assert.equal(createHash('sha256').update(buffer).digest('hex'),manifest.inspection[name].sha256,`Stale atlas ${name}`);
+}
+assert.equal(Object.keys(manifest.sprites).length,86,'Expected all sprite regions and boss subparts');
 for(const item of [...content.modules,...content.enemies,...content.bosses])assert(manifest.sprites[item.id],`Missing sprite ${item.id}`);
 for(const c of content.chassis)for(const part of ['body.0','body.1','body.2','body.3','legs','backpack'])assert(manifest.sprites[`${c.id}.${part}`],`Missing chassis part ${c.id}.${part}`);
 const bytes=(await Promise.all(all.map(f=>stat(f)))).reduce((sum,s)=>sum+s.size,0);

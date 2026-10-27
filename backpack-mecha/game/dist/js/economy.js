@@ -1,5 +1,6 @@
 import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js";
 import { hashSeed, nextRandom } from "./random.js";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
@@ -14,7 +15,7 @@ const editable = (r) => ['prep', 'reward', 'protocol', 'expansion'].includes(r.p
 const maxHP = (r) => CHASSIS_BY_ID[r.chassis].hp;
 const finite = (v) => Number.isFinite(v) && v >= 0;
 function log(r, message) { r.history.push(message); if (r.history.length > 500)
-    r.history.shift(); }
+    r.history.shift(); recordAction(r, message); }
 function replace(target, value) { for (const key of Object.keys(target))
     delete target[key]; Object.assign(target, value); }
 function transaction(r, fn) { const draft = copy(r); const result = fn(draft); if (result.ok)
@@ -116,6 +117,60 @@ function checkInventory(r, complete, power = true) {
     return ok();
 }
 export function validateLoadout(r) { return checkInventory(r, true); }
+/** Copy only rule state: pointer previews never clone growing reports or sale snapshots. */
+function previewRun(r) { const { journal, saleUndo, ...rules } = r; return copy({ ...rules, history: [] }); }
+export function previewPlacement(r, uid, x, y, rotation) {
+    const d = previewRun(r), item = d.items.find(i => i.uid === uid);
+    let result = ok();
+    if (!editable(d))
+        result = fail('只能在休整时修改装备', 'Equipment can only be changed between battles.');
+    else if (!item)
+        result = fail('找不到模块', 'Module not found.');
+    else if (!Number.isInteger(rotation))
+        result = fail('旋转参数无效', 'Invalid rotation.');
+    else {
+        Object.assign(item, { x, y, rotation: normalizeRotation(rotation), stored: false });
+        repairLinks(d);
+        result = checkInventory(d, false);
+    }
+    const linkedWeapon = item?.link ? d.items.find(w => w.uid === item.link) : undefined;
+    return { ...result, item, linkedWeapon, power: active(d).reduce((n, i) => n + def(i).power, 0), capacity: getCapacity(d), cells: active(d).reduce((n, i) => n + getCells(i).length, 0), ready: result.ok && validateLoadout(d).ok };
+}
+export function placementOptions(r, uid, rotation) {
+    const options = [];
+    for (const rot of rotation === undefined ? [0, 1, 2, 3] : [rotation])
+        for (let y = 0; y < 5; y++)
+            for (let x = 0; x < 5; x++) {
+                const p = previewPlacement(r, uid, x, y, rot);
+                if (p.ok)
+                    options.push(p);
+            }
+    return options;
+}
+export function linkOptions(r, uid) {
+    const s = r.items.find(i => i.uid === uid);
+    if (!s || def(s).kind !== 'support')
+        return [];
+    return active(r).filter(i => def(i).kind === 'weapon').map(weapon => ({ weapon, result: !compatible(def(s), def(weapon)) ? fail('标签不兼容', 'Incompatible tags') :
+            active(r).filter(i => i.uid !== uid && i.link === weapon.uid).length >= 2 ? fail('连接位已满', 'Support slots full') :
+                s.stored || !adjacent(s, weapon) ? fail('需要边缘相邻', 'Place along a shared edge') : ok() }));
+}
+export function previewPurchase(r, index) {
+    const d = previewRun(r), access = requireShop(d), offer = d.shop[index];
+    if (!access.ok)
+        return { result: access, placements: [], canReserve: false };
+    if (!Number.isInteger(index) || !offer?.id)
+        return { result: fail('该商品已售出', 'This offer is unavailable.'), placements: [], canReserve: false };
+    const canReserve = d.items.filter(i => i.stored).length < 3;
+    // A full reserve does not prevent a direct board purchase. Keep the hypothetical item
+    // outside reserve for placement checks; every candidate replaces its coordinates.
+    const item = newItem(d, offer.id);
+    d.items.push(item);
+    const placements = placementOptions(d, item.uid);
+    const result = r.gold < MODULE_BY_ID[offer.id].price ? fail('碎片不足', 'Not enough scrap.') :
+        canReserve || placements.length ? ok() : fail('备件架已满，当前布局也放不下；请先整理', 'Reserve full and no board placement. Make room first.');
+    return { result, placements, canReserve };
+}
 function inventoryAction(r, fn) { if (!editable(r))
     return fail('只能在休整时修改装备', 'Equipment can only be changed between battles.'); return transaction(r, fn); }
 export function placeItem(r, uid, x, y, rotation) {
@@ -324,6 +379,7 @@ function generateShop(r, visit) {
         else
             r.shopPity++;
     }
+    recordAction(r, visit ? 'shop:visit' : 'shop:refresh');
 }
 function requireShop(r) { return r.phase === 'prep' && r.wave > 1 && r.shop.length === 4 ? ok() : fail('当前不在商店', 'The shop is not available now.'); }
 function newItem(r, id) { return { uid: `i${r.nextUid++}`, id, tier: 1, x: -1, y: -1, rotation: 0, stored: true }; }
@@ -406,6 +462,7 @@ export function undoSale(r) {
             before.stats && before.stats.damageByModule && before.stats.damageTakenBy && ['kills', 'killedBudget', 'goldEarned', 'maxChain', 'damageTaken'].every(k => finite(before.stats[k])) && checkInventory(before, false, false).ok;
         if (!valid)
             return fail('撤销记录不完整，当前装备和碎片已保留', 'The undo record is incomplete. Current equipment and scrap were preserved.');
+        preserveJournal(r, before, 'undo-sale');
         replace(r, before);
         return ok();
     }
@@ -490,6 +547,7 @@ function beginRewards(r, kinds, returnTo) {
     extra(r).rewardReturn = returnTo;
     r.rewardOptions = rewardOptions(r, kinds[0]);
     r.phase = 'reward';
+    recordAction(r, 'reward-offer');
 }
 function protocols(r) {
     const pool = PROTOCOLS.filter(p => !r.protocols.includes(p.id) && (r.mode === 'full' || p.id !== 'P05'));
@@ -517,6 +575,8 @@ export function newRun(chassis, mode, difficulty, seed) {
     r.items = [gun, support];
     for (let a = 1; a <= finalWave(r) / 4; a++)
         r.bosses.push(mode === 'full' ? pick(r, BOSSES.filter(b => b.act === a), 'map').id : `B${a}A`);
+    ensureJournal(r, false);
+    recordAction(r, 'new-run');
     return r;
 }
 export function startWave(r) {
@@ -531,6 +591,7 @@ export function startWave(r) {
         d.shield = getShieldCapacity(d);
         d.phase = 'battle';
         delete d.saleUndo;
+        beginWaveRecord(d);
         log(d, `start:${d.wave}:${d.route}`);
         return ok();
     });
@@ -565,6 +626,7 @@ export function resolveBattle(r, result) {
         d.gold += s.goldEarned;
         if (!result.won || d.hp <= 0) {
             d.phase = 'lost';
+            finishWaveRecord(d, { ...result, stats: s }, s.goldEarned);
             log(d, `lost:${completed}:${result.reason ?? ''}`);
             return ok();
         }
@@ -572,6 +634,7 @@ export function resolveBattle(r, result) {
         const riskModule = wave.kind === 'normal' && (d.route === 2 || e.eventRewardModule === true);
         d.gold += wave.base + riskGold;
         log(d, `won:${completed}:${wave.base + s.goldEarned + riskGold}`);
+        finishWaveRecord(d, { ...result, stats: s }, wave.base + s.goldEarned + riskGold);
         for (const key of ['eventBudgetBonus', 'eventExtraElite', 'eventRewardGold', 'eventRewardModule', 'temporaryShield', 'eventTargetUid', 'eventTargetTag'])
             delete e[key];
         d.shield = Math.min(d.shield, getShieldCapacity(d));
@@ -633,6 +696,7 @@ export function chooseReward(r, index) {
             const next = queue.shift();
             extra(d).pendingRewardKinds = JSON.stringify(queue);
             d.rewardOptions = rewardOptions(d, next);
+            recordAction(d, 'reward-offer');
             return ok();
         }
         d.rewardOptions = [];
