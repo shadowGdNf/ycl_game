@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#faf5eb" />
+    <meta name="description" content="A little order. A lot of satisfaction. Play Jelly Flow, a sweet one-touch sorting puzzle with 20 handcrafted challenges." />
+    <title>Jelly Flow — a sweet little puzzle</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/jelly-mark.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Jelly Flow home">
+        <img src="./assets/jelly-mark.svg" width="39" height="43" alt="" />
+        <span>jelly<span class="brand-flow">flow</span><span class="brand-dot">.</span></span>
+      </a>
+      <span class="header-note">a sweet little puzzle</span>
+      <div class="header-actions">
+        <button class="icon-button" id="sound-btn" type="button" aria-label="Turn sound off" aria-pressed="true" title="Sound">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg>
+          <span class="sr-only">Sound</span>
+        </button>
+        <button class="icon-button" id="help-btn" type="button" aria-label="How to play" title="How to play">
+          <span class="question-icon" aria-hidden="true">?</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <aside class="intro-panel" aria-labelledby="intro-heading">
+        <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> A LITTLE ORDER. A LOT OF SATISFACTION.</p>
+        <h1 id="intro-heading">Make room.<br />Let it <em>flow.</em></h1>
+        <p class="intro-description">A tiny puzzle for your sweet spot.<br />Match the cups. Clear the clutter.<br />Find your happy little flow.</p>
+        <div class="candy-illustration" aria-hidden="true">
+          <img src="./assets/candy-stack.svg" width="320" height="230" alt="" />
+          <span class="illustration-note">small moves,<br />sweet rewards</span>
+        </div>
+        <div class="intro-rule">
+          <span class="rule-number">01</span>
+          <p><strong>Just a tap.</strong><br />Choose a chute. The front color flows.</p>
+        </div>
+        <div class="intro-rule">
+          <span class="rule-number">02</span>
+          <p><strong>A little planning.</strong><br />Fill matching cups. Keep the tray clear.</p>
+        </div>
+        <p class="keyboard-hint"><kbd>1</kbd>–<kbd>6</kbd> select a chute <span>·</span> <kbd>Z</kbd> undo</p>
+      </aside>
+
+      <section class="game-panel" aria-label="Jelly Flow game">
+        <div class="game-card">
+          <div class="level-topline">
+            <span class="chapter-label" id="chapter-label">THE SWEET BEGINNING</span>
+            <button class="levels-button" id="levels-btn" type="button" aria-label="Choose a level">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="12" y="3" width="5" height="5" rx="1"/><rect x="3" y="12" width="5" height="5" rx="1"/><rect x="12" y="12" width="5" height="5" rx="1"/></svg>
+              Levels
+            </button>
+          </div>
+          <div class="level-heading">
+            <div class="level-index" aria-label="Current level"><span id="level-number">01</span><span class="level-total">/ 20</span></div>
+            <div class="level-copy"><h2 id="level-name">First little flow</h2><p id="level-subtitle">A little tap goes a long way.</p></div>
+          </div>
+          <div class="game-stats">
+            <span><span class="stat-label">COLLECTED</span><strong id="collected-value">0 / 0</strong></span>
+            <span><span class="stat-label">MOVES</span><strong id="moves-value">0</strong></span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Jellies collected" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progress-fill"></div></div>
+
+          <div id="board-wrap" class="board-wrap">
+            <canvas id="game-canvas" width="880" height="1200" role="img" aria-label="Candy chutes, three collection cups, and the waiting tray. Use the numbered chute buttons below to play.">Use the numbered chute buttons below to release candy into matching cups.</canvas>
+          </div>
+          <div class="board-caption"><span>CHOOSE A CHUTE</span><span id="buffer-label">Waiting tray · 0 / 6</span></div>
+          <div id="queue-controls" class="queue-controls" role="group" aria-label="Release a candy chute"></div>
+
+          <div class="game-toolbar" role="group" aria-label="Game tools">
+            <button class="tool-button" id="undo-btn" type="button" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 3 10l5 5M4 10h10a6 6 0 0 1 0 12" transform="translate(0 -2)"/></svg><span>Undo</span><kbd>Z</kbd>
+            </button>
+            <button class="tool-button" id="restart-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M19.3 11a8 8 0 1 0-1.9 7"/></svg><span>Restart</span>
+            </button>
+            <button class="tool-button hint-button" id="hint-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6m-5 3h4M8.5 14a6 6 0 1 1 7 0c-.7.6-1 1.2-1 2H9.5c0-.8-.3-1.4-1-2Z"/></svg><span>A little hint</span>
+            </button>
+          </div>
+        </div>
+        <div class="game-under-note"><span class="status-dot" aria-hidden="true"></span><span id="save-status">Your progress is saved on this device.</span><span id="best-value" class="best-value"></span></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><span>20 little challenges. One sweet escape.</span><span>Take a breath. Take your time.</span></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog id="level-dialog" class="modal level-modal" aria-labelledby="level-dialog-title">
+      <div class="modal-top"><span class="eyebrow">YOUR LITTLE JOURNEY</span><button id="close-levels" class="icon-button close-button" type="button" aria-label="Close level selection">×</button></div>
+      <h2 id="level-dialog-title">One sweet step at a time.</h2>
+      <p class="modal-description">Start easy. Find your flow. Master all 20.</p>
+      <div id="level-grid" class="level-grid" aria-label="Choose from 20 levels"></div>
+      <p class="level-legend"><span><i class="legend-dot completed-dot"></i> Completed</span><span><i class="legend-dot current-dot"></i> Current</span><span><i class="legend-dot locked-dot"></i> Up next</span></p>
+    </dialog>
+
+    <dialog id="help-dialog" class="modal help-modal" aria-labelledby="help-dialog-title">
+      <div class="modal-top"><span class="eyebrow">A QUICK LITTLE INTRO</span><button id="close-help" class="icon-button close-button" type="button" aria-label="Close instructions">×</button></div>
+      <h2 id="help-dialog-title">Good things flow.</h2>
+      <p class="modal-description">One finger. A few colorful choices.</p>
+      <ol class="help-steps">
+        <li><span class="help-step-number">1</span><div><h3>Tap a chute</h3><p>The group at the front comes out together. The same color means the same move.</p></div></li>
+        <li><span class="help-step-number">2</span><div><h3>Fill the matching cups</h3><p>Full cups make room for new ones. Peek at the upcoming colors and plan ahead.</p></div></li>
+        <li><span class="help-step-number">3</span><div><h3>Leave a little breathing room</h3><p>Jellies without a matching cup wait in the tray. If it overflows, try a different order.</p></div></li>
+      </ol>
+      <div class="help-tip"><span aria-hidden="true">✳</span><p>No timer. No rush. Undo is always there when you need a fresh start.</p></div>
+      <p class="modal-description">Earn 3 stars with no hints or undo, 2 with up to two assists, or 1 with more. Every finish counts.</p>
+      <button id="start-playing" type="button" class="primary-button">Let's flow <span aria-hidden="true">→</span></button>
+    </dialog>
+
+    <dialog id="result-dialog" class="modal result-modal" aria-labelledby="result-title">
+      <div class="result-mascot" aria-hidden="true"><img src="./assets/jelly-mark.svg" width="64" height="72" alt="" /></div>
+      <p class="eyebrow" id="result-eyebrow">SWEETLY DONE</p>
+      <h2 id="result-title">Now that's a good flow.</h2>
+      <div id="result-stars" class="result-stars" aria-label="Level result"></div>
+      <p id="result-description" class="modal-description">Every jelly found its happy place.</p>
+      <button id="next-btn" type="button" class="primary-button">Next little challenge <span aria-hidden="true">→</span></button>
+      <button id="retry-btn" type="button" class="secondary-button">Give it another go</button>
+      <button id="result-levels" type="button" class="text-button">Choose a level</button>
+    </dialog>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

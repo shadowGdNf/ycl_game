@@ -1,0 +1,13 @@
+import {cp,mkdir,copyFile,rm,writeFile} from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../',import.meta.url));
+process.chdir(root);
+await rm('dist',{recursive:true,force:true});
+const result=spawnSync(process.execPath,['node_modules/typescript/bin/tsc'],{stdio:'inherit'});
+if(result.status!==0)process.exit(result.status??1);
+await mkdir('dist',{recursive:true});
+for(const f of ['index.html','styles.css'])await copyFile(f,`dist/${f}`);
+await cp('assets','dist/assets',{recursive:true,filter:p=>!p.split(/[\\/]/).includes('source')});
+await writeFile('dist/.nojekyll','');
+console.log('Built backpack-mecha/game/dist/');

@@ -1,0 +1,638 @@
+{
+  "version": 1,
+  "atlases": {
+    "actors": "atlases/actors.png",
+    "modules": "atlases/modules.png",
+    "enemies": "atlases/enemies.png",
+    "environment": "atlases/environment.png"
+  },
+  "sprites": {
+    "scavenger.body.0": {
+      "atlas": "actors",
+      "x": 29,
+      "y": 103,
+      "w": 220,
+      "h": 189
+    },
+    "scavenger.body.1": {
+      "atlas": "actors",
+      "x": 313,
+      "y": 104,
+      "w": 166,
+      "h": 178
+    },
+    "scavenger.body.2": {
+      "atlas": "actors",
+      "x": 536,
+      "y": 97,
+      "w": 230,
+      "h": 186
+    },
+    "scavenger.body.3": {
+      "atlas": "actors",
+      "x": 815,
+      "y": 99,
+      "w": 164,
+      "h": 185
+    },
+    "bulwark.body.0": {
+      "atlas": "actors",
+      "x": 4,
+      "y": 325,
+      "w": 252,
+      "h": 198
+    },
+    "bulwark.body.1": {
+      "atlas": "actors",
+      "x": 256,
+      "y": 317,
+      "w": 229,
+      "h": 204
+    },
+    "bulwark.body.2": {
+      "atlas": "actors",
+      "x": 513,
+      "y": 322,
+      "w": 255,
+      "h": 198
+    },
+    "bulwark.body.3": {
+      "atlas": "actors",
+      "x": 768,
+      "y": 318,
+      "w": 237,
+      "h": 202
+    },
+    "kestrel.body.0": {
+      "atlas": "actors",
+      "x": 13,
+      "y": 550,
+      "w": 243,
+      "h": 228
+    },
+    "kestrel.body.1": {
+      "atlas": "actors",
+      "x": 256,
+      "y": 546,
+      "w": 214,
+      "h": 226
+    },
+    "kestrel.body.2": {
+      "atlas": "actors",
+      "x": 523,
+      "y": 544,
+      "w": 245,
+      "h": 229
+    },
+    "kestrel.body.3": {
+      "atlas": "actors",
+      "x": 768,
+      "y": 546,
+      "w": 222,
+      "h": 228
+    },
+    "hive.body.0": {
+      "atlas": "actors",
+      "x": 25,
+      "y": 817,
+      "w": 231,
+      "h": 170
+    },
+    "hive.body.1": {
+      "atlas": "actors",
+      "x": 256,
+      "y": 812,
+      "w": 229,
+      "h": 168
+    },
+    "hive.body.2": {
+      "atlas": "actors",
+      "x": 530,
+      "y": 809,
+      "w": 238,
+      "h": 172
+    },
+    "hive.body.3": {
+      "atlas": "actors",
+      "x": 768,
+      "y": 813,
+      "w": 218,
+      "h": 165
+    },
+    "scavenger.legs": {
+      "atlas": "actors",
+      "x": 37,
+      "y": 1039,
+      "w": 201,
+      "h": 155
+    },
+    "bulwark.legs": {
+      "atlas": "actors",
+      "x": 288,
+      "y": 1018,
+      "w": 224,
+      "h": 190
+    },
+    "kestrel.legs": {
+      "atlas": "actors",
+      "x": 549,
+      "y": 1025,
+      "w": 191,
+      "h": 185
+    },
+    "hive.legs": {
+      "atlas": "actors",
+      "x": 798,
+      "y": 1037,
+      "w": 201,
+      "h": 161
+    },
+    "scavenger.backpack": {
+      "atlas": "actors",
+      "x": 33,
+      "y": 1238,
+      "w": 191,
+      "h": 215
+    },
+    "bulwark.backpack": {
+      "atlas": "actors",
+      "x": 283,
+      "y": 1240,
+      "w": 224,
+      "h": 206
+    },
+    "kestrel.backpack": {
+      "atlas": "actors",
+      "x": 545,
+      "y": 1254,
+      "w": 186,
+      "h": 189
+    },
+    "hive.backpack": {
+      "atlas": "actors",
+      "x": 778,
+      "y": 1266,
+      "w": 228,
+      "h": 168
+    },
+    "W01": {
+      "atlas": "modules",
+      "x": 20,
+      "y": 69,
+      "w": 189,
+      "h": 130
+    },
+    "W02": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 64,
+      "w": 205,
+      "h": 131
+    },
+    "W03": {
+      "atlas": "modules",
+      "x": 431,
+      "y": 61,
+      "w": 189,
+      "h": 141
+    },
+    "W04": {
+      "atlas": "modules",
+      "x": 635,
+      "y": 69,
+      "w": 188,
+      "h": 123
+    },
+    "W05": {
+      "atlas": "modules",
+      "x": 840,
+      "y": 33,
+      "w": 195,
+      "h": 173
+    },
+    "W06": {
+      "atlas": "modules",
+      "x": 1045,
+      "y": 60,
+      "w": 188,
+      "h": 137
+    },
+    "W07": {
+      "atlas": "modules",
+      "x": 9,
+      "y": 253,
+      "w": 200,
+      "h": 144
+    },
+    "W08": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 236,
+      "w": 209,
+      "h": 182
+    },
+    "W09": {
+      "atlas": "modules",
+      "x": 418,
+      "y": 243,
+      "w": 209,
+      "h": 163
+    },
+    "W10": {
+      "atlas": "modules",
+      "x": 636,
+      "y": 243,
+      "w": 200,
+      "h": 160
+    },
+    "W11": {
+      "atlas": "modules",
+      "x": 836,
+      "y": 239,
+      "w": 203,
+      "h": 173
+    },
+    "W12": {
+      "atlas": "modules",
+      "x": 1045,
+      "y": 259,
+      "w": 194,
+      "h": 143
+    },
+    "S01": {
+      "atlas": "modules",
+      "x": 21,
+      "y": 447,
+      "w": 188,
+      "h": 158
+    },
+    "S02": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 453,
+      "w": 207,
+      "h": 148
+    },
+    "S03": {
+      "atlas": "modules",
+      "x": 432,
+      "y": 448,
+      "w": 190,
+      "h": 159
+    },
+    "S04": {
+      "atlas": "modules",
+      "x": 639,
+      "y": 433,
+      "w": 197,
+      "h": 180
+    },
+    "S05": {
+      "atlas": "modules",
+      "x": 836,
+      "y": 464,
+      "w": 192,
+      "h": 141
+    },
+    "S06": {
+      "atlas": "modules",
+      "x": 1046,
+      "y": 434,
+      "w": 187,
+      "h": 179
+    },
+    "S07": {
+      "atlas": "modules",
+      "x": 25,
+      "y": 654,
+      "w": 184,
+      "h": 147
+    },
+    "S08": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 638,
+      "w": 207,
+      "h": 172
+    },
+    "S09": {
+      "atlas": "modules",
+      "x": 431,
+      "y": 638,
+      "w": 187,
+      "h": 175
+    },
+    "S10": {
+      "atlas": "modules",
+      "x": 651,
+      "y": 619,
+      "w": 185,
+      "h": 204
+    },
+    "S11": {
+      "atlas": "modules",
+      "x": 836,
+      "y": 650,
+      "w": 202,
+      "h": 156
+    },
+    "S12": {
+      "atlas": "modules",
+      "x": 1048,
+      "y": 649,
+      "w": 178,
+      "h": 158
+    },
+    "U01": {
+      "atlas": "modules",
+      "x": 24,
+      "y": 844,
+      "w": 185,
+      "h": 160
+    },
+    "U02": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 839,
+      "w": 209,
+      "h": 172
+    },
+    "U03": {
+      "atlas": "modules",
+      "x": 429,
+      "y": 836,
+      "w": 193,
+      "h": 175
+    },
+    "U04": {
+      "atlas": "modules",
+      "x": 640,
+      "y": 840,
+      "w": 186,
+      "h": 162
+    },
+    "U05": {
+      "atlas": "modules",
+      "x": 836,
+      "y": 865,
+      "w": 204,
+      "h": 125
+    },
+    "U06": {
+      "atlas": "modules",
+      "x": 1053,
+      "y": 837,
+      "w": 178,
+      "h": 173
+    },
+    "U07": {
+      "atlas": "modules",
+      "x": 20,
+      "y": 1032,
+      "w": 189,
+      "h": 170
+    },
+    "U08": {
+      "atlas": "modules",
+      "x": 209,
+      "y": 1016,
+      "w": 195,
+      "h": 204
+    },
+    "U09": {
+      "atlas": "modules",
+      "x": 431,
+      "y": 1030,
+      "w": 185,
+      "h": 176
+    },
+    "U10": {
+      "atlas": "modules",
+      "x": 644,
+      "y": 1030,
+      "w": 178,
+      "h": 174
+    },
+    "U11": {
+      "atlas": "modules",
+      "x": 849,
+      "y": 1024,
+      "w": 174,
+      "h": 186
+    },
+    "U12": {
+      "atlas": "modules",
+      "x": 1046,
+      "y": 1045,
+      "w": 187,
+      "h": 135
+    },
+    "E01": {
+      "atlas": "enemies",
+      "x": 54,
+      "y": 95,
+      "w": 187,
+      "h": 150
+    },
+    "E02": {
+      "atlas": "enemies",
+      "x": 353,
+      "y": 77,
+      "w": 151,
+      "h": 194
+    },
+    "E03": {
+      "atlas": "enemies",
+      "x": 598,
+      "y": 34,
+      "w": 249,
+      "h": 246
+    },
+    "E04": {
+      "atlas": "enemies",
+      "x": 919,
+      "y": 9,
+      "w": 205,
+      "h": 271
+    },
+    "E05": {
+      "atlas": "enemies",
+      "x": 1218,
+      "y": 56,
+      "w": 190,
+      "h": 209
+    },
+    "E06": {
+      "atlas": "enemies",
+      "x": 1504,
+      "y": 69,
+      "w": 221,
+      "h": 197
+    },
+    "E07": {
+      "atlas": "enemies",
+      "x": 37,
+      "y": 296,
+      "w": 238,
+      "h": 253
+    },
+    "E08": {
+      "atlas": "enemies",
+      "x": 331,
+      "y": 325,
+      "w": 230,
+      "h": 223
+    },
+    "E09": {
+      "atlas": "enemies",
+      "x": 604,
+      "y": 322,
+      "w": 249,
+      "h": 220
+    },
+    "E10": {
+      "atlas": "enemies",
+      "x": 897,
+      "y": 325,
+      "w": 254,
+      "h": 224
+    },
+    "E11": {
+      "atlas": "enemies",
+      "x": 1201,
+      "y": 321,
+      "w": 227,
+      "h": 228
+    },
+    "E12": {
+      "atlas": "enemies",
+      "x": 1470,
+      "y": 289,
+      "w": 279,
+      "h": 266
+    },
+    "B1A": {
+      "atlas": "enemies",
+      "x": 13,
+      "y": 575,
+      "w": 290,
+      "h": 288
+    },
+    "B1B": {
+      "atlas": "enemies",
+      "x": 308,
+      "y": 556,
+      "w": 297,
+      "h": 307
+    },
+    "B2A": {
+      "atlas": "enemies",
+      "x": 593,
+      "y": 572,
+      "w": 302,
+      "h": 289
+    },
+    "B2B": {
+      "atlas": "enemies",
+      "x": 913,
+      "y": 638,
+      "w": 242,
+      "h": 162
+    },
+    "B3A": {
+      "atlas": "enemies",
+      "x": 1167,
+      "y": 573,
+      "w": 298,
+      "h": 286
+    },
+    "B3B": {
+      "atlas": "enemies",
+      "x": 1473,
+      "y": 582,
+      "w": 286,
+      "h": 258
+    },
+    "B2B.left": {
+      "atlas": "enemies",
+      "x": 913,
+      "y": 638,
+      "w": 119,
+      "h": 162
+    },
+    "B2B.right": {
+      "atlas": "enemies",
+      "x": 1038,
+      "y": 638,
+      "w": 117,
+      "h": 162
+    },
+    "B3B.left": {
+      "atlas": "enemies",
+      "x": 1473,
+      "y": 638,
+      "w": 82,
+      "h": 121
+    },
+    "B3B.right": {
+      "atlas": "enemies",
+      "x": 1675,
+      "y": 638,
+      "w": 84,
+      "h": 121
+    },
+    "floor.1": {
+      "atlas": "environment",
+      "x": 0,
+      "y": 0,
+      "w": 627,
+      "h": 627
+    },
+    "floor.2": {
+      "atlas": "environment",
+      "x": 627,
+      "y": 0,
+      "w": 627,
+      "h": 627
+    },
+    "floor.3": {
+      "atlas": "environment",
+      "x": 0,
+      "y": 627,
+      "w": 627,
+      "h": 627
+    },
+    "floor.4": {
+      "atlas": "environment",
+      "x": 627,
+      "y": 627,
+      "w": 627,
+      "h": 627
+    }
+  },
+  "inspection": {
+    "actors": {
+      "width": 1024,
+      "height": 1536,
+      "bytes": 2428314,
+      "transparent_fraction": 0.5436
+    },
+    "modules": {
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2256076,
+      "transparent_fraction": 0.4792
+    },
+    "enemies": {
+      "width": 1774,
+      "height": 887,
+      "bytes": 2004434,
+      "transparent_fraction": 0.5188
+    },
+    "environment": {
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2706392
+    }
+  }
+}

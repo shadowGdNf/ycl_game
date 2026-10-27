@@ -1,0 +1,58 @@
+BACKPACK MECHA — RASTER ASSET PROVENANCE
+
+Mode: built-in image_gen; transparent_background=true.
+Ground atlas exception: transparent_background=false because floor tiles are opaque.
+Reference: assets/source/art-direction.png (project concept art, also generated with built-in image_gen).
+The reference is style guidance, not a sprite extraction target.
+No image files are cropped, recolored, resized or modified offline. Runtime Canvas samples atlas cells.
+
+ATLAS: environment
+Use case: stylized-concept
+Asset type: ground texture atlas for a readable 2D top-down industrial mech action game.
+Use the supplied image only as visual style reference: hand-painted industrial toy world with simple dark outlines and worn industrial surfaces.
+Generate a square atlas of EXACTLY 2 columns and 2 rows. Each quadrant is a completely filled square top-down ground tile, no perspective tilt. No gaps, no labels, no frames. Keep every quadrant similar in low contrast and low saturation so orange player sprites and red warning zones remain readable. No objects taller than the floor, no characters, no weapons, no light blooms.
+Top-left: scrapyard floor, deep blue-gray battered slate slabs, subtle welded seams, sparse small bolts and a few faint pale scuff marks.
+Top-right: foundry floor, dark blue-gray iron plates with muted copper seams and sparse square grated ventilation patches, no glowing lava.
+Bottom-left: orbital freight dock, dark desaturated navy steel plates, narrow recessed tracks and subtle pale gray cargo guide lines.
+Bottom-right: neutral dark slate maintenance floor, large iron panels and faint scratched paint.
+Soft overhead illumination, subtle brush texture, unambiguous flat ground. No dramatic shadows, no orange/red warning stripes, no neon light, no arrows, no text. All floor patterns remain visually quiet at small game scale. Each quadrant can repeat with subtle visible joints. Entire image opaque, 1536 x 1536 if possible.
+
+ATLAS: actors
+Use case: stylized-concept
+Asset type: production transparent sprite atlas for a 2D top-down mech roguelite.
+Input image 1 is a style reference only: match its hand-painted industrial toy shapes, cream-and-orange worn armor, dark outlines and cyan energy, but simplify small scratches for tiny gameplay sprites.
+Generate ONE portrait atlas on a genuinely transparent background. EXACTLY 4 equal columns and 6 equal rows, 24 isolated objects, centered in their own cells, generous 18% transparent padding. No labels, no text, no grid lines, no panels, no background, no cast shadows. Uniform scale within each row. Camera fixed three-quarter top-down. Output 1024 x 1536 pixels if possible.
+Rows 1 through 4 contain TORSOS ONLY, with head, shoulders and waist, but WITHOUT LEGS, WITHOUT WEAPONS and WITHOUT BACKPACK, for a modular layered renderer. Each row has the SAME mech viewed in four directions, left-to-right: front facing down-screen; right side facing screen-right; rear facing up-screen; left side facing screen-left.
+Row 1: Scavenger, friendly rounded cream/orange torso, round dark face with two cyan eyes, compact shoulders.
+Row 2: Bulwark, wide square cream/orange armored torso with heavy shoulder plates, narrow cyan visor.
+Row 3: Kestrel, slim orange/ivory angular torso, pointed compact head, cyan slit eyes, fast scout silhouette.
+Row 4: Hive, rounded ivory/orange torso, twin compact side launch pods, single cyan face strip.
+Row 5 has four independent pairs of mechanical LEGS ONLY, with a waist connector, one pair per mech in the same left-to-right order: short scavenger boots; wide heavy bulwark boots; slender Kestrel spring legs; squat Hive mechanical legs. Front/down-screen top-down view, isolated parts without torsos.
+Row 6 has four independent BACKPACKS ONLY, one per mech same left-to-right order: compact salvage frame with orange tank; broad layered armor battery; twin slim thrusters; twin drone docking boxes. Same top-down view, isolated.
+Every item fully contained inside its cell. Preserve actual alpha transparency. Coherent illustrated game asset finish, strong readable silhouettes, soft overhead light. No humans, no logos, no numbers, no scene, no ground.
+
+ATLAS: modules
+Use case: stylized-concept
+Asset type: production transparent module/weapon atlas for a 2D top-down mech roguelite.
+Input image 1 is a style reference only. Match hand-painted industrial toy machinery, chunky worn cream-and-orange metal, dark outlines, cyan energy. Simplify for icons and small rotating weapon sprites.
+Generate ONE square atlas on a genuinely transparent background, EXACTLY 6 equal columns and 6 equal rows, 36 isolated objects. Each object centered in its own equal cell with generous 18% transparent padding. No text, labels, numbers, dividers, grid lines, panels, scenery or shadows. Output 1536 x 1536 if possible. Six columns are read left-to-right in every row.
+All weapons in rows 1 and 2 have barrels or attack end pointing exactly to the RIGHT, with the connector toward left, viewed in fixed 3/4 top-down perspective. Compact horizontal silhouette. Nothing cropped.
+Row 1: 1 rivet gun, chunky short orange barrel; 2 shotgun, wide twin barrel; 3 water pressure gun with cyan water tank; 4 electric arc coil, cyan conductor rings; 5 flamethrower with small orange fuel tank; 6 oil canister launcher with dark green oil canister.
+Row 2: 1 magnetic railgun, long twin rails cyan center; 2 shock hammer, massive square industrial hammer head; 3 circular saw weapon with silver toothed disk; 4 missile rack with three miniature orange missiles; 5 drone hive, compact twin drone hangar with tiny folded drone; 6 freeze nozzle with pale blue coolant cartridge.
+Rows 3 and 4 are support components, small mechanical objects rather than guns.
+Row 3: 1 damage amplifier coil; 2 rapid-fire toothed gear; 3 split prism with two cyan lens halves; 4 ricochet bent spring plate; 5 conductive copper contact fork; 6 fuel catalyst double cylinder.
+Row 4: 1 armor-piercing metal wedge; 2 energy siphon rectifier with cyan diode; 3 explosive fuse with capped red wire; 4 drone command relay antenna; 5 heavy compression spring; 6 frost bearing with tiny blue ice crystals.
+Rows 5 and 6 are utility modules.
+Row 5: 1 orange-and-cyan battery; 2 round cyan shield generator; 3 folded repair robot arm; 4 horseshoe electromagnet; 5 optical aiming scope; 6 stacked ivory armor plates.
+Row 6: 1 pair of orange thruster jets; 2 emergency capacitor with cyan core; 3 salvage processor box with recycling-shaped three mechanical arrows; 4 ammo reloader box with brass cartridges; 5 small orange decoy beacon with cyan lamp; 6 glass fuse cartridge.
+Actual transparent alpha background, consistent palette and line weight, no drawn checkerboard. No UI borders, no type, no branding.
+
+ATLAS: enemies
+Use case: stylized-concept
+Asset type: production transparent enemy-and-boss sprite atlas for a 2D top-down mech roguelite.
+Input image 1 is a STYLE REFERENCE for the illustrated industrial toy machinery and enemy silhouettes. Use rusty red, dark slate metal, ochre weathering, amber/red lamps. No friendly cyan faces. Strong bold contours and readable simple shapes. Fixed three-quarter top-down view, all units face down-screen.
+Generate ONE wide transparent atlas, EXACTLY 6 equal columns and 3 equal rows, 18 isolated complete machines, centered in equal cells with 18% transparent padding. No text, labels, numbers, grid lines, borders, shadows, backgrounds or scene. Output 1536 x 768 if possible. Each object fits entirely inside its own cell.
+Row 1, columns left to right: 1 scavenger mite, tiny round three-legged scrap robot; 2 fast spike bug, narrow red metal dart with four legs; 3 armored scrap hauler, wide heavy rectangular tracked machine; 4 needle sentinel, tall tripod turret with thin needle gun; 5 exploding battery robot, red-orange battery on tiny legs; 6 maintenance orb, hovering mechanical sphere with small repair claws.
+Row 2: 1 shield guardian, angular robot with huge rectangular frontal shield; 2 burrowing drill robot, tapered drill snout and red crawler base; 3 cable spider, low six-legged robot with a cable spool; 4 splitting cargo crate, red industrial crate on crab legs; 5 magnetic storm thrower, round red emitter with ring antennas; 6 heavy sweeper vehicle, broad front cleaning drum and armored cab.
+Row 3 are BIG BOSS designs, still entirely within each same-size cell but with greater visible mass: 1 roller king, huge road roller with giant frontal drum and two red hydraulic arms; 2 magnetic crane boss, tracked crane carrying a round hanging electromagnet; 3 furnace crab, six-legged industrial crab with orange furnace mouth and smokestacks; 4 magnetic twin boss, TWO matching small angular magnetic drones beside each other inside one cell; 5 prime recycler, towering red scrap-processing machine with two crusher arms and a circular central red eye; 6 orbital carrier, broad cargo spaceship hovering with four downward thrusters and red missile pods.
+Cohesive polished raster game assets with actual alpha transparency. Not photorealistic, no humans, no text, no ground.

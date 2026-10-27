@@ -1,0 +1,68 @@
+
+> backpack-mecha@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+✔ every weapon has an executable attack and damages an in-range target (29.768208ms)
+✔ wet electric bonus is replaced by conductive contact and chains never revisit a target (1.283458ms)
+✔ split shots are independent, while support modifiers still use the same weapon instance (0.498375ms)
+✔ oil and burning create bounded secondary explosions without recursive trigger loops (1.723667ms)
+✔ normal enemies freeze but a boss accumulates stagger without a permanent freeze (0.884625ms)
+✔ two connected drone hives stay at five drones and recycler never recursively counts bonus shots (1.409625ms)
+✔ shared boss bodies take one explosion hit but separate projectiles may each hit (0.666834ms)
+✔ split children grant normal kill events but cannot duplicate scrap or kill-budget rewards (2.586958ms)
+✔ insurance resolves once, shield overflow reaches hull, and hit protection blocks repeated damage (0.386208ms)
+✔ dash grants brief immunity, cooldown and overload timers advance only through simulation (0.304458ms)
+✔ normal-wave timeout wins before a late projectile can kill the player (0.17825ms)
+✔ JSON round trip preserves live bullets, status layers, cooldowns and deterministic RNG (5.114834ms)
+✔ 30Hz and 60Hz rendering inputs produce the same 60Hz simulation (1.405375ms)
+✔ safe-recovery protocol is paid once by run settlement, not by both combat and economy (2.1155ms)
+✔ new run uses mode restrictions, legal linked starter, independent deterministic streams (9.078708ms)
+✔ placement is atomic, corners are locked, rotation uses quarter turns (2.30075ms)
+✔ connections enforce orthogonal adjacency, compatibility and two slots per weapon (0.974292ms)
+✔ reserve and equipped item caps are independent; removing a battery can block battle (5.594541ms)
+✔ shop produces distinct category slots, uses independent RNG and never exposes first-act rare modules (13.035708ms)
+✔ lock survives refresh and wave transition, only one offer may be locked (0.628834ms)
+✔ failed purchases preserve cash and RNG; successful buying enters reserve (0.355166ms)
+✔ sale undo restores the entire transaction chain including purchases and refresh RNG (0.565417ms)
+✔ damaged sale and reward journals fail atomically without erasing the active run (0.58075ms)
+✔ upgrade gating, standard sale value and once-per-shop repairs (3.740458ms)
+✔ shop pity guarantees a compatible support and locked free slot defers tag guarantee (1.359917ms)
+✔ prototype ends on wave four; demo ends on eight without third-act rewards (1.92375ms)
+✔ full campaign awards sequential expansion and protocols, unique events, and one final settlement (2.289666ms)
+✔ loss does not award survival income or advance; lethal zero HP overrides a won flag (0.11275ms)
+✔ all eight event branches are atomic and target-based actions require explicit selection (6.95425ms)
+✔ an elite reward and scheduled module reward both resolve without duplicate currency (0.312083ms)
+✔ three demo builds fit 23 cells, 12 base power, tier II and the 399.4 scrap budget (3.383625ms)
+✔ prototype, demo and full encounters exclude content that is not in their tier (1.611125ms)
+✔ budget ramps are 20/50/30 percent and route/event risk does not multiply twice (0.353375ms)
+✔ arena templates have navigable routes from spawn ring to center and across corners (84.248375ms)
+✔ wave spawning respects budget, population caps and visible spawn warning (145.646416ms)
+✔ all six bosses expose complete telegraphs and execute phase-specific choreography (42.851875ms)
+✔ boss primary wind-ups never deal immediate damage before their warning ends (1.06875ms)
+✔ compactor charge can be dodged with the slow chassis and its damage stays inside the telegraph (0.737584ms)
+✔ orbital bombing always leaves two wide safe corridors and twin beam endpoints are fixed (0.138584ms)
+✔ real first-wave simulation reaches victory and settles actual pickup income exactly once (66.868459ms)
+✔ real populated battle snapshot resumes with the same inputs, RNG, entities and outcome (75.164958ms)
+✔ real combat repeatedly activates automatic overdrive for 42 seconds while a manually held input triggers once (65.123708ms)
+✔ simulated results traverse all modes, reward checkpoints, upgrade gates, save reloads and profile unlocks (4.713583ms)
+✔ fixed-seed shop and event sequence is identical after every preparation checkpoint reload (2.52725ms)
+✔ protocol and event modifiers are consumed by combat and expire at the intended boundary (0.372125ms)
+✔ drone and full-clear unlocks follow their actual progression API conditions (0.097625ms)
+✔ fresh profiles do not share mutable arrays or settings (0.831375ms)
+✔ valid prep save preserves progress, timestamp and deterministic state without aliasing (0.593666ms)
+✔ unknown version keeps valid permanent progress but discards the incompatible active run (0.106583ms)
+✔ profile sanitization filters unknown unlocks and clamps settings and scores (0.145916ms)
+✔ incomplete or invalid run records cannot enter a dead-end UI phase or throw on the next command (0.45675ms)
+✔ structurally valid unfinished loadout remains recoverable between battles (0.479208ms)
+✔ complete battle state survives JSON storage with runtime simulation fields intact (0.911083ms)
+✔ invalid battle snapshots recover at prep rather than casting an incomplete view into runtime state (1.386667ms)
+✔ battle mismatch is rejected without losing permanent progress (0.2575ms)
+✔ missing IndexedDB reports failed saves and keeps the queue usable (0.321333ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 409.441666

@@ -23,6 +23,12 @@ npm test       # 规则、存档、控制器回归测试
 
 `dist/` 是独立静态发布包，可放在支持 ES modules 的 HTTP/HTTPS 静态服务器上。不要直接双击 HTML 以 file:// 方式运行。
 
+## GitHub Pages 试玩与更新
+
+[线上试玩（免登录）](https://shadowgdnf.github.io/ycl_game/jelly-flow/dist/)
+
+试玩与《新启程》共用 `shadowGdNf/ycl_game` 仓库的 GitHub Pages。`dist/` 纳入版本管理，资源使用相对路径；每次修改源码后执行 `npm run build`，将源码和生成的 `dist/` 一起提交并推送到仓库 `main` 分支。等待 `pages build and deployment` 成功后即可访问更新后的版本，详见[仓库发布说明](../README.md#更新-github-pages-试玩)。
+
 ## 玩法和操作
 
 - 点击软糖槽或其下方编号按钮，释放最前面连续同色的一组软糖。
@@ -62,4 +68,4 @@ npm test       # 规则、存档、控制器回归测试
 
 未接入广告、支付、云端排行榜或远程行为分析。控制器预留了内存事件记录位置，当前不上传任何游戏事件。后续建议先安排英语玩家试玩，观察首次理解、关卡失败与继续玩的意愿，再调整节奏、关卡和反馈。
 
-发布使用 Sites 私有试玩站点，保持创建时的访问范围。正式测试前仍需补充 Android Chrome、iPhone Safari 和目标 TikTok 容器的真机检查。
+正式测试前仍需补充 Android Chrome、iPhone Safari 和目标 TikTok 容器的真机检查。

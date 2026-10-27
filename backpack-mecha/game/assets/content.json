@@ -1,0 +1,1518 @@
+{
+  "modules": [
+    {
+      "id": "W01",
+      "name": "铆钉枪",
+      "kind": "weapon",
+      "shape": [
+        "##"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 24,
+      "effect": "8伤害／0.40秒；射程400；单发直线弹。",
+      "tags": [
+        "实弹",
+        "单弹"
+      ],
+      "damage": 8,
+      "interval": 0.4,
+      "en": "Rivet gun",
+      "effectEn": "8 damage every 0.40s. Straight projectile.",
+      "values": [],
+      "color": "#F2C47B",
+      "range": 400,
+      "attack": "bullet"
+    },
+    {
+      "id": "W02",
+      "name": "霰弹炮",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "#."
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "effect": "5弹丸×5伤害／1.0秒；射程240；40度散射。",
+      "tags": [
+        "实弹",
+        "散射"
+      ],
+      "damage": 25,
+      "interval": 1,
+      "en": "Scatter cannon",
+      "effectEn": "5 pellets × 5 damage every 1s; 40° spread.",
+      "values": [],
+      "color": "#ECAA72",
+      "range": 240,
+      "attack": "scatter"
+    },
+    {
+      "id": "W03",
+      "name": "水压枪",
+      "kind": "weapon",
+      "shape": [
+        "##"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 24,
+      "effect": "4伤害／0.60秒；射程360；命中施加潮湿3秒。",
+      "tags": [
+        "单弹",
+        "水"
+      ],
+      "damage": 4,
+      "interval": 0.6,
+      "en": "Water lance",
+      "effectEn": "4 damage every 0.60s; applies Wet for 3s.",
+      "values": [],
+      "color": "#70CDE3",
+      "range": 360,
+      "attack": "water"
+    },
+    {
+      "id": "W04",
+      "name": "电弧线圈",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        ".#"
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "effect": "主目标10伤害／0.70秒；射程320；再跳2个目标各6伤害，跳距140。主目标潮湿时额外跳1次。",
+      "tags": [
+        "电"
+      ],
+      "damage": 10,
+      "interval": 0.7,
+      "en": "Arc coil",
+      "effectEn": "10 damage every 0.70s; chains twice for 6 damage. Wet adds a jump.",
+      "values": [],
+      "color": "#56E3CC",
+      "range": 320,
+      "attack": "arc"
+    },
+    {
+      "id": "W05",
+      "name": "喷火器",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "##"
+      ],
+      "power": 3,
+      "rarity": "C",
+      "price": 24,
+      "effect": "每0.20秒造成2伤害；射程160，90度锥形；每两次伤害施加1层燃烧。",
+      "tags": [
+        "火",
+        "持续"
+      ],
+      "damage": 2,
+      "interval": 0.2,
+      "en": "Flamethrower",
+      "effectEn": "2 damage every 0.20s in a 90° cone; applies Burn every second hit.",
+      "values": [],
+      "color": "#F99759",
+      "range": 160,
+      "attack": "flame"
+    },
+    {
+      "id": "W06",
+      "name": "油罐弹射器",
+      "kind": "weapon",
+      "shape": [
+        "###"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 24,
+      "effect": "6伤害／1.50秒；射程380，半径70；施加油污4秒。",
+      "tags": [
+        "油",
+        "爆炸"
+      ],
+      "damage": 6,
+      "interval": 1.5,
+      "en": "Oil lobber",
+      "effectEn": "6 area damage every 1.50s; applies Oil for 4s.",
+      "values": [],
+      "color": "#A5B459",
+      "range": 380,
+      "attack": "oil"
+    },
+    {
+      "id": "W07",
+      "name": "磁轨炮",
+      "kind": "weapon",
+      "shape": [
+        "###"
+      ],
+      "power": 4,
+      "rarity": "R",
+      "price": 48,
+      "effect": "55伤害／2.0秒；射程620；最多穿透3个目标，后续目标依次承受75%与56.25%伤害。",
+      "tags": [
+        "实弹",
+        "单弹"
+      ],
+      "damage": 55,
+      "interval": 2,
+      "en": "Rail cannon",
+      "effectEn": "55 damage every 2s; pierces three enemies at 100%, 75%, 56.25%.",
+      "values": [],
+      "color": "#F6DB98",
+      "range": 620,
+      "attack": "rail"
+    },
+    {
+      "id": "W08",
+      "name": "震荡锤",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "##"
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "effect": "24伤害／1.0秒；射程90，120度扇形；击退40；对Boss造成20失衡值。",
+      "tags": [
+        "近战"
+      ],
+      "damage": 24,
+      "interval": 1,
+      "en": "Shock hammer",
+      "effectEn": "24 damage every 1s in a 120° arc; knockback and 20 boss stagger.",
+      "values": [],
+      "color": "#F9B574",
+      "range": 90,
+      "attack": "melee"
+    },
+    {
+      "id": "W09",
+      "name": "圆锯盘",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "#."
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "effect": "每0.25秒造成6伤害；周身半径72；每次最多命中6个目标。",
+      "tags": [
+        "近战",
+        "持续"
+      ],
+      "damage": 6,
+      "interval": 0.25,
+      "en": "Saw disc",
+      "effectEn": "6 damage every 0.25s; hits up to six enemies around you.",
+      "values": [],
+      "color": "#B8CDD3",
+      "range": 72,
+      "attack": "saw"
+    },
+    {
+      "id": "W10",
+      "name": "导弹架",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "##"
+      ],
+      "power": 4,
+      "rarity": "R",
+      "price": 48,
+      "effect": "32伤害／1.40秒；射程500；半径75爆炸，同一目标只吃一次。",
+      "tags": [
+        "爆炸"
+      ],
+      "damage": 32,
+      "interval": 1.4,
+      "en": "Missile rack",
+      "effectEn": "32 area damage every 1.40s; one hit per target.",
+      "values": [],
+      "color": "#F2A16E",
+      "range": 500,
+      "attack": "missile"
+    },
+    {
+      "id": "W11",
+      "name": "无人机巢",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "##"
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "effect": "2架无人机各4伤害／0.50秒；攻击机体周围450内目标；无人机不可被攻击。",
+      "tags": [
+        "召唤"
+      ],
+      "damage": 8,
+      "interval": 0.5,
+      "en": "Drone hive",
+      "effectEn": "Two drones each deal 4 damage every 0.50s.",
+      "values": [],
+      "color": "#7AD8C8",
+      "range": 450,
+      "attack": "drone"
+    },
+    {
+      "id": "W12",
+      "name": "冷冻喷头",
+      "kind": "weapon",
+      "shape": [
+        "##"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 24,
+      "effect": "5伤害／0.50秒；射程300；每次命中附加1层寒冷。",
+      "tags": [
+        "单弹",
+        "冰"
+      ],
+      "damage": 5,
+      "interval": 0.5,
+      "en": "Cryo nozzle",
+      "effectEn": "5 damage every 0.50s; applies Chill.",
+      "values": [],
+      "color": "#A2DEEF",
+      "range": 300,
+      "attack": "ice"
+    },
+    {
+      "id": "S01",
+      "name": "增幅线圈",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "连接武器直接伤害+20%／27%／36%。",
+      "tags": [
+        "全部"
+      ],
+      "en": "Amplifier",
+      "effectEn": "Direct damage +20 / 27 / 36%.",
+      "values": [
+        0.2,
+        0.27,
+        0.36
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S02",
+      "name": "速射齿轮",
+      "kind": "support",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "连接武器攻击速度+15%／20%／27%。",
+      "tags": [
+        "全部"
+      ],
+      "en": "Rapid-fire gear",
+      "effectEn": "Attack speed +15 / 20 / 27%.",
+      "values": [
+        0.15,
+        0.2,
+        0.27
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S03",
+      "name": "分裂镜",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 2,
+      "rarity": "U",
+      "price": 28,
+      "effect": "单弹武器每次额外发射1枚；所有弹丸伤害变为65%／75%／85%；状态施加保留。",
+      "tags": [
+        "单弹"
+      ],
+      "en": "Split lens",
+      "effectEn": "One extra single shot; damage per shot ×65 / 75 / 85%.",
+      "values": [
+        0.65,
+        0.75,
+        0.85
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S04",
+      "name": "回弹片",
+      "kind": "support",
+      "shape": [
+        "#",
+        "#"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 28,
+      "effect": "实弹或冰弹可额外碰墙反弹2次；每次反弹伤害乘65%／75%／85%；同一弹丸对同目标间隔至少0.30秒。",
+      "tags": [
+        "实弹",
+        "冰"
+      ],
+      "en": "Ricochet plate",
+      "effectEn": "Two wall bounces; damage after each bounce ×65 / 75 / 85%.",
+      "values": [
+        0.65,
+        0.75,
+        0.85
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S05",
+      "name": "导电触点",
+      "kind": "support",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "潮湿电伤加成由25%提升至40%／45%／52%；额外跳1个目标，全链最多5个不同目标。",
+      "tags": [
+        "电"
+      ],
+      "en": "Conductive contact",
+      "effectEn": "Wet electric bonus becomes 40 / 45 / 52%; one extra jump.",
+      "values": [
+        0.4,
+        0.45,
+        0.52
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S06",
+      "name": "燃油催化器",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 28,
+      "effect": "连接火焰武器引燃油污时，爆炸基础伤害由18改为30／36／42；半径由80增至100。",
+      "tags": [
+        "火"
+      ],
+      "en": "Fuel catalyst",
+      "effectEn": "Oil ignition base damage becomes 30 / 36 / 42, radius 100.",
+      "values": [
+        30,
+        36,
+        42
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S07",
+      "name": "穿甲楔",
+      "kind": "support",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "连接武器直接伤害忽略10／14／18点护甲；剩余护甲最低0。",
+      "tags": [
+        "全部"
+      ],
+      "en": "Armor wedge",
+      "effectEn": "Direct hits ignore 10 / 14 / 18 armor.",
+      "values": [
+        10,
+        14,
+        18
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S08",
+      "name": "汲能整流器",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 28,
+      "effect": "连接武器直接暴击时回复2／3／4护盾；每秒最多1次；同一轮霰弹最多触发1次。",
+      "tags": [
+        "全部"
+      ],
+      "en": "Energy rectifier",
+      "effectEn": "Direct critical hits restore 2 / 3 / 4 shield, at most once per second.",
+      "values": [
+        2,
+        3,
+        4
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S09",
+      "name": "爆破引信",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 28,
+      "effect": "连接武器直接爆炸命中燃烧目标时额外造成8／11／14爆炸伤害；每目标冷却1秒。",
+      "tags": [
+        "爆炸"
+      ],
+      "en": "Blast fuse",
+      "effectEn": "Explosive hits on burning targets add 8 / 11 / 14 damage.",
+      "values": [
+        8,
+        11,
+        14
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S10",
+      "name": "指令中继",
+      "kind": "support",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 28,
+      "effect": "连接无人机巢增加1架；该巢全部无人机伤害乘0.90／1.00／1.10。",
+      "tags": [
+        "召唤"
+      ],
+      "en": "Command relay",
+      "effectEn": "One extra drone; drone damage ×90 / 100 / 110%.",
+      "values": [
+        0.9,
+        1,
+        1.1
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S11",
+      "name": "蓄力弹簧",
+      "kind": "support",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "近战范围+20%／27%／36%；冲刺后2秒内首次该武器攻击伤害+40%／55%／70%。",
+      "tags": [
+        "近战"
+      ],
+      "en": "Charge spring",
+      "effectEn": "Melee range +20 / 27 / 36%; first attack after dash deals +40 / 55 / 70%.",
+      "values": [
+        0.2,
+        0.27,
+        0.36
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "S12",
+      "name": "低温轴承",
+      "kind": "support",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 18,
+      "effect": "寒冷每层额外减速2个百分点，总减速上限40%；冻结时长+0.2／0.3／0.4秒；对Boss改为额外5／7／9失衡。",
+      "tags": [
+        "冰"
+      ],
+      "en": "Cryo bearing",
+      "effectEn": "Chill slows 2% more per stack; freeze +0.2 / 0.3 / 0.4s.",
+      "values": [
+        0.2,
+        0.3,
+        0.4
+      ],
+      "color": "#63C8BC"
+    },
+    {
+      "id": "U01",
+      "name": "扩容电池",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 0,
+      "rarity": "U",
+      "price": 24,
+      "effect": "电力上限+2／3／4；同名仅1件。",
+      "tags": [],
+      "capacity": [
+        2,
+        3,
+        4
+      ],
+      "en": "Power battery",
+      "effectEn": "Power capacity +2 / 3 / 4.",
+      "values": [
+        2,
+        3,
+        4
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U02",
+      "name": "护盾发生器",
+      "kind": "utility",
+      "shape": [
+        "##",
+        "##"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 16,
+      "effect": "护盾上限+25／34／45；脱战恢复额外+1／1.5／2点每秒。",
+      "tags": [],
+      "en": "Shield generator",
+      "effectEn": "Shield capacity +25 / 34 / 45; regeneration +1 / 1.5 / 2 per second.",
+      "values": [
+        25,
+        34,
+        45
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U03",
+      "name": "维修臂",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 24,
+      "effect": "战斗每10秒恢复1／1.4／1.8生命；单场最多8／10／12；进入商店不计时。",
+      "tags": [],
+      "en": "Repair arm",
+      "effectEn": "Recover 1 / 1.4 / 1.8 HP every 10s, with a per-wave cap.",
+      "values": [
+        1,
+        1.4,
+        1.8
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U04",
+      "name": "磁吸器",
+      "kind": "utility",
+      "shape": [
+        "#"
+      ],
+      "power": 0,
+      "rarity": "C",
+      "price": 16,
+      "effect": "拾取半径+70／95／126；主动拾取一个回收包让冲刺冷却减少0.2秒，每秒最多一次。",
+      "tags": [],
+      "en": "Magnet",
+      "effectEn": "Pickup radius +70 / 95 / 126; pickups reduce dash cooldown.",
+      "values": [
+        70,
+        95,
+        126
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U05",
+      "name": "瞄准镜",
+      "kind": "utility",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "C",
+      "price": 16,
+      "effect": "直接伤害暴击率+10／14／18个百分点；全局上限70%。",
+      "tags": [],
+      "en": "Targeting scope",
+      "effectEn": "Critical chance +10 / 14 / 18%.",
+      "values": [
+        0.1,
+        0.14,
+        0.18
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U06",
+      "name": "复合装甲",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 0,
+      "rarity": "C",
+      "price": 16,
+      "effect": "护甲+10／14／18；移动速度-3%。",
+      "tags": [],
+      "en": "Composite armor",
+      "effectEn": "Armor +10 / 14 / 18; movement speed −3%.",
+      "values": [
+        10,
+        14,
+        18
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U07",
+      "name": "推进器",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 24,
+      "effect": "移速+12%／16%／22%；冲刺冷却减少1／1.3／1.8秒，最低3.5秒。",
+      "tags": [],
+      "en": "Thrusters",
+      "effectEn": "Move speed +12 / 16 / 22%; dash cooldown −1 / 1.3 / 1.8s.",
+      "values": [
+        0.12,
+        0.16,
+        0.22
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U08",
+      "name": "应急电容",
+      "kind": "utility",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 24,
+      "effect": "护盾被打破时对半径150敌人造成20／27／36电伤，随后1秒受到伤害减少30%；冷却8秒。",
+      "tags": [],
+      "en": "Emergency capacitor",
+      "effectEn": "On shield break, deal 20 / 27 / 36 electric damage; 8s cooldown.",
+      "values": [
+        20,
+        27,
+        36
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U09",
+      "name": "回收协议",
+      "kind": "utility",
+      "shape": [
+        "#"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 24,
+      "effect": "水火电冰或油污爆炸击杀回复2／3／4护盾；冷却0.5秒；只处理最终击杀一次。",
+      "tags": [],
+      "en": "Recovery protocol",
+      "effectEn": "Elemental kills restore 2 / 3 / 4 shield, 0.5s cooldown.",
+      "values": [
+        2,
+        3,
+        4
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U10",
+      "name": "弹药回收器",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "U",
+      "price": 24,
+      "effect": "每把武器分别累计6／5／4次主攻击，追加一次不占冷却的攻击；追加攻击不增加计数。",
+      "tags": [],
+      "en": "Ammo recycler",
+      "effectEn": "Every 6 / 5 / 4 attacks adds one free attack. No recursion.",
+      "values": [
+        6,
+        5,
+        4
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U11",
+      "name": "诱饵信标",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "R",
+      "price": 36,
+      "effect": "冲刺结束后在起点生成20／27／36生命诱饵，持续3／4／5秒；冷却10秒；不能强制转移Boss仇恨。",
+      "tags": [],
+      "en": "Decoy beacon",
+      "effectEn": "Dashing leaves a decoy for 3 / 4 / 5s; 10s cooldown.",
+      "values": [
+        3,
+        4,
+        5
+      ],
+      "color": "#B6BFCC"
+    },
+    {
+      "id": "U12",
+      "name": "保险熔断器",
+      "kind": "utility",
+      "shape": [
+        "##"
+      ],
+      "power": 1,
+      "rarity": "R",
+      "price": 36,
+      "effect": "一局仅一次：受到致命伤害后保留15／20／25生命并无敌1秒；熔断后失效，下一次休整移除。重新购买不能重置次数。",
+      "tags": [],
+      "en": "Insurance fuse",
+      "effectEn": "Once per run: survive a lethal hit with 15 / 20 / 25 HP.",
+      "values": [
+        15,
+        20,
+        25
+      ],
+      "color": "#B6BFCC"
+    }
+  ],
+  "chassis": [
+    {
+      "id": "scavenger",
+      "name": "拾荒者",
+      "en": "Scavenger",
+      "hp": 100,
+      "shield": 20,
+      "speed": 210,
+      "armor": 0,
+      "dash": 6,
+      "trait": "拾取基础半径由60增至90；便于新手保持资源获取。",
+      "traitEn": "Pickup radius +30. A versatile salvage rig.",
+      "unlock": "初始"
+    },
+    {
+      "id": "bulwark",
+      "name": "堡垒",
+      "en": "Bulwark",
+      "hp": 130,
+      "shield": 30,
+      "speed": 180,
+      "armor": 10,
+      "dash": 8,
+      "trait": "高容错、短射程路线；低机动与较长冲刺冷却构成代价。",
+      "traitEn": "Heavy armor and shields. Slower movement.",
+      "unlock": "完成第一章"
+    },
+    {
+      "id": "kestrel",
+      "name": "游隼",
+      "en": "Kestrel",
+      "hp": 80,
+      "shield": 15,
+      "speed": 245,
+      "armor": 0,
+      "dash": 5,
+      "trait": "适合远距精准与回弹；失误承受能力较低。",
+      "traitEn": "Fast movement and short dash cooldown.",
+      "unlock": "任意机体通关"
+    },
+    {
+      "id": "hive",
+      "name": "蜂巢",
+      "en": "Hive",
+      "hp": 90,
+      "shield": 20,
+      "speed": 200,
+      "armor": 0,
+      "dash": 6,
+      "trait": "召唤伤害+15%；非召唤直接伤害-10%。",
+      "traitEn": "Drone damage +15%; other direct damage −10%.",
+      "unlock": "使用无人机击败第二章Boss"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "E01",
+      "name": "拾荒螨",
+      "en": "Scrap mite",
+      "act": 1,
+      "hp": 18,
+      "armor": 0,
+      "speed": 90,
+      "damage": 8,
+      "cost": 1,
+      "behavior": "chase",
+      "radius": 13
+    },
+    {
+      "id": "E02",
+      "name": "疾跑钉虫",
+      "en": "Needle runner",
+      "act": 1,
+      "hp": 12,
+      "armor": 0,
+      "speed": 150,
+      "damage": 6,
+      "cost": 1,
+      "behavior": "runner",
+      "radius": 11
+    },
+    {
+      "id": "E03",
+      "name": "重壳搬运机",
+      "en": "Heavy hauler",
+      "act": 1,
+      "hp": 90,
+      "armor": 20,
+      "speed": 55,
+      "damage": 14,
+      "cost": 4,
+      "behavior": "tank",
+      "radius": 22
+    },
+    {
+      "id": "E04",
+      "name": "针刺哨兵",
+      "en": "Pin sentry",
+      "act": 1,
+      "hp": 32,
+      "armor": 0,
+      "speed": 65,
+      "damage": 9,
+      "cost": 2,
+      "behavior": "ranged",
+      "radius": 16
+    },
+    {
+      "id": "E05",
+      "name": "自爆电池",
+      "en": "Volatile cell",
+      "act": 1,
+      "hp": 24,
+      "armor": 0,
+      "speed": 105,
+      "damage": 18,
+      "cost": 2,
+      "behavior": "suicide",
+      "radius": 14
+    },
+    {
+      "id": "E06",
+      "name": "维修浮球",
+      "en": "Repair orb",
+      "act": 2,
+      "hp": 36,
+      "armor": 0,
+      "speed": 70,
+      "damage": 0,
+      "cost": 3,
+      "behavior": "healer",
+      "radius": 16
+    },
+    {
+      "id": "E07",
+      "name": "盾牌卫兵",
+      "en": "Shield guard",
+      "act": 2,
+      "hp": 65,
+      "armor": 10,
+      "speed": 65,
+      "damage": 12,
+      "cost": 3,
+      "behavior": "shield",
+      "radius": 20
+    },
+    {
+      "id": "E08",
+      "name": "掘地钻头",
+      "en": "Burrow drill",
+      "act": 2,
+      "hp": 50,
+      "armor": 0,
+      "speed": 120,
+      "damage": 14,
+      "cost": 3,
+      "behavior": "burrow",
+      "radius": 17
+    },
+    {
+      "id": "E09",
+      "name": "拖缆蜘蛛",
+      "en": "Cable spider",
+      "act": 2,
+      "hp": 40,
+      "armor": 0,
+      "speed": 75,
+      "damage": 8,
+      "cost": 2,
+      "behavior": "tether",
+      "radius": 17
+    },
+    {
+      "id": "E10",
+      "name": "分裂货箱",
+      "en": "Split crate",
+      "act": 3,
+      "hp": 60,
+      "armor": 0,
+      "speed": 60,
+      "damage": 10,
+      "cost": 3,
+      "behavior": "split",
+      "radius": 20
+    },
+    {
+      "id": "E11",
+      "name": "磁暴投射器",
+      "en": "Pulse caster",
+      "act": 3,
+      "hp": 55,
+      "armor": 0,
+      "speed": 55,
+      "damage": 14,
+      "cost": 3,
+      "behavior": "pulse",
+      "radius": 19
+    },
+    {
+      "id": "E12",
+      "name": "重型清扫车",
+      "en": "Street sweeper",
+      "act": 3,
+      "hp": 140,
+      "armor": 15,
+      "speed": 45,
+      "damage": 22,
+      "cost": 6,
+      "behavior": "charger",
+      "radius": 28
+    }
+  ],
+  "bosses": [
+    {
+      "id": "B1A",
+      "name": "压路王",
+      "act": 1,
+      "hp": 1100,
+      "armor": 10,
+      "radius": 62,
+      "speed": 55,
+      "attacks": [
+        [
+          "直线碾压",
+          "1.0秒矩形预警",
+          "冲锋1.4秒，命中20；宽90",
+          "向侧面移动；撞墙后暴露2秒"
+        ],
+        [
+          "液压重砸",
+          "0.9秒扇形预警",
+          "半径170，命中18",
+          "离开扇形或冲刺穿越边缘"
+        ],
+        [
+          "抛洒废料",
+          "0.8秒落点圆圈",
+          "3个半径45落点，各12",
+          "落点锁定后移动，随后有2秒攻击窗口"
+        ]
+      ],
+      "phases": "100%至50%按碾压、重砸、废料循环；50%以下碾压变为两次，第二次仍有0.8秒提示，两次结束后休息3秒。",
+      "counter": "近战利用撞墙硬直，远程围绕侧面；不要求特定伤害元素。",
+      "en": "The Compactor"
+    },
+    {
+      "id": "B1B",
+      "name": "磁吸起重机",
+      "act": 1,
+      "hp": 1100,
+      "armor": 10,
+      "radius": 64,
+      "speed": 45,
+      "attacks": [
+        [
+          "磁吸牵引",
+          "1.0秒地面同心环",
+          "牵引速度60持续2秒，结束砸击22",
+          "沿径向外走；基础移速始终高于牵引"
+        ],
+        [
+          "废铁摆锤",
+          "0.9秒弧形轨迹",
+          "旋转180度，命中18",
+          "走到内圈安全区或等待摆锤经过"
+        ],
+        [
+          "释放钉虫",
+          "舱门闪烁1秒",
+          "召唤3只E02；全场最多6只",
+          "清理小怪并为击杀回复流派提供资源"
+        ]
+      ],
+      "phases": "55%以下摆锤方向会反转一次，反转前再次提示0.8秒。牵引期间不同时释放摆锤。",
+      "counter": "低机动机体可用外圈提前走位；牵引不夺取输入，不关闭武器。",
+      "en": "Magnet Crane"
+    },
+    {
+      "id": "B2A",
+      "name": "熔炉蟹",
+      "act": 2,
+      "hp": 2600,
+      "armor": 15,
+      "radius": 74,
+      "speed": 45,
+      "attacks": [
+        [
+          "炉门喷流",
+          "1.0秒90度扇形",
+          "持续1.6秒，0.5秒一次12伤害",
+          "绕到侧后；结束炉门敞开3秒，受伤+25%"
+        ],
+        [
+          "熔渣落点",
+          "1.1秒落点预警",
+          "4块熔渣，各半径50，落地16；火地持续4秒",
+          "保留一条横向移动通道，至少45%场地安全"
+        ],
+        [
+          "四足踏击",
+          "0.8秒四圆预警",
+          "落点20伤害，随后1.8秒硬直",
+          "短射程机体在硬直时贴近攻击"
+        ]
+      ],
+      "phases": "60%以下喷流后追加两发落点熔渣；30%以下移动速度+15%，后摇仍保留。全程可受火焰伤害。",
+      "counter": "火地对玩家每秒12；离开后立即停止伤害；低速机体始终有步行可达的安全区。",
+      "en": "Furnace Crab"
+    },
+    {
+      "id": "B2B",
+      "name": "磁暴双子",
+      "act": 2,
+      "hp": 2600,
+      "armor": 15,
+      "radius": 40,
+      "speed": 80,
+      "attacks": [
+        [
+          "连接电缆",
+          "1.0秒虚线连接",
+          "实体电缆持续2秒，接触16",
+          "移出两机之间；预警后端点停止移动"
+        ],
+        [
+          "交叉脉冲",
+          "0.8秒四向箭头",
+          "两机交替发射十字弹，各12",
+          "保持斜向移动，射击间隔0.4秒"
+        ],
+        [
+          "电池召回",
+          "1.0秒地面标记",
+          "召唤2只E05；全场最多4只",
+          "优先击破以形成移动通道"
+        ]
+      ],
+      "phases": "50%以下两机每轮交换角色；连接电缆和交叉脉冲按序发生，不同时封路。",
+      "counter": "共享生命；同一枚爆炸或同一条电弧对共享生命池只结算一次，避免双目标倍率失控。",
+      "en": "Storm Twins"
+    },
+    {
+      "id": "B3A",
+      "name": "零号回收者",
+      "act": 3,
+      "hp": 4800,
+      "armor": 20,
+      "radius": 72,
+      "speed": 70,
+      "attacks": [
+        [
+          "扫描切割",
+          "1.2秒粗线与方向箭头",
+          "横扫激光1.5秒，每0.5秒14伤害",
+          "跟随安全扇区；激光开始后不瞬间追踪"
+        ],
+        [
+          "抓取冲击",
+          "1.0秒目标圈",
+          "抓取落点24伤害，随后圆环扩散",
+          "先离开落点，再冲刺穿过圆环"
+        ],
+        [
+          "回收流水线",
+          "1.0秒边缘灯带",
+          "两条传送带推动速度50，期间召唤4只E01",
+          "利用传送带加速；小怪最多8只"
+        ]
+      ],
+      "phases": "100%至65%仅扫描与抓取；65%至30%加入流水线；30%以下扫描后追加一次抓取，追加仍完整预警。每套动作后3秒空窗。",
+      "counter": "不读取并封禁玩家流派；保留小怪让击杀型装备有发挥机会；阶段切换1.2秒可继续受伤。",
+      "en": "Recycler Zero"
+    },
+    {
+      "id": "B3B",
+      "name": "轨道母舰",
+      "act": 3,
+      "hp": 4800,
+      "armor": 20,
+      "radius": 110,
+      "speed": 35,
+      "attacks": [
+        [
+          "轨道轰击",
+          "1.3秒条带预警",
+          "3条平行轰炸带，各24伤害",
+          "每轮至少两条宽120的安全带"
+        ],
+        [
+          "护航机群",
+          "舱门亮起1秒",
+          "释放4只低血护航机，生命30、伤害8；上限8只",
+          "击杀产生正常击杀事件，但不额外产生碎片"
+        ],
+        [
+          "船首扫射",
+          "1.0秒方向锥",
+          "连续5轮扇形弹，各10；间隔0.35秒",
+          "靠近侧舷移动；每轮存在60度安全扇区"
+        ]
+      ],
+      "phases": "70%以下两侧货舱开放，可攻击面积增大；35%以下轰炸和机群按序交替，扫射后3秒停顿。",
+      "counter": "多段船体共用生命；每个独立伤害事件只结算一次，不能因重叠碰撞体重复扣血。霰弹与分裂弹的不同弹丸仍各自结算，持续武器按伤害节拍结算。",
+      "en": "Orbital Carrier"
+    }
+  ],
+  "protocols": [
+    {
+      "id": "P01",
+      "name": "导电回路",
+      "en": "Conductive loop",
+      "effect": "潮湿持续时间+2秒；电弧首次命中潮湿主目标时伤害+10%。",
+      "effectEn": "Wet lasts 2s longer. Electric first hit on a wet target deals +10%.",
+      "tags": [
+        "电"
+      ]
+    },
+    {
+      "id": "P02",
+      "name": "余烬回收",
+      "en": "Ember recovery",
+      "effect": "油污爆炸击杀回复1生命；全场最多10生命；对Boss仅提供油污爆炸伤害+15%。",
+      "effectEn": "Oil explosions restore 1 HP on kills (max 10 per wave), +15% damage to bosses.",
+      "tags": [
+        "火",
+        "油"
+      ]
+    },
+    {
+      "id": "P03",
+      "name": "精确校准",
+      "en": "Precision calibration",
+      "effect": "距离超过250时直接伤害+15%；距离不足120时直接伤害-10%。",
+      "effectEn": "Direct damage +15% beyond 250 range, −10% within 120.",
+      "tags": [
+        "实弹"
+      ]
+    },
+    {
+      "id": "P04",
+      "name": "抗冲击结构",
+      "en": "Impact bracing",
+      "effect": "护盾上限+20；冲刺冷却+0.5秒。",
+      "effectEn": "Shield capacity +20; dash cooldown +0.5s.",
+      "tags": []
+    },
+    {
+      "id": "P05",
+      "name": "协同指令",
+      "en": "Coordinated command",
+      "effect": "无人机攻击玩家指定目标时伤害+20%；无指定目标时正常伤害。",
+      "effectEn": "Drones deal +20% damage to the selected target.",
+      "tags": [
+        "召唤"
+      ]
+    },
+    {
+      "id": "P06",
+      "name": "动能回收",
+      "en": "Kinetic recovery",
+      "effect": "冲刺后3秒实弹攻击速度+20%；重复触发只刷新时长。",
+      "effectEn": "After dashing, ballistic attack speed +20% for 3s.",
+      "tags": [
+        "实弹"
+      ]
+    },
+    {
+      "id": "P07",
+      "name": "紧急供电",
+      "en": "Emergency power",
+      "effect": "生命低于35%时攻击速度+20%；每场首次跌破阈值回复15护盾。",
+      "effectEn": "Below 35% HP: attack speed +20%; first crossing per wave restores 15 shield.",
+      "tags": []
+    },
+    {
+      "id": "P08",
+      "name": "安全回收",
+      "en": "Safe recovery",
+      "effect": "普通战结束修复8生命；Boss战结束修复额外10生命。",
+      "effectEn": "Recover 8 HP after a normal wave, or 10 extra after a boss.",
+      "tags": []
+    },
+    {
+      "id": "P09",
+      "name": "绝缘切割",
+      "en": "Insulated cutter",
+      "effect": "对寒冷或被冻结目标的直接伤害+15%；不延长冻结。",
+      "effectEn": "Direct damage +15% against chilled or frozen targets.",
+      "tags": [
+        "冰"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "EV01",
+      "name": "废料交换站",
+      "en": "Scrap exchange",
+      "description": "支付24碎片获得一件U品质I级模块三选一；或离开。",
+      "descriptionEn": "Pay 24 scrap for a choice of uncommon modules, or leave."
+    },
+    {
+      "id": "EV02",
+      "name": "危险电池",
+      "en": "Dangerous battery",
+      "description": "损失15当前生命，获得35碎片；或放弃。",
+      "descriptionEn": "Lose 15 HP for 35 scrap, or leave."
+    },
+    {
+      "id": "EV03",
+      "name": "旧式工作台",
+      "en": "Old workbench",
+      "description": "免费把一件I级模块升到II级；或获得20碎片。",
+      "descriptionEn": "Upgrade one module to tier II for free, or take 20 scrap."
+    },
+    {
+      "id": "EV04",
+      "name": "救援信号",
+      "en": "Rescue signal",
+      "description": "下一战额外出现1只精英；胜利后获得U模块三选一。",
+      "descriptionEn": "Face an extra elite next wave for an uncommon module reward."
+    },
+    {
+      "id": "EV05",
+      "name": "拆解商人",
+      "en": "Dismantler",
+      "description": "出售1件模块获得原价75%；或支付12碎片修复20生命。",
+      "descriptionEn": "Sell a module for 75% value, or pay 12 scrap to heal 20 HP."
+    },
+    {
+      "id": "EV06",
+      "name": "临时封装",
+      "en": "Sealed shipment",
+      "description": "指定一个武器标签，下一家商店第4格保证该标签可用支持模块；或立即得12碎片。",
+      "descriptionEn": "Guarantee compatible support in the next shop, or take 12 scrap."
+    },
+    {
+      "id": "EV07",
+      "name": "维修无人站",
+      "en": "Repair station",
+      "description": "免费修复25生命；或给下一战增加15临时护盾。",
+      "descriptionEn": "Repair 25 HP, or gain 15 temporary shield next wave."
+    },
+    {
+      "id": "EV08",
+      "name": "捷径货仓",
+      "en": "Freight shortcut",
+      "description": "下一战出怪预算+15%，结束获得30额外碎片；或走普通路线。",
+      "descriptionEn": "Next wave gets 15% more enemies; gain 30 extra scrap."
+    }
+  ],
+  "waves": [
+    {
+      "n": 1,
+      "act": 1,
+      "kind": "normal",
+      "duration": 40,
+      "budget": 30,
+      "base": 28,
+      "bonus": 12
+    },
+    {
+      "n": 2,
+      "act": 1,
+      "kind": "normal",
+      "duration": 45,
+      "budget": 42,
+      "base": 32,
+      "bonus": 14
+    },
+    {
+      "n": 3,
+      "act": 1,
+      "kind": "normal",
+      "duration": 50,
+      "budget": 54,
+      "base": 36,
+      "bonus": 16
+    },
+    {
+      "n": 4,
+      "act": 1,
+      "kind": "boss",
+      "duration": 45,
+      "budget": 0,
+      "base": 60,
+      "bonus": 0
+    },
+    {
+      "n": 5,
+      "act": 2,
+      "kind": "normal",
+      "duration": 45,
+      "budget": 58,
+      "base": 40,
+      "bonus": 18
+    },
+    {
+      "n": 6,
+      "act": 2,
+      "kind": "normal",
+      "duration": 50,
+      "budget": 68,
+      "base": 44,
+      "bonus": 20
+    },
+    {
+      "n": 7,
+      "act": 2,
+      "kind": "normal",
+      "duration": 55,
+      "budget": 80,
+      "base": 48,
+      "bonus": 22
+    },
+    {
+      "n": 8,
+      "act": 2,
+      "kind": "boss",
+      "duration": 60,
+      "budget": 0,
+      "base": 80,
+      "bonus": 0
+    },
+    {
+      "n": 9,
+      "act": 3,
+      "kind": "normal",
+      "duration": 50,
+      "budget": 88,
+      "base": 52,
+      "bonus": 24
+    },
+    {
+      "n": 10,
+      "act": 3,
+      "kind": "normal",
+      "duration": 55,
+      "budget": 100,
+      "base": 56,
+      "bonus": 26
+    },
+    {
+      "n": 11,
+      "act": 3,
+      "kind": "normal",
+      "duration": 60,
+      "budget": 116,
+      "base": 60,
+      "bonus": 28
+    },
+    {
+      "n": 12,
+      "act": 3,
+      "kind": "boss",
+      "duration": 75,
+      "budget": 0,
+      "base": 100,
+      "bonus": 0
+    }
+  ],
+  "demoIds": [
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07",
+    "W12",
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S12",
+    "U01",
+    "U02",
+    "U03",
+    "U04",
+    "U05",
+    "U06",
+    "U07",
+    "U09"
+  ]
+}

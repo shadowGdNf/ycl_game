@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-27T02:11:27.808Z",
+  "files": 21,
+  "bytes": 9707808,
+  "mib": 9.26,
+  "spriteRegions": 86,
+  "counts": {
+    "modules": 36,
+    "chassis": 4,
+    "enemies": 12,
+    "bosses": 6,
+    "protocols": 9,
+    "events": 8,
+    "waves": 12,
+    "demoIds": 24
+  },
+  "status": "passed",
+  "note": "Static existence/content checks only; not a physical device performance result."
+}

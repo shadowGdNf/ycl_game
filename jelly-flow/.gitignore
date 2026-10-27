@@ -1,5 +1,5 @@
 node_modules/
-dist/
+# dist/ is tracked for GitHub Pages, matching target/xinqicheng/dist/.
 .DS_Store
 *.tar.gz
 .sites-runtime/

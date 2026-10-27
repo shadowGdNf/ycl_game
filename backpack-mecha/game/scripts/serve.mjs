@@ -1,0 +1,4 @@
+import http from 'node:http';import {readFile,stat} from 'node:fs/promises';import path from 'node:path';
+const root=path.resolve('dist'),port=Number(process.env.PORT||4174);
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.json':'application/json','.wav':'audio/wav','.mp3':'audio/mpeg'};
+http.createServer(async(req,res)=>{try{const u=decodeURIComponent(new URL(req.url,'http://localhost').pathname);const f=path.resolve(root,'.'+(u.endsWith('/')?u+'index.html':u));if(!f.startsWith(root+path.sep)||!(await stat(f)).isFile())throw Error();res.writeHead(200,{'Content-Type':types[path.extname(f)]||'application/octet-stream','Cache-Control':'no-cache'});res.end(await readFile(f));}catch{res.writeHead(404);res.end('Not found');}}).listen(port,process.env.HOST||'127.0.0.1',()=>console.log(`Local: http://localhost:${port}`));
