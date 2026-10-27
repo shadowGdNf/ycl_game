@@ -1,0 +1,9 @@
+Generated using the built-in image_gen tool. Original concept art, not a playable game screenshot.
+
+Use case: stylized-concept
+Asset type: original art direction sheet for a Chinese game design document, landscape 3:2
+Primary request: Design an original, appealing 2D top-down roguelite game called Backpack Mecha: a small salvage robot with a modular backpack carrying improvised weapons, fighting abandoned industrial machines. Show art direction, not a finished game screenshot.
+Composition: an editorial concept sheet on a warm off-white background. One large three-quarter character illustration of a compact rounded orange and cream salvage mech with a teal circular face, visible modular backpack hardpoints, water tank and electric coil attachments. Beside it show two smaller gameplay-scale top-down orthographic silhouettes of the same robot and a heavy shield variant. A lower strip shows six crisp item icons: rivet gun, water tank, electric coil, steel shield, repair drone dock, exhaust fan. One small environment vignette depicts a dark slate junkyard floor with sparse amber hazard markings and readable cyan electric effects against a few rust-red enemy bots.
+Style: polished hand-painted 2D game production concept, bold clean outlines, chunky toy-like industrial forms, limited cel shading, readable at small sizes, charming but mechanically credible; restrained wear, no photorealism, no pixel art.
+Palette: dark slate #202C36, cream #E8DFC9, burnt orange #F39443, cyan teal #48D1C4, muted rust red for enemies.
+Constraints: original character designs; consistent robot identity across views; no brands, no borrowed characters, no UI labels, no text, no watermark; isolate every item icon with ample spacing. Avoid clutter, realistic military imagery, visual noise and excessive glow.
