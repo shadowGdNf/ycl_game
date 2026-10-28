@@ -9,6 +9,7 @@ import {GameAudio} from './audio.ts';
 import {overloadRequested,FocusGesture} from './input.ts';
 import {exportRunReport,preserveJournal,recordAction,recordPrepTime,recordFrame} from './journal.ts';
 import {BUILD_VERSION} from './version.ts';
+import {ForegroundFrameClock} from './performance.ts';
 import {supportFeedback,supportBenefit,connectionLesson,workshopHints} from './workshop.ts';
 
 const $=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
@@ -22,6 +23,7 @@ const audio=new GameAudio(profile.settings);
 const keys=new Set<string>();let dashQueued=false,overloadQueued=false,targetQueued:Point|undefined,targetMarker:Point|undefined,targetUntil=0;
 let joy:{id:number;x:number;y:number;dx:number;dy:number}|null=null;
 const focusGesture=new FocusGesture();
+const frameClock=new ForegroundFrameClock();
 let boardOptions:economy.PlacementPreview[]=[];
 let drag:{pointerId:number;uid:string;startX:number;startY:number;offsetX:number;offsetY:number;x:number;y:number;moved:boolean}|null=null;
 const selectedCorners=new Set<number>();
@@ -31,7 +33,7 @@ const tier=(n:number)=>['I','II','III'][n-1]??'I';
 const kind=(k:string)=>k==='weapon'?t('武器','WEAPON'):k==='support'?t('支持','SUPPORT'):t('功能','UTILITY');
 const stageName=(act:number)=>[t('废料堆场','Scrap Yard'),t('熔炼工厂','Foundry'),t('轨道货港','Orbital Port')][act-1];
 const formatTime=(n:number)=>`${Math.floor(n/60).toString().padStart(2,'0')}:${Math.floor(n%60).toString().padStart(2,'0')}`;
-function resetControls(){keys.clear();joy=null;dashQueued=false;overloadQueued=false;targetQueued=undefined;targetMarker=undefined;targetUntil=0;focusGesture.clear();drag=null;$('joystick').style.display='none';}
+function resetControls(){frameClock.reset();keys.clear();joy=null;dashQueued=false;overloadQueued=false;targetQueued=undefined;targetMarker=undefined;targetUntil=0;focusGesture.clear();drag=null;$('joystick').style.display='none';}
 function seed(){return 'RIG-'+Math.random().toString(36).slice(2,8).toUpperCase();}
 let homeSeed=seed();
 function toast(message:string){$('toast').textContent=message;$('toast').classList.add('show');window.clearTimeout(toastTimer);toastTimer=window.setTimeout(()=>$('toast').classList.remove('show'),3500);}
@@ -188,20 +190,24 @@ window.addEventListener('keydown',e=>{if((e.target as HTMLElement)?.matches('inp
 window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>{resetControls();if(battle&&screen==='run'&&!paused)setPause();});
 const battleCanvas=$<HTMLCanvasElement>('battle-canvas');
 battleCanvas.addEventListener('contextmenu',e=>{e.preventDefault();if(battle&&!paused){targetQueued=renderer.toWorld(e.clientX,e.clientY);targetMarker=targetQueued;targetUntil=performance.now()+2000;}});
-battleCanvas.addEventListener('pointerdown',e=>{if(!battle||paused)return;audio.unlock();if(e.pointerType==='mouse'){if(e.button===0){targetQueued=renderer.toWorld(e.clientX,e.clientY);targetMarker=targetQueued;targetUntil=performance.now()+2000;}return;}const moveSide=profile.settings.leftHanded?e.clientX>window.innerWidth*.45:e.clientX<window.innerWidth*.55;if(moveSide&&!joy){joy={id:e.pointerId,x:e.clientX,y:e.clientY,dx:0,dy:0};battleCanvas.setPointerCapture(e.pointerId);const j=$('joystick');j.style.display='block';j.style.left=e.clientX+'px';j.style.top=e.clientY+'px';}else if(!moveSide){focusGesture.begin(e.pointerId,e.clientX,e.clientY,performance.now());battleCanvas.setPointerCapture(e.pointerId);}e.preventDefault();});
+battleCanvas.addEventListener('pointerdown',e=>{if(!battle||paused)return;audio.unlock();if(e.pointerType==='mouse'){if(e.button===0){targetQueued=renderer.toWorld(e.clientX,e.clientY);targetMarker=targetQueued;targetUntil=performance.now()+2000;}return;}const moveSide=profile.settings.leftHanded?e.clientX>window.innerWidth*.45:e.clientX<window.innerWidth*.55;if(moveSide&&!joy){joy={id:e.pointerId,x:e.clientX,y:e.clientY,dx:0,dy:0};battleCanvas.setPointerCapture(e.pointerId);const j=$('joystick');(j.firstElementChild as HTMLElement).style.transform='translate(0px,0px)';j.style.display='block';j.style.left=e.clientX+'px';j.style.top=e.clientY+'px';}else if(!moveSide){focusGesture.begin(e.pointerId,e.clientX,e.clientY,performance.now());battleCanvas.setPointerCapture(e.pointerId);}e.preventDefault();});
 battleCanvas.addEventListener('pointermove',e=>{if(joy?.id===e.pointerId){const dx=e.clientX-joy.x,dy=e.clientY-joy.y,len=Math.max(42,Math.hypot(dx,dy));joy.dx=dx/len;joy.dy=dy/len;const knob=$('joystick').firstElementChild as HTMLElement;knob.style.transform=`translate(${joy.dx*33}px,${joy.dy*33}px)`;}else focusGesture.move(e.pointerId,e.clientX,e.clientY);});
 function releasePointer(e:PointerEvent){if(joy?.id===e.pointerId){joy=null;$('joystick').style.display='none';}focusGesture.end(e.pointerId);}
-battleCanvas.addEventListener('pointerup',releasePointer);battleCanvas.addEventListener('pointercancel',releasePointer);
+battleCanvas.addEventListener('pointerup',releasePointer);battleCanvas.addEventListener('pointercancel',releasePointer);battleCanvas.addEventListener('lostpointercapture',releasePointer);
 window.addEventListener('orientationchange',()=>{resetControls();if(battle&&screen==='run')setPause();});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){if(battle&&screen==='run')setPause();audio.suspend();persist();}else if(!paused)audio.resume();});window.addEventListener('pagehide',persist);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(battle&&screen==='run')setPause();audio.suspend();persist();}else if(!paused)audio.resume();});window.addEventListener('pagehide',()=>{resetControls();if(battle&&screen==='run')setPause();else persist();});
+window.addEventListener('pageshow',e=>{if(e.persisted){resetControls();accumulator=0;lastFrame=performance.now();if(battle&&screen==='run')setPause();}});
 function frame(now:number){const rawMs=Math.max(0,now-lastFrame);const dt=Math.min(.1,rawMs/1000);lastFrame=now;homeTime+=dt;
- if(run&&screen==='run'&&!document.hidden){if(!['settings','codex','help','confirm'].includes(activeDialog))recordPrepTime(run,rawMs/1000);if(battle&&!paused&&battle.status==='playing')recordFrame(run,rawMs);}
+ const frameMs=frameClock.sample(now,battle&&run?.phase==='battle'&&screen==='run'&&!paused&&!document.hidden&&battle.status==='playing'?battle:undefined);
+ if(run&&screen==='run'&&!document.hidden){if(!['settings','codex','help','confirm'].includes(activeDialog))recordPrepTime(run,rawMs/1000);}
  if(battle&&run?.phase==='battle'&&screen==='run'){
-  if(!paused){const focus=focusGesture.take(now);if(focus){targetQueued=renderer.toWorld(focus.x,focus.y);targetMarker=targetQueued;targetUntil=now+2000;}accumulator+=dt;let steps=0;while(accumulator>=1/60&&steps<6&&battle.status==='playing'){
+  if(!paused&&!document.hidden){const focus=focusGesture.take(now);if(focus){targetQueued=renderer.toWorld(focus.x,focus.y);targetMarker=targetQueued;targetUntil=now+2000;}accumulator+=dt;let steps=0;while(accumulator>=1/60&&steps<6&&battle.status==='playing'){
    const input:InputFrame={x:(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0)+(joy?.dx??0),y:(keys.has('KeyS')||keys.has('ArrowDown')?1:0)-(keys.has('KeyW')||keys.has('ArrowUp')?1:0)+(joy?.dy??0),dash:dashQueued,overload:overloadRequested(overloadQueued,profile.settings.autoOverload,battle.player.overloadCooldown),target:targetQueued};dashQueued=false;overloadQueued=false;targetQueued=undefined;stepBattle(battle,input,1/60);accumulator-=1/60;steps++;}audio.consume(battle.events);if(battle.status!=='playing'){if(terminalElapsed<0){terminalElapsed=0;persist();}terminalElapsed+=dt;accumulator=0;const hold=profile.settings.reducedMotion?.12:battle.status==='lost'?.65:.35;if(terminalElapsed>=hold){completeBattle();requestAnimationFrame(frame);return;}}
    if(battle.time-lastSave>=5){lastSave=battle.time;persist();}
   }
-  renderer.draw(battle,{lang:profile.language,reducedMotion:profile.settings.reducedMotion,colorAssist:profile.settings.colorAssist,target:now<targetUntil?targetMarker:undefined});if(now-lastHud>100){updateHud();lastHud=now;}
+  const renderStart=performance.now();renderer.draw(battle,{lang:profile.language,reducedMotion:profile.settings.reducedMotion,colorAssist:profile.settings.colorAssist,target:now<targetUntil?targetMarker:undefined});const renderMs=performance.now()-renderStart;
+  if(frameMs!==undefined)recordFrame(run,frameMs,renderMs,JSON.stringify({build:BUILD_VERSION,browser:navigator.userAgent,viewport:[innerWidth,innerHeight],canvas:[battleCanvas.width,battleCanvas.height],dpr:devicePixelRatio,reducedMotion:profile.settings.reducedMotion,colorAssist:profile.settings.colorAssist}));
+  if(now-lastHud>100){updateHud();lastHud=now;}
  }
  requestAnimationFrame(frame);
 }

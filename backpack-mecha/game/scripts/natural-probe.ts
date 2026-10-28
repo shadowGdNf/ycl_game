@@ -19,7 +19,7 @@ assert.ok(Number.isInteger(seedStart)&&seedStart>=1&&seedStart+count-1<=20,'Seed
 assert.ok(Number.isInteger(count)&&count>=1&&count<=20,'--seeds must be an integer from 1 to 20');
 const families=arg('family')?FAMILIES.filter(f=>f.id===arg('family')):FAMILIES;
 assert.ok(families.length,'Unknown family');
-const sourcePaths=['src/combat.ts','src/encounters.ts','src/economy.ts','src/content.ts','src/types.ts','src/random.ts','src/journal.ts','src/storage.ts','src/version.ts','assets/content.json','scripts/natural-policy.ts','scripts/purchase-search.ts','scripts/growth-diagnostics.ts','scripts/probe-pilot.ts','scripts/natural-probe.ts'];
+const sourcePaths=['src/combat.ts','src/encounters.ts','src/economy.ts','src/content.ts','src/types.ts','src/random.ts','src/journal.ts','src/performance.ts','src/storage.ts','src/version.ts','assets/content.json','scripts/natural-policy.ts','scripts/purchase-search.ts','scripts/growth-diagnostics.ts','scripts/probe-pilot.ts','scripts/natural-probe.ts'];
 const hashes=()=>Object.fromEntries(sourcePaths.map(path=>[path,createHash('sha256').update(readFileSync(new URL(`../${path}`,import.meta.url))).digest('hex')]));
 const before=hashes(),started=new Date().toISOString(),results=[];
 for(const family of families)for(let index=0;index<count;index++){

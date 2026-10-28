@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-10-28T01:44:24.814069+00:00",
+  "buildVersion": "0.2.0-dev.5",
+  "rulesVersion": "0.1.0",
+  "status": "partial-independent-browser-and-physical-device-acceptance-pending",
+  "browser": "Codex in-app browser",
+  "origin": "http://localhost:4197/",
+  "productionUiOnly": true,
+  "forcedWinsOrGrantedResources": false,
+  "seed": "FIRST-LIGHT",
+  "completedWaves": 1,
+  "currentWave": 2,
+  "savedPhase": "prep",
+  "verified": [
+    "Fresh launch via FIRST-LIGHT tutorial; real 40-second first-wave survival",
+    "Keyboard movement, dash and overload; pause, save-home, reload, continue resumes paused",
+    "Free amplifier equipped and connected through board UI",
+    "Report download contains raw frame and render samples; saved samples survived refresh",
+    "2,400 foreground intervals total 39.9985 seconds; pause/reload gap is absent; raw p95 recomputed"
+  ],
+  "performance": {
+    "version": 1,
+    "method": "Nearest-rank percentiles of retained foreground battle samples; whole-wave histogram remains in journal.frames.",
+    "waves": {
+      "1": {
+        "scope": "most-recent-frames-in-current-context",
+        "limit": 3600,
+        "context": "{\"build\":\"0.2.0-dev.5\",\"browser\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36\",\"viewport\":[712,774],\"canvas\":[1424,1548],\"dpr\":2,\"reducedMotion\":false,\"colorAssist\":false}",
+        "contextResets": 0,
+        "totalInContext": 2400,
+        "discardedOlderSamples": 0,
+        "retainedSeconds": 39.9985,
+        "interval": {
+          "samples": 2400,
+          "p50Ms": 16.69999999999709,
+          "p95Ms": 18,
+          "maxMs": 18.700000000000728,
+          "over50ms": 0,
+          "over50Pct": 0
+        },
+        "render": {
+          "samples": 2400,
+          "p50Ms": 0.10000002384185791,
+          "p95Ms": 0.20000004768371582,
+          "maxMs": 0.8999999761581421,
+          "over50ms": 0,
+          "over50Pct": 0
+        }
+      }
+    }
+  },
+  "evidence": "dev5-browser-first-light-report.json",
+  "reportSha256": "7096554db5b7bea633bcfcef9bce80f1e99be59b8545fe27ccf439d13faaa611",
+  "timingCaveat": "The browser download tool returned after approximately 44,146 seconds. Exported combat samples were captured before that wait. Tool/browser preparation delays are not human pace measurements.",
+  "pending": [
+    "Independent Chrome real twelve-wave win/result/restart",
+    "Independent Safari full flow and audio",
+    "Native page-cache return on Safari",
+    "Android real multi-touch, pointer capture interruptions, audio, background recovery and 20-minute sustained performance",
+    "iPhone Safari (no device previously available)",
+    "Human comprehension/playtest"
+  ],
+  "nativeAvailabilityAtStart": "Native app inventory reported the Mac locked; only in-app browser and MCP Apps were connected.",
+  "screenshots": [
+    "dev5-workshop.png"
+  ],
+  "consoleWarningsAndErrors": []
+}

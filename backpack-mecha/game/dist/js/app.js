@@ -7,6 +7,7 @@ import { GameAudio } from "./audio.js";
 import { overloadRequested, FocusGesture } from "./input.js";
 import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js";
 import { BUILD_VERSION } from "./version.js";
+import { ForegroundFrameClock } from "./performance.js";
 import { supportFeedback, supportBenefit, connectionLesson, workshopHints } from "./workshop.js";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -20,6 +21,7 @@ const keys = new Set();
 let dashQueued = false, overloadQueued = false, targetQueued, targetMarker, targetUntil = 0;
 let joy = null;
 const focusGesture = new FocusGesture();
+const frameClock = new ForegroundFrameClock();
 let boardOptions = [];
 let drag = null;
 const selectedCorners = new Set();
@@ -29,7 +31,7 @@ const tier = (n) => ['I', 'II', 'III'][n - 1] ?? 'I';
 const kind = (k) => k === 'weapon' ? t('武器', 'WEAPON') : k === 'support' ? t('支持', 'SUPPORT') : t('功能', 'UTILITY');
 const stageName = (act) => [t('废料堆场', 'Scrap Yard'), t('熔炼工厂', 'Foundry'), t('轨道货港', 'Orbital Port')][act - 1];
 const formatTime = (n) => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
-function resetControls() { keys.clear(); joy = null; dashQueued = false; overloadQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
+function resetControls() { frameClock.reset(); keys.clear(); joy = null; dashQueued = false; overloadQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
 function seed() { return 'RIG-' + Math.random().toString(36).slice(2, 8).toUpperCase(); }
 let homeSeed = seed();
 function toast(message) { $('toast').textContent = message; $('toast').classList.add('show'); window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => $('toast').classList.remove('show'), 3500); }
@@ -816,6 +818,7 @@ battleCanvas.addEventListener('pointerdown', e => { if (!battle || paused)
     joy = { id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0, dy: 0 };
     battleCanvas.setPointerCapture(e.pointerId);
     const j = $('joystick');
+    j.firstElementChild.style.transform = 'translate(0px,0px)';
     j.style.display = 'block';
     j.style.left = e.clientX + 'px';
     j.style.top = e.clientY + 'px';
@@ -839,6 +842,7 @@ function releasePointer(e) { if (joy?.id === e.pointerId) {
 } focusGesture.end(e.pointerId); }
 battleCanvas.addEventListener('pointerup', releasePointer);
 battleCanvas.addEventListener('pointercancel', releasePointer);
+battleCanvas.addEventListener('lostpointercapture', releasePointer);
 window.addEventListener('orientationchange', () => { resetControls(); if (battle && screen === 'run')
     setPause(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) {
@@ -849,20 +853,29 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) {
 }
 else if (!paused)
     audio.resume(); });
-window.addEventListener('pagehide', persist);
+window.addEventListener('pagehide', () => { resetControls(); if (battle && screen === 'run')
+    setPause();
+else
+    persist(); });
+window.addEventListener('pageshow', e => { if (e.persisted) {
+    resetControls();
+    accumulator = 0;
+    lastFrame = performance.now();
+    if (battle && screen === 'run')
+        setPause();
+} });
 function frame(now) {
     const rawMs = Math.max(0, now - lastFrame);
     const dt = Math.min(.1, rawMs / 1000);
     lastFrame = now;
     homeTime += dt;
+    const frameMs = frameClock.sample(now, battle && run?.phase === 'battle' && screen === 'run' && !paused && !document.hidden && battle.status === 'playing' ? battle : undefined);
     if (run && screen === 'run' && !document.hidden) {
         if (!['settings', 'codex', 'help', 'confirm'].includes(activeDialog))
             recordPrepTime(run, rawMs / 1000);
-        if (battle && !paused && battle.status === 'playing')
-            recordFrame(run, rawMs);
     }
     if (battle && run?.phase === 'battle' && screen === 'run') {
-        if (!paused) {
+        if (!paused && !document.hidden) {
             const focus = focusGesture.take(now);
             if (focus) {
                 targetQueued = renderer.toWorld(focus.x, focus.y);
@@ -900,7 +913,11 @@ function frame(now) {
                 persist();
             }
         }
+        const renderStart = performance.now();
         renderer.draw(battle, { lang: profile.language, reducedMotion: profile.settings.reducedMotion, colorAssist: profile.settings.colorAssist, target: now < targetUntil ? targetMarker : undefined });
+        const renderMs = performance.now() - renderStart;
+        if (frameMs !== undefined)
+            recordFrame(run, frameMs, renderMs, JSON.stringify({ build: BUILD_VERSION, browser: navigator.userAgent, viewport: [innerWidth, innerHeight], canvas: [battleCanvas.width, battleCanvas.height], dpr: devicePixelRatio, reducedMotion: profile.settings.reducedMotion, colorAssist: profile.settings.colorAssist }));
         if (now - lastHud > 100) {
             updateHud();
             lastHud = now;

@@ -6,9 +6,11 @@
 
 本目录由 `ycl_game` 主仓库统一管理，不再使用嵌套的独立 Git 仓库。请在仓库根目录查看和提交变更。
 
-当前工作版本为 **v0.2.0-dev.4**：区分冰冻、撞墙硬直和 Boss 失衡，加入三个动作样板与六 Boss 关键反馈，修复扇形内圈和屏幕边缘状态标签。沿用 **A 方案风格化金属素材**和 `0.1.0` 战斗/经济数值。见 [dev.4 开发与验证](docs/DEV4-MOTION.md)、[dev.3 装配改进](docs/DEV3-ASSEMBLY.md)和 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准，本地构建不会自动更新线上。
+当前工作版本为 **v0.2.0-dev.5**：新增多输入模型的自然成长对照、事件和风险路线覆盖，战报保存有界原始帧时间并导出精确窗口 p95；修复触屏指针捕获丢失与页面恢复时的输入残留。沿用 A 方案素材及 `0.1.0` 战斗/经济规则。见 [dev.5 开发与验证](docs/DEV5-STABILITY.md)、[dev.4 动作](docs/DEV4-MOTION.md)和 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准。
 
-本版动作核心已实施，**独立 Chrome 十二场完整远征、Safari 首章和真机验收仍待补齐**；内置浏览器夹具、规则模拟与手机视口不替代这些记录。先继续 [dev.4 验收矩阵](docs/DEV4-PLAN.md)，再进入 dev.5 的多输入模型、平衡和设备稳定性。
+dev.4 基线提交为 `97cf0d3`（`feat: dev.4`）；dev.5 的实施与交付记录见上述文档，当前暂存/提交状态以 Git 为准。独立 Chrome 十二场完整远征、Safari 和真机持续运行仍待验收，机器模拟、内置浏览器和手机视口不能替代这些记录。
+
+下一阶段为 [dev.6 开发计划](docs/DEV6-PLAN.md)：补齐完整网页流程、四个事件分支、输入独立对照与 Android 持续验证，再进行小规模试玩和候选版准备。计划已制定，当前代码版本仍为 dev.5；iPhone 按既有决定保留待测。
 
 ## 本地启动
 
@@ -71,6 +73,8 @@ IndexedDB 数据库 `backpack-mecha-v1`，单一续局槽。交易与阶段变�
 
 v0.2 沿用原存档格式与数据库，兼容 v0.1 续局。新增战报独立校验，旧存档和损坏的战报不会导致有效游戏进度被删除。休整和结算都可以导出本局战报，包含最多 400 条操作/供货记录、逐场装配与战损、可见休整时间和浏览器帧间隔统计；全部留在本地，不自动上传。撤销交易会回滚经济状态，同时保留战报中的操作历史。战报不是输入回放或可导入存档。
 
+dev.5 战报额外保留每场最近 3,600 个前台战斗帧间隔和渲染耗时，导出最近窗口的 p50/p95、最长停顿和超过 50ms 比例。暂停、后台和刷新间隔不采样；构建、视口、画布或显示设置变化后重新开始窗口。整场分桶统计继续保留，窗口 p95 不能称为整场精确 p95。原始记录留在本地，旧续局仍兼容。
+
 ## 工程与资源
 
 - `src/types.ts`：公共内容、装配、只读场景和事件接口。
@@ -96,6 +100,8 @@ npm run probe      # 按章节的真实规则Boss构筑探针，覆盖写入qa/b
 npm run probe:natural -- --policy=legacy --diagnostics=1   # 原策略：六路线各10种子
 npm run probe:natural -- --policy=expanded --diagnostics=1 # 扩展购买搜索与核心偏好
 npm run compare:growth # 对照历史基线，重放购买方案，生成诊断摘要
+npm run probe:expeditions # dev.5 三输入模型、60组基线和12组扩展场景，共216局
+npm run probe:expeditions -- --suite=calibration --seeds=1 --output=dev5-expeditions-smoke.json
 python3 scripts/art-check.py  # 需要Pillow；检查图集和采样区域
 node scripts/check-bundle.mjs # 生产资源引用、内容数量与包体检查
 ```

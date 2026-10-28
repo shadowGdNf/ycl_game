@@ -1,6 +1,7 @@
 import type {BattleResult, Run, RunJournal} from './types.ts';
 import {BUILD_VERSION, RULESET_VERSION} from './version.ts';
 import {MODULE_BY_ID,BOSS_BY_ID,PROTOCOL_BY_ID} from './content.ts';
+import {appendFrame,sanitizeFrameWindow,summarizeFrameWindow} from './performance.ts';
 
 const EVENT_LIMIT = 400;
 export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
@@ -58,13 +59,15 @@ export function recordPrepTime(run:Run, seconds:number):void {
  journal.prepSeconds[run.wave] = (journal.prepSeconds[run.wave] ?? 0) + Math.min(seconds, 1);
 }
 
-export function recordFrame(run:Run, milliseconds:number):void {
+export function recordFrame(run:Run, milliseconds:number,renderMs?:number,context='unspecified'):void {
  if(!Number.isFinite(milliseconds) || milliseconds <= 0) return;
  const journal = ensureJournal(run);
  const frame = journal.frames[run.wave] ??= {samples:0, milliseconds:0, over50ms:0, maxMs:0, buckets:FRAME_BUCKETS_MS.map(() => 0)};
  frame.samples++; frame.milliseconds += milliseconds;
  frame.over50ms += Number(milliseconds > 50); frame.maxMs = Math.max(frame.maxMs, milliseconds);
  frame.buckets[FRAME_BUCKETS_MS.findIndex(limit => milliseconds <= limit)]++;
+ if(renderMs!==undefined&&Number.isFinite(renderMs)&&renderMs>=0&&context.length<=2048)
+  frame.recent=appendFrame(frame.recent,milliseconds,renderMs,context);
 }
 
 /** Undo changes game state, while elapsed time and the audit of attempted choices stay intact. */
@@ -75,12 +78,14 @@ export function preserveJournal(before:Run, restored:Run, action:string):void {
 
 export function exportRunReport(run:Run) {
  const journal = ensureJournal(run);
+ const windows=Object.entries(journal.frames).filter(([,f])=>f.recent).map(([wave,f])=>[wave,summarizeFrameWindow(f.recent!)]);
  return clone({
   reportVersion:1, buildVersion:BUILD_VERSION, rulesVersion:RULESET_VERSION,
   seed:run.seed, mode:run.mode, chassis:run.chassis, difficulty:run.difficulty,
   status:run.phase, wave:run.wave, battleSeconds:run.elapsed,
   prepSeconds:Object.values(journal.prepSeconds).reduce((sum, seconds) => sum + seconds, 0),
   stats:run.stats, items:run.items, history:run.history, journal,
+  ...(windows.length?{performance:{version:1,method:'Nearest-rank percentiles of retained foreground battle samples; whole-wave histogram remains in journal.frames.',waves:Object.fromEntries(windows)}}:{}),
  });
 }
 
@@ -107,5 +112,9 @@ export function sanitizeJournal(value:unknown):RunJournal|undefined {
    (w.boss===undefined||typeof w.boss==='string'&&!!BOSS_BY_ID[w.boss]) &&
    (['hp','shield','gold'] as const).every(k => finite(w.start[k])) && items(w.start.items) && ids(w.start.protocols,PROTOCOL_BY_ID) &&
    (w.end === undefined || record(w.end) && typeof w.end.won === 'boolean' && ['hp','shield','gold','income','seconds'].every(k => finite(w.end![k as keyof typeof w.end])) && stats(w.end.stats)))) return undefined;
- return clone(j);
+ // Optional detailed samples are independent of valid progress and legacy journal data.
+ const frames=Object.fromEntries(Object.entries(j.frames).map(([wave,f])=>{
+  const {recent,...base}=f,clean=sanitizeFrameWindow(recent);return [wave,{...base,...(clean?{recent:clean}:{})}];
+ }));
+ return clone({...j,frames});
 }

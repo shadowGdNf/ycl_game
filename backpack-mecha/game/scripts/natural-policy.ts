@@ -50,7 +50,7 @@ export function purchasePlan(run:Run,index:number,family:Family):{actions:Action
   if(equipPlan(draft,draft.items.at(-1)!.uid,actions)&&economy.validateLoadout(draft).ok)return {actions,gain};
  }
 }
-export interface PolicyOptions {policy?:'legacy'|'expanded';onDecision?:(run:Run,stage:string)=>void}
+export interface PolicyOptions {policy?:'legacy'|'expanded';onDecision?:(run:Run,stage:string)=>void;onEvent?:(run:Run)=>void}
 export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
  while(['reward','expansion','protocol'].includes(run.phase)){
   options.onDecision?.(run,run.phase);
@@ -75,7 +75,12 @@ export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
  }
  if(run.phase!=='prep')return;
  // Avoid optimizing event choices against hidden future random sequences.
- if(run.eventId&&!run.eventResolved&&!economy.resolveEvent(run,-1).ok)throw Error('Event skip failed');
+ if(run.eventId&&!run.eventResolved){
+  if(options.onEvent)options.onEvent(run);
+  else if(!economy.resolveEvent(run,-1).ok)throw Error('Event skip failed');
+  if(!run.eventResolved)throw Error('Event policy left an unresolved event');
+  if(run.phase!=='prep')return prepare(run,family,options);
+ }
  if(run.wave===1)return;
  if(run.hp<CHASSIS_BY_ID[run.chassis].hp*.7)economy.repair(run);
  for(let visit=0;visit<3;visit++){

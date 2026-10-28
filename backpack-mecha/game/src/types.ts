@@ -23,7 +23,8 @@ export interface WaveRecord {
  start:{hp:number;shield:number;gold:number;items:Item[];protocols:string[]};
  end?:{won:boolean;hp:number;shield:number;gold:number;income:number;seconds:number;reason?:string;stats:CombatStats};
 }
-export interface FrameRecord {samples:number;milliseconds:number;over50ms:number;maxMs:number;buckets:number[]}
+export interface FrameWindow {context:string;resets:number;total:number;next:number;intervals:number[];renders:number[]}
+export interface FrameRecord {samples:number;milliseconds:number;over50ms:number;maxMs:number;buckets:number[];recent?:FrameWindow}
 export interface RunJournal {
  version:1;buildVersion:string;rulesVersion:string;startedAtWave:number;partial:boolean;
  nextSequence:number;droppedEvents:number;events:RunEvent[];waves:WaveRecord[];

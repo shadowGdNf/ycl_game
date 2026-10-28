@@ -1,6 +1,6 @@
 {
   "name": "backpack-mecha",
-  "version": "0.2.0-dev.4",
+  "version": "0.2.0-dev.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,7 +15,8 @@
     "compare:growth": "node --experimental-strip-types scripts/growth-comparison.ts",
     "qa:motion": "node --experimental-strip-types scripts/motion-fixtures.ts",
     "qa:motion:serve": "node scripts/serve-motion.mjs",
-    "compare:motion": "node scripts/compare-motion.mjs"
+    "compare:motion": "node scripts/compare-motion.mjs",
+    "probe:expeditions": "node --experimental-strip-types scripts/expedition-probe.ts"
   },
   "devDependencies": {
     "typescript": "~5.9.3"

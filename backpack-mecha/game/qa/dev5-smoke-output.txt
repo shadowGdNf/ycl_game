@@ -1,0 +1,23 @@
+
+> backpack-mecha@0.2.0-dev.5 probe:expeditions
+> node --experimental-strip-types scripts/expedition-probe.ts --seeds=1 --suite=calibration --output=dev5-expeditions-smoke.json
+
+calibration-wet-1 / frequent: won, wave 12, 573.6s, core 8
+calibration-wet-1 / delayed: won, wave 12, 571.8s, core 8
+calibration-wet-1 / sparse: won, wave 12, 576.7s, core 8
+calibration-oil-1 / frequent: won, wave 12, 534.2s, core -
+calibration-oil-1 / delayed: won, wave 12, 533.9s, core -
+calibration-oil-1 / sparse: won, wave 12, 537.5s, core -
+calibration-ballistic-1 / frequent: won, wave 12, 565.6s, core 9
+calibration-ballistic-1 / delayed: lost, wave 6, 267.7s, core -
+calibration-ballistic-1 / sparse: won, wave 12, 567.2s, core 9
+calibration-fortress-1 / frequent: won, wave 12, 542.5s, core 3
+calibration-fortress-1 / delayed: won, wave 12, 555.2s, core 3
+calibration-fortress-1 / sparse: won, wave 12, 546.7s, core 3
+calibration-drone-1 / frequent: won, wave 12, 537.0s, core 7
+calibration-drone-1 / delayed: won, wave 12, 539.1s, core 7
+calibration-drone-1 / sparse: won, wave 12, 541.6s, core 7
+calibration-frost-1 / frequent: won, wave 12, 563.5s, core 3
+calibration-frost-1 / delayed: won, wave 12, 581.4s, core 3
+calibration-frost-1 / sparse: won, wave 12, 584.2s, core 3
+{"runs":18,"baselineMatches":6,"summaries":[{"suite":"calibration","model":"frequent","runs":6,"wins":6,"coreAttained":5,"resumeChecks":72,"meanDamageTaken":0,"meanBattleSeconds":552.7499999999981,"failures":[]},{"suite":"calibration","model":"delayed","runs":6,"wins":5,"coreAttained":4,"resumeChecks":66,"meanDamageTaken":306.8007127474567,"meanBattleSeconds":508.1833333333311,"failures":[{"case":"calibration-ballistic-1","seed":"natural-v02-01","wave":6,"reason":"E04"}]},{"suite":"calibration","model":"sparse","runs":6,"wins":6,"coreAttained":5,"resumeChecks":72,"meanDamageTaken":21.285943737103416,"meanBattleSeconds":558.9972222222199,"failures":[]}],"coverage":{"chassis":["scavenger"],"difficulties":[0],"playedRoutes":[0],"bosses":["B1A","B2A","B3B"],"eventChoices":["EV04:-1","EV05:-1"],"missingEventChoices":["EV01:0","EV01:1","EV02:0","EV02:1","EV03:0","EV03:1","EV04:0","EV04:1","EV05:0","EV05:1","EV06:0","EV06:1","EV07:0","EV07:1","EV08:0","EV08:1"],"rejectedRiskContracts":0}}

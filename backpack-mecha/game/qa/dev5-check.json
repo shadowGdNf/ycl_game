@@ -1,0 +1,180 @@
+{
+  "checkedAt": "2026-10-28T01:46:31.595981+00:00",
+  "buildVersion": "0.2.0-dev.5",
+  "rulesVersion": "0.1.0",
+  "status": "development-build-independent-browser-and-device-acceptance-pending",
+  "staging": {
+    "previousVersion": "0.2.0-dev.4",
+    "filesStagedAtHandoff": 87,
+    "tree": "b3055fe4e6cdda9a1900bd10ecabbc09c943848a",
+    "indexEntriesUnchanged": true,
+    "currentStagedFiles": 0,
+    "currentState": "previous-version-committed-outside-this-task",
+    "previousVersionCommit": "97cf0d30709cfadaf4d812f6536817272e05e7fa",
+    "newVersionChanges": "working-tree-only",
+    "commitCreatedByThisTask": false
+  },
+  "checks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 94,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "dev5-test-output.txt"
+    },
+    "rulesAndArtUnchanged": true,
+    "naturalExpeditions": {
+      "runs": 216,
+      "baselineMatches": 60,
+      "resumeChecks": 2540,
+      "failedRunsRetained": 11,
+      "evidence": "dev5-expeditions.json",
+      "coverage": {
+        "chassis": [
+          "scavenger",
+          "bulwark",
+          "kestrel",
+          "hive"
+        ],
+        "difficulties": [
+          0,
+          2,
+          4
+        ],
+        "playedRoutes": [
+          0,
+          1,
+          2
+        ],
+        "bosses": [
+          "B1A",
+          "B1B",
+          "B2A",
+          "B2B",
+          "B3A",
+          "B3B"
+        ],
+        "eventChoices": [
+          "EV01:-1",
+          "EV01:0",
+          "EV01:1",
+          "EV02:-1",
+          "EV02:0",
+          "EV02:1",
+          "EV03:-1",
+          "EV03:1",
+          "EV04:-1",
+          "EV04:0",
+          "EV04:1",
+          "EV05:-1",
+          "EV05:0",
+          "EV05:1",
+          "EV06:-1",
+          "EV06:0",
+          "EV06:1",
+          "EV07:-1",
+          "EV08:-1",
+          "EV08:1"
+        ],
+        "missingEventChoices": [
+          "EV03:0",
+          "EV07:0",
+          "EV07:1",
+          "EV08:0"
+        ],
+        "rejectedRiskContracts": 3
+      }
+    },
+    "browser": {
+      "status": "first-wave-and-save-reload-checked",
+      "browser": "Codex in-app browser",
+      "evidence": "dev5-browser-flow.json",
+      "rawPercentilesRecomputed": true
+    },
+    "bundle": {
+      "checkedAt": "2026-10-27T13:24:36.005Z",
+      "files": 28,
+      "bytes": 9680191,
+      "mib": 9.23,
+      "spriteRegions": 86,
+      "counts": {
+        "modules": 36,
+        "chassis": 4,
+        "enemies": 12,
+        "bosses": 6,
+        "protocols": 9,
+        "events": 8,
+        "waves": 12,
+        "demoIds": 24
+      },
+      "status": "passed",
+      "note": "Static existence/content checks only; not a physical device performance result."
+    }
+  },
+  "interpretationCaveat": "The delayed model changes both decision cadence and action latency. At 300ms cadence the existing pilot also stops velocity extrapolation (its sensor window is below 250ms). This is not a latency-only ablation or a human skill classification.",
+  "pending": [
+    "Independent Chrome real twelve-wave win/result/restart",
+    "Independent Safari full flow and audio",
+    "Native page-cache return on Safari",
+    "Android real multi-touch, pointer capture interruptions, audio, background recovery and 20-minute sustained performance",
+    "iPhone Safari (no device previously available)",
+    "Human comprehension/playtest",
+    "Natural event choices: EV03:0, EV07:0, EV07:1, EV08:0"
+  ],
+  "sourceHashes": {
+    "src/app.ts": "9d94a77a57a3a3447f3b1b822cd0f7859426056c52d11b58458f16b45c1ce091",
+    "src/art.ts": "b1debecfd262be3e44b010df4f57f553dc0d6bc1ac012efda4656b873b9820d8",
+    "src/audio.ts": "bf7b0fb93f83050e763cc18576feb3718432e795a3e9365258d0912c4c3d8d02",
+    "src/combat.ts": "e9ce70358b83d9e7e6a9f089037b3cdad28d55d9d860cd9cca8852b6d335c843",
+    "src/content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "src/encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/journal.ts": "0e56d8ec5d3561b08ea5e7f261da9d57e5c3b2025a9021f0c76f16c4df4e07fd",
+    "src/motion-renderer.ts": "f18ade0a8198195f41d87c219c93b048654ad75054a9cfb2956ab7f7b08888d9",
+    "src/motion.ts": "ff58247b6e4b7f1564b88986c4e1ba8ccdcae7269911df8a212730559de8f549",
+    "src/performance.ts": "d51e16793055fd05e59ed9963480a1ab96ab63080794972df300d7b5ff1fed8a",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/renderer.ts": "5cf090f3b7a17f006484bb05ccad292a1e35cb666b5c3781b8f28aefd62626d6",
+    "src/storage.ts": "5733f0647760dea35fdfabe53fdd07874cc8e3f8fe8a5e7a798aed880849f519",
+    "src/types.ts": "8be407d10c573c13a8796eac8490508a0fad0ef7496c413adcc57983b101a932",
+    "src/version.ts": "c6be928e005fd5c5cfe13ab961db94c9aa9f9bff26c9314a5b8c1c10d03db4b2",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "scripts/balance-probe.ts": "3c11437d9c2cf46664928d572d72e6fd91592638d5ed4017b2ed29a16a6fa3a6",
+    "scripts/expedition-policy.ts": "5b1c8cec873b58f3016cdf24dde1c3c0bcb275d9b1220a81515c9120daf483e4",
+    "scripts/expedition-probe.ts": "7d7b6dca824ac49f6a7385e95fba78cacf8e094eb572de4bc738e4843a06a4c8",
+    "scripts/growth-comparison.ts": "dedcca691bed1cbb232156a014c7d1f0a2123c5ed0526770054f04db2c50877a",
+    "scripts/growth-diagnostics.ts": "2830f5573b34329d1a1cb45889ee86b048e07efd86b7bd8e89684d054890100c",
+    "scripts/input-models.ts": "cd1590b4a1724e096d4612c50ee4214bc4933cd2a6a355c0bf47f13ecb8d91e2",
+    "scripts/motion-fixtures.ts": "a760efd0e55a7af6d8da0b96f48acd380e1af295d44198a68bd5c9c58186e016",
+    "scripts/motion-parity.ts": "dbec34e57e3ccc9ec35bdd9b2bc70132e32b6d3d57e906ea557d2abf5dec845b",
+    "scripts/natural-policy.ts": "c51657ddf53d2b29abe4c329a46da5127aa00b85ca8c321057dd73784c169115",
+    "scripts/natural-probe.ts": "380efc2190f40044d9a3646aef417fdd59aefb43909553c07b0ab784850303a2",
+    "scripts/probe-pilot.ts": "d22fc4b75c5ef33ab604d136c8c7d50427c749aaf6c4c2b5f57003b4b993f006",
+    "scripts/purchase-search.ts": "062e09a8c5fd74e1fc47ad6642b4d8035d1cd0d4fe66aee5c45f71735258745a",
+    "tests/combat.test.ts": "9249486b9280ddba6f0b09ec9cd9572e25eeee5c53205a45c755c4d2f7c67ae8",
+    "tests/economy.test.ts": "475dd2a405c1999f882436efc82f2b305e0dd3784380d59370ca5e2719234888",
+    "tests/encounters.test.ts": "08107c60e04812f13dc800ec79dc2f7125cb04eac6c01c27d0d529d2f0516935",
+    "tests/expedition-policy.test.ts": "2acd15754e209871fd65ad799d950c73578bc0d16f46229139f258a20df4a71d",
+    "tests/growth.test.ts": "2c70fe4a7998b1ba8ad74ef1d7f181c9729c0d825bf849cbc84c49e68f6b99f7",
+    "tests/input-models.test.ts": "fa54cf69a2719fd3fae8b05bc5cce4efcbfa2c31a41dc54ef9458bef3bcc06c6",
+    "tests/integration.test.ts": "949c8bfae00e1aeaa507a4fd14158de944aa4e1e5b5d029d6e320fb2b0dc82db",
+    "tests/journal.test.ts": "55e158bf8fe667ba11ed4ffb473f4420080daafb544c5964b735fbf53e8c9c25",
+    "tests/motion.test.ts": "b8d167cc0a6441d51af5db1a6c445be17369e4efd989554d4052a90df36d9ef1",
+    "tests/performance.test.ts": "2845f54ae75805a8c2aa22c70771b6825f6d90d7c96f91434809cf1038566657",
+    "tests/storage.test.ts": "38d24dc9a74baac106da2cf042ff8c55af4036bca758a36bb09339f79754e1e3",
+    "tests/workshop-feedback.test.ts": "821d5e45fa8ac5e5861da2a093548a2531604404ac82a6ec9fd559e65e978a7a",
+    "tests/workshop.test.ts": "f1f15bc1436c3b52804e50719e370327c67547d86c4d862d7559841aa8bf997a",
+    "scripts/dev5-evidence.py": "284e5180aa0a9b8748c16225ed06e711cbd8cc008bd0ed055d3fc5a5058f6b67",
+    "package.json": "f08bb52eeb989c3b9305068f5c49b5e1e6cc0b97b98c43b641052e18981495f2"
+  },
+  "evidenceHashes": {
+    "dev5-expeditions.json": "526cc0655e53faaad459c9d76aedf6376ddc06c4b579f0b59048f104e311e761",
+    "dev5-expeditions-runs.json.gz": "ef95b09d5accd11bfe6cba0b8fe3fd75839da2a8012525ff004e07fc668088ff",
+    "dev5-browser-flow.json": "783cf9eb6d7e34b15c0473234fd510224c990240a2d913f83e8beace05d1c201",
+    "dev5-browser-first-light-report.json": "7096554db5b7bea633bcfcef9bce80f1e99be59b8545fe27ccf439d13faaa611",
+    "dev5-test-output.txt": "2ff611f2cd7993eb109b5a039ba3e828d66d6b2fc6a8cb65ab96493fc807d12c"
+  },
+  "releaseManifest": "../releases/release-manifest-v0.2.0-dev.5.json",
+  "onlineDeployment": false
+}
