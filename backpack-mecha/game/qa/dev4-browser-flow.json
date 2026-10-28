@@ -1,0 +1,159 @@
+{
+  "checkedAt": "2026-10-27T13:20:28.419301+00:00",
+  "buildVersion": "0.2.0-dev.4",
+  "rulesVersion": "0.1.0",
+  "status": "partial-independent-browser-acceptance-pending",
+  "browser": "Codex in-app browser",
+  "os": "macOS 26.6.2",
+  "origin": "http://localhost:4195/",
+  "viewport": [
+    1280,
+    720
+  ],
+  "productionUiOnly": true,
+  "forcedWinsOrGrantedResources": false,
+  "attempts": [
+    {
+      "seed": "FIRST-LIGHT",
+      "mode": "full",
+      "chassis": "scavenger",
+      "difficulty": 0,
+      "completedWaves": 1,
+      "currentWave": 2,
+      "outcome": "saved-at-prep",
+      "battleSeconds": 40,
+      "waveResults": [
+        {
+          "wave": 1,
+          "route": 0,
+          "rulesVersion": "0.1.0",
+          "prepSeconds": 0,
+          "start": {
+            "hp": 100,
+            "shield": 20,
+            "gold": 40,
+            "items": [
+              {
+                "uid": "i1",
+                "id": "W01",
+                "tier": 1,
+                "x": 1,
+                "y": 0,
+                "rotation": 0,
+                "stored": false
+              },
+              {
+                "uid": "i2",
+                "id": "S01",
+                "tier": 1,
+                "x": -1,
+                "y": -1,
+                "rotation": 0,
+                "stored": true
+              }
+            ],
+            "protocols": []
+          },
+          "end": {
+            "won": true,
+            "hp": 100,
+            "shield": 12,
+            "gold": 76.8,
+            "income": 36.8,
+            "seconds": 40,
+            "stats": {
+              "damageByModule": {
+                "W01": 358
+              },
+              "damageTakenBy": {
+                "E01": 8
+              },
+              "kills": 22,
+              "killedBudget": 22,
+              "goldEarned": 8.8,
+              "maxChain": 0,
+              "damageTaken": 8
+            }
+          }
+        }
+      ],
+      "note": "A fresh profile uses the built-in FIRST-LIGHT tutorial seed. The entered seed is not reported as the played seed."
+    }
+  ],
+  "verified": [
+    "Fresh launch and real 40-second first-wave survival",
+    "Keyboard movement, overdrive and dash inputs",
+    "Pause, save-home, reload, continue resumes paused battle",
+    "Free coil placed beside rivet gun; current damage preview 8 to 9.6",
+    "Cryo nozzle purchased for 24 scrap through normal fit preview and board placement",
+    "Reload preserves three modules, 5/10 power, 6/21 cells and 52.8 scrap",
+    "Production workshop at 390x844; Chinese and English fit dialogs are readable and their actions visible",
+    "Production English fit dialog at 844x390 scrolls to placement, reserve purchase and Back actions; returned without purchasing"
+  ],
+  "flowEvidence": "dev4-browser-first-light-report.json",
+  "screenshots": [
+    "dev4-game-resume.jpg",
+    "dev4-game-workshop.jpg",
+    "dev4-game-mobile-prep.jpg",
+    "dev4-game-mobile-fit.jpg",
+    "dev4-game-mobile-fit-en.jpg",
+    "dev4-game-landscape-fit-en.jpg",
+    "dev4-game-landscape-fit-actions.jpg",
+    "dev4-game-final.jpg"
+  ],
+  "timingCaveat": "Exported prepSeconds=6534.195 includes the approximately 6497-second browser-tool download wait. This is not a player preparation-time or full-run pace measurement.",
+  "fullTwelveWaveRun": "pending",
+  "independentChrome": {
+    "status": "pending",
+    "reason": "Native control initialization timed out; later browser inventory listed only the in-app browser and MCP Apps."
+  },
+  "desktopSafari": {
+    "status": "pending",
+    "reason": "No connected Safari browser session; native Safari interactions were not executed."
+  },
+  "android": {
+    "status": "pending",
+    "device": "Xiaomi MIX 2S / Android 10",
+    "reason": "No new device interactions in dev.4; prior device-control gap remains."
+  },
+  "iPhoneSafari": {
+    "status": "pending",
+    "reason": "User confirmed no device is available."
+  },
+  "viewportChecks": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "lang": "zh",
+      "scope": "First-wave gameplay, save/reload and workshop"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "lang": [
+        "zh",
+        "en"
+      ],
+      "scope": "Workshop and normal purchase-fit preview"
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "lang": "en",
+      "scope": "Purchase-fit preview and scrolling to its actions"
+    }
+  ],
+  "viewportLimit": "Desktop mouse/viewport checks, not physical-device touch or performance evidence.",
+  "finalUi": {
+    "phase": "wave-2-prep",
+    "language": "zh",
+    "temporaryViewportOverride": "reset",
+    "consoleWarningsAndErrors": []
+  }
+}

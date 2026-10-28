@@ -1,0 +1,137 @@
+{
+  "checkedAt": "2026-10-27T13:20:38.159284+00:00",
+  "buildVersion": "0.2.0-dev.4",
+  "rulesVersion": "0.1.0",
+  "status": "development-build-acceptance-pending",
+  "scope": {
+    "D4_00": "completed",
+    "D4_01": "core-implemented-and-engineering-checked",
+    "D4_02": "core-implemented-and-engineering-checked",
+    "D4_03": "partial",
+    "D4_04": "local-build-checked-archives-recorded-in-release-manifest",
+    "combatOrEconomyValuesChanged": false,
+    "artPixelsChanged": false,
+    "onlineDeployment": false
+  },
+  "checks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 84,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "dev4-test-output.txt"
+    },
+    "ruleParity": {
+      "status": "passed",
+      "scenarios": 24,
+      "ticks": 43200,
+      "evidence": "dev4-rule-parity.json"
+    },
+    "naturalComparison": {
+      "status": "passed",
+      "identicalRuns": 60,
+      "resumeChecks": 720,
+      "evidence": "dev4-natural-comparison.json"
+    },
+    "motionScenes": {
+      "count": 106,
+      "viewports": [
+        {
+          "viewport": [
+            1280,
+            900
+          ],
+          "lang": "zh",
+          "reducedMotion": false,
+          "colorAssist": false,
+          "rendered": 106,
+          "evidence": "dev4-rendered-scenes-desktop.json"
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "lang": "zh",
+          "reducedMotion": false,
+          "colorAssist": false,
+          "rendered": 106,
+          "evidence": "dev4-rendered-scenes-mobile.json"
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "lang": "en",
+          "reducedMotion": true,
+          "colorAssist": true,
+          "rendered": 106,
+          "evidence": "dev4-rendered-scenes-landscape.json"
+        }
+      ],
+      "evidence": "dev4-motion-scenes.json"
+    },
+    "performance": {
+      "status": "passed",
+      "renderP95GrowthPct": 5.418604254181503e-06,
+      "evidence": "dev4-performance-summary.json"
+    },
+    "bundle": {
+      "checkedAt": "2026-10-27T13:03:54.735Z",
+      "files": 27,
+      "bytes": 9675238,
+      "mib": 9.23,
+      "spriteRegions": 86,
+      "counts": {
+        "modules": 36,
+        "chassis": 4,
+        "enemies": 12,
+        "bosses": 6,
+        "protocols": 9,
+        "events": 8,
+        "waves": 12,
+        "demoIds": 24
+      },
+      "status": "passed",
+      "note": "Static existence/content checks only; not a physical device performance result."
+    },
+    "runtimeGrowthBytesFromDev3": 20528,
+    "atlasIntegrity": {
+      "status": "passed",
+      "regions": 86,
+      "atlases": 5
+    }
+  },
+  "browserFlowEvidence": "dev4-browser-flow.json",
+  "pending": [
+    "Independent Chrome: real twelve-wave win, result and new run",
+    "Independent Safari: first chapter, audio, save/reload and background recovery",
+    "Android physical-device input, sound, background and performance",
+    "iPhone Safari: user has no device available",
+    "Human comprehension/playtest evidence"
+  ],
+  "sourceHashes": {
+    "src/app.ts": "0e69cb9101873f85bc05fed373a6e3aba684af3db4a0634112e9e09586858aed",
+    "src/art.ts": "b1debecfd262be3e44b010df4f57f553dc0d6bc1ac012efda4656b873b9820d8",
+    "src/audio.ts": "bf7b0fb93f83050e763cc18576feb3718432e795a3e9365258d0912c4c3d8d02",
+    "src/combat.ts": "e9ce70358b83d9e7e6a9f089037b3cdad28d55d9d860cd9cca8852b6d335c843",
+    "src/content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "src/encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/journal.ts": "7a81891880f547a3f5203a61c1304d95acef2dbd87521efb50ee2578160e1a74",
+    "src/motion-renderer.ts": "f18ade0a8198195f41d87c219c93b048654ad75054a9cfb2956ab7f7b08888d9",
+    "src/motion.ts": "ff58247b6e4b7f1564b88986c4e1ba8ccdcae7269911df8a212730559de8f549",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/renderer.ts": "5cf090f3b7a17f006484bb05ccad292a1e35cb666b5c3781b8f28aefd62626d6",
+    "src/storage.ts": "5733f0647760dea35fdfabe53fdd07874cc8e3f8fe8a5e7a798aed880849f519",
+    "src/types.ts": "f2df422d9251dc0f1855bcbc14b55cbf044f339218e14289a766dcbfbfc2c5bf",
+    "src/version.ts": "12eaeeb5a6dcf833cc214378e285c247172f8e7e4daee4bf8e1148dcce92f272",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "styles.css": "7817fca984bd5fcc66bc82a3ca2de583cf2ea9d8d3eff08e63e9d7afcac866a8",
+    "index.html": "d5787aee9a82ed523525858b7d44b16993cd36ff0ebdd9e923f53082535fd41c",
+    "assets/atlas-manifest.json": "c52578aa275fd6911140a4c4f54481f4ad65370e881b8565567d6aabb4bd06bd"
+  },
+  "releaseManifest": "../releases/release-manifest-v0.2.0-dev.4.json"
+}

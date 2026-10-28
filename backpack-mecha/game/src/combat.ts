@@ -157,8 +157,8 @@ function killEnemy(w:BattleState,e:EnemyState,kind:DamageKind,weapon?:WeaponStat
 function stagger(w:BattleState,e:EnemyState,amount:number):void {
  if(e.kind!=='boss'||w.time<e.staggerUntil||e.frozen>0)return;
  const shared=w.enemies.find(x=>x.group===e.group&&x.kind==='boss')||e;shared.stagger+=amount;
- if(shared.stagger>=100){shared.stagger=0;shared.frozen=1.5;shared.staggerUntil=w.time+9.5;event(w,'stagger',e,{amount:1.5});}
- for(const other of w.enemies)if(other.group&&other.group===e.group){other.stagger=shared.stagger;other.frozen=shared.frozen;other.staggerUntil=shared.staggerUntil;}
+ if(shared.stagger>=100){shared.stagger=0;shared.frozen=1.5;shared.controlReason='stagger';shared.staggerUntil=w.time+9.5;event(w,'stagger',e,{amount:1.5});}
+ for(const other of w.enemies)if(other.group&&other.group===e.group){other.stagger=shared.stagger;other.frozen=shared.frozen;other.controlReason=shared.controlReason;other.staggerUntil=shared.staggerUntil;}
 }
 function applyStatus(w:BattleState,e:EnemyState,weapon:WeaponState):void {
  if(weapon.id==='W03')e.wet=Math.max(e.wet,3+(protocol(w,'P01')?2:0));
@@ -169,7 +169,7 @@ function applyStatus(w:BattleState,e:EnemyState,weapon:WeaponState):void {
   e.chill++;e.chillUntil=w.time+3;e.chillStrength=weapon.supports.S12?.08:.06;
   if(e.chill>=5){e.chill=0;
    if(e.kind==='boss')stagger(w,e,15+(weapon.supports.S12?[5,7,9][weapon.supports.S12-1]!:0));
-   else e.frozen=(e.kind==='elite'?.5:1.2)+support(weapon,'S12');}
+   else {e.frozen=(e.kind==='elite'?.5:1.2)+support(weapon,'S12');e.controlReason='ice';}}
  }
 }
 function areaDamage(w:BattleState,p:Point,radius:number,hit:Hit):void {
@@ -367,7 +367,7 @@ function tickZones(w:BattleState,dt:number):void {
    const amount=z.plan.effect==='fire'&&z.triggered?6*difficultyDamage(w):z.plan.damage;
    damagePlayer(w,amount,z.source,z);
   }
-  if(z.source==='E05'&&!z.triggered){const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){e.dead=true;e.hp=0;}}
+  if(z.source==='E05'&&!z.triggered){const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){e.dead=true;e.hp=0;event(w,'enemy-explosion',e,{source:e.id,targetId:e.eid,amount:z.radius});}}
   z.triggered=true;
  }
  w.zones=w.zones.filter(z=>z.delay>0||z.remaining>0);
@@ -375,7 +375,7 @@ function tickZones(w:BattleState,dt:number):void {
 
 function tickEnemyStatuses(w:BattleState,dt:number):void {
  for(const e of [...w.enemies]){if(!alive(e))continue;
-  e.wet=Math.max(0,e.wet-dt);e.frozen=Math.max(0,e.frozen-dt);if(e.chillUntil<=w.time)e.chill=0;
+  e.wet=Math.max(0,e.wet-dt);e.frozen=Math.max(0,e.frozen-dt);if(!e.frozen)delete e.controlReason;if(e.chillUntil<=w.time)e.chill=0;
   for(const layer of [...e.burns]){
    if(layer.next<=w.time&&layer.next<=layer.expires){layer.next+=.5;const weapon=w.weapons.find(v=>v.uid===layer.weapon);
     hitEnemy(w,e,{base:layer.damage,kind:'fire',weapon,direct:false});}
@@ -389,7 +389,7 @@ function tickEnemies(w:BattleState,dt:number):void {
   if(e.charge&&e.charge.until>w.time){const slow=1-enemySlow(w,e),blocked=move(w,e,e.charge.vx*dt*slow,e.charge.vy*dt*slow);
    e.angle=Math.atan2(e.charge.vy,e.charge.vx);
    if(e.kind==='boss'&&w.bossCenter){w.bossCenter.x=e.x;w.bossCenter.y=e.y;}
-   if(blocked){e.charge.until=0;e.frozen=e.kind==='boss'?2:1.5;event(w,'stagger',e,{source:e.id,amount:e.frozen});}continue;}
+   if(blocked){e.charge.until=0;e.frozen=e.kind==='boss'?2:1.5;e.controlReason='impact';event(w,'stagger',e,{source:e.id,amount:e.frozen});}continue;}
   if(e.kind==='boss')continue;
   e.cooldown=Math.max(0,e.cooldown-dt);
   const target=w.decoy&&w.decoy.until>w.time&&w.decoy.hp>0?w.decoy:w.player,d=distance(e,target),a=angleTo(e,target);

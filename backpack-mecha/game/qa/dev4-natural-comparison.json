@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-10-27T11:02:39.981Z",
+  "status": "passed",
+  "identicalRuns": 60,
+  "wins": 60,
+  "resumeChecks": 720,
+  "compared": "Entire natural run reports, including every shop action, wave economy, loadout, RNG journal, damage, outcome and recovery checks.",
+  "excluded": [
+    "buildVersion",
+    "journal.buildVersion",
+    "decisions and diagnosticSummary (optional dev.3 growth-search diagnostics)"
+  ],
+  "sourceHashes": {
+    "qa/natural-probe-dev3-legacy-runs.json.gz": "9c0378dbae66d37c7a8b4c058d565d4b9475d6b617dc430e0f628d272852a533",
+    "qa/natural-probe-dev4-legacy-runs.json.gz": "0ab7ca38ad1a4b4b63b6a13ea8f308d7b38fa40dcedd2fe2af60e4488bc3a310"
+  },
+  "families": [
+    {
+      "family": "wet",
+      "name": "潮湿电链",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 9,
+      "coreOfferedRuns": 9,
+      "meanBattleSeconds": 562.4499999999973,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    },
+    {
+      "family": "oil",
+      "name": "燃油连爆",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 7,
+      "coreOfferedRuns": 10,
+      "meanBattleSeconds": 541.883333333332,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    },
+    {
+      "family": "ballistic",
+      "name": "穿甲齐射",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 4,
+      "coreOfferedRuns": 9,
+      "meanBattleSeconds": 563.251666666664,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    },
+    {
+      "family": "fortress",
+      "name": "堡垒震荡",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 2,
+      "coreOfferedRuns": 9,
+      "meanBattleSeconds": 563.536666666664,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    },
+    {
+      "family": "drone",
+      "name": "无人机编队",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 8,
+      "coreOfferedRuns": 10,
+      "meanBattleSeconds": 557.4799999999977,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    },
+    {
+      "family": "frost",
+      "name": "冰霜回弹",
+      "runs": 10,
+      "wins": 10,
+      "coreAttainedRuns": 10,
+      "coreOfferedRuns": 10,
+      "meanBattleSeconds": 562.5966666666642,
+      "failedWaves": [],
+      "resumeChecks": 120,
+      "anomalies": []
+    }
+  ],
+  "limitation": "Machine simulation through production rules; not browser interaction, a human win rate or a device performance measurement."
+}

@@ -1,0 +1,65 @@
+
+> backpack-mecha@0.2.0-dev.3 probe:natural
+> node --experimental-strip-types scripts/natural-probe.ts --policy=legacy --diagnostics=1
+
+wet / natural-v02-01: won, wave 12, 573.6s combat, core 8, resume 12
+wet / natural-v02-02: won, wave 12, 563.6s combat, core 8, resume 12
+wet / natural-v02-03: won, wave 12, 566.1s combat, core 7, resume 12
+wet / natural-v02-04: won, wave 12, 552.7s combat, core 3, resume 12
+wet / natural-v02-05: won, wave 12, 556.5s combat, core 5, resume 12
+wet / natural-v02-06: won, wave 12, 546.5s combat, core 4, resume 12
+wet / natural-v02-07: won, wave 12, 554.0s combat, core 4, resume 12
+wet / natural-v02-08: won, wave 12, 589.7s combat, core not attained, resume 12
+wet / natural-v02-09: won, wave 12, 575.1s combat, core 11, resume 12
+wet / natural-v02-10: won, wave 12, 546.6s combat, core 3, resume 12
+oil / natural-v02-01: won, wave 12, 534.2s combat, core not attained, resume 12
+oil / natural-v02-02: won, wave 12, 535.5s combat, core 5, resume 12
+oil / natural-v02-03: won, wave 12, 524.2s combat, core 4, resume 12
+oil / natural-v02-04: won, wave 12, 537.0s combat, core 4, resume 12
+oil / natural-v02-05: won, wave 12, 530.0s combat, core 5, resume 12
+oil / natural-v02-06: won, wave 12, 569.1s combat, core not attained, resume 12
+oil / natural-v02-07: won, wave 12, 532.7s combat, core 5, resume 12
+oil / natural-v02-08: won, wave 12, 554.0s combat, core 5, resume 12
+oil / natural-v02-09: won, wave 12, 578.3s combat, core not attained, resume 12
+oil / natural-v02-10: won, wave 12, 523.7s combat, core 6, resume 12
+ballistic / natural-v02-01: won, wave 12, 565.6s combat, core 9, resume 12
+ballistic / natural-v02-02: won, wave 12, 556.7s combat, core not attained, resume 12
+ballistic / natural-v02-03: won, wave 12, 592.2s combat, core not attained, resume 12
+ballistic / natural-v02-04: won, wave 12, 576.9s combat, core not attained, resume 12
+ballistic / natural-v02-05: won, wave 12, 549.1s combat, core not attained, resume 12
+ballistic / natural-v02-06: won, wave 12, 533.3s combat, core 6, resume 12
+ballistic / natural-v02-07: won, wave 12, 551.9s combat, core not attained, resume 12
+ballistic / natural-v02-08: won, wave 12, 584.0s combat, core 12, resume 12
+ballistic / natural-v02-09: won, wave 12, 570.6s combat, core not attained, resume 12
+ballistic / natural-v02-10: won, wave 12, 552.2s combat, core 12, resume 12
+fortress / natural-v02-01: won, wave 12, 542.5s combat, core 3, resume 12
+fortress / natural-v02-02: won, wave 12, 562.1s combat, core not attained, resume 12
+fortress / natural-v02-03: won, wave 12, 537.6s combat, core 5, resume 12
+fortress / natural-v02-04: won, wave 12, 581.0s combat, core not attained, resume 12
+fortress / natural-v02-05: won, wave 12, 559.8s combat, core not attained, resume 12
+fortress / natural-v02-06: won, wave 12, 548.8s combat, core not attained, resume 12
+fortress / natural-v02-07: won, wave 12, 576.4s combat, core not attained, resume 12
+fortress / natural-v02-08: won, wave 12, 588.3s combat, core not attained, resume 12
+fortress / natural-v02-09: won, wave 12, 591.3s combat, core not attained, resume 12
+fortress / natural-v02-10: won, wave 12, 547.6s combat, core not attained, resume 12
+drone / natural-v02-01: won, wave 12, 537.0s combat, core 7, resume 12
+drone / natural-v02-02: won, wave 12, 574.0s combat, core 10, resume 12
+drone / natural-v02-03: won, wave 12, 544.5s combat, core 3, resume 12
+drone / natural-v02-04: won, wave 12, 573.1s combat, core not attained, resume 12
+drone / natural-v02-05: won, wave 12, 585.1s combat, core 10, resume 12
+drone / natural-v02-06: won, wave 12, 602.9s combat, core not attained, resume 12
+drone / natural-v02-07: won, wave 12, 536.5s combat, core 3, resume 12
+drone / natural-v02-08: won, wave 12, 549.9s combat, core 7, resume 12
+drone / natural-v02-09: won, wave 12, 537.2s combat, core 3, resume 12
+drone / natural-v02-10: won, wave 12, 534.6s combat, core 6, resume 12
+frost / natural-v02-01: won, wave 12, 563.5s combat, core 3, resume 12
+frost / natural-v02-02: won, wave 12, 564.7s combat, core 7, resume 12
+frost / natural-v02-03: won, wave 12, 559.5s combat, core 4, resume 12
+frost / natural-v02-04: won, wave 12, 599.8s combat, core 3, resume 12
+frost / natural-v02-05: won, wave 12, 551.8s combat, core 9, resume 12
+frost / natural-v02-06: won, wave 12, 550.2s combat, core 7, resume 12
+frost / natural-v02-07: won, wave 12, 562.6s combat, core 5, resume 12
+frost / natural-v02-08: won, wave 12, 574.3s combat, core 5, resume 12
+frost / natural-v02-09: won, wave 12, 553.5s combat, core 4, resume 12
+frost / natural-v02-10: won, wave 12, 546.0s combat, core 5, resume 12
+Saved 60 natural runs to qa/natural-probe-dev3-legacy.json

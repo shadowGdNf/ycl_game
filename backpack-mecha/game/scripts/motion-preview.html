@@ -1,0 +1,57 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>背包机甲 · dev.4 动作夹具</title>
+<style>
+*{box-sizing:border-box}body{height:100dvh;display:flex;flex-direction:column;overflow:hidden;margin:0;background:#101b24;color:#e8dfc9;font:14px system-ui}header{flex-shrink:0;padding:12px;display:flex;gap:9px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #657177}strong{color:#f2c982}select,button{font:inherit;background:#233842;color:inherit;border:1px solid #74817c;padding:8px;border-radius:4px}select{max-width:100%}label{white-space:nowrap}canvas{display:block;width:100%;height:0;flex:1;min-height:0}#status{flex:0 0 44px;max-height:44px;overflow:auto;padding:8px 12px;font:12px monospace;white-space:pre-wrap}#perf{display:none;position:absolute;right:12px;bottom:42px;width:320px;max-width:45vw;max-height:90px;overflow:auto;margin:0;background:#101b24}button:disabled{opacity:.4}
+</style><header><strong>场景夹具 · 禁用存档写入</strong><select id="scene" aria-label="动作场景"></select><button id="play">播放 6 秒</button><button id="reset">重置场景</button><label><input id="reduced" type="checkbox">减少动态</label><label><input id="assist" type="checkbox">色彩辅助</label><button id="language">English</button><button id="performance">性能对照 · 3×60 秒/版</button><span id="version"></span></header><canvas id="view"></canvas><div id="status"></div><pre id="perf"></pre>
+<script type="module">
+import {Renderer} from '/current/js/renderer.js';
+import {stepBattle} from '/current/js/combat.js';
+import {motionFrame,motionLabel} from '/current/js/motion.js';
+import {BUILD_VERSION} from '/current/js/version.js';
+const scenes=await(await fetch('/fixtures.json')).json(),canvas=document.querySelector('canvas'),select=document.querySelector('#scene'),status=document.querySelector('#status');
+for(const f of scenes){const o=document.createElement('option');o.value=f.id;o.textContent=f.label;select.append(o);}
+const renderer=new Renderer(canvas);await renderer.load();
+let baseline=null;try{const {Renderer:BaselineRenderer}=await import('/baseline/js/renderer.js');baseline=new BaselineRenderer(canvas);await baseline.load();}catch{document.querySelector('#performance').disabled=true;document.querySelector('#performance').textContent='缺少 dev.3 基线 · 性能待测';}
+const options={lang:'zh',reducedMotion:false,colorAssist:false};let world,remaining=0,prev=0,perf=null,seen=new Set();
+document.querySelector('#version').textContent=BUILD_VERSION;
+function reset(){world=structuredClone(scenes.find(f=>f.id===select.value).world);remaining=0;}
+function observe(){const key=`${select.value}/${options.lang}/${options.reducedMotion}/${options.colorAssist}/${innerWidth}x${innerHeight}`;if(seen.has(key))return;seen.add(key);fetch('/observations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({at:new Date().toISOString(),fixture:select.value,viewport:[innerWidth,innerHeight],options:{...options},userAgent:navigator.userAgent,note:'Rendered fixture selected through the preview UI; not natural gameplay or human comprehension evidence.'})});}
+select.onchange=()=>{reset();observe();};document.querySelector('#reset').onclick=reset;
+document.querySelector('#play').onclick=()=>{remaining=6;prev=0;};
+document.querySelector('#reduced').onchange=e=>{options.reducedMotion=e.target.checked;observe();};
+document.querySelector('#assist').onchange=e=>{options.colorAssist=e.target.checked;observe();};
+document.querySelector('#language').onclick=()=>{options.lang=options.lang==='zh'?'en':'zh';observe();};
+reset();observe();
+const summary=values=>{const a=[...values].sort((a,b)=>a-b);return{n:a.length,p50:a[Math.floor(a.length*.5)],p95:a[Math.floor(a.length*.95)],max:a.at(-1),over50Pct:100*a.filter(x=>x>50).length/a.length};};
+document.querySelector('#performance').onclick=()=>{
+ perf={startedAt:new Date().toISOString(),sample:0,version:0,started:0,last:0,intervals:[],renders:[],records:[],hidden:document.hidden,dimensions:null,layoutChanged:false,dimensionChanges:[]};remaining=0;document.querySelector('#perf').style.display='none';
+ for(const el of document.querySelectorAll('button,select,input'))el.disabled=true;
+};
+document.addEventListener('visibilitychange',()=>{if(perf&&document.hidden)perf.hidden=true;remaining=0;});
+function frame(now){
+ if(perf){
+  if(!perf.started){perf.started=now;perf.last=now;}
+  perf.hidden ||= document.hidden;
+  const elapsed=now-perf.started,r=perf.version===0?baseline:renderer;
+  const ids=['dense-act3','B3A-p3-beam-active','overlap-zones'];
+  const f=scenes.find(f=>f.id===ids[Math.min(2,Math.floor(Math.max(0,elapsed-3000)/20000))]);
+  const before=performance.now();r.draw(f.world,options);const render=performance.now()-before;
+  const dimensions=[canvas.width,canvas.height,canvas.clientWidth,canvas.clientHeight];if(elapsed>=3000){if(!perf.dimensions)perf.dimensions=dimensions;else if(JSON.stringify(dimensions)!==JSON.stringify(perf.dimensions)){perf.layoutChanged=true;if(perf.dimensionChanges.length<10&&!perf.dimensionChanges.some(d=>JSON.stringify(d.dimensions)===JSON.stringify(dimensions)))perf.dimensionChanges.push({elapsed,dimensions});}}
+  if(elapsed>=3000){perf.intervals.push(now-perf.last);perf.renders.push(render);}perf.last=now;
+  status.textContent=`${document.hidden?'后台（作废）':'前台'}性能采样 ${perf.sample+1}/3 · ${perf.version?'dev.4':'dev.3'} · ${Math.max(0,Math.floor((elapsed-3000)/1000))}/60 秒 · ${f.id}`;
+  if(elapsed>=63000){
+   const record={startedAt:perf.startedAt,recordedAt:new Date().toISOString(),version:perf.version?'dev.4':'dev.3',sample:perf.sample+1,foreground:!perf.hidden,layoutChanged:perf.layoutChanged,dimensionChanges:perf.dimensionChanges,canvas:perf.dimensions,viewport:[innerWidth,innerHeight],userAgent:navigator.userAgent,interval:summary(perf.intervals),render:summary(perf.renders),raw:{intervals:perf.intervals,renders:perf.renders}};
+   perf.records.push(record);document.querySelector('#perf').textContent=JSON.stringify(perf.records.map(({raw,...rest})=>rest),null,2);
+   fetch('/performance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(record)});
+   perf.version=1-perf.version;if(!perf.version)perf.sample++;
+   if(perf.sample===3){perf=null;document.querySelector('#perf').style.display='block';for(const el of document.querySelectorAll('button,select,input'))el.disabled=false;}
+   else {perf.started=0;perf.intervals=[];perf.renders=[];perf.hidden=false;perf.dimensions=null;perf.layoutChanged=false;perf.dimensionChanges=[];}
+  }
+ }else{
+  if(remaining>0){const dt=prev?Math.min(.1,(now-prev)/1000):0;stepBattle(world,{x:0,y:0,dash:false,overload:false},dt);remaining-=dt;}
+  renderer.draw(world,options);
+  status.textContent=`夹具 ${select.value} · 逻辑时间 ${world.time.toFixed(2)} · ${remaining>0?'播放':'暂停'}\n${[...motionFrame(world)].filter(([eid])=>world.enemies.some(e=>e.eid===eid&&e.hp>0&&e.exposed)).map(([eid,m])=>`${eid}: ${motionLabel(m,options.lang)||'idle'} / ${m.stage}`).join(' · ')}`;
+ }
+ prev=now;requestAnimationFrame(frame);
+}requestAnimationFrame(frame);
+</script></html>

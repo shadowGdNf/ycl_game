@@ -151,9 +151,14 @@ export function linkOptions(r, uid) {
     const s = r.items.find(i => i.uid === uid);
     if (!s || def(s).kind !== 'support')
         return [];
-    return active(r).filter(i => def(i).kind === 'weapon').map(weapon => ({ weapon, result: !compatible(def(s), def(weapon)) ? fail('标签不兼容', 'Incompatible tags') :
-            active(r).filter(i => i.uid !== uid && i.link === weapon.uid).length >= 2 ? fail('连接位已满', 'Support slots full') :
-                s.stored || !adjacent(s, weapon) ? fail('需要边缘相邻', 'Place along a shared edge') : ok() }));
+    return active(r).filter(i => def(i).kind === 'weapon').map(weapon => {
+        const reason = !compatible(def(s), def(weapon)) ? 'incompatible' :
+            active(r).filter(i => i.uid !== uid && i.link === weapon.uid).length >= 2 ? 'slots-full' :
+                s.stored || !adjacent(s, weapon) ? 'not-adjacent' : 'ready';
+        const result = reason === 'incompatible' ? fail('标签不兼容', 'Incompatible tags') : reason === 'slots-full' ? fail('连接位已满', 'Support slots full') :
+            reason === 'not-adjacent' ? fail('需要边缘相邻', 'Place along a shared edge') : ok();
+        return { weapon, result, reason };
+    });
 }
 export function previewPurchase(r, index) {
     const d = previewRun(r), access = requireShop(d), offer = d.shop[index];

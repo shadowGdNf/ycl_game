@@ -1,0 +1,1764 @@
+{
+  "generatedAt": "2026-10-27T09:16:55.164Z",
+  "baselineReproducedRuns": 60,
+  "witnessesReplayed": 370,
+  "sources": {
+    "natural-probe-runs.json.gz": "a1e2e1f251f9c41726089e6e6c83fb24b962c584b90eb9a9ff69aa9ecbf1fcc5",
+    "natural-probe-dev3-legacy-runs.json.gz": "9c0378dbae66d37c7a8b4c058d565d4b9475d6b617dc430e0f628d272852a533",
+    "natural-probe-dev3-expanded-runs.json.gz": "8df848dff0e27964ec5839918a0be04abf09cae38e189351fb0d1768c2e8ea34"
+  },
+  "observations": {
+    "legacy": {
+      "decisions": 291,
+      "dropped": 0,
+      "legacyMissedWitnesses": 62,
+      "noTotalBudget": 0,
+      "boundedSearchUnresolved": 57,
+      "rewardObservations": 21
+    },
+    "expanded": {
+      "decisions": 227,
+      "dropped": 0,
+      "legacyMissedWitnesses": 29,
+      "noTotalBudget": 0,
+      "boundedSearchUnresolved": 52,
+      "rewardObservations": 18
+    }
+  },
+  "families": [
+    {
+      "name": "潮湿电链",
+      "family": "wet",
+      "legacy": {
+        "family": "wet",
+        "name": "潮湿电链",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 9,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 562.4499999999973,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "wet",
+        "name": "潮湿电链",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 9,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 561.0516666666642,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    },
+    {
+      "name": "燃油连爆",
+      "family": "oil",
+      "legacy": {
+        "family": "oil",
+        "name": "燃油连爆",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 7,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 541.883333333332,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "oil",
+        "name": "燃油连爆",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 10,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 538.1416666666654,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    },
+    {
+      "name": "穿甲齐射",
+      "family": "ballistic",
+      "legacy": {
+        "family": "ballistic",
+        "name": "穿甲齐射",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 4,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 563.251666666664,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "ballistic",
+        "name": "穿甲齐射",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 8,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 556.0583333333311,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    },
+    {
+      "name": "堡垒震荡",
+      "family": "fortress",
+      "legacy": {
+        "family": "fortress",
+        "name": "堡垒震荡",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 2,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 563.536666666664,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "fortress",
+        "name": "堡垒震荡",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 9,
+        "coreOfferedRuns": 9,
+        "meanBattleSeconds": 550.3633333333315,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    },
+    {
+      "name": "无人机编队",
+      "family": "drone",
+      "legacy": {
+        "family": "drone",
+        "name": "无人机编队",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 8,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 557.4799999999977,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "drone",
+        "name": "无人机编队",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 9,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 552.0899999999981,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    },
+    {
+      "name": "冰霜回弹",
+      "family": "frost",
+      "legacy": {
+        "family": "frost",
+        "name": "冰霜回弹",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 10,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 562.5966666666642,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      },
+      "expanded": {
+        "family": "frost",
+        "name": "冰霜回弹",
+        "runs": 10,
+        "wins": 10,
+        "coreAttainedRuns": 10,
+        "coreOfferedRuns": 10,
+        "meanBattleSeconds": 561.5249999999976,
+        "failedWaves": [],
+        "resumeChecks": 120,
+        "anomalies": []
+      }
+    }
+  ],
+  "cases": [
+    {
+      "family": "wet",
+      "seed": "natural-v02-08",
+      "allCoreSeen": false,
+      "notSeen": [
+        "W03"
+      ],
+      "legacyMissedWitnesses": 0,
+      "expandedFirstCoreWave": null,
+      "unresolvedDecisions": 2,
+      "firstWitness": null
+    },
+    {
+      "family": "oil",
+      "seed": "natural-v02-01",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 5,
+      "expandedFirstCoreWave": 7,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "68a1bf96fc3b346d5f0e1dcb0d52ef3b9cd8f64b9e8439c92363602516543397",
+        "wave": 7,
+        "id": "S06",
+        "name": "燃油催化器",
+        "cash": 86.40797836375928,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i8",
+            "id": "U05",
+            "name": "瞄准镜",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i8"
+          },
+          {
+            "kind": "buy",
+            "index": 3
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 1,
+            "y": 3,
+            "rotation": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 0,
+            "y": 2,
+            "rotation": 1
+          },
+          {
+            "kind": "store",
+            "uid": "i7"
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 2,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 2,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i5"
+          },
+          {
+            "kind": "place",
+            "uid": "i1",
+            "x": 3,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i7",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 1,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 2,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i1"
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": "i5"
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": "i7"
+          }
+        ]
+      }
+    },
+    {
+      "family": "oil",
+      "seed": "natural-v02-06",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 1,
+      "expandedFirstCoreWave": 11,
+      "unresolvedDecisions": 1,
+      "firstWitness": {
+        "key": "a96360fb2583227a364cc51d977a4010cd998c1cf0796e377b65f90bc7fd1a43",
+        "wave": 8,
+        "id": "W05",
+        "name": "喷火器",
+        "cash": 88.91338178949742,
+        "constraints": [
+          "weapon-count",
+          "power",
+          "cell-count"
+        ],
+        "sold": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 1,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 0,
+            "y": 2,
+            "rotation": 1
+          },
+          {
+            "kind": "store",
+            "uid": "i9"
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 1,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 1,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 4,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i11",
+            "x": 3,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i9"
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": "i3"
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": "i9"
+          }
+        ]
+      }
+    },
+    {
+      "family": "oil",
+      "seed": "natural-v02-09",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 11,
+      "unresolvedDecisions": 2,
+      "firstWitness": {
+        "key": "f840f7e71933efb667c2360110ee1767366410a5f26694a2bf636198b968283b",
+        "wave": 6,
+        "id": "W05",
+        "name": "喷火器",
+        "cash": 77.05210727969347,
+        "constraints": [
+          "weapon-count",
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i9",
+            "id": "W02",
+            "name": "霰弹炮",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i9"
+          },
+          {
+            "kind": "buy",
+            "index": 0,
+            "placement": {
+              "x": 2,
+              "y": 3,
+              "rotation": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-02",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 2,
+      "expandedFirstCoreWave": 10,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "190590784f4492f1b3c01a602001021238e5893c4090e9f775816460400a4277",
+        "wave": 4,
+        "id": "U05",
+        "name": "瞄准镜",
+        "cash": 69.6888888888889,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i2",
+            "id": "S01",
+            "name": "增幅线圈",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i2"
+          },
+          {
+            "kind": "buy",
+            "index": 2,
+            "placement": {
+              "x": 0,
+              "y": 1,
+              "rotation": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-03",
+      "allCoreSeen": false,
+      "notSeen": [
+        "W07"
+      ],
+      "legacyMissedWitnesses": 0,
+      "expandedFirstCoreWave": null,
+      "unresolvedDecisions": 0,
+      "firstWitness": null
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-04",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 9,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "a58998613e625e1e4142cb1bed516e51d386bec2257527f0e9fc814ff0cf9059",
+        "wave": 7,
+        "id": "S03",
+        "name": "分裂镜",
+        "cash": 101.04166478852076,
+        "constraints": [
+          "support-slot-count"
+        ],
+        "sold": [
+          {
+            "uid": "i6",
+            "id": "S02",
+            "name": "速射齿轮",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i6"
+          },
+          {
+            "kind": "buy",
+            "index": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i7",
+            "x": 4,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i3"
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 2,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 0,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 2,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i1"
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i1",
+            "x": 3,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i4",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i4",
+            "target": "i1"
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": "i1"
+          }
+        ]
+      }
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-05",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 5,
+      "expandedFirstCoreWave": 5,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "cabe9529cff1b191ac18048f82abf1c698b2fd66e60c295e87f638137cb52c1f",
+        "wave": 2,
+        "id": "S03",
+        "name": "分裂镜",
+        "cash": 26,
+        "constraints": [
+          "cash-before-sale"
+        ],
+        "sold": [
+          {
+            "uid": "i4",
+            "id": "U06",
+            "name": "复合装甲",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i4"
+          },
+          {
+            "kind": "buy",
+            "index": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 2,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i5",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i1"
+          },
+          {
+            "kind": "link",
+            "uid": "i5",
+            "target": "i1"
+          }
+        ]
+      }
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-07",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 2,
+      "expandedFirstCoreWave": 8,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "d1ee00a06f08b69d8845c327c3d7e0cf215f3a80841343fcd1a4717195d7c25d",
+        "wave": 8,
+        "id": "U05",
+        "name": "瞄准镜",
+        "cash": 123.38875554053038,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i10",
+            "id": "S02",
+            "name": "速射齿轮",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i10"
+          },
+          {
+            "kind": "buy",
+            "index": 2,
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "rotation": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-09",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 0,
+      "expandedFirstCoreWave": null,
+      "unresolvedDecisions": 0,
+      "firstWitness": null
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-02",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 7,
+      "expandedFirstCoreWave": 3,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "2a8efbb6a645e2a53ebbfbd7a5965b5ae05c91378257201cbf81812af8a82d02",
+        "wave": 3,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 58.133333333333354,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i4",
+            "id": "S08",
+            "name": "汲能整流器",
+            "tier": 1
+          },
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i4"
+          },
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0,
+            "placement": {
+              "x": 3,
+              "y": 1,
+              "rotation": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-04",
+      "allCoreSeen": false,
+      "notSeen": [
+        "W08"
+      ],
+      "legacyMissedWitnesses": 2,
+      "expandedFirstCoreWave": null,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "eed41cd90d9c044fa2668f663e76407622f1b335e7e2b4afeda91e3e268baae5",
+        "wave": 3,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 53.266666666666666,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 3,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i4"
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i7",
+            "x": 1,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 2,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 1,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i5",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i3"
+          },
+          {
+            "kind": "link",
+            "uid": "i5",
+            "target": "i7"
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": "i3"
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-05",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 8,
+      "unresolvedDecisions": 2,
+      "firstWitness": {
+        "key": "8ce7ef3d7edf6e030e49f7886a77aebacaa2d5e6a32bde54d4ac9a07a843020d",
+        "wave": 8,
+        "id": "W08",
+        "name": "震荡锤",
+        "cash": 119.10319660431222,
+        "constraints": [
+          "weapon-count",
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i3",
+            "id": "S08",
+            "name": "汲能整流器",
+            "tier": 2
+          },
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i3"
+          },
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i7",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 3,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 2,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 0,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 1,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i6"
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": "i6"
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-06",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 7,
+      "unresolvedDecisions": 3,
+      "firstWitness": {
+        "key": "21bfb0a8b022e4188d50bed747eac1689dc6d4d6f17f08170edfff5bca5d1346",
+        "wave": 7,
+        "id": "W08",
+        "name": "震荡锤",
+        "cash": 85.70939824205544,
+        "constraints": [
+          "weapon-count",
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i11",
+            "x": 3,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i2"
+          },
+          {
+            "kind": "place",
+            "uid": "i12",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i6"
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 3,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 0,
+            "y": 2,
+            "rotation": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 1,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 2,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 3,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i11",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i4"
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": "i7"
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": "i7"
+          },
+          {
+            "kind": "link",
+            "uid": "i11",
+            "target": "i4"
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-07",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 7,
+      "expandedFirstCoreWave": 8,
+      "unresolvedDecisions": 5,
+      "firstWitness": {
+        "key": "831943390103b08f5cb878e25cf80041fd75e3dd42f0fbdd4177c4816bd993ab",
+        "wave": 7,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 78.83521899181129,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i9",
+            "id": "U03",
+            "name": "维修臂",
+            "tier": 1
+          },
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i9"
+          },
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 3,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i7",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 4,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i3"
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 2,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 2,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 0,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i11",
+            "x": 2,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i7",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i6"
+          },
+          {
+            "kind": "link",
+            "uid": "i7",
+            "target": "i6"
+          },
+          {
+            "kind": "link",
+            "uid": "i8",
+            "target": "i11"
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-08",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 4,
+      "expandedFirstCoreWave": 7,
+      "unresolvedDecisions": 4,
+      "firstWitness": {
+        "key": "ab4e84cf30540aa726b54c0dc6f2ad5babd313a52d25b42b64298ce56843292f",
+        "wave": 4,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 81.59259259259258,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i4",
+            "id": "U03",
+            "name": "维修臂",
+            "tier": 1
+          },
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i4"
+          },
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0,
+            "placement": {
+              "x": 0,
+              "y": 2,
+              "rotation": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-09",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 6,
+      "expandedFirstCoreWave": 10,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "c3d37101763dbb552fbd39301632bfc91b62967b746ec198fec34901b21b5811",
+        "wave": 7,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 83.55079257756744,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i9",
+            "id": "U07",
+            "name": "推进器",
+            "tier": 1
+          },
+          {
+            "uid": "i5",
+            "id": "U03",
+            "name": "维修臂",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i9"
+          },
+          {
+            "kind": "sell",
+            "uid": "i5"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i1",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 3,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 2,
+            "y": 1,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 2,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 2,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i4",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i1"
+          },
+          {
+            "kind": "link",
+            "uid": "i4",
+            "target": "i3"
+          },
+          {
+            "kind": "link",
+            "uid": "i6",
+            "target": "i3"
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-10",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 7,
+      "unresolvedDecisions": 1,
+      "firstWitness": {
+        "key": "094d621a797d7d44701a702bf0346b84ded5ec08997a0019a088ccb614d7e1be",
+        "wave": 8,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 88.54284426414243,
+        "constraints": [
+          "weapon-count",
+          "power",
+          "cell-count"
+        ],
+        "sold": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 2
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i13"
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 2,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i13",
+            "x": 1,
+            "y": 3,
+            "rotation": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i14",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i12",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i9",
+            "target": "i8"
+          },
+          {
+            "kind": "link",
+            "uid": "i10",
+            "target": "i3"
+          },
+          {
+            "kind": "link",
+            "uid": "i12",
+            "target": "i8"
+          }
+        ]
+      }
+    },
+    {
+      "family": "drone",
+      "seed": "natural-v02-04",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 0,
+      "expandedFirstCoreWave": null,
+      "unresolvedDecisions": 4,
+      "firstWitness": null
+    },
+    {
+      "family": "drone",
+      "seed": "natural-v02-06",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 3,
+      "expandedFirstCoreWave": 7,
+      "unresolvedDecisions": 1,
+      "firstWitness": {
+        "key": "625a1819031bcc85b1b27c602617b7df7180ed5227ff64a1ec5c3de47923f6d7",
+        "wave": 5,
+        "id": "W11",
+        "name": "无人机巢",
+        "cash": 48.133333333333326,
+        "constraints": [
+          "no-ready-placement-in-current-layout"
+        ],
+        "sold": [],
+        "actions": [
+          {
+            "kind": "buy",
+            "index": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i3",
+            "x": 4,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "store",
+            "uid": "i8"
+          },
+          {
+            "kind": "place",
+            "uid": "i2",
+            "x": 0,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i6",
+            "x": 1,
+            "y": 4,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i9",
+            "x": 2,
+            "y": 2,
+            "rotation": 1
+          },
+          {
+            "kind": "place",
+            "uid": "i4",
+            "x": 3,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i5",
+            "x": 3,
+            "y": 3,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i1",
+            "x": 0,
+            "y": 2,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i8",
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "place",
+            "uid": "i10",
+            "x": 2,
+            "y": 0,
+            "rotation": 0
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i7",
+            "target": ""
+          },
+          {
+            "kind": "link",
+            "uid": "i2",
+            "target": "i1"
+          },
+          {
+            "kind": "link",
+            "uid": "i7",
+            "target": "i4"
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Same seed/family inputs, not identical later offers: policy choices change subsequent RNG consumption and combat outcomes.",
+    "Expanded policy adds a +100 core preference, protects existing cores, and searches up to two sales plus rearrangement. It is not a packing-only ablation.",
+    "Witness counts describe observed decisions, not distinct runs or a human success rate.",
+    "Reward offers are recorded but their replacement paths are not searched. Search-exhausted means no witness within the bounds, never proven impossible.",
+    "Both policies retain the same upgrade timing, two-refresh limit, event skipping and high-frequency combat avoidance."
+  ]
+}

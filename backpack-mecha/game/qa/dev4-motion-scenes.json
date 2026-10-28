@@ -1,0 +1,732 @@
+{
+  "checkedAt": "2026-10-27T13:06:39.179332+00:00",
+  "buildVersion": "0.2.0-dev.4",
+  "browser": "Codex in-app browser",
+  "origin": "http://localhost:4196/",
+  "kind": "explicit-development-fixtures",
+  "persistentSaveAccess": false,
+  "generatedFixtures": 106,
+  "viewportSmokeChecks": [
+    {
+      "viewport": [
+        1280,
+        900
+      ],
+      "lang": "zh",
+      "reducedMotion": false,
+      "colorAssist": false,
+      "rendered": 106,
+      "evidence": "dev4-rendered-scenes-desktop.json"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "lang": "zh",
+      "reducedMotion": false,
+      "colorAssist": false,
+      "rendered": 106,
+      "evidence": "dev4-rendered-scenes-mobile.json"
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "lang": "en",
+      "reducedMotion": true,
+      "colorAssist": true,
+      "rendered": 106,
+      "evidence": "dev4-rendered-scenes-landscape.json"
+    }
+  ],
+  "reachableBossPhases": {
+    "B1A": [
+      1,
+      2
+    ],
+    "B1B": [
+      1,
+      2
+    ],
+    "B2A": [
+      1,
+      2,
+      3
+    ],
+    "B2B": [
+      1,
+      2
+    ],
+    "B3A": [
+      1,
+      2,
+      3
+    ],
+    "B3B": [
+      1,
+      2,
+      3
+    ]
+  },
+  "catalog": [
+    {
+      "id": "E05-p1-detonate-windup",
+      "label": "E05 · P1 · detonate · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 0.8666666666666677
+    },
+    {
+      "id": "E05-explosion",
+      "label": "E05 · 爆炸与消失",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 1.3000000000000003
+    },
+    {
+      "id": "E12-p1-charge-windup",
+      "label": "E12 · P1 · charge · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 0.9500000000000013
+    },
+    {
+      "id": "E12-p1-charge-active",
+      "label": "E12 · P1 · charge · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 1.6666666666666656
+    },
+    {
+      "id": "E12-p1-idle-recover",
+      "label": "E12 · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.016666666666661
+    },
+    {
+      "id": "B1A-p1-charge-windup",
+      "label": "B1A · P1 · charge · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B1A-p1-charge-active",
+      "label": "B1A · P1 · charge · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.1499999999999937
+    },
+    {
+      "id": "B1A-p1-idle-recover",
+      "label": "B1A · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.416666666666656
+    },
+    {
+      "id": "B1A-p1-slam-windup",
+      "label": "B1A · P1 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.833333333333314
+    },
+    {
+      "id": "B1A-p1-slam-active",
+      "label": "B1A · P1 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.333333333333313
+    },
+    {
+      "id": "B1A-p2-charge-windup",
+      "label": "B1A · P2 · charge · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B1A-p2-charge-active",
+      "label": "B1A · P2 · charge · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.1499999999999937
+    },
+    {
+      "id": "B1A-p2-idle-recover",
+      "label": "B1A · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.416666666666656
+    },
+    {
+      "id": "B1A-p2-slam-windup",
+      "label": "B1A · P2 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 10.133333333333416
+    },
+    {
+      "id": "B1A-p2-slam-active",
+      "label": "B1A · P2 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 10.633333333333441
+    },
+    {
+      "id": "B1B-p1-pull-windup",
+      "label": "B1B · P1 · pull · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B1B-p1-pull-active",
+      "label": "B1B · P1 · pull · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.21666666666666
+    },
+    {
+      "id": "B1B-p1-slam-active",
+      "label": "B1B · P1 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.033333333333321
+    },
+    {
+      "id": "B1B-p1-idle-recover",
+      "label": "B1B · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.149999999999987
+    },
+    {
+      "id": "B1B-p1-sweep-windup",
+      "label": "B1B · P1 · sweep · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.04999999999998
+    },
+    {
+      "id": "B1B-p1-sweep-active",
+      "label": "B1B · P1 · sweep · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.699999999999978
+    },
+    {
+      "id": "B1B-p1-summon-windup",
+      "label": "B1B · P1 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 10.500000000000101
+    },
+    {
+      "id": "B1B-p2-pull-windup",
+      "label": "B1B · P2 · pull · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B1B-p2-pull-active",
+      "label": "B1B · P2 · pull · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.21666666666666
+    },
+    {
+      "id": "B1B-p2-slam-active",
+      "label": "B1B · P2 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.033333333333321
+    },
+    {
+      "id": "B1B-p2-idle-recover",
+      "label": "B1B · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.149999999999987
+    },
+    {
+      "id": "B1B-p2-sweep-windup",
+      "label": "B1B · P2 · sweep · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.04999999999998
+    },
+    {
+      "id": "B1B-p2-sweep-active",
+      "label": "B1B · P2 · sweep · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.699999999999978
+    },
+    {
+      "id": "B1B-p2-summon-windup",
+      "label": "B1B · P2 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 12.800000000000216
+    },
+    {
+      "id": "B2A-p1-fire-windup",
+      "label": "B2A · P1 · fire · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B2A-p1-fire-active",
+      "label": "B2A · P1 · fire · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.1666666666666603
+    },
+    {
+      "id": "B2A-p1-idle-recover",
+      "label": "B2A · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.616666666666656
+    },
+    {
+      "id": "B2A-p1-slam-windup",
+      "label": "B2A · P1 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 14.10000000000028
+    },
+    {
+      "id": "B2A-p1-slam-active",
+      "label": "B2A · P1 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 14.550000000000303
+    },
+    {
+      "id": "B2A-p2-fire-windup",
+      "label": "B2A · P2 · fire · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B2A-p2-fire-active",
+      "label": "B2A · P2 · fire · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.1666666666666603
+    },
+    {
+      "id": "B2A-p2-idle-recover",
+      "label": "B2A · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.616666666666656
+    },
+    {
+      "id": "B2A-p2-slam-windup",
+      "label": "B2A · P2 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 19.183333333333525
+    },
+    {
+      "id": "B2A-p2-slam-active",
+      "label": "B2A · P2 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 19.6333333333335
+    },
+    {
+      "id": "B2A-p3-fire-windup",
+      "label": "B2A · P3 · fire · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B2A-p3-fire-active",
+      "label": "B2A · P3 · fire · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.1666666666666603
+    },
+    {
+      "id": "B2A-p3-idle-recover",
+      "label": "B2A · P3 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.616666666666656
+    },
+    {
+      "id": "B2A-p3-slam-windup",
+      "label": "B2A · P3 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 19.183333333333525
+    },
+    {
+      "id": "B2A-p3-slam-active",
+      "label": "B2A · P3 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 19.6333333333335
+    },
+    {
+      "id": "B2B-p1-beam-windup",
+      "label": "B2B · P1 · beam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B2B-p1-beam-active",
+      "label": "B2B · P1 · beam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.21666666666666
+    },
+    {
+      "id": "B2B-p1-idle-recover",
+      "label": "B2B · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.016666666666654
+    },
+    {
+      "id": "B2B-p1-volley-windup",
+      "label": "B2B · P1 · volley · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.383333333333316
+    },
+    {
+      "id": "B2B-p1-volley-active",
+      "label": "B2B · P1 · volley · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.816666666666648
+    },
+    {
+      "id": "B2B-p1-summon-windup",
+      "label": "B2B · P1 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.583333333333389
+    },
+    {
+      "id": "B2B-p2-beam-windup",
+      "label": "B2B · P2 · beam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "B2B-p2-beam-active",
+      "label": "B2B · P2 · beam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.21666666666666
+    },
+    {
+      "id": "B2B-p2-idle-recover",
+      "label": "B2B · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.016666666666654
+    },
+    {
+      "id": "B2B-p2-volley-windup",
+      "label": "B2B · P2 · volley · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.383333333333316
+    },
+    {
+      "id": "B2B-p2-volley-active",
+      "label": "B2B · P2 · volley · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.816666666666648
+    },
+    {
+      "id": "B2B-p2-summon-windup",
+      "label": "B2B · P2 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.583333333333389
+    },
+    {
+      "id": "B3A-p1-beam-windup",
+      "label": "B3A · P1 · beam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.549999999999996
+    },
+    {
+      "id": "B3A-p1-beam-active",
+      "label": "B3A · P1 · beam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3666666666666596
+    },
+    {
+      "id": "B3A-p1-idle-recover",
+      "label": "B3A · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.716666666666655
+    },
+    {
+      "id": "B3A-p1-slam-windup",
+      "label": "B3A · P1 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 8.166666666666652
+    },
+    {
+      "id": "B3A-p1-slam-active",
+      "label": "B3A · P1 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 8.733333333333347
+    },
+    {
+      "id": "B3A-p1-ring-windup",
+      "label": "B3A · P1 · ring · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.000000000000027
+    },
+    {
+      "id": "B3A-p1-ring-active",
+      "label": "B3A · P1 · ring · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.466666666666717
+    },
+    {
+      "id": "B3A-p2-beam-windup",
+      "label": "B3A · P2 · beam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.549999999999996
+    },
+    {
+      "id": "B3A-p2-beam-active",
+      "label": "B3A · P2 · beam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3666666666666596
+    },
+    {
+      "id": "B3A-p2-idle-recover",
+      "label": "B3A · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.716666666666655
+    },
+    {
+      "id": "B3A-p2-slam-windup",
+      "label": "B3A · P2 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 8.166666666666652
+    },
+    {
+      "id": "B3A-p2-slam-active",
+      "label": "B3A · P2 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 8.733333333333347
+    },
+    {
+      "id": "B3A-p2-ring-windup",
+      "label": "B3A · P2 · ring · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.000000000000027
+    },
+    {
+      "id": "B3A-p2-ring-active",
+      "label": "B3A · P2 · ring · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 9.466666666666717
+    },
+    {
+      "id": "B3A-p2-conveyor-windup",
+      "label": "B3A · P2 · conveyor · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 14.883333333333653
+    },
+    {
+      "id": "B3A-p2-conveyor-active",
+      "label": "B3A · P2 · conveyor · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 15.850000000000367
+    },
+    {
+      "id": "B3A-p3-beam-windup",
+      "label": "B3A · P3 · beam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.549999999999996
+    },
+    {
+      "id": "B3A-p3-beam-active",
+      "label": "B3A · P3 · beam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3666666666666596
+    },
+    {
+      "id": "B3A-p3-slam-windup",
+      "label": "B3A · P3 · slam · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.166666666666654
+    },
+    {
+      "id": "B3A-p3-slam-active",
+      "label": "B3A · P3 · slam · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.733333333333318
+    },
+    {
+      "id": "B3A-p3-ring-windup",
+      "label": "B3A · P3 · ring · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 5.899999999999984
+    },
+    {
+      "id": "B3A-p3-ring-active",
+      "label": "B3A · P3 · ring · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 6.366666666666649
+    },
+    {
+      "id": "B3A-p3-idle-recover",
+      "label": "B3A · P3 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 8.349999999999994
+    },
+    {
+      "id": "B3A-p3-conveyor-windup",
+      "label": "B3A · P3 · conveyor · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 18.4666666666669
+    },
+    {
+      "id": "B3A-p3-conveyor-active",
+      "label": "B3A · P3 · conveyor · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 19.43333333333351
+    },
+    {
+      "id": "B3B-p1-bombard-windup",
+      "label": "B3B · P1 · bombard · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.5999999999999956
+    },
+    {
+      "id": "B3B-p1-bombard-active",
+      "label": "B3B · P1 · bombard · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3166666666666598
+    },
+    {
+      "id": "B3B-p1-idle-recover",
+      "label": "B3B · P1 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.4666666666666592
+    },
+    {
+      "id": "B3B-p1-summon-windup",
+      "label": "B3B · P1 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.9166666666666545
+    },
+    {
+      "id": "B3B-p1-volley-windup",
+      "label": "B3B · P1 · volley · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.04999999999998
+    },
+    {
+      "id": "B3B-p1-volley-active",
+      "label": "B3B · P1 · volley · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.599999999999978
+    },
+    {
+      "id": "B3B-p2-bombard-windup",
+      "label": "B3B · P2 · bombard · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.5999999999999956
+    },
+    {
+      "id": "B3B-p2-bombard-active",
+      "label": "B3B · P2 · bombard · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3166666666666598
+    },
+    {
+      "id": "B3B-p2-idle-recover",
+      "label": "B3B · P2 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.4666666666666592
+    },
+    {
+      "id": "B3B-p2-summon-windup",
+      "label": "B3B · P2 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.9166666666666545
+    },
+    {
+      "id": "B3B-p2-volley-windup",
+      "label": "B3B · P2 · volley · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.04999999999998
+    },
+    {
+      "id": "B3B-p2-volley-active",
+      "label": "B3B · P2 · volley · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.599999999999978
+    },
+    {
+      "id": "B3B-p3-bombard-windup",
+      "label": "B3B · P3 · bombard · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.5999999999999956
+    },
+    {
+      "id": "B3B-p3-bombard-active",
+      "label": "B3B · P3 · bombard · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.3166666666666598
+    },
+    {
+      "id": "B3B-p3-idle-recover",
+      "label": "B3B · P3 · idle · recover",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.4666666666666592
+    },
+    {
+      "id": "B3B-p3-summon-windup",
+      "label": "B3B · P3 · summon · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 4.9166666666666545
+    },
+    {
+      "id": "B3B-p3-volley-windup",
+      "label": "B3B · P3 · volley · windup",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.04999999999998
+    },
+    {
+      "id": "B3B-p3-volley-active",
+      "label": "B3B · P3 · volley · active",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 7.599999999999978
+    },
+    {
+      "id": "E12-impact",
+      "label": "E12 · 实际撞墙硬直",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 2.083333333333331
+    },
+    {
+      "id": "B1A-impact",
+      "label": "B1A · 实际撞墙硬直",
+      "provenance": "Explicit setup; subsequent attack and phase timing advanced by stepBattle.",
+      "time": 3.349999999999993
+    },
+    {
+      "id": "control-ice",
+      "label": "控制状态 · ice · 地面预警继续有效",
+      "provenance": "Explicit control-state / legacy-save fixture, not a naturally played battle.",
+      "time": 0.9500000000000013
+    },
+    {
+      "id": "control-stagger",
+      "label": "控制状态 · stagger · 地面预警继续有效",
+      "provenance": "Explicit control-state / legacy-save fixture, not a naturally played battle.",
+      "time": 2.449999999999996
+    },
+    {
+      "id": "control-unknown",
+      "label": "控制状态 · unknown · 地面预警继续有效",
+      "provenance": "Explicit control-state / legacy-save fixture, not a naturally played battle.",
+      "time": 0.9500000000000013
+    },
+    {
+      "id": "dense-act3",
+      "label": "第三章 · 密集敌人",
+      "provenance": "Synthetic population fixture using the public encounter helpers.",
+      "time": 0.9000000000000011
+    },
+    {
+      "id": "overlap-zones",
+      "label": "叠加 · 牵引 / 伤害 / 环内安全区",
+      "provenance": "Composite geometry fixture; not a naturally occurring encounter.",
+      "time": 3.21666666666666
+    }
+  ],
+  "screenshots": [
+    "dev4-carrier-desktop.jpg",
+    "dev4-crane-mobile.jpg",
+    "dev4-furnace-weakpoint.jpg",
+    "dev4-impact-stopped.jpg",
+    "dev4-overlap-landscape.jpg",
+    "dev4-reclaimer-ring-mobile.jpg",
+    "dev4-twins-mobile-en.jpg",
+    "dev4-volley-cached-label.jpg"
+  ],
+  "limitations": [
+    "All-state UI selection checks are rendering smoke checks; screenshots are representative visual inspections.",
+    "No human comprehension rate, natural twelve-wave completion, mobile touch or device performance claim.",
+    "Control and overlapping-zone fixtures use explicitly documented synthetic setup."
+  ],
+  "sourceHashes": {
+    "src/renderer.ts": "5cf090f3b7a17f006484bb05ccad292a1e35cb666b5c3781b8f28aefd62626d6",
+    "src/motion.ts": "ff58247b6e4b7f1564b88986c4e1ba8ccdcae7269911df8a212730559de8f549",
+    "src/motion-renderer.ts": "f18ade0a8198195f41d87c219c93b048654ad75054a9cfb2956ab7f7b08888d9",
+    "scripts/motion-fixtures.ts": "a760efd0e55a7af6d8da0b96f48acd380e1af295d44198a68bd5c9c58186e016"
+  }
+}

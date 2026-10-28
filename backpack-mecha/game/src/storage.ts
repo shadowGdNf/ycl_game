@@ -39,7 +39,7 @@ export function sanitizeSave(raw:unknown):SaveEnvelope {
   const journal=sanitizeJournal(r.journal);if(journal)fresh.run.journal=journal;else delete fresh.run.journal;
   if(r.phase==='battle'){
    const b=x.battle;
-   if(validBattle(b,r)){fresh.battle=structuredClone(b);}else fresh.run.phase='prep';
+   if(validBattle(b,r)){fresh.battle=structuredClone(b);for(const e of fresh.battle.enemies)if(!['ice','impact','stagger'].includes(e.controlReason??''))delete e.controlReason;}else fresh.run.phase='prep';
   }
  }
  return fresh;

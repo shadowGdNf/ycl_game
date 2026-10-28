@@ -85,6 +85,9 @@ export function sanitizeSave(raw) {
             const b = x.battle;
             if (validBattle(b, r)) {
                 fresh.battle = structuredClone(b);
+                for (const e of fresh.battle.enemies)
+                    if (!['ice', 'impact', 'stagger'].includes(e.controlReason ?? ''))
+                        delete e.controlReason;
             }
             else
                 fresh.run.phase = 'prep';

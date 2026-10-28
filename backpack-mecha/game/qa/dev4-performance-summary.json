@@ -1,0 +1,294 @@
+{
+  "checkedAt": "2026-10-27T13:18:41.128Z",
+  "status": "passed",
+  "browser": "Codex in-app browser",
+  "os": "macOS 26.6.2",
+  "architecture": "arm64",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "viewport": [
+    1280,
+    900
+  ],
+  "canvas": [
+    1280,
+    793,
+    1280,
+    793
+  ],
+  "startedAt": "2026-10-27T13:12:09.116Z",
+  "methodology": "Three alternating 60-second foreground samples per version, each after 3 seconds of warm-up; identical dense/Boss/overlap snapshots. Raw arrays retained. Pooled p95 is the comparison metric; all individual segments are also reported.",
+  "aggregate": {
+    "dev.3": {
+      "render": {
+        "n": 10802,
+        "p50": 0.3999999761581421,
+        "p95": 1.0999999642372131,
+        "max": 1.600000023841858,
+        "over50Pct": 0
+      },
+      "interval": {
+        "n": 10802,
+        "p50": 16.699999999982538,
+        "p95": 18.099999999976717,
+        "max": 18.70000000001164,
+        "over50Pct": 0
+      }
+    },
+    "dev.4": {
+      "render": {
+        "n": 10803,
+        "p50": 0.5,
+        "p95": 1.100000023841858,
+        "max": 3.199999988079071,
+        "over50Pct": 0
+      },
+      "interval": {
+        "n": 10803,
+        "p50": 16.699999999982538,
+        "p95": 18.10000000000582,
+        "max": 18.80000000000291,
+        "over50Pct": 0
+      }
+    }
+  },
+  "renderP95GrowthPct": 0.000005418604254181503,
+  "reviewThresholdPct": 15,
+  "segments": [
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:13:12.129Z",
+      "version": "dev.3",
+      "sample": 1,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3600,
+        "p50": 16.69999999999709,
+        "p95": 18,
+        "max": 18.700000000004366,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3600,
+        "p50": 0.30000001192092896,
+        "p95": 0.800000011920929,
+        "max": 1.300000011920929,
+        "over50Pct": 0
+      }
+    },
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:14:15.147Z",
+      "version": "dev.4",
+      "sample": 1,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3601,
+        "p50": 16.69999999999709,
+        "p95": 18.10000000000582,
+        "max": 18.80000000000291,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3601,
+        "p50": 0.40000003576278687,
+        "p95": 1,
+        "max": 3.199999988079071,
+        "over50Pct": 0
+      }
+    },
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:15:18.161Z",
+      "version": "dev.3",
+      "sample": 2,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3601,
+        "p50": 16.699999999982538,
+        "p95": 18.099999999976717,
+        "max": 18.699999999982538,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3601,
+        "p50": 0.3999999761581421,
+        "p95": 1.100000023841858,
+        "max": 1.600000023841858,
+        "over50Pct": 0
+      }
+    },
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:16:21.195Z",
+      "version": "dev.4",
+      "sample": 2,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3601,
+        "p50": 16.699999999982538,
+        "p95": 18.10000000000582,
+        "max": 18.70000000001164,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3601,
+        "p50": 0.5,
+        "p95": 1.300000011920929,
+        "max": 1.9000000357627869,
+        "over50Pct": 0
+      }
+    },
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:17:24.214Z",
+      "version": "dev.3",
+      "sample": 3,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3601,
+        "p50": 16.699999999953434,
+        "p95": 18.10000000000582,
+        "max": 18.70000000001164,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3601,
+        "p50": 0.30000001192092896,
+        "p95": 1.100000023841858,
+        "max": 1.600000023841858,
+        "over50Pct": 0
+      }
+    },
+    {
+      "startedAt": "2026-10-27T13:12:09.116Z",
+      "recordedAt": "2026-10-27T13:18:27.229Z",
+      "version": "dev.4",
+      "sample": 3,
+      "foreground": true,
+      "layoutChanged": false,
+      "dimensionChanges": [],
+      "canvas": [
+        1280,
+        793,
+        1280,
+        793
+      ],
+      "viewport": [
+        1280,
+        900
+      ],
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "interval": {
+        "n": 3601,
+        "p50": 16.699999999953434,
+        "p95": 18.099999999976717,
+        "max": 18.70000000001164,
+        "over50Pct": 0
+      },
+      "render": {
+        "n": 3601,
+        "p50": 0.40000003576278687,
+        "p95": 1,
+        "max": 1.899999976158142,
+        "over50Pct": 0
+      }
+    }
+  ],
+  "discarded": [
+    {
+      "file": "dev4-performance-discarded-layout-initial.jsonl",
+      "reason": "Results panel changed the canvas height after the first sample; not a valid fixed-layout comparison."
+    },
+    {
+      "file": "dev4-performance-discarded-layout-optimized.jsonl",
+      "reason": "Incomplete optimization rerun using the same flawed layout; discarded before final fixed-layout sampling."
+    },
+    {
+      "file": "dev4-performance-before-charge-fix.jsonl",
+      "reason": "Superseded by the charge-path and contact-footprint correction; retained, not used for final-code performance claims."
+    },
+    {
+      "file": "dev4-performance-discarded-viewport.jsonl",
+      "reason": "The first baseline segment detected a canvas size change. Entire comparison retained but excluded; precise transition was not recorded by that earlier harness."
+    }
+  ],
+  "priorReview": {
+    "evidence": "dev4-performance-before-label-cache-summary.json",
+    "status": "regression-review-required",
+    "baselineP95": 1,
+    "currentP95": 1.2,
+    "renderP95GrowthPct": 20,
+    "change": "Added a bounded whole-label raster cache, followed by a fresh baseline/current comparison. Different sessions do not establish the cache effect in isolation."
+  },
+  "limitations": [
+    "Fixed-snapshot renderer timings, not end-to-end moving combat or touch latency.",
+    "In-app browser only; UA Chrome text is not independent Chrome coverage.",
+    "No phone thermal, memory-growth, or 20-minute run claim."
+  ],
+  "sourceEvidence": "dev4-performance-source.json"
+}

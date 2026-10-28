@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-27T11:02:48.166Z",
+  "baseline": "/private/tmp/backpack-mecha-dev4-baseline/src/combat.ts",
+  "baselineCombatHash": "af2b2b5e8a279c5ba244df6a8605bbcf1735f49eda5f27eba5a3c01893167fca",
+  "currentCombatHash": "e9ce70358b83d9e7e6a9f089037b3cdad28d55d9d860cd9cca8852b6d335c843",
+  "cases": [
+    "E05-p1",
+    "E12-p1",
+    "B1A-p1",
+    "B1A-p2",
+    "B1B-p1",
+    "B1B-p2",
+    "B2A-p1",
+    "B2A-p2",
+    "B2A-p3",
+    "B2B-p1",
+    "B2B-p2",
+    "B3A-p1",
+    "B3A-p2",
+    "B3A-p3",
+    "B3B-p1",
+    "B3B-p2",
+    "B3B-p3",
+    "E12-impact",
+    "B1A-impact",
+    "control-ice",
+    "control-stagger",
+    "control-unknown",
+    "dense-act3",
+    "overlap-zones"
+  ],
+  "ticks": 43200,
+  "status": "passed",
+  "excludedRuleFields": [
+    "events (existing event payloads compared separately; only enemy-explosion and event IDs excluded)",
+    "nextEvent",
+    "enemies[].controlReason"
+  ],
+  "note": "Explicit fixtures; not a natural browser run. All remaining fields, including RNG, damage, AI, rewards and positions, compared every tick."
+}

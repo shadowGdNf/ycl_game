@@ -43,4 +43,10 @@ export class Art {
     const s=this.manifest?.sprites[key];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
     ctx.drawImage(im,s.x,s.y,s.w,s.h,x,y,w,h);
   }
+  /** A normalized portion of an existing sprite, aligned to its full fitted rectangle. */
+  part(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number,u:number,v:number,uw:number,vh:number):void{
+    const s=this.manifest?.sprites[key];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
+    const fit=Math.min(w/s.w,h/s.h),dw=s.w*fit,dh=s.h*fit;
+    ctx.drawImage(im,s.x+s.w*u,s.y+s.h*v,s.w*uw,s.h*vh,x-dw/2+dw*u,y-dh/2+dh*v,dw*uw,dh*vh);
+  }
 }

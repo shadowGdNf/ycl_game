@@ -1,0 +1,35 @@
+{
+  "capturedAt": "2026-10-27T10:57:13.799151+00:00",
+  "buildVersion": "0.2.0-dev.4",
+  "browser": "Codex in-app browser",
+  "os": "macOS 26.6.2",
+  "architecture": "arm64",
+  "viewport": [
+    1280,
+    900
+  ],
+  "baselineVersion": "0.2.0-dev.3",
+  "sourceHashes": {
+    "src/encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
+    "src/audio.ts": "bf7b0fb93f83050e763cc18576feb3718432e795a3e9365258d0912c4c3d8d02",
+    "src/art.ts": "b1debecfd262be3e44b010df4f57f553dc0d6bc1ac012efda4656b873b9820d8",
+    "src/app.ts": "0e69cb9101873f85bc05fed373a6e3aba684af3db4a0634112e9e09586858aed",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/storage.ts": "5733f0647760dea35fdfabe53fdd07874cc8e3f8fe8a5e7a798aed880849f519",
+    "src/motion.ts": "a2e4ab6b573bbac3c5a5b6ce44a7c6fdc190767dc9a95017526774520558e0c6",
+    "src/content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
+    "src/motion-renderer.ts": "44d9ac5fcd10eaad701911ec6af07f180c07480ec998902ab484829070793e46",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/types.ts": "2877fbcf48ea2179c3e01c4c001683392ef6f28214b468fc4190232eee5c3722",
+    "src/combat.ts": "e9ce70358b83d9e7e6a9f089037b3cdad28d55d9d860cd9cca8852b6d335c843",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "src/renderer.ts": "4f0070ba34071396b0e3ee6a87327e302a377439a5867663035fc04f35783fca",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "src/version.ts": "12eaeeb5a6dcf833cc214378e285c247172f8e7e4daee4bf8e1148dcce92f272",
+    "src/journal.ts": "7a81891880f547a3f5203a61c1304d95acef2dbd87521efb50ee2578160e1a74",
+    "scripts/motion-preview.html": "192a01c7171d78ba473f090eaa13ab0c863915e969073cd06f351f77a46bb8d4",
+    "scripts/motion-fixtures.ts": "a760efd0e55a7af6d8da0b96f48acd380e1af295d44198a68bd5c9c58186e016",
+    "scripts/serve-motion.mjs": "2be4a260fc95d72bb1c3456dfbe39643f806ca86b2a07fe08ef3afac38d84fe2"
+  },
+  "fixturesHash": "3850478b1c803004d2164471fb6619d91680a487e26d18f7689e7a7cd27bb746"
+}

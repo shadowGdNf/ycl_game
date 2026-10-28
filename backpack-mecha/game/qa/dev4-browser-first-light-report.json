@@ -1,0 +1,502 @@
+{
+  "reportVersion": 1,
+  "buildVersion": "0.2.0-dev.4",
+  "rulesVersion": "0.1.0",
+  "seed": "FIRST-LIGHT",
+  "mode": "full",
+  "chassis": "scavenger",
+  "difficulty": 0,
+  "status": "prep",
+  "wave": 2,
+  "battleSeconds": 40,
+  "prepSeconds": 6534.195499998182,
+  "stats": {
+    "damageByModule": {
+      "W01": 358
+    },
+    "damageTakenBy": {
+      "E01": 8
+    },
+    "kills": 22,
+    "killedBudget": 22,
+    "goldEarned": 8.8,
+    "maxChain": 0,
+    "damageTaken": 8
+  },
+  "items": [
+    {
+      "uid": "i1",
+      "id": "W01",
+      "tier": 1,
+      "x": 1,
+      "y": 0,
+      "rotation": 0,
+      "stored": false
+    },
+    {
+      "uid": "i2",
+      "id": "S01",
+      "tier": 1,
+      "x": 1,
+      "y": 1,
+      "rotation": 0,
+      "stored": false,
+      "link": "i1"
+    },
+    {
+      "uid": "i3",
+      "id": "W12",
+      "tier": 1,
+      "x": 3,
+      "y": 1,
+      "rotation": 0,
+      "stored": false
+    }
+  ],
+  "history": [
+    "store:i2",
+    "start:1:0",
+    "won:1:36.8",
+    "place:i2:1,1,0",
+    "buy:W12:24"
+  ],
+  "journal": {
+    "version": 1,
+    "buildVersion": "0.2.0-dev.4",
+    "rulesVersion": "0.1.0",
+    "startedAtWave": 1,
+    "partial": false,
+    "nextSequence": 9,
+    "droppedEvents": 0,
+    "events": [
+      {
+        "sequence": 1,
+        "wave": 1,
+        "action": "new-run",
+        "detail": "new-run",
+        "gold": 40,
+        "hp": 100,
+        "prepSeconds": 0,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": 0,
+            "y": 1,
+            "rotation": 0,
+            "stored": false,
+            "link": "i1"
+          }
+        ],
+        "shop": [],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 2,
+        "wave": 1,
+        "action": "store",
+        "detail": "store:i2",
+        "gold": 40,
+        "hp": 100,
+        "prepSeconds": 0,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": -1,
+            "y": -1,
+            "rotation": 0,
+            "stored": true
+          }
+        ],
+        "shop": [],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 3,
+        "wave": 1,
+        "action": "start",
+        "detail": "start:1:0",
+        "gold": 40,
+        "hp": 100,
+        "prepSeconds": 0,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": -1,
+            "y": -1,
+            "rotation": 0,
+            "stored": true
+          }
+        ],
+        "shop": [],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 4,
+        "wave": 1,
+        "action": "won",
+        "detail": "won:1:36.8",
+        "gold": 76.8,
+        "hp": 100,
+        "prepSeconds": 0,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": -1,
+            "y": -1,
+            "rotation": 0,
+            "stored": true
+          }
+        ],
+        "shop": [],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 5,
+        "wave": 2,
+        "action": "shop",
+        "detail": "shop:visit",
+        "gold": 76.8,
+        "hp": 100,
+        "prepSeconds": 0,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": -1,
+            "y": -1,
+            "rotation": 0,
+            "stored": true
+          }
+        ],
+        "shop": [
+          {
+            "id": "W12",
+            "locked": false
+          },
+          {
+            "id": "S02",
+            "locked": false
+          },
+          {
+            "id": "U01",
+            "locked": false
+          },
+          {
+            "id": "S07",
+            "locked": false
+          }
+        ],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 6,
+        "wave": 2,
+        "action": "place",
+        "detail": "place:i2:1,1,0",
+        "gold": 76.8,
+        "hp": 100,
+        "prepSeconds": 21.100999999999814,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": 1,
+            "y": 1,
+            "rotation": 0,
+            "stored": false,
+            "link": "i1"
+          }
+        ],
+        "shop": [
+          {
+            "id": "W12",
+            "locked": false
+          },
+          {
+            "id": "S02",
+            "locked": false
+          },
+          {
+            "id": "U01",
+            "locked": false
+          },
+          {
+            "id": "S07",
+            "locked": false
+          }
+        ],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 7,
+        "wave": 2,
+        "action": "inspect",
+        "detail": "inspect:W12",
+        "gold": 76.8,
+        "hp": 100,
+        "prepSeconds": 25.90099999999964,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": 1,
+            "y": 1,
+            "rotation": 0,
+            "stored": false,
+            "link": "i1"
+          }
+        ],
+        "shop": [
+          {
+            "id": "W12",
+            "locked": false
+          },
+          {
+            "id": "S02",
+            "locked": false
+          },
+          {
+            "id": "U01",
+            "locked": false
+          },
+          {
+            "id": "S07",
+            "locked": false
+          }
+        ],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      },
+      {
+        "sequence": 8,
+        "wave": 2,
+        "action": "buy",
+        "detail": "buy:W12:24",
+        "gold": 52.8,
+        "hp": 100,
+        "prepSeconds": 37.767999999999795,
+        "items": [
+          {
+            "uid": "i1",
+            "id": "W01",
+            "tier": 1,
+            "x": 1,
+            "y": 0,
+            "rotation": 0,
+            "stored": false
+          },
+          {
+            "uid": "i2",
+            "id": "S01",
+            "tier": 1,
+            "x": 1,
+            "y": 1,
+            "rotation": 0,
+            "stored": false,
+            "link": "i1"
+          },
+          {
+            "uid": "i3",
+            "id": "W12",
+            "tier": 1,
+            "x": 3,
+            "y": 1,
+            "rotation": 0,
+            "stored": false
+          }
+        ],
+        "shop": [
+          {
+            "id": "",
+            "locked": false
+          },
+          {
+            "id": "S02",
+            "locked": false
+          },
+          {
+            "id": "U01",
+            "locked": false
+          },
+          {
+            "id": "S07",
+            "locked": false
+          }
+        ],
+        "protocols": [],
+        "rewardOptions": [],
+        "protocolOptions": [],
+        "route": 0
+      }
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "route": 0,
+        "rulesVersion": "0.1.0",
+        "prepSeconds": 0,
+        "start": {
+          "hp": 100,
+          "shield": 20,
+          "gold": 40,
+          "items": [
+            {
+              "uid": "i1",
+              "id": "W01",
+              "tier": 1,
+              "x": 1,
+              "y": 0,
+              "rotation": 0,
+              "stored": false
+            },
+            {
+              "uid": "i2",
+              "id": "S01",
+              "tier": 1,
+              "x": -1,
+              "y": -1,
+              "rotation": 0,
+              "stored": true
+            }
+          ],
+          "protocols": []
+        },
+        "end": {
+          "won": true,
+          "hp": 100,
+          "shield": 12,
+          "gold": 76.8,
+          "income": 36.8,
+          "seconds": 40,
+          "stats": {
+            "damageByModule": {
+              "W01": 358
+            },
+            "damageTakenBy": {
+              "E01": 8
+            },
+            "kills": 22,
+            "killedBudget": 22,
+            "goldEarned": 8.8,
+            "maxChain": 0,
+            "damageTaken": 8
+          }
+        }
+      }
+    ],
+    "prepSeconds": {
+      "2": 6534.195499998182
+    },
+    "frames": {
+      "1": {
+        "samples": 2402,
+        "milliseconds": 40020.10000003576,
+        "over50ms": 0,
+        "maxMs": 17.700000000000728,
+        "buckets": [
+          2236,
+          166,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  }
+}

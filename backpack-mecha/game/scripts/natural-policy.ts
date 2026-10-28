@@ -2,6 +2,8 @@
 import * as economy from '../src/economy.ts';
 import {CHASSIS_BY_ID,MODULE_BY_ID} from '../src/content.ts';
 import type {Run,Item} from '../src/types.ts';
+import {searchPurchase,applyPurchasePlan} from './purchase-search.ts';
+import type {PurchasePlan} from './purchase-search.ts';
 
 export interface Family {id:string;name:string;weapons:string[];supports:string[];core:string[];protocols:string[]}
 export const FAMILIES:Family[]=[
@@ -20,7 +22,7 @@ function perform(run:Run,action:Action):boolean {
  return economy.placeItem(run,action.uid!,action.x!,action.y!,action.rotation!).ok;
 }
 function rulesCopy(run:Run):Run {const {journal,saleUndo,...rules}=run;return structuredClone(rules);}
-function value(id:string,family:Family):number {
+export function value(id:string,family:Family):number {
  const weapon=family.weapons.indexOf(id),support=family.supports.indexOf(id);
  if(weapon>=0)return 160-weapon*25;
  if(support>=0)return 75-support*8;
@@ -34,7 +36,7 @@ function equipPlan(run:Run,uid:string,actions:Action[]):boolean {
  const action:Action={kind:'place',uid,x:p.x,y:p.y,rotation:p.rotation};
  if(!perform(run,action))return false;actions.push(action);return true;
 }
-function purchasePlan(run:Run,index:number,family:Family):{actions:Action[];gain:number}|undefined {
+export function purchasePlan(run:Run,index:number,family:Family):{actions:Action[];gain:number}|undefined {
  const id=run.shop[index]?.id;if(!id||!value(id,family)||MODULE_BY_ID[id].price>run.gold)return;
  if(run.items.some(i=>i.id===id))return;
  const equipped=run.items.filter(i=>!i.stored).sort((a,b)=>worth(a,family)-worth(b,family));
@@ -48,8 +50,10 @@ function purchasePlan(run:Run,index:number,family:Family):{actions:Action[];gain
   if(equipPlan(draft,draft.items.at(-1)!.uid,actions)&&economy.validateLoadout(draft).ok)return {actions,gain};
  }
 }
-export function prepare(run:Run,family:Family):void {
+export interface PolicyOptions {policy?:'legacy'|'expanded';onDecision?:(run:Run,stage:string)=>void}
+export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
  while(['reward','expansion','protocol'].includes(run.phase)){
+  options.onDecision?.(run,run.phase);
   if(run.phase==='expansion'){
    if(!economy.chooseExpansion(run,[0,1,2,3].filter(i=>!run.unlockedCorners.includes(i)).slice(0,2)).ok)throw Error('Expansion failed');
   }else if(run.phase==='protocol'){
@@ -76,6 +80,23 @@ export function prepare(run:Run,family:Family):void {
  if(run.hp<CHASSIS_BY_ID[run.chassis].hp*.7)economy.repair(run);
  for(let visit=0;visit<3;visit++){
   for(let selection=0;selection<4;selection++){
+   options.onDecision?.(run,`shop:${visit}:${selection}`);
+   if(options.policy==='expanded'){
+    const plans:{plan:PurchasePlan;gain:number}[]=[];
+    for(let i=0;i<run.shop.length;i++){
+     const id=run.shop[i].id;
+     if(family.core.includes(id)&&!run.items.some(item=>item.id===id)){
+      const search=searchPurchase(run,i,family.core,id=>value(id,family));
+      // This is an explicit preference for forming a core, not a change to game prices.
+      if(search.plan){const gain=value(id,family)+100-search.plan.loss;if(gain>0)plans.push({plan:search.plan,gain});}
+     }else{
+      const old=purchasePlan(run,i,family);
+      if(old&&!old.actions.some(a=>a.kind==='sell'&&family.core.includes(run.items.find(i=>i.uid===a.uid)!.id)))
+       plans.push({plan:{actions:old.actions as PurchasePlan['actions'],removed:[],loss:0,repacked:false},gain:old.gain});
+     }
+    }
+    plans.sort((a,b)=>b.gain-a.gain);if(!plans[0])break;applyPurchasePlan(run,plans[0].plan);continue;
+   }
    const plans=run.shop.map((_,i)=>purchasePlan(run,i,family)).filter((p):p is NonNullable<typeof p>=>!!p).sort((a,b)=>b.gain-a.gain);
    if(!plans[0])break;
    for(const a of plans[0].actions)if(!perform(run,a))throw Error('Shop plan diverged from real API');

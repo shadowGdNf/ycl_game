@@ -6,7 +6,9 @@
 
 本目录由 `ycl_game` 主仓库统一管理，不再使用嵌套的独立 Git 仓库。请在仓库根目录查看和提交变更。
 
-当前工作版本为 **v0.2.0-dev.2**：在购买前装配预览、逐场战报等 v0.2 功能基础上，接入用户选定的 **A 方案风格化金属素材**，统一四机体、全部模块、敌人、Boss 和地面，并补齐独立母舰侧舱。见 [A 方案改造与验收](docs/ART-STYLE-A.md)和 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。正式上线仍需真机与真人试玩；[v0.1 验收记录](docs/QA.md)保留为历史基线。线上试玩以最近一次 Pages 部署为准，本地构建不会自动更新线上。
+当前工作版本为 **v0.2.0-dev.4**：区分冰冻、撞墙硬直和 Boss 失衡，加入三个动作样板与六 Boss 关键反馈，修复扇形内圈和屏幕边缘状态标签。沿用 **A 方案风格化金属素材**和 `0.1.0` 战斗/经济数值。见 [dev.4 开发与验证](docs/DEV4-MOTION.md)、[dev.3 装配改进](docs/DEV3-ASSEMBLY.md)和 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准，本地构建不会自动更新线上。
+
+本版动作核心已实施，**独立 Chrome 十二场完整远征、Safari 首章和真机验收仍待补齐**；内置浏览器夹具、规则模拟与手机视口不替代这些记录。先继续 [dev.4 验收矩阵](docs/DEV4-PLAN.md)，再进入 dev.5 的多输入模型、平衡和设备稳定性。
 
 ## 本地启动
 
@@ -43,7 +45,7 @@ npm run dev
 | 背包装配 | 拖动，或选中后点击空格 | 选中后点空格，也支持拖动 |
 | 旋转 | R / 旋转按钮 | 旋转按钮 |
 
-武器最多三件。支持件必须与兼容武器边缘相邻；每把武器最多连接两件支持。青色连线代表生效；挪动支持件后检查连接和电力。备件架最多三件。自动整理整理已装备模块，备件需主动装入。战斗中不能换装。
+武器最多三件。支持件必须与兼容武器边缘相邻；每把武器最多连接两件支持。青色连线代表生效；选中支持可查看当前收益和未连接原因。备件架最多三件，可直接拖入背包，或选中后点击空格。自动整理整理已装备模块，备件需主动装入。战斗中不能换装。
 
 商店点击「查看装配」可预览形状、价格、装入后的电力与占格，以及可连接的武器。选择直接装入时，点击背包中的标记完成购买；也可先买到备件架。背包标记表示模块左上角：青色「＋」可生效，橙色「○」表示支持件仍需连接。旋转会更新标记。失败时不扣款。
 
@@ -74,7 +76,7 @@ v0.2 沿用原存档格式与数据库，兼容 v0.1 续局。新增战报独立
 - `src/types.ts`：公共内容、装配、只读场景和事件接口。
 - `src/combat.ts` / `src/encounters.ts`：60 Hz规则、伤害状态、敌人、Boss、导航与刷怪。
 - `src/economy.ts`：装配合法性、交易原子性、路线、事件和结算。
-- `src/renderer.ts` / `src/art.ts`：图集、分层角色、关键帧与特效；只消费规则数据。
+- `src/renderer.ts` / `src/art.ts` / `src/motion.ts` / `src/motion-renderer.ts`：图集、动作状态、分层部件与特效；只消费规则数据。
 - `src/app.ts` / `styles.css`：流程、键鼠/触屏、中文/英文、界面。
 - `src/storage.ts` / `src/input.ts` / `src/audio.ts`：存档、技能输入、Web Audio 合成音效/音乐。
 - `src/journal.ts` / `src/version.ts`：有容量上限的本地战报、运行版本与规则版本。
@@ -91,18 +93,21 @@ v0.2 沿用原存档格式与数据库，兼容 v0.1 续局。新增战报独立
 ```sh
 npm test           # 规则、经济、存档、流程回归
 npm run probe      # 按章节的真实规则Boss构筑探针，覆盖写入qa/balance-probe.json
-npm run probe:natural # 六条路线各10种子的自然成长完整局，保留失败与未集齐核心的结果
+npm run probe:natural -- --policy=legacy --diagnostics=1   # 原策略：六路线各10种子
+npm run probe:natural -- --policy=expanded --diagnostics=1 # 扩展购买搜索与核心偏好
+npm run compare:growth # 对照历史基线，重放购买方案，生成诊断摘要
 python3 scripts/art-check.py  # 需要Pillow；检查图集和采样区域
 node scripts/check-bundle.mjs # 生产资源引用、内容数量与包体检查
 ```
 
 [探针报告](docs/BALANCE-PROBE.md)明示测试条件：使用预装合法构筑与机器避险输入，不能当作真人胜率或随机商店可达性证明。
 
-[自然成长探针](docs/V0.2-DEVELOPMENT.md)补充真实商店购买、升级、战损、奖励和完整十二场规则战斗。摘要为 `qa/natural-probe.json`，完整操作记录为 `qa/natural-probe-runs.json.gz`。小样本 `npm run probe:natural -- --seeds=1` 写入独立的 smoke 报告，不覆盖正式十种子结果。机器策略结果不能当作真人胜率。
+[自然成长探针](docs/DEV3-ASSEMBLY.md)补充真实商店购买、升级、战损、奖励和完整十二场规则战斗。历史 `qa/natural-probe.json` 和原始压缩记录保留；当前两组输出为 `qa/natural-probe-dev3-legacy.json` / `qa/natural-probe-dev3-expanded.json`，完整决策快照保存在各自的 `-runs.json.gz` 中。对照摘要为 `qa/growth-comparison-dev3.json`。小样本 `npm run probe:natural -- --seeds=1 --diagnostics=1` 写入独立 smoke 报告。机器策略结果不能当作真人胜率。
 
 ## 已知验收缺口
 
 - 未执行 Android Chrome / iPhone Safari 真机性能测量、完整桌面 Chrome/Safari 矩阵和十二名新玩家观察。
+- 已登记小米 MIX 2S / Android 10，但设备未安装 Chrome，本轮设备交互测试未完成。用户确认暂无 iPhone，Safari 保留待测。390×844 布局检查不计为真机验收。
 - 完整预装构筑的部分Boss击杀时间短于设计目标，下一轮需依据真实商店成长的完整局数据调优。
 - 角色采用 3D 质感透明图片与四姿态插值；敌人每种一张基础姿态。未新增真实 3D 模型、逐敌人动画帧或实时材质光照。PNG 保留生成原像素，通过元数据裁切采样。
 - 每日轮换、皮肤、联网排行、广告、支付均属于后续扩展。

@@ -229,6 +229,7 @@ function stagger(w, e, amount) {
     if (shared.stagger >= 100) {
         shared.stagger = 0;
         shared.frozen = 1.5;
+        shared.controlReason = 'stagger';
         shared.staggerUntil = w.time + 9.5;
         event(w, 'stagger', e, { amount: 1.5 });
     }
@@ -236,6 +237,7 @@ function stagger(w, e, amount) {
         if (other.group && other.group === e.group) {
             other.stagger = shared.stagger;
             other.frozen = shared.frozen;
+            other.controlReason = shared.controlReason;
             other.staggerUntil = shared.staggerUntil;
         }
 }
@@ -258,8 +260,10 @@ function applyStatus(w, e, weapon) {
             e.chill = 0;
             if (e.kind === 'boss')
                 stagger(w, e, 15 + (weapon.supports.S12 ? [5, 7, 9][weapon.supports.S12 - 1] : 0));
-            else
+            else {
                 e.frozen = (e.kind === 'elite' ? .5 : 1.2) + support(weapon, 'S12');
+                e.controlReason = 'ice';
+            }
         }
     }
 }
@@ -694,6 +698,7 @@ function tickZones(w, dt) {
             if (e) {
                 e.dead = true;
                 e.hp = 0;
+                event(w, 'enemy-explosion', e, { source: e.id, targetId: e.eid, amount: z.radius });
             }
         }
         z.triggered = true;
@@ -706,6 +711,8 @@ function tickEnemyStatuses(w, dt) {
             continue;
         e.wet = Math.max(0, e.wet - dt);
         e.frozen = Math.max(0, e.frozen - dt);
+        if (!e.frozen)
+            delete e.controlReason;
         if (e.chillUntil <= w.time)
             e.chill = 0;
         for (const layer of [...e.burns]) {
@@ -732,6 +739,7 @@ function tickEnemies(w, dt) {
             if (blocked) {
                 e.charge.until = 0;
                 e.frozen = e.kind === 'boss' ? 2 : 1.5;
+                e.controlReason = 'impact';
                 event(w, 'stagger', e, { source: e.id, amount: e.frozen });
             }
             continue;

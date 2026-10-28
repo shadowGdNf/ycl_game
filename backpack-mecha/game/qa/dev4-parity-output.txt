@@ -1,0 +1,25 @@
+E05-p1: identical
+E12-p1: identical
+B1A-p1: identical
+B1A-p2: identical
+B1B-p1: identical
+B1B-p2: identical
+B2A-p1: identical
+B2A-p2: identical
+B2A-p3: identical
+B2B-p1: identical
+B2B-p2: identical
+B3A-p1: identical
+B3A-p2: identical
+B3A-p3: identical
+B3B-p1: identical
+B3B-p2: identical
+B3B-p3: identical
+E12-impact: identical
+B1A-impact: identical
+control-ice: identical
+control-stagger: identical
+control-unknown: identical
+dense-act3: identical
+overlap-zones: identical
+Compared 43200 ticks across 24 scenarios.

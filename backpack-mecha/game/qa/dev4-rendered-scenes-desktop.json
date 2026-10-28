@@ -1,0 +1,426 @@
+[
+  {
+    "fixture": "E05-p1-detonate-windup",
+    "status": "夹具 E05-p1-detonate-windup · 逻辑时间 0.87 · 暂停\n1: 准备 · 自爆 / windup"
+  },
+  {
+    "fixture": "E05-explosion",
+    "status": "夹具 E05-explosion · 逻辑时间 1.30 · 暂停\n"
+  },
+  {
+    "fixture": "E12-p1-charge-windup",
+    "status": "夹具 E12-p1-charge-windup · 逻辑时间 0.95 · 暂停\n1: 准备 · 冲锋 / windup"
+  },
+  {
+    "fixture": "E12-p1-charge-active",
+    "status": "夹具 E12-p1-charge-active · 逻辑时间 1.67 · 暂停\n1: 冲锋 / active"
+  },
+  {
+    "fixture": "E12-p1-idle-recover",
+    "status": "夹具 E12-p1-idle-recover · 逻辑时间 3.02 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B1A-p1-charge-windup",
+    "status": "夹具 B1A-p1-charge-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 冲锋 / windup"
+  },
+  {
+    "fixture": "B1A-p1-charge-active",
+    "status": "夹具 B1A-p1-charge-active · 逻辑时间 3.15 · 暂停\n1: 冲锋 / active"
+  },
+  {
+    "fixture": "B1A-p1-idle-recover",
+    "status": "夹具 B1A-p1-idle-recover · 逻辑时间 4.42 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B1A-p1-slam-windup",
+    "status": "夹具 B1A-p1-slam-windup · 逻辑时间 6.83 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B1A-p1-slam-active",
+    "status": "夹具 B1A-p1-slam-active · 逻辑时间 7.33 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B1A-p2-charge-windup",
+    "status": "夹具 B1A-p2-charge-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 冲锋 / windup"
+  },
+  {
+    "fixture": "B1A-p2-charge-active",
+    "status": "夹具 B1A-p2-charge-active · 逻辑时间 3.15 · 暂停\n1: 冲锋 / active"
+  },
+  {
+    "fixture": "B1A-p2-idle-recover",
+    "status": "夹具 B1A-p2-idle-recover · 逻辑时间 4.42 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B1A-p2-slam-windup",
+    "status": "夹具 B1A-p2-slam-windup · 逻辑时间 10.13 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B1A-p2-slam-active",
+    "status": "夹具 B1A-p2-slam-active · 逻辑时间 10.63 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B1B-p1-pull-windup",
+    "status": "夹具 B1B-p1-pull-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 牵引 / windup"
+  },
+  {
+    "fixture": "B1B-p1-pull-active",
+    "status": "夹具 B1B-p1-pull-active · 逻辑时间 3.22 · 暂停\n1: 牵引 / active"
+  },
+  {
+    "fixture": "B1B-p1-slam-active",
+    "status": "夹具 B1B-p1-slam-active · 逻辑时间 5.03 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B1B-p1-idle-recover",
+    "status": "夹具 B1B-p1-idle-recover · 逻辑时间 5.15 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B1B-p1-sweep-windup",
+    "status": "夹具 B1B-p1-sweep-windup · 逻辑时间 7.05 · 暂停\n1: 准备 · 摆锤 / windup"
+  },
+  {
+    "fixture": "B1B-p1-sweep-active",
+    "status": "夹具 B1B-p1-sweep-active · 逻辑时间 7.70 · 暂停\n1: 摆锤 / active"
+  },
+  {
+    "fixture": "B1B-p1-summon-windup",
+    "status": "夹具 B1B-p1-summon-windup · 逻辑时间 10.50 · 暂停\n1: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B1B-p2-pull-windup",
+    "status": "夹具 B1B-p2-pull-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 牵引 / windup"
+  },
+  {
+    "fixture": "B1B-p2-pull-active",
+    "status": "夹具 B1B-p2-pull-active · 逻辑时间 3.22 · 暂停\n1: 牵引 / active"
+  },
+  {
+    "fixture": "B1B-p2-slam-active",
+    "status": "夹具 B1B-p2-slam-active · 逻辑时间 5.03 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B1B-p2-idle-recover",
+    "status": "夹具 B1B-p2-idle-recover · 逻辑时间 5.15 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B1B-p2-sweep-windup",
+    "status": "夹具 B1B-p2-sweep-windup · 逻辑时间 7.05 · 暂停\n1: 准备 · 摆锤 / windup"
+  },
+  {
+    "fixture": "B1B-p2-sweep-active",
+    "status": "夹具 B1B-p2-sweep-active · 逻辑时间 7.70 · 暂停\n1: 摆锤 / active"
+  },
+  {
+    "fixture": "B1B-p2-summon-windup",
+    "status": "夹具 B1B-p2-summon-windup · 逻辑时间 12.80 · 暂停\n1: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B2A-p1-fire-windup",
+    "status": "夹具 B2A-p1-fire-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 喷火 / windup"
+  },
+  {
+    "fixture": "B2A-p1-fire-active",
+    "status": "夹具 B2A-p1-fire-active · 逻辑时间 3.17 · 暂停\n1: 喷火 / active"
+  },
+  {
+    "fixture": "B2A-p1-idle-recover",
+    "status": "夹具 B2A-p1-idle-recover · 逻辑时间 4.62 · 暂停\n1: 弱点暴露 / recover"
+  },
+  {
+    "fixture": "B2A-p1-slam-windup",
+    "status": "夹具 B2A-p1-slam-windup · 逻辑时间 14.10 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B2A-p1-slam-active",
+    "status": "夹具 B2A-p1-slam-active · 逻辑时间 14.55 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B2A-p2-fire-windup",
+    "status": "夹具 B2A-p2-fire-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 喷火 / windup"
+  },
+  {
+    "fixture": "B2A-p2-fire-active",
+    "status": "夹具 B2A-p2-fire-active · 逻辑时间 3.17 · 暂停\n1: 喷火 / active"
+  },
+  {
+    "fixture": "B2A-p2-idle-recover",
+    "status": "夹具 B2A-p2-idle-recover · 逻辑时间 4.62 · 暂停\n1: 弱点暴露 / recover"
+  },
+  {
+    "fixture": "B2A-p2-slam-windup",
+    "status": "夹具 B2A-p2-slam-windup · 逻辑时间 19.18 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B2A-p2-slam-active",
+    "status": "夹具 B2A-p2-slam-active · 逻辑时间 19.63 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B2A-p3-fire-windup",
+    "status": "夹具 B2A-p3-fire-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 喷火 / windup"
+  },
+  {
+    "fixture": "B2A-p3-fire-active",
+    "status": "夹具 B2A-p3-fire-active · 逻辑时间 3.17 · 暂停\n1: 喷火 / active"
+  },
+  {
+    "fixture": "B2A-p3-idle-recover",
+    "status": "夹具 B2A-p3-idle-recover · 逻辑时间 4.62 · 暂停\n1: 弱点暴露 / recover"
+  },
+  {
+    "fixture": "B2A-p3-slam-windup",
+    "status": "夹具 B2A-p3-slam-windup · 逻辑时间 19.18 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B2A-p3-slam-active",
+    "status": "夹具 B2A-p3-slam-active · 逻辑时间 19.63 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B2B-p1-beam-windup",
+    "status": "夹具 B2B-p1-beam-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 光束 / windup · 2: 准备 · 光束 / windup"
+  },
+  {
+    "fixture": "B2B-p1-beam-active",
+    "status": "夹具 B2B-p1-beam-active · 逻辑时间 3.22 · 暂停\n1: 光束 / active · 2: 光束 / active"
+  },
+  {
+    "fixture": "B2B-p1-idle-recover",
+    "status": "夹具 B2B-p1-idle-recover · 逻辑时间 5.02 · 暂停\n1: 调整中 / recover · 2: 调整中 / recover"
+  },
+  {
+    "fixture": "B2B-p1-volley-windup",
+    "status": "夹具 B2B-p1-volley-windup · 逻辑时间 6.38 · 暂停\n1: 准备 · 齐射 / windup · 2: 准备 · 齐射 / windup"
+  },
+  {
+    "fixture": "B2B-p1-volley-active",
+    "status": "夹具 B2B-p1-volley-active · 逻辑时间 6.82 · 暂停\n1: 齐射 / active · 2: 齐射 / active"
+  },
+  {
+    "fixture": "B2B-p1-summon-windup",
+    "status": "夹具 B2B-p1-summon-windup · 逻辑时间 9.58 · 暂停\n1: 准备 · 增援 / windup · 2: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B2B-p2-beam-windup",
+    "status": "夹具 B2B-p2-beam-windup · 逻辑时间 2.45 · 暂停\n1: 准备 · 光束 / windup · 2: 准备 · 光束 / windup"
+  },
+  {
+    "fixture": "B2B-p2-beam-active",
+    "status": "夹具 B2B-p2-beam-active · 逻辑时间 3.22 · 暂停\n1: 光束 / active · 2: 光束 / active"
+  },
+  {
+    "fixture": "B2B-p2-idle-recover",
+    "status": "夹具 B2B-p2-idle-recover · 逻辑时间 5.02 · 暂停\n1: 调整中 / recover · 2: 调整中 / recover"
+  },
+  {
+    "fixture": "B2B-p2-volley-windup",
+    "status": "夹具 B2B-p2-volley-windup · 逻辑时间 6.38 · 暂停\n1: 准备 · 齐射 / windup · 2: 准备 · 齐射 / windup"
+  },
+  {
+    "fixture": "B2B-p2-volley-active",
+    "status": "夹具 B2B-p2-volley-active · 逻辑时间 6.82 · 暂停\n1: 齐射 / active · 2: 齐射 / active"
+  },
+  {
+    "fixture": "B2B-p2-summon-windup",
+    "status": "夹具 B2B-p2-summon-windup · 逻辑时间 9.58 · 暂停\n1: 准备 · 增援 / windup · 2: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B3A-p1-beam-windup",
+    "status": "夹具 B3A-p1-beam-windup · 逻辑时间 2.55 · 暂停\n1: 准备 · 光束 / windup"
+  },
+  {
+    "fixture": "B3A-p1-beam-active",
+    "status": "夹具 B3A-p1-beam-active · 逻辑时间 3.37 · 暂停\n1: 光束 / active"
+  },
+  {
+    "fixture": "B3A-p1-idle-recover",
+    "status": "夹具 B3A-p1-idle-recover · 逻辑时间 4.72 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B3A-p1-slam-windup",
+    "status": "夹具 B3A-p1-slam-windup · 逻辑时间 8.17 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B3A-p1-slam-active",
+    "status": "夹具 B3A-p1-slam-active · 逻辑时间 8.73 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B3A-p1-ring-windup",
+    "status": "夹具 B3A-p1-ring-windup · 逻辑时间 9.00 · 暂停\n1: 准备 · 扩散环 / windup"
+  },
+  {
+    "fixture": "B3A-p1-ring-active",
+    "status": "夹具 B3A-p1-ring-active · 逻辑时间 9.47 · 暂停\n1: 扩散环 / active"
+  },
+  {
+    "fixture": "B3A-p2-beam-windup",
+    "status": "夹具 B3A-p2-beam-windup · 逻辑时间 2.55 · 暂停\n1: 准备 · 光束 / windup"
+  },
+  {
+    "fixture": "B3A-p2-beam-active",
+    "status": "夹具 B3A-p2-beam-active · 逻辑时间 3.37 · 暂停\n1: 光束 / active"
+  },
+  {
+    "fixture": "B3A-p2-idle-recover",
+    "status": "夹具 B3A-p2-idle-recover · 逻辑时间 4.72 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B3A-p2-slam-windup",
+    "status": "夹具 B3A-p2-slam-windup · 逻辑时间 8.17 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B3A-p2-slam-active",
+    "status": "夹具 B3A-p2-slam-active · 逻辑时间 8.73 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B3A-p2-ring-windup",
+    "status": "夹具 B3A-p2-ring-windup · 逻辑时间 9.00 · 暂停\n1: 准备 · 扩散环 / windup"
+  },
+  {
+    "fixture": "B3A-p2-ring-active",
+    "status": "夹具 B3A-p2-ring-active · 逻辑时间 9.47 · 暂停\n1: 扩散环 / active"
+  },
+  {
+    "fixture": "B3A-p2-conveyor-windup",
+    "status": "夹具 B3A-p2-conveyor-windup · 逻辑时间 14.88 · 暂停\n1: 准备 · 输送带 / windup"
+  },
+  {
+    "fixture": "B3A-p2-conveyor-active",
+    "status": "夹具 B3A-p2-conveyor-active · 逻辑时间 15.85 · 暂停\n1: 输送带 / active · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3A-p3-beam-windup",
+    "status": "夹具 B3A-p3-beam-windup · 逻辑时间 2.55 · 暂停\n1: 准备 · 光束 / windup"
+  },
+  {
+    "fixture": "B3A-p3-beam-active",
+    "status": "夹具 B3A-p3-beam-active · 逻辑时间 3.37 · 暂停\n1: 光束 / active"
+  },
+  {
+    "fixture": "B3A-p3-slam-windup",
+    "status": "夹具 B3A-p3-slam-windup · 逻辑时间 5.17 · 暂停\n1: 准备 · 重击 / windup"
+  },
+  {
+    "fixture": "B3A-p3-slam-active",
+    "status": "夹具 B3A-p3-slam-active · 逻辑时间 5.73 · 暂停\n1: 重击 / active"
+  },
+  {
+    "fixture": "B3A-p3-ring-windup",
+    "status": "夹具 B3A-p3-ring-windup · 逻辑时间 5.90 · 暂停\n1: 准备 · 扩散环 / windup"
+  },
+  {
+    "fixture": "B3A-p3-ring-active",
+    "status": "夹具 B3A-p3-ring-active · 逻辑时间 6.37 · 暂停\n1: 扩散环 / active"
+  },
+  {
+    "fixture": "B3A-p3-idle-recover",
+    "status": "夹具 B3A-p3-idle-recover · 逻辑时间 8.35 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B3A-p3-conveyor-windup",
+    "status": "夹具 B3A-p3-conveyor-windup · 逻辑时间 18.47 · 暂停\n1: 准备 · 输送带 / windup"
+  },
+  {
+    "fixture": "B3A-p3-conveyor-active",
+    "status": "夹具 B3A-p3-conveyor-active · 逻辑时间 19.43 · 暂停\n1: 输送带 / active · 10: idle / idle · 11: idle / idle · 12: idle / idle · 13: idle / idle"
+  },
+  {
+    "fixture": "B3B-p1-bombard-windup",
+    "status": "夹具 B3B-p1-bombard-windup · 逻辑时间 2.60 · 暂停\n1: 准备 · 轰炸 / windup"
+  },
+  {
+    "fixture": "B3B-p1-bombard-active",
+    "status": "夹具 B3B-p1-bombard-active · 逻辑时间 3.32 · 暂停\n1: 轰炸 / active"
+  },
+  {
+    "fixture": "B3B-p1-idle-recover",
+    "status": "夹具 B3B-p1-idle-recover · 逻辑时间 3.47 · 暂停\n1: 调整中 / recover"
+  },
+  {
+    "fixture": "B3B-p1-summon-windup",
+    "status": "夹具 B3B-p1-summon-windup · 逻辑时间 4.92 · 暂停\n1: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B3B-p1-volley-windup",
+    "status": "夹具 B3B-p1-volley-windup · 逻辑时间 7.05 · 暂停\n1: 准备 · 齐射 / windup · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3B-p1-volley-active",
+    "status": "夹具 B3B-p1-volley-active · 逻辑时间 7.60 · 暂停\n1: 齐射 / active · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3B-p2-bombard-windup",
+    "status": "夹具 B3B-p2-bombard-windup · 逻辑时间 2.60 · 暂停\n1: 准备 · 轰炸 / windup · 2: 准备 · 轰炸 / windup · 3: 准备 · 轰炸 / windup"
+  },
+  {
+    "fixture": "B3B-p2-bombard-active",
+    "status": "夹具 B3B-p2-bombard-active · 逻辑时间 3.32 · 暂停\n1: 轰炸 / active · 2: 轰炸 / active · 3: 轰炸 / active"
+  },
+  {
+    "fixture": "B3B-p2-idle-recover",
+    "status": "夹具 B3B-p2-idle-recover · 逻辑时间 3.47 · 暂停\n1: 调整中 / recover · 2: 调整中 / recover · 3: 调整中 / recover"
+  },
+  {
+    "fixture": "B3B-p2-summon-windup",
+    "status": "夹具 B3B-p2-summon-windup · 逻辑时间 4.92 · 暂停\n1: 准备 · 增援 / windup · 2: 准备 · 增援 / windup · 3: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B3B-p2-volley-windup",
+    "status": "夹具 B3B-p2-volley-windup · 逻辑时间 7.05 · 暂停\n1: 准备 · 齐射 / windup · 2: 准备 · 齐射 / windup · 3: 准备 · 齐射 / windup · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3B-p2-volley-active",
+    "status": "夹具 B3B-p2-volley-active · 逻辑时间 7.60 · 暂停\n1: 齐射 / active · 2: 齐射 / active · 3: 齐射 / active · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3B-p3-bombard-windup",
+    "status": "夹具 B3B-p3-bombard-windup · 逻辑时间 2.60 · 暂停\n1: 准备 · 轰炸 / windup · 2: 准备 · 轰炸 / windup · 3: 准备 · 轰炸 / windup"
+  },
+  {
+    "fixture": "B3B-p3-bombard-active",
+    "status": "夹具 B3B-p3-bombard-active · 逻辑时间 3.32 · 暂停\n1: 轰炸 / active · 2: 轰炸 / active · 3: 轰炸 / active"
+  },
+  {
+    "fixture": "B3B-p3-idle-recover",
+    "status": "夹具 B3B-p3-idle-recover · 逻辑时间 3.47 · 暂停\n1: 调整中 / recover · 2: 调整中 / recover · 3: 调整中 / recover"
+  },
+  {
+    "fixture": "B3B-p3-summon-windup",
+    "status": "夹具 B3B-p3-summon-windup · 逻辑时间 4.92 · 暂停\n1: 准备 · 增援 / windup · 2: 准备 · 增援 / windup · 3: 准备 · 增援 / windup"
+  },
+  {
+    "fixture": "B3B-p3-volley-windup",
+    "status": "夹具 B3B-p3-volley-windup · 逻辑时间 7.05 · 暂停\n1: 准备 · 齐射 / windup · 2: 准备 · 齐射 / windup · 3: 准备 · 齐射 / windup · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "B3B-p3-volley-active",
+    "status": "夹具 B3B-p3-volley-active · 逻辑时间 7.60 · 暂停\n1: 齐射 / active · 2: 齐射 / active · 3: 齐射 / active · 8: idle / idle · 9: idle / idle · 10: idle / idle · 11: idle / idle"
+  },
+  {
+    "fixture": "E12-impact",
+    "status": "夹具 E12-impact · 逻辑时间 2.08 · 暂停\n1: 撞墙硬直 / active"
+  },
+  {
+    "fixture": "B1A-impact",
+    "status": "夹具 B1A-impact · 逻辑时间 3.35 · 暂停\n1: 撞墙硬直 / active"
+  },
+  {
+    "fixture": "control-ice",
+    "status": "夹具 control-ice · 逻辑时间 0.95 · 暂停\n1: 冰冻 / windup"
+  },
+  {
+    "fixture": "control-stagger",
+    "status": "夹具 control-stagger · 逻辑时间 2.45 · 暂停\n1: 失衡 / windup"
+  },
+  {
+    "fixture": "control-unknown",
+    "status": "夹具 control-unknown · 逻辑时间 0.95 · 暂停\n1: 行动受限 / windup"
+  },
+  {
+    "fixture": "dense-act3",
+    "status": "夹具 dense-act3 · 逻辑时间 0.90 · 暂停\n1: 准备 · 冲锋 / windup · 2: idle / idle · 3: idle / idle · 4: idle / idle · 5: 准备 · 齐射 / windup · 6: idle / idle · 7: idle / idle · 8: idle / idle · 9: 准备 · 重击 / windup · 10: 准备 · 齐射 / windup · 11: idle / idle · 12: 准备 · 齐射 / windup · 13: 准备 · 冲锋 / windup · 14: idle / idle · 15: idle / idle · 16: idle / idle · 17: 准备 · 齐射 / windup · 18: idle / idle · 19: idle / idle · 20: idle / idle · 21: 准备 · 重击 / windup · 22: 准备 · 齐射 / windup · 23: idle / idle · 24: 准备 · 齐射 / windup · 25: 准备 · 冲锋 / windup · 26: idle / idle · 27: idle / idle · 28: idle / idle · 29: 准备 · 齐射 / windup · 30: 准备 · 自爆 / windup · 31: idle / idle · 32: idle / idle · 33: 准备 · 重击 / windup · 34: 准备 · 齐射 / windup · 35: idle / idle · 36: 准备 · 齐射 / windup · 37: 准备 · 冲锋 / windup · 38: idle / idle · 39: idle / idle"
+  },
+  {
+    "fixture": "overlap-zones",
+    "status": "夹具 overlap-zones · 逻辑时间 3.22 · 暂停\n1: 牵引 / active"
+  }
+]

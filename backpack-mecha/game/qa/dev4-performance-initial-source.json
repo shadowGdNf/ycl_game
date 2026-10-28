@@ -1,0 +1,7 @@
+{
+  "src/renderer.ts": "4f0070ba34071396b0e3ee6a87327e302a377439a5867663035fc04f35783fca",
+  "src/motion.ts": "326e236bd9467980724c09c31c9e13361b24883068155a8b27d5df5d43c59402",
+  "src/motion-renderer.ts": "f894795de00924e5b3f26ac0182889116a242f8670d05bbfb8098017490e2dc7",
+  "src/art.ts": "b1debecfd262be3e44b010df4f57f553dc0d6bc1ac012efda4656b873b9820d8",
+  "scripts/motion-preview.html": "2eec6dfa36a2c1112b12aeea8ee4dff0853a64fe16b924767cc1233c69870c7c"
+}

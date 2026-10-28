@@ -1,0 +1,190 @@
+{
+  "checkedAt": "2026-10-27T09:32:52.406Z",
+  "buildVersion": "0.2.0-dev.3",
+  "rulesVersion": "0.1.0",
+  "status": "development-build-verified-device-acceptance-pending",
+  "scope": {
+    "D3_1": "core-development-verified",
+    "D3_2": "desktop-interaction-verified",
+    "D3_3": "device-acceptance-pending",
+    "combatOrEconomyValuesChanged": false,
+    "artChanged": false,
+    "onlineDeployment": false
+  },
+  "checks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 73,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "dev3-test-output.txt"
+    },
+    "naturalRuns": [
+      {
+        "policy": "legacy",
+        "runs": 60,
+        "wins": 60,
+        "resumeChecks": 720,
+        "anomalies": [],
+        "currentSourceHashesMatch": true
+      },
+      {
+        "policy": "expanded",
+        "runs": 60,
+        "wins": 60,
+        "resumeChecks": 720,
+        "anomalies": [],
+        "currentSourceHashesMatch": true
+      }
+    ],
+    "baselineReproducedRuns": 60,
+    "witnessesReplayed": 370,
+    "bundle": {
+      "checkedAt": "2026-10-27T09:28:20.434Z",
+      "files": 25,
+      "bytes": 9654710,
+      "mib": 9.21,
+      "spriteRegions": 86,
+      "counts": {
+        "modules": 36,
+        "chassis": 4,
+        "enemies": 12,
+        "bosses": 6,
+        "protocols": 9,
+        "events": 8,
+        "waves": 12,
+        "demoIds": 24
+      },
+      "status": "passed",
+      "note": "Static existence/content checks only; not a physical device performance result."
+    },
+    "historicalBossFixturesRerun": false
+  },
+  "browser": {
+    "environment": "macOS / Codex in-app browser",
+    "origin": "http://localhost:4194",
+    "publicUIOnly": true,
+    "stateInjection": false,
+    "viewports": [
+      {
+        "width": 1280,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "narrowPageClientWidth": 390,
+    "narrowPageScrollWidth": 390,
+    "temporaryViewportReset": true,
+    "warningOrErrorLogs": [],
+    "verified": [
+      "first 40-second battle completed",
+      "free coil selected and placed by click",
+      "reference hit 8 -> 9.6",
+      "rotation disconnect, undo, repeat rotation",
+      "placed coil dragged to another valid connection",
+      "reload preserves first-connection state",
+      "gear preview and direct purchase agree: +15% attack speed",
+      "English narrow guide with color assistance and reduced motion",
+      "skip guide persists after reload",
+      "reserve purchase and direct drag into backpack",
+      "drag undo and rejected overlap preserve resources",
+      "rejected drag reason remains in feedback",
+      "wave 2 deployment, movement and pause",
+      "save home, reload and paused continuation with four modules"
+    ],
+    "notVerified": [
+      "physical touchscreen multi-pointer gestures",
+      "audio interruption on physical devices",
+      "complete first chapter on a physical device",
+      "complete twelve-wave browser expedition",
+      "physical device FPS or memory"
+    ],
+    "screenshots": [
+      {
+        "file": "dev3-workshop-desktop.jpg",
+        "width": 1280,
+        "height": 900,
+        "sha256": "f7d50d3fec8cd26097f2a92402ffe89ef06144ef961be5f03efb0fee51c5b9c1"
+      },
+      {
+        "file": "dev3-purchase-mobile.jpg",
+        "width": 390,
+        "height": 844,
+        "sha256": "769b6a2383c4da42a2559b3ec590c44a3fb3b07f655cb2728aa870e89f17e76c"
+      },
+      {
+        "file": "dev3-workshop-mobile-en.jpg",
+        "width": 390,
+        "height": 844,
+        "sha256": "357ac1b78d29d4785ef7e3cbffd15cf9ee6bcd7d81817cb1283f2a98f959522b"
+      },
+      {
+        "file": "dev3-reserve-drag-mobile.jpg",
+        "width": 390,
+        "height": 844,
+        "sha256": "bdb652233d33d88ad42ffa49c285c13bc0328a94df4d31b92ab15a139fa2cf40"
+      },
+      {
+        "file": "dev3-resume-paused.jpg",
+        "width": 390,
+        "height": 844,
+        "sha256": "5f9c1e7fdd0bed7d7cba2d756f1ea74c0642b42d4262a85b52ae526e617d603c"
+      }
+    ]
+  },
+  "devices": [
+    {
+      "device": "Xiaomi MIX 2S",
+      "os": "Android 10",
+      "metadataChecked": true,
+      "installedBrowserPackages": [
+        "com.quark.browser",
+        "com.android.browser"
+      ],
+      "chromeInstalled": false,
+      "interactionStatus": "pending",
+      "reason": "Computer Use access to Android Studio was not approved; no detailed reason was returned."
+    },
+    {
+      "device": "iPhone",
+      "browser": "Safari",
+      "interactionStatus": "pending",
+      "reason": "User confirmed no device available and requested keeping this pending."
+    },
+    {
+      "device": "macOS",
+      "browser": "standalone Chrome / Safari",
+      "interactionStatus": "pending"
+    }
+  ],
+  "sourceHashes": {
+    "src/app.ts": "0e69cb9101873f85bc05fed373a6e3aba684af3db4a0634112e9e09586858aed",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "styles.css": "7817fca984bd5fcc66bc82a3ca2de583cf2ea9d8d3eff08e63e9d7afcac866a8",
+    "src/version.ts": "500057b607fbbb9cd1fa3458f73b612872ea82804930e22e75457f5ac625ff77",
+    "scripts/natural-policy.ts": "9990a2aa7fc51df84d92ae0921599e129ec9eb4452ece144a1d47d4400eee537",
+    "scripts/natural-probe.ts": "bc01088d07b1d8421596a05f1eb87ed1c8083fc9a14c392ee4c1a826e33a96ae",
+    "scripts/purchase-search.ts": "062e09a8c5fd74e1fc47ad6642b4d8035d1cd0d4fe66aee5c45f71735258745a",
+    "scripts/growth-diagnostics.ts": "2830f5573b34329d1a1cb45889ee86b048e07efd86b7bd8e89684d054890100c",
+    "scripts/growth-comparison.ts": "dedcca691bed1cbb232156a014c7d1f0a2123c5ed0526770054f04db2c50877a",
+    "tests/growth.test.ts": "2c70fe4a7998b1ba8ad74ef1d7f181c9729c0d825bf849cbc84c49e68f6b99f7",
+    "tests/workshop-feedback.test.ts": "821d5e45fa8ac5e5861da2a093548a2531604404ac82a6ec9fd559e65e978a7a"
+  },
+  "evidenceHashes": {
+    "qa/dev3-test-output.txt": "05316e257fa1ca50f03494a9401c2a025d719afd4977d5a95b3b136cfd7bbeb7",
+    "qa/growth-comparison-dev3.json": "cc6fa046173bbbb1313578cfd2c711424cd96dad4d330b9cd9f72c05fda6508e",
+    "qa/natural-probe-dev3-legacy.json": "27f2ce09c11d264dfe64858dababd4f2846eb8af007dac007d05fce5ec2960ab",
+    "qa/natural-probe-dev3-expanded.json": "e1fb1d583f1b07d8d67fe13bd20dabb7dff49ff622949e9ae532811c7f9a2a41"
+  },
+  "limitations": [
+    "Same seed/family inputs, not identical later offers: policy choices change subsequent RNG consumption and combat outcomes.",
+    "Expanded policy adds a +100 core preference, protects existing cores, and searches up to two sales plus rearrangement. It is not a packing-only ablation.",
+    "Witness counts describe observed decisions, not distinct runs or a human success rate.",
+    "Reward offers are recorded but their replacement paths are not searched. Search-exhausted means no witness within the bounds, never proven impossible.",
+    "Both policies retain the same upgrade timing, two-refresh limit, event skipping and high-frequency combat avoidance."
+  ]
+}

@@ -1,0 +1,166 @@
+
+> backpack-mecha@0.2.0-dev.3 compare:growth
+> node --experimental-strip-types scripts/growth-comparison.ts
+
+{
+  "baselineReproducedRuns": 60,
+  "witnessesReplayed": 370,
+  "observations": {
+    "legacy": {
+      "decisions": 291,
+      "dropped": 0,
+      "legacyMissedWitnesses": 62,
+      "noTotalBudget": 0,
+      "boundedSearchUnresolved": 57,
+      "rewardObservations": 21
+    },
+    "expanded": {
+      "decisions": 227,
+      "dropped": 0,
+      "legacyMissedWitnesses": 29,
+      "noTotalBudget": 0,
+      "boundedSearchUnresolved": 52,
+      "rewardObservations": 18
+    }
+  },
+  "families": [
+    {
+      "name": "潮湿电链",
+      "legacy": 9,
+      "expanded": 9,
+      "legacyWins": 10,
+      "expandedWins": 10
+    },
+    {
+      "name": "燃油连爆",
+      "legacy": 7,
+      "expanded": 10,
+      "legacyWins": 10,
+      "expandedWins": 10
+    },
+    {
+      "name": "穿甲齐射",
+      "legacy": 4,
+      "expanded": 8,
+      "legacyWins": 10,
+      "expandedWins": 10
+    },
+    {
+      "name": "堡垒震荡",
+      "legacy": 2,
+      "expanded": 9,
+      "legacyWins": 10,
+      "expandedWins": 10
+    },
+    {
+      "name": "无人机编队",
+      "legacy": 8,
+      "expanded": 9,
+      "legacyWins": 10,
+      "expandedWins": 10
+    },
+    {
+      "name": "冰霜回弹",
+      "legacy": 10,
+      "expanded": 10,
+      "legacyWins": 10,
+      "expandedWins": 10
+    }
+  ],
+  "focusCases": [
+    {
+      "family": "ballistic",
+      "seed": "natural-v02-02",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 2,
+      "expandedFirstCoreWave": 10,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "190590784f4492f1b3c01a602001021238e5893c4090e9f775816460400a4277",
+        "wave": 4,
+        "id": "U05",
+        "name": "瞄准镜",
+        "cash": 69.6888888888889,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i2",
+            "id": "S01",
+            "name": "增幅线圈",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i2"
+          },
+          {
+            "kind": "buy",
+            "index": 2,
+            "placement": {
+              "x": 0,
+              "y": 1,
+              "rotation": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "family": "fortress",
+      "seed": "natural-v02-02",
+      "allCoreSeen": true,
+      "notSeen": [],
+      "legacyMissedWitnesses": 7,
+      "expandedFirstCoreWave": 3,
+      "unresolvedDecisions": 0,
+      "firstWitness": {
+        "key": "2a8efbb6a645e2a53ebbfbd7a5965b5ae05c91378257201cbf81812af8a82d02",
+        "wave": 3,
+        "id": "W09",
+        "name": "圆锯盘",
+        "cash": 58.133333333333354,
+        "constraints": [
+          "power"
+        ],
+        "sold": [
+          {
+            "uid": "i4",
+            "id": "S08",
+            "name": "汲能整流器",
+            "tier": 1
+          },
+          {
+            "uid": "i1",
+            "id": "W01",
+            "name": "铆钉枪",
+            "tier": 1
+          }
+        ],
+        "actions": [
+          {
+            "kind": "sell",
+            "uid": "i4"
+          },
+          {
+            "kind": "sell",
+            "uid": "i1"
+          },
+          {
+            "kind": "buy",
+            "index": 0,
+            "placement": {
+              "x": 3,
+              "y": 1,
+              "rotation": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

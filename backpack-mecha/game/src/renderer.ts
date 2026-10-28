@@ -1,4 +1,7 @@
 import {Art} from './art.ts';
+import {motionFrame,zoneRole,zoneVisible,chargeContactRadius} from './motion.ts';
+import type {EnemyMotion} from './motion.ts';
+import {enemyBody,enemyControl,enemyMotionLabel,zonePath,zoneSymbols} from './motion-renderer.ts';
 import {CHASSIS_BY_ID,MODULE_BY_ID} from './content.ts';
 import type {BattleView,CombatEvent,EnemyView,Lang,Point,WeaponView,ZoneView} from './types.ts';
 
@@ -71,7 +74,9 @@ export class Renderer {
   private shotTimes=new Map<string,{count:number;at:number}>();
   private deathVisualStart:number|null=null;
   private options:Options={lang:'zh',reducedMotion:false,colorAssist:false};
-  constructor(private canvas:HTMLCanvasElement){
+  private canvas:HTMLCanvasElement;
+  constructor(canvas:HTMLCanvasElement){
+    this.canvas=canvas;
     const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D is unavailable');this.ctx=ctx;
   }
   load():Promise<void>{return this.art.load();}
@@ -114,10 +119,11 @@ export class Renderer {
     for(const zone of state.zones)if(zone.type==='friendly')this.zone(zone,state.time,false);
     for(const drop of state.drops)this.drop(drop.x,drop.y,state.time,drop.id);
     const entities=state.enemies.filter(e=>(e as EnemyView&{exposed?:boolean}).exposed!==false&&e.hp>0).sort((a,b)=>a.y-b.y||a.eid-b.eid);
+    const motions=motionFrame(state);
     let playerDrawn=false;
     for(const enemy of entities){
       if(!playerDrawn&&enemy.y>state.player.y){this.player(state);playerDrawn=true;}
-      this.enemy(enemy,state.time);
+      this.enemy(enemy,state.time,motions.get(enemy.eid)!);
     }
     if(!playerDrawn)this.player(state);
     for(const bullet of state.bullets){
@@ -139,7 +145,10 @@ export class Renderer {
     this.drawEffects(state.time);
     this.playerFeedback(state);
     // Warning geometry is authoritative and always above friendly effects.
-    for(const zone of state.zones)if(zone.type!=='friendly')this.zone(zone,state.time,true);
+    for(const damage of [false,true])for(const zone of state.zones)if(zone.type!=='friendly'&&(zoneRole(zone)==='damage')===damage&&zoneVisible(state,zone))this.zone(zone,state.time,true);
+    for(const e of entities){const radius=chargeContactRadius(e,state.time);if(radius===undefined)continue;ctx.strokeStyle='#ffd1aa';ctx.lineWidth=3;ctx.beginPath();ctx.arc(e.x,e.y,radius,0,TAU);ctx.stroke();}
+    const view={...this.camera,w:vw,h:vh};
+    for(const e of entities)enemyMotionLabel(ctx,e,motions.get(e.eid)!,e.kind==='boss'?e.radius*2.3:Math.max(28,e.radius*2.8),this.scale,options.lang,view,this.dpr);
     if(options.target)this.target(options.target,state.time);
     this.edgeWarnings(state,vw,vh);
     ctx.restore();ctx.restore();
@@ -241,20 +250,17 @@ export class Renderer {
       for(let n=0;n<count;n++){const a=time*(index%2?-.8:.8)+n*TAU/Math.max(1,count)+index;const dx=p.x+Math.cos(a)*(52+index*12),dy=p.y+Math.sin(a)*(40+index*12);this.shadow(dx,dy+7,7,3,.2);this.art.draw(ctx,'W11',dx,dy,18,18,w.angle);}
     }
   }
-  private enemy(e:EnemyView,time:number):void{
+  private enemy(e:EnemyView,time:number,m:EnemyMotion):void{
     const c=this.ctx,boss=e.kind==='boss';
     const size=boss?e.radius*2.3:Math.max(28,e.radius*2.8);
-    const bob=this.options.reducedMotion||e.frozen?0:Math.sin(time*(e.id==='E06'?2.6:8)+e.eid)*Math.min(2,size*.025);
     this.shadow(e.x,e.y+size*.25,size*.38,size*.14,boss?.42:.28);
-    if(e.frozen){c.fillStyle='rgba(152,222,243,.22)';c.beginPath();c.ellipse(e.x,e.y,size*.48,size*.45,0,0,TAU);c.fill();}
-    const tilt=this.options.reducedMotion?0:Math.sin(time*5+e.eid)*.035;
     const offset=(e as EnemyView&{offsetX?:number}).offsetX??0;
     const key=e.id==='B2B'?`B2B.${offset<0?'left':'right'}`:e.id==='B3B'&&offset!==0?`B3B.${offset<0?'left':'right'}`:e.id;
-    this.art.draw(c,key,e.x,e.y-size*.08+bob,size,size,tilt);
+    enemyBody(c,this.art,key,e,m,size,time,this.options.reducedMotion);
+    enemyControl(c,e,m,size);
     if(e.shielded){c.strokeStyle='#ffce8a';c.lineWidth=3;c.beginPath();c.arc(e.x,e.y,e.radius+7,e.angle-Math.PI/3,e.angle+Math.PI/3);c.stroke();}
     if(e.wet){c.fillStyle='#7dd8ef';for(let i=0;i<2;i++){c.beginPath();c.ellipse(e.x-size*.3+i*9,e.y-size*.42,2.5,4,0,0,TAU);c.fill();}}
     if(e.burns?.length){c.fillStyle='#ffae58';c.font='bold 10px sans-serif';c.textAlign='center';c.fillText(`♨ ${e.burns.length}`,e.x,e.y-size*.47-9);}
-    if(e.frozen){c.fillStyle='#c5eff9';c.font='bold 13px sans-serif';c.textAlign='center';c.fillText('❄',e.x+size*.31,e.y-size*.37);}
     if(this.options.colorAssist){c.fillStyle='#ffe1c3';c.font='bold 9px sans-serif';c.textAlign='center';c.fillText(boss?'◆':e.kind==='elite'?'◇':'▲',e.x,e.y+size*.34);}
     if(!boss&&(e.hp<e.maxHp||e.kind==='elite')){
       const w=Math.max(22,size*.65);c.fillStyle='#111c23';rounded(c,e.x-w/2,e.y-size*.53-6,w,5,2);c.fill();
@@ -268,20 +274,17 @@ export class Renderer {
   private zone(z:ZoneView,time:number,warning:boolean):void{
     if(((z as ZoneView&{delay?:number}).delay??0)>0)return;
     const c=this.ctx,progress=clamp(1-z.remaining/Math.max(.001,z.duration),0,1);
-    c.save();c.translate(z.x,z.y);c.rotate(z.angle);c.beginPath();
-    if(z.kind==='circle')c.arc(0,0,z.radius,0,TAU);
-    else if(z.kind==='ring'){c.arc(0,0,z.radius,0,TAU);c.arc(0,0,z.innerRadius??Math.max(0,z.radius-20),0,TAU,true);}
-    else if(z.kind==='cone'){const spread=z.width??Math.PI/2;c.moveTo(0,0);c.arc(0,0,z.radius,-spread/2,spread/2);c.closePath();}
-    else c.rect(0,-(z.h??z.width??12)/2,z.w??z.radius,z.h??z.width??12);
-    const fill=warning?(z.active?'rgba(240,91,91,.25)':`rgba(240,91,91,${.08+progress*.15})`):z.color;
-    c.fillStyle=fill;c.globalAlpha=warning?1:.18;c.fill('evenodd');c.globalAlpha=1;
-    c.strokeStyle=warning?(z.active?'#ffd1aa':'#f88478'):z.color;c.lineWidth=warning?(z.active?3:2):1.5;
-    if(warning&&!z.active)c.setLineDash([10,6]);c.stroke();c.setLineDash([]);
-    if(warning&&!z.active){
-      c.strokeStyle='#ffd7b3';c.lineWidth=2;c.beginPath();c.arc(0,0,Math.min(z.radius,18),-Math.PI/2,-Math.PI/2+progress*TAU);c.stroke();
-      c.fillStyle='#ffe5c7';c.font='bold 12px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('!',0,0);
+    const role=zoneRole(z),damage=role==='damage',charge=z.plan?.effect==='charge';
+    c.save();c.translate(z.x,z.y);c.rotate(z.angle);zonePath(c,z);
+    const color=damage?(z.active?'#ffd1aa':'#f88478'):role==='force'?'#83c6d8':'#b1cea0';
+    c.fillStyle=warning?color:z.color;c.globalAlpha=warning?(charge&&z.active?.06:z.active?.2:.07+progress*.12):.18;c.fill('evenodd');c.globalAlpha=1;
+    c.strokeStyle=warning?color:z.color;c.lineWidth=warning?(z.active&&!charge?3:2):1.5;
+    if(warning&&(!z.active||!damage||charge))c.setLineDash(damage?[10,6]:[3,7]);c.stroke();c.setLineDash([]);
+    if(warning&&!z.active&&(z.innerRadius??0)===0){
+      c.strokeStyle=color;c.lineWidth=2;c.beginPath();c.arc(0,0,18,-Math.PI/2,-Math.PI/2+progress*TAU);c.stroke();
     }
-    if(warning&&this.options.colorAssist){c.strokeStyle='#ffe8c5';c.lineWidth=1;c.beginPath();c.moveTo(-5,-5);c.lineTo(5,5);c.moveTo(5,-5);c.lineTo(-5,5);c.stroke();}
+    if(warning)zoneSymbols(c,z,this.scale);
+    if(warning&&damage&&this.options.colorAssist&&(z.innerRadius??0)===0){c.strokeStyle='#ffe8c5';c.lineWidth=1;c.beginPath();c.moveTo(-5,-5);c.lineTo(5,5);c.moveTo(5,-5);c.lineTo(-5,5);c.stroke();}
     c.restore();
   }
   private drop(x:number,y:number,time:number,id:number):void{

@@ -1,0 +1,25 @@
+{
+  "capturedAt": "2026-10-27T10:18:43.255332+00:00",
+  "version": "0.2.0-dev.3",
+  "sourceHashes": {
+    "src/encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
+    "src/audio.ts": "bf7b0fb93f83050e763cc18576feb3718432e795a3e9365258d0912c4c3d8d02",
+    "src/art.ts": "0d9de6991841a1f07c2ed934c6bb73ce3565195d06e1bc9cfe4758181cb7cb4a",
+    "src/app.ts": "0e69cb9101873f85bc05fed373a6e3aba684af3db4a0634112e9e09586858aed",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/storage.ts": "3f589ee3ba0b96c7cbcb35b4c3af0635b7a71dbc5df32b02e107b80143311d8a",
+    "src/content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/types.ts": "2fe6042934c8b670c8929dd6aa35802c6246c0b90d44a8640aa225f0aac01323",
+    "src/combat.ts": "af2b2b5e8a279c5ba244df6a8605bbcf1735f49eda5f27eba5a3c01893167fca",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "src/renderer.ts": "dca26d138d5d24e8c3d78584e5f83ba637ab1f01b177ce0160cdc5b1886fcc78",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "src/version.ts": "500057b607fbbb9cd1fa3458f73b612872ea82804930e22e75457f5ac625ff77",
+    "src/journal.ts": "7a81891880f547a3f5203a61c1304d95acef2dbd87521efb50ee2578160e1a74",
+    "styles.css": "7817fca984bd5fcc66bc82a3ca2de583cf2ea9d8d3eff08e63e9d7afcac866a8",
+    "assets/atlas-manifest.json": "c52578aa275fd6911140a4c4f54481f4ad65370e881b8565567d6aabb4bd06bd"
+  },
+  "baselineDirectory": "/private/tmp/backpack-mecha-dev4-baseline",
+  "priorEvidence": "dev3-check.json"
+}
