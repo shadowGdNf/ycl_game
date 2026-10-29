@@ -1,9 +1,10 @@
+import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=4294331e0428";
 /** Read-only explanations derived from the same connection and placement checks as play. */
-import { MODULE_BY_ID, label } from "./content.js?v=7c4d97a1694c";
-import { getCapacity, linkOptions, validateLoadout } from "./economy.js?v=7c4d97a1694c";
+import { MODULE_BY_ID, label } from "./content.js?v=4294331e0428";
+import { getCapacity, linkOptions, validateLoadout } from "./economy.js?v=4294331e0428";
 const format = (n) => Number(n.toFixed(2)).toString();
 export function supportBenefit(item, lang) {
-    const m = MODULE_BY_ID[item.id], v = m.values?.[item.tier - 1] ?? 0, pct = format(v * 100), en = lang === 'en';
+    const m = MODULE_BY_ID[item.id], v = moduleValue(item.id, item.tier), pct = format(v * 100), en = lang === 'en';
     if (item.id === 'S01')
         return en ? `Direct damage +${pct}%.` : `直接伤害 +${pct}%。`;
     if (item.id === 'S02')
@@ -25,15 +26,15 @@ export function supportBenefit(item, lang) {
     if (item.id === 'S10')
         return en ? `One extra drone for this hive; all its drone damage ×${pct}%.` : `该机巢增加 1 架无人机；该巢全部无人机伤害乘 ${pct}%。`;
     if (item.id === 'S11') {
-        const hit = [40, 55, 70][item.tier - 1];
+        const hit = format(TIER_EFFECTS.springDamage[item.tier - 1] * 100);
         return en ? `Melee range +${pct}%; this weapon's first attack within 2s after a dash deals +${hit}% damage.` : `近战范围 +${pct}%；冲刺后 2 秒内，该武器首次攻击伤害 +${hit}%。`;
     }
     if (item.id === 'S12') {
-        const stagger = [5, 7, 9][item.tier - 1];
+        const stagger = TIER_EFFECTS.cryoStagger[item.tier - 1];
         return en ? `Chill slows 2 percentage points more per stack, capped at 40%; freeze +${format(v)}s. Bosses gain ${stagger} extra stagger instead of freezing.` : `每层寒冷额外减速 2 个百分点，总减速上限 40%；冻结时长 +${format(v)} 秒。Boss 不冻结，改为额外 ${stagger} 失衡。`;
     }
     // Keep future support descriptions sourced from the catalog.
-    return en ? `Tier I / II / III: ${m.effectEn}` : `I / II / III 级：${m.effect}`;
+    return en ? m.effectEn : m.effect;
 }
 export function supportFeedback(run, uid, lang) {
     const item = run.items.find(i => i.uid === uid);
@@ -72,7 +73,7 @@ export function supportFeedback(run, uid, lang) {
     if (status === 'active' && linked) {
         detail = `${label(MODULE_BY_ID[item.id], lang)} → ${label(MODULE_BY_ID[linked.weapon.id], lang)} · ${benefit}`;
         if (item.id === 'S01' && linked.weapon.id === 'W01') {
-            const base = (MODULE_BY_ID.W01.damage ?? 0) * [1, 1.35, 1.8][linked.weapon.tier - 1], after = base * (1 + (MODULE_BY_ID.S01.values?.[item.tier - 1] ?? 0));
+            const base = (MODULE_BY_ID.W01.damage ?? 0) * damageScale(linked.weapon.tier), after = base * (1 + moduleValue('S01', item.tier));
             detail += en ? ` Reference hit: ${format(base)} → ${format(after)} (this support only; before armor, crits and other bonuses).` :
                 ` 基准单发伤害 ${format(base)} → ${format(after)}（只计本连接，不含护甲、暴击与其他加成）。`;
         }

@@ -1,10 +1,10 @@
-import { roundRect } from "./canvas.js?v=7c4d97a1694c";
-import { Art } from "./art.js?v=7c4d97a1694c";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=7c4d97a1694c";
-import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=7c4d97a1694c";
-import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js?v=7c4d97a1694c";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=7c4d97a1694c";
-import { locomotion, easeOut } from "./visual-motion.js?v=7c4d97a1694c";
+import { roundRect } from "./canvas.js?v=4294331e0428";
+import { Art } from "./art.js?v=4294331e0428";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=4294331e0428";
+import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=4294331e0428";
+import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js?v=4294331e0428";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=4294331e0428";
+import { locomotion, easeOut } from "./visual-motion.js?v=4294331e0428";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.

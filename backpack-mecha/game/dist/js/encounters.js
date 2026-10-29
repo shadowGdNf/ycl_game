@@ -1,5 +1,5 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=7c4d97a1694c";
-import { nextRandom } from "./random.js?v=7c4d97a1694c";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=4294331e0428";
+import { nextRandom } from "./random.js?v=4294331e0428";
 export const ARENA = { width: 1600, height: 1200 };
 const layouts = [
     [{ x: 320, y: 240, w: 180, h: 100 }, { x: 1100, y: 860, w: 180, h: 100 }, { x: 1100, y: 240, w: 100, h: 160 }, { x: 400, y: 830, w: 100, h: 170 }],

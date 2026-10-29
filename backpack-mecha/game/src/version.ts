@@ -1,4 +1,4 @@
-export const BUILD_VERSION = '0.2.0-dev.7';
-// Pursuit, ranged patterns and mortar attacks change enemy behavior.
-// Weapon values, prices and boss health remain unchanged. Existing saves resume.
-export const RULESET_VERSION = '0.1.2';
+export const BUILD_VERSION = '0.2.0-dev.8';
+// Four equipment rarities, duplicate combining and tiered shop offers.
+// Existing tier I–III inventory and offers without a tier remain readable.
+export const RULESET_VERSION = '0.2.0';

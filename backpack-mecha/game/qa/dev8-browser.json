@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-29T08:21:31.087Z",
+  "build": "0.2.0-dev.8",
+  "browser": "Codex in-app browser; viewport checks, not an Android device",
+  "fixtureOrigin": "http://localhost:4199",
+  "layouts": [
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "scrollHeight": 844,
+      "deployBottom": 836
+    },
+    {
+      "deployBottom": 732,
+      "height": 740,
+      "scrollHeight": 740,
+      "scrollWidth": 360,
+      "shopPanelHeight": 216,
+      "shopPanelScroll": 216,
+      "width": 360
+    },
+    {
+      "deployBottom": 659,
+      "height": 667,
+      "scrollHeight": 667,
+      "scrollWidth": 390,
+      "shopPanelHeight": 200,
+      "shopPanelScroll": 200,
+      "width": 390
+    },
+    {
+      "deployBottom": 384,
+      "height": 390,
+      "scrollHeight": 390,
+      "scrollWidth": 844,
+      "shopPanelHeight": 242,
+      "shopPanelScroll": 242,
+      "width": 844
+    },
+    {
+      "deployBottom": 886,
+      "height": 900,
+      "scrollHeight": 900,
+      "scrollWidth": 1366,
+      "shopPanelHeight": 699,
+      "shopPanelScroll": 699,
+      "width": 1366
+    }
+  ],
+  "flows": [
+    "Four colored rarity cards with exact price/stat labels",
+    "Free II + II amplifier -> III: +27% -> +36%, gold remains 600",
+    "Undo restores both materials",
+    "Full reserve: purchased I rivet + equipped I -> II, gold 600 -> 576; original position/link preserved",
+    "Legendary shield purchased, IV persisted after reload",
+    "Archive shows four rivet damage/price rows",
+    "Legendary boss practice launched: IV weapons, shield 80; six Legendary equipment chips on pause",
+    "Exit practice restores wave 9 career continue"
+  ],
+  "consoleWarningsOrErrors": [],
+  "screenshots": [
+    "dev8-shop-mobile.jpg",
+    "dev8-merge-mobile.jpg"
+  ]
+}

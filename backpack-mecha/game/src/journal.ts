@@ -97,7 +97,7 @@ export function sanitizeJournal(value:unknown):RunJournal|undefined {
  const record = (v:unknown):v is Record<string,unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
  const wave = (v:unknown) => Number.isInteger(v) && Number(v) >= 1 && Number(v) <= 12;
  const ids=(v:unknown,known:Record<string,unknown>)=>Array.isArray(v)&&v.every(id=>typeof id==='string'&&!!known[id]);
- const items=(v:unknown)=>Array.isArray(v)&&v.length<=20&&v.every(i=>record(i)&&typeof i.uid==='string'&&typeof i.id==='string'&&!!MODULE_BY_ID[i.id]&&[1,2,3].includes(Number(i.tier)));
+ const items=(v:unknown)=>Array.isArray(v)&&v.length<=20&&v.every(i=>record(i)&&typeof i.uid==='string'&&typeof i.id==='string'&&!!MODULE_BY_ID[i.id]&&[1,2,3,4].includes(Number(i.tier)));
  const stats=(v:unknown)=>record(v)&&['kills','killedBudget','goldEarned','maxChain','damageTaken'].every(k=>finite(v[k]))&&record(v.damageByModule)&&Object.values(v.damageByModule).every(finite)&&record(v.damageTakenBy)&&Object.values(v.damageTakenBy).every(finite);
  if(j.version !== 1 || typeof j.buildVersion !== 'string' || typeof j.rulesVersion !== 'string' ||
   !wave(j.startedAtWave) || typeof j.partial !== 'boolean' || !finite(j.nextSequence) || !finite(j.droppedEvents) ||

@@ -1,6 +1,6 @@
 export type Lang='zh'|'en';
 export type Mode='prototype'|'demo'|'full';
-export type Tier=1|2|3;
+export type Tier=1|2|3|4;
 export type Point={x:number;y:number};
 export type Rect=Point&{w:number;h:number};
 export type ModuleKind='weapon'|'support'|'utility';
@@ -12,7 +12,7 @@ export interface ProtocolDef {id:string;name:string;en:string;effect:string;effe
 export interface EventDef {id:string;name:string;en:string;description:string;descriptionEn:string}
 export interface WaveDef {n:number;act:number;kind:'normal'|'boss';duration:number;budget:number;base:number;bonus:number}
 export interface Item {uid:string;id:string;tier:Tier;x:number;y:number;rotation:number;stored:boolean;link?:string}
-export interface Offer {id:string;locked:boolean}
+export interface Offer {id:string;locked:boolean;tier?:Tier}
 export interface CombatStats {damageByModule:Record<string,number>;damageTakenBy:Record<string,number>;kills:number;killedBudget:number;goldEarned:number;maxChain:number;damageTaken:number}
 export interface RunEvent {
  sequence:number;wave:number;action:string;detail:string;gold:number;hp:number;prepSeconds:number;

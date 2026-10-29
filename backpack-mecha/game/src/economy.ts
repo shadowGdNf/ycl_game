@@ -1,3 +1,4 @@
+import {moduleValue,equipmentPrice,offerTier,validTier,rollShopTier} from './rarity.ts';
 import type {BattleResult,CombatStats,Item,Mode,ModuleDef,Point,Result,Run,Tier} from './types.ts';
 import {BOSSES,CHASSIS,CHASSIS_BY_ID,DEMO_IDS,EVENTS,MODULES,MODULE_BY_ID,PROTOCOLS,PROTOTYPE_IDS,WAVES} from './content.ts';
 import {hashSeed,nextRandom} from './random.ts';
@@ -31,9 +32,10 @@ function shape(id:string,rotation:number):Point[] {
  return points.map(p=>({x:p.x-minX,y:p.y-minY}));
 }
 export function getCells(item:Item):Point[] {return shape(item.id,item.rotation).map(p=>({x:p.x+item.x,y:p.y+item.y}));}
-export function getCapacity(r:Run):number {const battery=active(r).find(i=>i.id==='U01');return r.power+(battery?([2,3,4][battery.tier-1]??0):0);}
-export function getShieldCapacity(r:Run):number {const shield=active(r).find(i=>i.id==='U02');return CHASSIS_BY_ID[r.chassis].shield+(shield?([25,34,45][shield.tier-1]??0):0)+(r.protocols.includes('P04')?20:0)+Number(r.extra?.temporaryShield??0);}
-export function standardCost(item:Item):number {const p=def(item).price;return p+(item.tier>=2?Math.ceil(p*.75):0)+(item.tier>=3?Math.ceil(p*1.25):0);}
+export function getCapacity(r:Run):number {const battery=active(r).find(i=>i.id==='U01');return r.power+(battery?moduleValue('U01',battery.tier):0);}
+export function getShieldCapacity(r:Run):number {const shield=active(r).find(i=>i.id==='U02');return CHASSIS_BY_ID[r.chassis].shield+(shield?moduleValue('U02',shield.tier):0)+(r.protocols.includes('P04')?20:0)+Number(r.extra?.temporaryShield??0);}
+export function standardCost(item:Item):number {return equipmentPrice(item.id,item.tier);}
+export function offerPrice(offer:Run['shop'][number]):number{return equipmentPrice(offer.id,offerTier(offer));}
 function compatible(s:ModuleDef,w:ModuleDef):boolean {return s.kind==='support'&&w.kind==='weapon'&&(s.tags.includes('全部')||s.tags.some(t=>w.tags.includes(t)));}
 function adjacent(a:Item,b:Item):boolean {return getCells(a).some(p=>getCells(b).some(q=>Math.abs(p.x-q.x)+Math.abs(p.y-q.y)===1));}
 function validLink(r:Run,s:Item,w:Item|undefined):boolean {return !!w&&!s.stored&&!w.stored&&compatible(def(s),def(w))&&adjacent(s,w);}
@@ -49,7 +51,7 @@ function checkInventory(r:Run,complete:boolean,power=true):Result {
  if(r.items.filter(i=>i.stored).length>3)return fail('备件架最多容纳3件模块','The reserve holds at most three modules.');
  for(const i of r.items){
   if(ids.has(i.uid)||!MODULE_BY_ID[i.id]||!eligibleIds(r).includes(i.id))return fail('存在重复编号或未开放的模块','Duplicate instance or unavailable module.');ids.add(i.uid);
-  if(![1,2,3].includes(i.tier)||i.tier>r.maxTier)return fail('模块等级超过当前章节上限','A module exceeds the chapter tier limit.');
+  if(!validTier(i.tier))return fail('无效装备稀有度','Invalid equipment rarity.');
   if(!Number.isInteger(i.rotation)||i.rotation<0||i.rotation>3)return fail('旋转参数无效','Invalid rotation.');
   if(i.stored)continue;
   const m=def(i);counts[i.id]=(counts[i.id]??0)+1;
@@ -113,9 +115,9 @@ export function previewPurchase(r:Run,index:number):{result:Result;placements:Pl
  const canReserve=d.items.filter(i=>i.stored).length<3;
  // A full reserve does not prevent a direct board purchase. Keep the hypothetical item
  // outside reserve for placement checks; every candidate replaces its coordinates.
- const item=newItem(d,offer.id);d.items.push(item);
+ const item=newItem(d,offer.id,offerTier(offer));d.items.push(item);
  const placements=placementOptions(d,item.uid);
- const result=r.gold<MODULE_BY_ID[offer.id].price?fail('碎片不足','Not enough scrap.'):
+ const result=r.gold<offerPrice(offer)?fail('碎片不足','Not enough scrap.'):
   canReserve||placements.length?ok():fail('备件架已满，当前布局也放不下；请先整理','Reserve full and no board placement. Make room first.');
  return {result,placements,canReserve};
 }
@@ -189,7 +191,7 @@ function weighted(r:Run,pool:ModuleDef[],stream:keyof Run['rng']):ModuleDef {
 }
 function generateShop(r:Run,visit:boolean):void {
  const locked=r.shop.findIndex(o=>o.locked&&o.id);const retained=locked>=0?copy(r.shop[locked]):undefined;
- const used=new Set<string>(retained?[retained.id]:[]);const pool=available(r);const next=r.shop.map(()=>({id:'',locked:false}));while(next.length<4)next.push({id:'',locked:false});next.length=4;
+ const used=new Set<string>(retained?[retained.id]:[]);const pool=available(r);const next:Run['shop']=r.shop.map(()=>({id:'',locked:false}));while(next.length<4)next.push({id:'',locked:false});next.length=4;
  const guarantee=r.wave>=Number(r.extra?.guaranteedSupportFromWave??0)?String(r.extra?.guaranteedSupportTag??''):'';
  for(let i=0;i<4;i++){
   if(i===locked&&retained){next[i]=retained;continue;}
@@ -202,16 +204,16 @@ function generateShop(r:Run,visit:boolean):void {
    else if(compatiblePool.length&&(r.shopPity>=2||roll(r,'shop')<.5))candidates=compatiblePool;
   }
   if(!candidates.some(m=>m.rarity!=='R')&&act(r)===1)candidates=pool.filter(m=>!used.has(m.id)&&m.rarity!=='R');
-  if(candidates.length){const m=weighted(r,candidates,'shop');next[i]={id:m.id,locked:false};used.add(m.id);}
+  if(candidates.length){const owned=candidates.filter(m=>r.items.some(item=>item.id===m.id&&item.tier<4));const m=owned.length&&roll(r,'shop')<.3?pick(r,owned,'shop'):weighted(r,candidates,'shop');next[i]={id:m.id,locked:false,tier:rollShopTier(r.wave,roll(r,'shop'))};used.add(m.id);}
  }
  r.shop=next;
  if(visit){if(r.shop.some(o=>o.id&&useful(r,MODULE_BY_ID[o.id])))r.shopPity=0;else r.shopPity++;}
  recordAction(r,visit?'shop:visit':'shop:refresh');
 }
 function requireShop(r:Run):Result {return r.phase==='prep'&&r.wave>1&&r.shop.length===4?ok():fail('当前不在商店','The shop is not available now.');}
-function newItem(r:Run,id:string):Item {return {uid:`i${r.nextUid++}`,id,tier:1,x:-1,y:-1,rotation:0,stored:true};}
-function receive(r:Run,id:string,placement?:{x:number;y:number;rotation:number}):Result {
- const item=newItem(r,id);r.items.push(item);
+function newItem(r:Run,id:string,tier:Tier=1):Item {return {uid:`i${r.nextUid++}`,id,tier,x:-1,y:-1,rotation:0,stored:true};}
+function receive(r:Run,id:string,placement?:{x:number;y:number;rotation:number},tier:Tier=1):Result {
+ const item=newItem(r,id,tier);r.items.push(item);
  if(placement){if(!Number.isInteger(placement.rotation))return fail('旋转参数无效','Invalid rotation.');Object.assign(item,placement,{rotation:normalizeRotation(placement.rotation),stored:false});repairLinks(r);return checkInventory(r,false);}
  if(r.items.filter(i=>i.stored).length<=3)return ok();
  // Rewards may find an open cell, but do not move or discard existing equipment.
@@ -222,9 +224,9 @@ function receive(r:Run,id:string,placement?:{x:number;y:number;rotation:number})
 }
 export function buy(r:Run,index:number,placement?:{x:number;y:number;rotation:number}):Result {return transaction(r,d=>{
  const access=requireShop(d);if(!access.ok)return access;const offer=d.shop[index];if(!Number.isInteger(index)||!offer?.id)return fail('该商品已售出','This offer is unavailable.');
- const m=MODULE_BY_ID[offer.id];if(d.gold<m.price)return fail('碎片不足','Not enough scrap.');
+ const m=MODULE_BY_ID[offer.id],price=offerPrice(offer);if(!validTier(offerTier(offer)))return fail('无效商品稀有度','Invalid offer rarity.');if(d.gold<price)return fail('碎片不足','Not enough scrap.');
  if(!placement&&d.items.filter(i=>i.stored).length>=3)return fail('备件架已满，请选择背包位置后购买','Reserve full. Select a backpack placement before buying.');
- const result=receive(d,m.id,placement);if(!result.ok)return result;d.gold-=m.price;d.shop[index]={id:'',locked:false};log(d,`buy:${m.id}:${m.price}`);return ok();
+ const result=receive(d,m.id,placement,offerTier(offer));if(!result.ok)return result;d.gold-=price;d.shop[index]={id:'',locked:false};log(d,`buy:${m.id}:${price}:tier${offerTier(offer)}`);return ok();
 });}
 export function sell(r:Run,uid:string):Result {return inventoryAction(r,d=>{
  if(d.phase!=='prep'||d.wave===1)return fail('只能在商店出售','Sell equipment at a shop.');const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
@@ -246,11 +248,39 @@ export function undoSale(r:Run):Result {
   preserveJournal(r,before,'undo-sale');replace(r,before);return ok();
  }catch{return fail('无法读取撤销记录','Unable to read the undo record.');}
 }
-export function upgrade(r:Run,uid:string):Result {return transaction(r,d=>{
- const access=requireShop(d);if(!access.ok)return access;const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
- if(item.tier>=d.maxTier)return fail('已达当前章节等级上限','The chapter tier limit has been reached.');
- const price=Math.ceil(def(item).price*(item.tier===1?.75:1.25));if(d.gold<price)return fail('碎片不足','Not enough scrap.');
- d.gold-=price;item.tier=(item.tier+1) as Tier;log(d,`upgrade:${uid}:${item.tier}:${price}`);return ok();
+export interface MergePreview extends Result {item?:Item;consumedUid?:string;disconnected?:string[]}
+export function mergeCandidates(r:Run,uid:string):Item[]{
+ const target=r.items.find(i=>i.uid===uid);if(!target||target.tier>=4)return [];
+ return r.items.filter(i=>i.uid!==uid&&i.id===target.id&&i.tier===target.tier).sort((a,b)=>Number(b.stored)-Number(a.stored)||a.uid.localeCompare(b.uid));
+}
+function mergeDraft(r:Run,uid:string,otherUid?:string):MergePreview {
+ if(!editable(r))return fail('只能在休整时合成','Combine equipment between battles.');
+ const target=r.items.find(i=>i.uid===uid);if(!target)return fail('找不到模块','Module not found.');
+ if(target.tier>=4)return fail('已达传说最高稀有度','Already at Legendary rarity.');
+ const donor=otherUid?r.items.find(i=>i.uid===otherUid):mergeCandidates(r,uid)[0];
+ if(!donor||donor.uid===uid||donor.id!==target.id||donor.tier!==target.tier)return fail('需要另一件同名、同稀有度装备','Requires another identical module of the same rarity.');
+ // Prefer the equipped instance, so combining from reserve never unequips the only weapon.
+ const keep=target.stored&&!donor.stored?donor:target,consume=keep===target?donor:target;
+ keep.tier=(keep.tier+1) as Tier;r.items=r.items.filter(i=>i.uid!==consume.uid);repairLinks(r);
+ const check=checkInventory(r,false,false);if(!check.ok)return check;
+ const disconnected=active(r).filter(i=>def(i).kind==='support'&&!i.link).map(i=>i.uid);
+ log(r,`merge:${keep.id}:${keep.tier}:${consume.uid}`);return {ok:true,item:keep,consumedUid:consume.uid,disconnected};
+}
+export function previewMerge(r:Run,uid:string,otherUid?:string):MergePreview{return mergeDraft(previewRun(r),uid,otherUid);}
+export function merge(r:Run,uid:string,otherUid?:string):Result{return transaction(r,d=>mergeDraft(d,uid,otherUid));}
+/** Retained for local probe callers; upgrades now consume a matching copy and never charge scrap. */
+export const upgrade=merge;
+export function purchaseMergeTargets(r:Run,index:number):Item[]{
+ const offer=r.shop[index];if(!offer?.id||offerTier(offer)>=4)return [];
+ return r.items.filter(i=>i.id===offer.id&&i.tier===offerTier(offer)).sort((a,b)=>Number(a.stored)-Number(b.stored));
+}
+export function buyAndMerge(r:Run,index:number,uid:string):Result{return transaction(r,d=>{
+ const access=requireShop(d);if(!access.ok)return access;const offer=d.shop[index];
+ if(!Number.isInteger(index)||!offer?.id||!purchaseMergeTargets(d,index).some(i=>i.uid===uid))return fail('商品与目标装备不满足合成条件','Offer and equipment do not match for combining.');
+ const price=offerPrice(offer);if(d.gold<price)return fail('碎片不足','Not enough scrap.');
+ const material=newItem(d,offer.id,offerTier(offer));d.items.push(material);
+ const result=mergeDraft(d,uid,material.uid);if(!result.ok)return result;
+ d.gold-=price;d.shop[index]={id:'',locked:false};log(d,`buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);return ok();
 });}
 export function repair(r:Run):Result {return transaction(r,d=>{
  const access=requireShop(d);if(!access.ok)return access;if(extra(d).repairedWave===d.wave)return fail('本次商店已维修','Repairs have already been used at this shop.');
@@ -284,7 +314,7 @@ export function newRun(chassis:string,mode:Mode,difficulty:number,seed:string):R
  seed=seed||'backpack-mecha';
  const allowedChassis=mode==='prototype'?['scavenger']:mode==='demo'?['scavenger','bulwark']:CHASSIS.map(c=>c.id);
  if(!allowedChassis.includes(chassis))chassis='scavenger';const c=CHASSIS_BY_ID[chassis];
- const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:1,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{}};
+ const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:4,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{}};
  const gun=newItem(r,'W01'),support=newItem(r,'S01');Object.assign(gun,{x:1,y:0,stored:false});Object.assign(support,{x:0,y:1,stored:false,link:gun.uid});r.items=[gun,support];
  for(let a=1;a<=finalWave(r)/4;a++)r.bosses.push(mode==='full'?pick(r,BOSSES.filter(b=>b.act===a),'map').id:`B${a}A`);
  ensureJournal(r,false);recordAction(r,'new-run');
@@ -313,7 +343,7 @@ export function resolveBattle(r:Run,result:BattleResult):Result {return transact
  if(completed===finalWave(d)){d.phase='won';return ok();}
  if(wave.kind==='boss')d.hp=Math.min(maxHP(d),d.hp+30+(d.protocols.includes('P08')?10:0));else if(d.protocols.includes('P08'))d.hp=Math.min(maxHP(d),d.hp+8);
  d.wave++;delete d.saleUndo;
- if(wave.kind==='boss'){d.power=completed===4?12:14;d.maxTier=completed===4?2:3;d.phase='expansion';d.protocolOptions=protocols(d);return ok();}
+ if(wave.kind==='boss'){d.power=completed===4?12:14;d.maxTier=4;d.phase='expansion';d.protocolOptions=protocols(d);return ok();}
  const rewards:string[]=[];if([2,6,10].includes(completed))rewards.push('any');if(riskModule)rewards.push('U');
  if(rewards.length)beginRewards(d,rewards,'newPrep');else enterPrep(d);return ok();
 });}
@@ -348,7 +378,7 @@ export function resolveEvent(r:Run,choice:number):Result {return transaction(r,d
  if(id==='EV01'&&choice===0){if(d.gold<24)return fail('需要24碎片','Requires 24 scrap.');d.gold-=24;beginRewards(d,['U'],'existingPrep');}
  else if(id==='EV02'&&choice===0){if(d.hp<16)return fail('需要至少16生命','Requires at least 16 HP.');d.hp-=15;d.gold+=35;}
  else if(id==='EV03'){
-  const candidates=d.items.filter(i=>i.tier===1);if(choice===1||!candidates.length)d.gold+=20;else {const item=candidates.find(i=>i.uid===e.eventTargetUid);if(!item)return fail('请选择一件I级模块','Select a tier I module.');if(d.maxTier<2)return fail('第二章才可使用工作台','The workbench requires Act II.');item.tier=2;}
+  const candidates=d.items.filter(i=>i.tier===1);if(choice===1||!candidates.length)d.gold+=20;else {const item=candidates.find(i=>i.uid===e.eventTargetUid);if(!item)return fail('请选择一件I级模块','Select a tier I module.');item.tier=2;}
  }
  else if(id==='EV04'&&choice===0){if(d.route!==0||e.eventBudgetBonus||e.eventExtraElite)return fail('已有风险合同，请先选择普通路线','Choose the normal route before accepting event risk.');e.eventExtraElite=1;e.eventRewardModule=true;}
  else if(id==='EV05'){

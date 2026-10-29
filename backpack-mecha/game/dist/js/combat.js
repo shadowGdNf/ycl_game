@@ -1,15 +1,15 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=7c4d97a1694c";
-import { nextRandom } from "./random.js?v=7c4d97a1694c";
-import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=7c4d97a1694c";
-const DAMAGE_SCALE = [1, 1.35, 1.8];
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=4294331e0428";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=4294331e0428";
+import { nextRandom } from "./random.js?v=4294331e0428";
+import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=4294331e0428";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 const angleTo = (a, b) => Math.atan2(b.y - a.y, b.x - a.x);
 const angleDiff = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
-const value = (id, tier) => tier ? (MODULE_BY_ID[id]?.values?.[tier - 1] || 0) : 0;
-const scale = (tier) => DAMAGE_SCALE[tier - 1];
+const value = moduleValue;
+const scale = damageScale;
 const zeros = () => ({ damageByModule: {}, damageTakenBy: {}, kills: 0, killedBudget: 0, goldEarned: 0, maxChain: 0, damageTaken: 0 });
 function rand(w) { const [state, n] = nextRandom(w.rng); w.rng = state; return n; }
 function event(w, type, p, extra = {}) {
@@ -35,7 +35,7 @@ export function createBattle(run) {
             utilities[item.id] = item.tier;
     const maxShield = chassis.shield + value('U02', utilities.U02) + (run.protocols.includes('P04') ? 20 : 0) + Number(run.extra?.temporaryShield || 0);
     const speed = chassis.speed * clamp(1 + value('U07', utilities.U07) - (utilities.U06 ? .03 : 0), .65, 1.6);
-    const dashBase = Math.max(3.5, chassis.dash - (utilities.U07 ? [1, 1.3, 1.8][utilities.U07 - 1] : 0) + (run.protocols.includes('P04') ? .5 : 0));
+    const dashBase = Math.max(3.5, chassis.dash - (utilities.U07 ? TIER_EFFECTS.dashReduction[utilities.U07 - 1] : 0) + (run.protocols.includes('P04') ? .5 : 0));
     const weapons = equipped.filter(i => MODULE_BY_ID[i.id]?.kind === 'weapon').map((i, index) => ({ uid: i.uid, id: i.id, tier: i.tier, x: 800, y: 650, angle: -Math.PI / 2, cooldown: .1 + index * .05, shotCount: 0,
         supports: Object.fromEntries(equipped.filter(s => MODULE_BY_ID[s.id]?.kind === 'support' && s.link === i.uid).map(s => [s.id, s.tier])), targetUntil: 0, rectifierAt: 0, springUsed: true, fuseAt: {}, droneCount: 0 }));
     let drones = 0;
@@ -48,7 +48,7 @@ export function createBattle(run) {
         player: { x: 800, y: 650, hp: clamp(run.hp, 0, chassis.hp), maxHp: chassis.hp, shield: maxShield, maxShield, radius: 14, speed, armor: clamp(chassis.armor + value('U06', utilities.U06), 0, 60), angle: -Math.PI / 2, dashCooldown: 0, overloadCooldown: 0, dashTime: 0, overloadTime: 0, invulnerable: 0 },
         enemies: [], bullets: [], zones: [], weapons, drops: [], obstacles: encounter.obstacles, events: [], stats: zeros(), chassis: run.chassis, duration: encounter.state.wave.duration, insuranceUsed: run.insuranceUsed,
         rng: run.rng.combat, nextId: 1, nextEvent: 1, nextShot: 1, remainder: 0, encounter: encounter.state, utilities, protocols: [...run.protocols], lastDamage: -10,
-        shieldRegen: 3 + (utilities.U02 ? [1, 1.5, 2][utilities.U02 - 1] : 0), dashBase, dashAngle: 0, dashOrigin: { x: 800, y: 650 }, dashReleased: true, overloadReleased: true, lastDash: -10,
+        shieldRegen: 3 + (utilities.U02 ? TIER_EFFECTS.shieldRegen[utilities.U02 - 1] : 0), dashBase, dashAngle: 0, dashOrigin: { x: 800, y: 650 }, dashReleased: true, overloadReleased: true, lastDash: -10,
         repairAt: 10, repairAmount: 0, pickupAt: 0, capacitorAt: 0, capacitorDefense: 0, recoveryAt: 0, emberHeal: 0, emergencyUsed: false, decoyAt: 0, priorityUntil: 0, slowUntil: 0, slowAmount: 0,
         bossClock: 2, bossTurn: 0, bossStarted: false, bossOverloadWarned: false, bossEnraged: false, slainGroups: [] };
     if (encounter.boss) {
@@ -274,7 +274,7 @@ function applyStatus(w, e, weapon) {
         if (e.chill >= 5) {
             e.chill = 0;
             if (e.kind === 'boss')
-                stagger(w, e, 15 + (weapon.supports.S12 ? [5, 7, 9][weapon.supports.S12 - 1] : 0));
+                stagger(w, e, 15 + (weapon.supports.S12 ? TIER_EFFECTS.cryoStagger[weapon.supports.S12 - 1] : 0));
             else {
                 e.frozen = (e.kind === 'elite' ? .5 : 1.2) + support(weapon, 'S12');
                 e.controlReason = 'ice';
@@ -416,7 +416,7 @@ function fireWeapon(w, weapon, target, extra = false) {
         weapon.shotCount++;
     let factor = 1;
     if (weapon.supports.S11 && w.time - w.lastDash <= 2 && !weapon.springUsed) {
-        factor = 1 + [.4, .55, .7][weapon.supports.S11 - 1];
+        factor = 1 + TIER_EFFECTS.springDamage[weapon.supports.S11 - 1];
         weapon.springUsed = true;
     }
     event(w, 'fire', origin, { source: weapon.id, targetId: target.eid, angle: a, to: { x: target.x, y: target.y }, radius: (def.range || 100) * (1 + support(weapon, 'S11')) });
@@ -973,7 +973,7 @@ function tickPlayer(w, input, dt) {
         w.priority = undefined;
     if (wasDashing && p.dashTime === 0 && w.utilities.U11 && w.time >= w.decoyAt) {
         w.decoyAt = w.time + 10;
-        w.decoy = { ...w.dashOrigin, hp: utility(w, 'U11'), until: w.time + [3, 4, 5][w.utilities.U11 - 1] };
+        w.decoy = { ...w.dashOrigin, hp: TIER_EFFECTS.decoyHP[w.utilities.U11 - 1], until: w.time + utility(w, 'U11') };
         event(w, 'decoy', w.decoy);
     }
     if (w.decoy && (w.decoy.until <= w.time || w.decoy.hp <= 0))
@@ -1011,7 +1011,7 @@ function tickPlayer(w, input, dt) {
         p.shield = Math.min(p.maxShield, p.shield + w.shieldRegen * dt);
     if (w.utilities.U03 && w.time >= w.repairAt) {
         w.repairAt += 10;
-        const cap = [8, 10, 12][w.utilities.U03 - 1], heal = Math.max(0, Math.min(utility(w, 'U03'), p.maxHp - p.hp, cap - w.repairAmount));
+        const cap = TIER_EFFECTS.repairCap[w.utilities.U03 - 1], heal = Math.max(0, Math.min(utility(w, 'U03'), p.maxHp - p.hp, cap - w.repairAmount));
         p.hp += heal;
         w.repairAmount += heal;
         if (heal)

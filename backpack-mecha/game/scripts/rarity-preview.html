@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>稀有度与合成 · 本地验收</title>
+<style>body{max-width:650px;margin:40px auto;padding:20px;background:#17262b;color:#e8e3d2;font:16px system-ui;line-height:1.8}button{padding:16px;font:inherit;background:#efac62;border:0;border-radius:6px;cursor:pointer}code{color:#8de1bf}</style>
+<h1>稀有度与合成 · 本地验收</h1><p>只在本页的 4199 开发端口写入验收存档，与 4174 正常游戏及 GitHub Pages 存档独立。</p><p>第 9 场，600 碎片；商店展示白、蓝、紫、红四档。背包有普通铆钉枪和增幅线圈，备件有同阶铆钉枪与两件精良线圈，便于验证满备件购买合成与已有装备免费合成。</p><button id="seed">装入验收存档并打开游戏</button><p id="status"></p>
+<script type="module">
+const [{newRun},{freshProfile,saveGame}]=await Promise.all([import('/game/js/economy.js'),import('/game/js/storage.js')]);
+document.querySelector('#seed').onclick=async()=>{
+ const r=newRun('scavenger','full',0,'DEV8-RARITY-UI');r.wave=9;r.gold=600;r.power=18;r.maxTier=4;r.unlockedCorners=[0,1,2,3];r.items.push({uid:'qa-1',id:'W01',tier:1,x:-1,y:-1,rotation:0,stored:true},{uid:'qa-2',id:'S01',tier:2,x:-1,y:-1,rotation:0,stored:true},{uid:'qa-3',id:'S01',tier:2,x:-1,y:-1,rotation:0,stored:true});
+ r.shop=[{id:'W01',tier:1,locked:false},{id:'W03',tier:2,locked:false},{id:'S07',tier:3,locked:false},{id:'U02',tier:4,locked:false}];const profile=freshProfile();profile.tutorial=true;profile.settings.unlockAll=true;
+ if(await saveGame({version:1,profile,run:r,battle:null,savedAt:Date.now()}))location.href='/game/';else document.querySelector('#status').textContent='无法写入验收存档';
+};
+</script></html>

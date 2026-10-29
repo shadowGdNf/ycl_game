@@ -12,3 +12,6 @@ qa/*.jpg
 !qa/dev7-boss-lab-mobile.jpg
 !qa/dev7-scrap-mobile.jpg
 !qa/dev7-enemies-mobile.jpg
+
+!qa/dev8-shop-mobile.jpg
+!qa/dev8-merge-mobile.jpg

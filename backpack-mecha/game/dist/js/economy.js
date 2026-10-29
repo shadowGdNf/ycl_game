@@ -1,6 +1,7 @@
-import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=7c4d97a1694c";
-import { hashSeed, nextRandom } from "./random.js?v=7c4d97a1694c";
-import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=7c4d97a1694c";
+import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=4294331e0428";
+import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=4294331e0428";
+import { hashSeed, nextRandom } from "./random.js?v=4294331e0428";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=4294331e0428";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
@@ -35,9 +36,10 @@ function shape(id, rotation) {
     return points.map(p => ({ x: p.x - minX, y: p.y - minY }));
 }
 export function getCells(item) { return shape(item.id, item.rotation).map(p => ({ x: p.x + item.x, y: p.y + item.y })); }
-export function getCapacity(r) { const battery = active(r).find(i => i.id === 'U01'); return r.power + (battery ? ([2, 3, 4][battery.tier - 1] ?? 0) : 0); }
-export function getShieldCapacity(r) { const shield = active(r).find(i => i.id === 'U02'); return CHASSIS_BY_ID[r.chassis].shield + (shield ? ([25, 34, 45][shield.tier - 1] ?? 0) : 0) + (r.protocols.includes('P04') ? 20 : 0) + Number(r.extra?.temporaryShield ?? 0); }
-export function standardCost(item) { const p = def(item).price; return p + (item.tier >= 2 ? Math.ceil(p * .75) : 0) + (item.tier >= 3 ? Math.ceil(p * 1.25) : 0); }
+export function getCapacity(r) { const battery = active(r).find(i => i.id === 'U01'); return r.power + (battery ? moduleValue('U01', battery.tier) : 0); }
+export function getShieldCapacity(r) { const shield = active(r).find(i => i.id === 'U02'); return CHASSIS_BY_ID[r.chassis].shield + (shield ? moduleValue('U02', shield.tier) : 0) + (r.protocols.includes('P04') ? 20 : 0) + Number(r.extra?.temporaryShield ?? 0); }
+export function standardCost(item) { return equipmentPrice(item.id, item.tier); }
+export function offerPrice(offer) { return equipmentPrice(offer.id, offerTier(offer)); }
 function compatible(s, w) { return s.kind === 'support' && w.kind === 'weapon' && (s.tags.includes('全部') || s.tags.some(t => w.tags.includes(t))); }
 function adjacent(a, b) { return getCells(a).some(p => getCells(b).some(q => Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1)); }
 function validLink(r, s, w) { return !!w && !s.stored && !w.stored && compatible(def(s), def(w)) && adjacent(s, w); }
@@ -72,8 +74,8 @@ function checkInventory(r, complete, power = true) {
         if (ids.has(i.uid) || !MODULE_BY_ID[i.id] || !eligibleIds(r).includes(i.id))
             return fail('存在重复编号或未开放的模块', 'Duplicate instance or unavailable module.');
         ids.add(i.uid);
-        if (![1, 2, 3].includes(i.tier) || i.tier > r.maxTier)
-            return fail('模块等级超过当前章节上限', 'A module exceeds the chapter tier limit.');
+        if (!validTier(i.tier))
+            return fail('无效装备稀有度', 'Invalid equipment rarity.');
         if (!Number.isInteger(i.rotation) || i.rotation < 0 || i.rotation > 3)
             return fail('旋转参数无效', 'Invalid rotation.');
         if (i.stored)
@@ -169,10 +171,10 @@ export function previewPurchase(r, index) {
     const canReserve = d.items.filter(i => i.stored).length < 3;
     // A full reserve does not prevent a direct board purchase. Keep the hypothetical item
     // outside reserve for placement checks; every candidate replaces its coordinates.
-    const item = newItem(d, offer.id);
+    const item = newItem(d, offer.id, offerTier(offer));
     d.items.push(item);
     const placements = placementOptions(d, item.uid);
-    const result = r.gold < MODULE_BY_ID[offer.id].price ? fail('碎片不足', 'Not enough scrap.') :
+    const result = r.gold < offerPrice(offer) ? fail('碎片不足', 'Not enough scrap.') :
         canReserve || placements.length ? ok() : fail('备件架已满，当前布局也放不下；请先整理', 'Reserve full and no board placement. Make room first.');
     return { result, placements, canReserve };
 }
@@ -372,8 +374,9 @@ function generateShop(r, visit) {
         if (!candidates.some(m => m.rarity !== 'R') && act(r) === 1)
             candidates = pool.filter(m => !used.has(m.id) && m.rarity !== 'R');
         if (candidates.length) {
-            const m = weighted(r, candidates, 'shop');
-            next[i] = { id: m.id, locked: false };
+            const owned = candidates.filter(m => r.items.some(item => item.id === m.id && item.tier < 4));
+            const m = owned.length && roll(r, 'shop') < .3 ? pick(r, owned, 'shop') : weighted(r, candidates, 'shop');
+            next[i] = { id: m.id, locked: false, tier: rollShopTier(r.wave, roll(r, 'shop')) };
             used.add(m.id);
         }
     }
@@ -387,9 +390,9 @@ function generateShop(r, visit) {
     recordAction(r, visit ? 'shop:visit' : 'shop:refresh');
 }
 function requireShop(r) { return r.phase === 'prep' && r.wave > 1 && r.shop.length === 4 ? ok() : fail('当前不在商店', 'The shop is not available now.'); }
-function newItem(r, id) { return { uid: `i${r.nextUid++}`, id, tier: 1, x: -1, y: -1, rotation: 0, stored: true }; }
-function receive(r, id, placement) {
-    const item = newItem(r, id);
+function newItem(r, id, tier = 1) { return { uid: `i${r.nextUid++}`, id, tier, x: -1, y: -1, rotation: 0, stored: true }; }
+function receive(r, id, placement, tier = 1) {
+    const item = newItem(r, id, tier);
     r.items.push(item);
     if (placement) {
         if (!Number.isInteger(placement.rotation))
@@ -419,17 +422,19 @@ export function buy(r, index, placement) {
         const offer = d.shop[index];
         if (!Number.isInteger(index) || !offer?.id)
             return fail('该商品已售出', 'This offer is unavailable.');
-        const m = MODULE_BY_ID[offer.id];
-        if (d.gold < m.price)
+        const m = MODULE_BY_ID[offer.id], price = offerPrice(offer);
+        if (!validTier(offerTier(offer)))
+            return fail('无效商品稀有度', 'Invalid offer rarity.');
+        if (d.gold < price)
             return fail('碎片不足', 'Not enough scrap.');
         if (!placement && d.items.filter(i => i.stored).length >= 3)
             return fail('备件架已满，请选择背包位置后购买', 'Reserve full. Select a backpack placement before buying.');
-        const result = receive(d, m.id, placement);
+        const result = receive(d, m.id, placement, offerTier(offer));
         if (!result.ok)
             return result;
-        d.gold -= m.price;
+        d.gold -= price;
         d.shop[index] = { id: '', locked: false };
-        log(d, `buy:${m.id}:${m.price}`);
+        log(d, `buy:${m.id}:${price}:tier${offerTier(offer)}`);
         return ok();
     });
 }
@@ -475,22 +480,64 @@ export function undoSale(r) {
         return fail('无法读取撤销记录', 'Unable to read the undo record.');
     }
 }
-export function upgrade(r, uid) {
+export function mergeCandidates(r, uid) {
+    const target = r.items.find(i => i.uid === uid);
+    if (!target || target.tier >= 4)
+        return [];
+    return r.items.filter(i => i.uid !== uid && i.id === target.id && i.tier === target.tier).sort((a, b) => Number(b.stored) - Number(a.stored) || a.uid.localeCompare(b.uid));
+}
+function mergeDraft(r, uid, otherUid) {
+    if (!editable(r))
+        return fail('只能在休整时合成', 'Combine equipment between battles.');
+    const target = r.items.find(i => i.uid === uid);
+    if (!target)
+        return fail('找不到模块', 'Module not found.');
+    if (target.tier >= 4)
+        return fail('已达传说最高稀有度', 'Already at Legendary rarity.');
+    const donor = otherUid ? r.items.find(i => i.uid === otherUid) : mergeCandidates(r, uid)[0];
+    if (!donor || donor.uid === uid || donor.id !== target.id || donor.tier !== target.tier)
+        return fail('需要另一件同名、同稀有度装备', 'Requires another identical module of the same rarity.');
+    // Prefer the equipped instance, so combining from reserve never unequips the only weapon.
+    const keep = target.stored && !donor.stored ? donor : target, consume = keep === target ? donor : target;
+    keep.tier = (keep.tier + 1);
+    r.items = r.items.filter(i => i.uid !== consume.uid);
+    repairLinks(r);
+    const check = checkInventory(r, false, false);
+    if (!check.ok)
+        return check;
+    const disconnected = active(r).filter(i => def(i).kind === 'support' && !i.link).map(i => i.uid);
+    log(r, `merge:${keep.id}:${keep.tier}:${consume.uid}`);
+    return { ok: true, item: keep, consumedUid: consume.uid, disconnected };
+}
+export function previewMerge(r, uid, otherUid) { return mergeDraft(previewRun(r), uid, otherUid); }
+export function merge(r, uid, otherUid) { return transaction(r, d => mergeDraft(d, uid, otherUid)); }
+/** Retained for local probe callers; upgrades now consume a matching copy and never charge scrap. */
+export const upgrade = merge;
+export function purchaseMergeTargets(r, index) {
+    const offer = r.shop[index];
+    if (!offer?.id || offerTier(offer) >= 4)
+        return [];
+    return r.items.filter(i => i.id === offer.id && i.tier === offerTier(offer)).sort((a, b) => Number(a.stored) - Number(b.stored));
+}
+export function buyAndMerge(r, index, uid) {
     return transaction(r, d => {
         const access = requireShop(d);
         if (!access.ok)
             return access;
-        const item = d.items.find(i => i.uid === uid);
-        if (!item)
-            return fail('找不到模块', 'Module not found.');
-        if (item.tier >= d.maxTier)
-            return fail('已达当前章节等级上限', 'The chapter tier limit has been reached.');
-        const price = Math.ceil(def(item).price * (item.tier === 1 ? .75 : 1.25));
+        const offer = d.shop[index];
+        if (!Number.isInteger(index) || !offer?.id || !purchaseMergeTargets(d, index).some(i => i.uid === uid))
+            return fail('商品与目标装备不满足合成条件', 'Offer and equipment do not match for combining.');
+        const price = offerPrice(offer);
         if (d.gold < price)
             return fail('碎片不足', 'Not enough scrap.');
+        const material = newItem(d, offer.id, offerTier(offer));
+        d.items.push(material);
+        const result = mergeDraft(d, uid, material.uid);
+        if (!result.ok)
+            return result;
         d.gold -= price;
-        item.tier = (item.tier + 1);
-        log(d, `upgrade:${uid}:${item.tier}:${price}`);
+        d.shop[index] = { id: '', locked: false };
+        log(d, `buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);
         return ok();
     });
 }
@@ -573,7 +620,7 @@ export function newRun(chassis, mode, difficulty, seed) {
     if (!allowedChassis.includes(chassis))
         chassis = 'scavenger';
     const c = CHASSIS_BY_ID[chassis];
-    const r = { version: 1, mode, seed: seed || 'backpack-mecha', chassis, difficulty: mode === 'full' ? Math.max(0, Math.min(4, Math.floor(difficulty) || 0)) : 0, phase: 'prep', wave: 1, gold: 40, hp: c.hp, shield: c.shield, power: 10, maxTier: 1, unlockedCorners: [], items: [], shop: [], refreshes: 0, shopPity: 0, protocols: [], bosses: [], nextUid: 1, rng: { shop: hashSeed(`${seed}:shop`), map: hashSeed(`${seed}:map`), event: hashSeed(`${seed}:event`), combat: hashSeed(`${seed}:combat`) }, route: 0, rewardOptions: [], protocolOptions: [], eventsSeen: [], eventResolved: true, insuranceUsed: false, stats: emptyStats(), elapsed: 0, history: [], extra: {} };
+    const r = { version: 1, mode, seed: seed || 'backpack-mecha', chassis, difficulty: mode === 'full' ? Math.max(0, Math.min(4, Math.floor(difficulty) || 0)) : 0, phase: 'prep', wave: 1, gold: 40, hp: c.hp, shield: c.shield, power: 10, maxTier: 4, unlockedCorners: [], items: [], shop: [], refreshes: 0, shopPity: 0, protocols: [], bosses: [], nextUid: 1, rng: { shop: hashSeed(`${seed}:shop`), map: hashSeed(`${seed}:map`), event: hashSeed(`${seed}:event`), combat: hashSeed(`${seed}:combat`) }, route: 0, rewardOptions: [], protocolOptions: [], eventsSeen: [], eventResolved: true, insuranceUsed: false, stats: emptyStats(), elapsed: 0, history: [], extra: {} };
     const gun = newItem(r, 'W01'), support = newItem(r, 'S01');
     Object.assign(gun, { x: 1, y: 0, stored: false });
     Object.assign(support, { x: 0, y: 1, stored: false, link: gun.uid });
@@ -656,7 +703,7 @@ export function resolveBattle(r, result) {
         delete d.saleUndo;
         if (wave.kind === 'boss') {
             d.power = completed === 4 ? 12 : 14;
-            d.maxTier = completed === 4 ? 2 : 3;
+            d.maxTier = 4;
             d.phase = 'expansion';
             d.protocolOptions = protocols(d);
             return ok();
@@ -786,8 +833,6 @@ export function resolveEvent(r, choice) {
                 const item = candidates.find(i => i.uid === e.eventTargetUid);
                 if (!item)
                     return fail('请选择一件I级模块', 'Select a tier I module.');
-                if (d.maxTier < 2)
-                    return fail('第二章才可使用工作台', 'The workbench requires Act II.');
                 item.tier = 2;
             }
         }

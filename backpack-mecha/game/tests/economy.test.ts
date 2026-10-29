@@ -73,7 +73,7 @@ test('lock survives refresh and wave transition, only one offer may be locked',(
 
 test('failed purchases preserve cash and RNG; successful buying enters reserve',()=>{
  const r=shopRun();r.gold=0;const before=structuredClone(r);assert.equal(e.buy(r,0).ok,false);assert.deepEqual(r,before);
- r.gold=100;const id=r.shop[0].id;assert.equal(e.buy(r,0).ok,true);assert.equal(r.gold,100-MODULE_BY_ID[id].price);assert.equal(r.items.at(-1)!.stored,true);assert.equal(r.shop[0].id,'');
+ r.gold=100;const id=r.shop[0].id,price=e.offerPrice(r.shop[0]);assert.equal(e.buy(r,0).ok,true);assert.equal(r.gold,100-price);assert.equal(r.items.at(-1)!.stored,true);assert.equal(r.shop[0].id,'');
  item(r,'W02');item(r,'W03');const full=structuredClone(r);assert.equal(e.buy(r,1).ok,false);assert.deepEqual(r,full);
 });
 
@@ -90,11 +90,11 @@ test('damaged sale and reward journals fail atomically without erasing the activ
  for(const journal of ['not json','{}','["missing-kind"]']){const reward=shopRun();reward.phase='reward';reward.rewardOptions=['W01','W02','W03'];reward.extra!.pendingRewardKinds=journal;const before=structuredClone(reward);assert.equal(e.chooseReward(reward,-1).ok,false);assert.deepEqual(reward,before);}
 });
 
-test('upgrade gating, standard sale value and once-per-shop repairs',()=>{
- const r=shopRun();r.gold=500;assert.equal(e.upgrade(r,r.items[0].uid).ok,false);r.maxTier=2;
- assert.equal(e.upgrade(r,r.items[0].uid).ok,true);assert.equal(r.gold,482);assert.equal(e.standardCost(r.items[0]),42);assert.equal(e.upgrade(r,r.items[0].uid).ok,false);
- r.hp=50;assert.equal(e.repair(r).ok,true);assert.equal(r.hp,80);assert.equal(r.gold,464);assert.equal(e.repair(r).ok,false);
- const price=e.standardCost(r.items[0]);assert.equal(e.sell(r,r.items[0].uid).ok,true);assert.equal(r.gold,464+Math.floor(price*.5));
+test('duplicate combination, standard sale value and once-per-shop repairs',()=>{
+ const r=shopRun();r.gold=500;assert.equal(e.upgrade(r,r.items[0].uid).ok,false);item(r,'W01');
+ assert.equal(e.upgrade(r,r.items[0].uid).ok,true);assert.equal(r.gold,500);assert.equal(e.standardCost(r.items[0]),42);assert.equal(e.upgrade(r,r.items[0].uid).ok,false);
+ r.hp=50;assert.equal(e.repair(r).ok,true);assert.equal(r.hp,80);assert.equal(r.gold,482);assert.equal(e.repair(r).ok,false);
+ const price=e.standardCost(r.items[0]);assert.equal(e.sell(r,r.items[0].uid).ok,true);assert.equal(r.gold,482+Math.floor(price*.5));
 });
 
 test('shop pity guarantees a compatible support and locked free slot defers tag guarantee',()=>{
@@ -107,7 +107,7 @@ test('shop pity guarantees a compatible support and locked free slot defers tag 
 test('prototype ends on wave four; demo ends on eight without third-act rewards',()=>{
  for(const [mode,last]of [['prototype',4],['demo',8]] as const){const r=e.newRun('scavenger',mode,0,'campaign');
   while(r.phase!=='won'){progress(r);if(r.phase!=='won')assert.ok(r.items.every(i=>mode!=='demo'||DEMO_IDS.includes(i.id)));}
-  assert.equal(r.wave,last);assert.equal(r.maxTier,mode==='prototype'?1:2);assert.equal(r.power,mode==='prototype'?10:12);assert.equal(r.unlockedCorners.length,mode==='prototype'?0:2);assert.equal(r.protocols.length,mode==='prototype'?0:1);assert.equal(r.eventsSeen.length,0);
+  assert.equal(r.wave,last);assert.equal(r.maxTier,4);assert.equal(r.power,mode==='prototype'?10:12);assert.equal(r.unlockedCorners.length,mode==='prototype'?0:2);assert.equal(r.protocols.length,mode==='prototype'?0:1);assert.equal(r.eventsSeen.length,0);
   assert.equal(e.startWave(r).ok,false);assert.equal(e.resolveBattle(r,result(r)).ok,false);
   if(mode==='demo')assert.ok(Math.abs(r.gold-479.4)<1e-9);
  }
@@ -116,7 +116,7 @@ test('prototype ends on wave four; demo ends on eight without third-act rewards'
 test('full campaign awards sequential expansion and protocols, unique events, and one final settlement',()=>{
  const r=e.newRun('scavenger','full',0,'full-run');
  while(r.phase!=='won')progress(r,true);
- assert.equal(r.wave,12);assert.equal(r.unlockedCorners.length,4);assert.equal(r.power,14);assert.equal(r.maxTier,3);assert.equal(r.protocols.length,2);assert.equal(new Set(r.protocols).size,2);assert.equal(r.eventsSeen.length,2);assert.notEqual(r.eventsSeen[0],r.eventsSeen[1]);assert.ok(Math.abs(r.gold-838)<1e-8);assert.equal(r.rng.combat,12345);
+ assert.equal(r.wave,12);assert.equal(r.unlockedCorners.length,4);assert.equal(r.power,14);assert.equal(r.maxTier,4);assert.equal(r.protocols.length,2);assert.equal(new Set(r.protocols).size,2);assert.equal(r.eventsSeen.length,2);assert.notEqual(r.eventsSeen[0],r.eventsSeen[1]);assert.ok(Math.abs(r.gold-838)<1e-8);assert.equal(r.rng.combat,12345);
  const final=structuredClone(r);assert.equal(e.resolveBattle(r,result(r)).ok,false);assert.deepEqual(r,final);
 });
 

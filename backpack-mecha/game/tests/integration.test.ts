@@ -64,12 +64,12 @@ test('real combat repeatedly activates automatic overdrive for 42 seconds while 
  assert.equal(counts.automatic,3);assert.equal(counts.held,1);
 });
 
-test('simulated results traverse all modes, reward checkpoints, upgrade gates, save reloads and profile unlocks',()=>{
+test('simulated results traverse all modes, reward checkpoints, duplicate combinations, save reloads and profile unlocks',()=>{
  for(const mode of ['prototype','demo','full'] as Mode[]){
   let run=economy.newRun('scavenger',mode,0,'flow-integration');let profile:Profile=freshProfile();profile.totalRuns=1;const visited:number[]=[];
   while(run.phase!=='won'){
    const wave=run.wave;visited.push(wave);
-   if(wave<=4)assert.equal(run.maxTier,1);else if(wave<=8)assert.equal(run.maxTier,2);else assert.equal(run.maxTier,3);
+   assert.equal(run.maxTier,4);
    if(mode!=='full'){const allowed=mode==='demo'?DEMO_IDS:PROTOTYPE_IDS;assert.ok(run.items.every(i=>allowed.includes(i.id)));assert.ok(run.shop.every(o=>!o.id||allowed.includes(o.id)));assert.equal(run.protocols.includes('P05'),false);}
    if(run.eventId&&!run.eventResolved)assert.equal(economy.resolveEvent(run,-1).ok,true);
    const encounter=createEncounter(run);if(mode!=='full')assert.ok(enemyPool(wave,mode).every(id=>Number(id.slice(1))<=(mode==='demo'?6:5)));
@@ -78,8 +78,8 @@ test('simulated results traverse all modes, reward checkpoints, upgrade gates, s
    const restored=snapshot(run,null,profile);assert.notEqual(restored.run,null);run=restored.run!;profile=restored.profile;
    if(run.phase==='expansion'){assert.equal(run.protocolOptions.length,3);assert.equal(new Set(run.protocolOptions).size,3);if(mode!=='full')assert.equal(run.protocolOptions.includes('P05'),false);}
    collectPending(run);
-   if(wave===4&&mode!=='prototype'){const before=run.gold;assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);assert.equal(run.items[0].tier,2);assert.equal(run.gold,before-18);assert.equal(economy.upgrade(run,run.items[0].uid).ok,false);}
-   if(wave===8&&mode==='full'){assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);assert.equal(run.items[0].tier,3);}
+   if(wave===4&&mode!=='prototype'){run.items.push({...run.items[0],uid:`i${run.nextUid++}`,stored:true,x:-1,y:-1});const before=run.gold;assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);assert.equal(run.items[0].tier,2);assert.equal(run.gold,before);assert.equal(economy.upgrade(run,run.items[0].uid).ok,false);}
+   if(wave===8&&mode==='full'){run.items.push({...run.items[0],uid:`i${run.nextUid++}`,stored:true,x:-1,y:-1});assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);assert.equal(run.items[0].tier,3);}
   }
   const total=mode==='full'?12:mode==='demo'?8:4;assert.deepEqual(visited,Array.from({length:total},(_,i)=>i+1));assert.equal(profile.wins,1);assert.ok(profile.unlocked.includes('bulwark'));assert.equal(profile.unlocked.includes('kestrel'),mode==='full');assert.equal(profile.unlocked.includes('hive'),false);assert.equal(profile.maxDifficulty,mode==='full'?1:0);
   assert.equal(profile.best[`${mode}:scavenger:0`].score,scoreRun(run));assert.equal(run.eventsSeen.length,mode==='full'?2:0);assert.equal(run.unlockedCorners.length,mode==='full'?4:mode==='demo'?2:0);
@@ -98,7 +98,7 @@ test('fixed-seed shop and event sequence is identical after every preparation ch
 
 test('protocol and event modifiers are consumed by combat and expire at the intended boundary',()=>{
  const run=economy.newRun('scavenger','full',0,'modifiers');run.wave=5;run.power=12;run.maxTier=2;run.unlockedCorners=[0,1];run.phase='protocol';run.protocolOptions=['P04','P07','P08'];
- assert.equal(economy.chooseProtocol(run,'P04').ok,true);assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);run.wave=7;run.eventId='EV07';run.eventResolved=false;
+ assert.equal(economy.chooseProtocol(run,'P04').ok,true);run.items.push({...run.items[0],uid:`i${run.nextUid++}`,stored:true,x:-1,y:-1});assert.equal(economy.upgrade(run,run.items[0].uid).ok,true);run.wave=7;run.eventId='EV07';run.eventResolved=false;
  assert.equal(economy.resolveEvent(run,1).ok,true);assert.equal(economy.startWave(run).ok,true);const world=createBattle(run);
  assert.equal(world.player.maxShield,55);assert.equal(world.player.shield,55);assert.equal(world.dashBase,6.5);assert.equal(world.weapons[0].tier,2);assert.ok(world.protocols.includes('P04'));
  assert.equal(economy.resolveBattle(run,simulatedOutcome(run)).ok,true);assert.equal(run.extra!.temporaryShield,undefined);assert.equal(economy.getShieldCapacity(run),40);

@@ -37,7 +37,7 @@ function equipPlan(run:Run,uid:string,actions:Action[]):boolean {
  if(!perform(run,action))return false;actions.push(action);return true;
 }
 export function purchasePlan(run:Run,index:number,family:Family):{actions:Action[];gain:number}|undefined {
- const id=run.shop[index]?.id;if(!id||!value(id,family)||MODULE_BY_ID[id].price>run.gold)return;
+ const offer=run.shop[index],id=offer?.id;if(!id||!value(id,family)||economy.offerPrice(offer)>run.gold)return;
  if(run.items.some(i=>i.id===id))return;
  const equipped=run.items.filter(i=>!i.stored).sort((a,b)=>worth(a,family)-worth(b,family));
  const removals:(Item[])[]=[[],...equipped.slice(0,4).map(i=>[i])];
@@ -51,6 +51,13 @@ export function purchasePlan(run:Run,index:number,family:Family):{actions:Action
  }
 }
 export interface PolicyOptions {policy?:'legacy'|'expanded';onDecision?:(run:Run,stage:string)=>void;onEvent?:(run:Run)=>void}
+function combineSafely(run:Run,uid:string):void {
+ for(let step=0;step<3;step++){
+  const draft=rulesCopy(run);
+  if(!economy.merge(draft,uid).ok||!economy.validateLoadout(draft).ok)return;
+  if(!economy.merge(run,uid).ok)throw Error('Combine plan diverged from real API');
+ }
+}
 export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
  while(['reward','expansion','protocol'].includes(run.phase)){
   options.onDecision?.(run,run.phase);
@@ -107,11 +114,11 @@ export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
    for(const a of plans[0].actions)if(!perform(run,a))throw Error('Shop plan diverged from real API');
   }
   const weapons=run.items.filter(i=>!i.stored&&MODULE_BY_ID[i.id].kind==='weapon').sort((a,b)=>worth(b,family)-worth(a,family));
-  for(const weapon of weapons)while((run.items.find(i=>i.uid===weapon.uid)?.tier??3)<run.maxTier){if(!economy.upgrade(run,weapon.uid).ok)break;}
+  for(const weapon of weapons)combineSafely(run,weapon.uid);
   if(visit===2||run.gold<38||!economy.refreshShop(run).ok)break;
  }
  for(const item of run.items.filter(i=>!i.stored&&MODULE_BY_ID[i.id].kind!=='weapon')){
-  if(run.gold<30)break;economy.upgrade(run,item.uid);
+  combineSafely(run,item.uid);
  }
  if(!economy.validateLoadout(run).ok)throw Error('Policy produced invalid loadout');
 }

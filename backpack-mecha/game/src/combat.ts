@@ -1,3 +1,4 @@
+import {moduleValue,TIER_EFFECTS,damageScale} from './rarity.ts';
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {nextRandom} from './random.ts';
 import {ARENA,availableBudget,bossPhase,bossTurn,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
@@ -28,15 +29,15 @@ export interface BattleState extends BattleView {
  playerVelocity?:Point;
 }
 interface Hit {base:number;kind:DamageKind;weapon?:WeaponState;factor?:number;direct?:boolean;status?:boolean;secondary?:boolean;origin?:Point;arcFirst?:boolean;oilExplosion?:boolean}
-const DAMAGE_SCALE=[1,1.35,1.8];
+
 const CONFIG={bulletSpeed:800,waterSpeed:650,iceSpeed:650,oilSpeed:550,missileSpeed:500,droneSpeed:720,bulletRadius:4,
  spawnWarning:.75,spawnGrace:.5,hitGrace:.35,pickupBase:60,maxEnemies:70,softEnemies:45,enemyShotSpeed:240};
 const clamp=(v:number,min:number,max:number)=>Math.max(min,Math.min(max,v));
 const distance=(a:Point,b:Point)=>Math.hypot(a.x-b.x,a.y-b.y);
 const angleTo=(a:Point,b:Point)=>Math.atan2(b.y-a.y,b.x-a.x);
 const angleDiff=(a:number,b:number)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
-const value=(id:string,tier:number|undefined)=>tier?(MODULE_BY_ID[id]?.values?.[tier-1]||0):0;
-const scale=(tier:Tier)=>DAMAGE_SCALE[tier-1]!;
+const value=moduleValue;
+const scale=damageScale;
 const zeros=():CombatStats=>({damageByModule:{},damageTakenBy:{},kills:0,killedBudget:0,goldEarned:0,maxChain:0,damageTaken:0});
 function rand(w:BattleState):number {const [state,n]=nextRandom(w.rng);w.rng=state;return n;}
 function event(w:BattleState,type:string,p:Point,extra:Partial<CombatEvent>={}):void {
@@ -56,7 +57,7 @@ export function createBattle(run:Run):BattleState {
  for(const item of equipped)if(MODULE_BY_ID[item.id]?.kind==='utility')utilities[item.id]=item.tier;
  const maxShield=chassis.shield+value('U02',utilities.U02)+(run.protocols.includes('P04')?20:0)+Number(run.extra?.temporaryShield||0);
  const speed=chassis.speed*clamp(1+value('U07',utilities.U07)-(utilities.U06?.03:0),.65,1.6);
- const dashBase=Math.max(3.5,chassis.dash-(utilities.U07?[1,1.3,1.8][utilities.U07-1]!:0)+(run.protocols.includes('P04')?.5:0));
+ const dashBase=Math.max(3.5,chassis.dash-(utilities.U07?TIER_EFFECTS.dashReduction[utilities.U07-1]!:0)+(run.protocols.includes('P04')?.5:0));
  const weapons:WeaponState[]=equipped.filter(i=>MODULE_BY_ID[i.id]?.kind==='weapon').map((i,index)=>({uid:i.uid,id:i.id,tier:i.tier,x:800,y:650,angle:-Math.PI/2,cooldown:.1+index*.05,shotCount:0,
   supports:Object.fromEntries(equipped.filter(s=>MODULE_BY_ID[s.id]?.kind==='support'&&s.link===i.uid).map(s=>[s.id,s.tier])),targetUntil:0,rectifierAt:0,springUsed:true,fuseAt:{},droneCount:0}));
  let drones=0;for(const weapon of weapons)if(weapon.id==='W11'){weapon.droneCount=Math.min(6-drones,weapon.supports.S10?3:2);drones+=weapon.droneCount;}
@@ -64,7 +65,7 @@ export function createBattle(run:Run):BattleState {
   player:{x:800,y:650,hp:clamp(run.hp,0,chassis.hp),maxHp:chassis.hp,shield:maxShield,maxShield,radius:14,speed,armor:clamp(chassis.armor+value('U06',utilities.U06),0,60),angle:-Math.PI/2,dashCooldown:0,overloadCooldown:0,dashTime:0,overloadTime:0,invulnerable:0},
   enemies:[],bullets:[],zones:[],weapons,drops:[],obstacles:encounter.obstacles,events:[],stats:zeros(),chassis:run.chassis,duration:encounter.state.wave.duration,insuranceUsed:run.insuranceUsed,
   rng:run.rng.combat,nextId:1,nextEvent:1,nextShot:1,remainder:0,encounter:encounter.state,utilities,protocols:[...run.protocols],lastDamage:-10,
-  shieldRegen:3+(utilities.U02?[1,1.5,2][utilities.U02-1]!:0),dashBase,dashAngle:0,dashOrigin:{x:800,y:650},dashReleased:true,overloadReleased:true,lastDash:-10,
+  shieldRegen:3+(utilities.U02?TIER_EFFECTS.shieldRegen[utilities.U02-1]!:0),dashBase,dashAngle:0,dashOrigin:{x:800,y:650},dashReleased:true,overloadReleased:true,lastDash:-10,
   repairAt:10,repairAmount:0,pickupAt:0,capacitorAt:0,capacitorDefense:0,recoveryAt:0,emberHeal:0,emergencyUsed:false,decoyAt:0,priorityUntil:0,slowUntil:0,slowAmount:0,
   bossClock:2,bossTurn:0,bossStarted:false,bossOverloadWarned:false,bossEnraged:false,slainGroups:[]};
  if(encounter.boss){world.bossId=encounter.boss;world.bossCenter={x:800,y:300};world.bossStarted=true;
@@ -177,7 +178,7 @@ function applyStatus(w:BattleState,e:EnemyState,weapon:WeaponState):void {
  if(weapon.id==='W12'){
   e.chill++;e.chillUntil=w.time+3;e.chillStrength=weapon.supports.S12?.08:.06;
   if(e.chill>=5){e.chill=0;
-   if(e.kind==='boss')stagger(w,e,15+(weapon.supports.S12?[5,7,9][weapon.supports.S12-1]!:0));
+   if(e.kind==='boss')stagger(w,e,15+(weapon.supports.S12?TIER_EFFECTS.cryoStagger[weapon.supports.S12-1]!:0));
    else {e.frozen=(e.kind==='elite'?.5:1.2)+support(weapon,'S12');e.controlReason='ice';}}
  }
 }
@@ -249,7 +250,7 @@ function makeBullet(w:BattleState,p:Point,angle:number,speed:number,base:number,
 function fireWeapon(w:BattleState,weapon:WeaponState,target:EnemyState,extra=false):void {
  const def=MODULE_BY_ID[weapon.id]!,origin=w.player,a=angleTo(origin,target);weapon.angle=a;weapon.x=origin.x;weapon.y=origin.y;
  if(!extra)weapon.shotCount++;
- let factor=1;if(weapon.supports.S11&&w.time-w.lastDash<=2&&!weapon.springUsed){factor=1+[.4,.55,.7][weapon.supports.S11-1]!;weapon.springUsed=true;}
+ let factor=1;if(weapon.supports.S11&&w.time-w.lastDash<=2&&!weapon.springUsed){factor=1+TIER_EFFECTS.springDamage[weapon.supports.S11-1]!;weapon.springUsed=true;}
  event(w,'fire',origin,{source:weapon.id,targetId:target.eid,angle:a,to:{x:target.x,y:target.y},radius:(def.range||100)*(1+support(weapon,'S11'))});
  if(weapon.id==='W04'){
   const maximum=Math.min(5,3+(target.wet>0?1:0)+(weapon.supports.S05?1:0)),seen:string[]=[];let current:EnemyState|undefined=target,previous:Point=origin;
@@ -484,7 +485,7 @@ function tickPlayer(w:BattleState,input:InputFrame,dt:number):void {
  p.dashCooldown=Math.max(0,p.dashCooldown-dt);p.overloadCooldown=Math.max(0,p.overloadCooldown-dt);p.dashTime=Math.max(0,p.dashTime-dt);p.overloadTime=Math.max(0,p.overloadTime-dt);p.invulnerable=Math.max(0,p.invulnerable-dt);
  if(input.target){const chosen=w.enemies.filter(alive).sort((a,b)=>distance(a,input.target!)-distance(b,input.target!))[0];if(chosen&&distance(chosen,input.target)<chosen.radius+55){w.priority=chosen.eid;w.priorityUntil=w.time+2;}}
  if(w.priorityUntil<=w.time||!w.enemies.some(e=>e.eid===w.priority&&alive(e)))w.priority=undefined;
- if(wasDashing&&p.dashTime===0&&w.utilities.U11&&w.time>=w.decoyAt){w.decoyAt=w.time+10;w.decoy={...w.dashOrigin,hp:utility(w,'U11'),until:w.time+[3,4,5][w.utilities.U11-1]!};event(w,'decoy',w.decoy);}
+ if(wasDashing&&p.dashTime===0&&w.utilities.U11&&w.time>=w.decoyAt){w.decoyAt=w.time+10;w.decoy={...w.dashOrigin,hp:TIER_EFFECTS.decoyHP[w.utilities.U11-1]!,until:w.time+utility(w,'U11')};event(w,'decoy',w.decoy);}
  if(w.decoy&&(w.decoy.until<=w.time||w.decoy.hp<=0))w.decoy=undefined;
  const length=Math.hypot(input.x,input.y),x=length>1?input.x/length:input.x,y=length>1?input.y/length:input.y;
  if(input.dash&&w.dashReleased&&p.dashCooldown<=0){w.dashAngle=length>.01?Math.atan2(y,x):p.angle;p.dashTime=.18;p.dashCooldown=w.dashBase;w.dashOrigin={x:p.x,y:p.y};w.lastDash=w.time;
@@ -495,7 +496,7 @@ function tickPlayer(w:BattleState,input:InputFrame,dt:number):void {
  else {const slow=w.slowUntil>w.time?w.slowAmount:0;if(length>.01)p.angle=Math.atan2(y,x);move(w,p,x*p.speed*(1-slow)*dt,y*p.speed*(1-slow)*dt);}
  w.playerVelocity={x:(p.x-previous.x)/dt,y:(p.y-previous.y)/dt};
  if(w.time-w.lastDamage>=4)p.shield=Math.min(p.maxShield,p.shield+w.shieldRegen*dt);
- if(w.utilities.U03&&w.time>=w.repairAt){w.repairAt+=10;const cap=[8,10,12][w.utilities.U03-1]!,heal=Math.max(0,Math.min(utility(w,'U03'),p.maxHp-p.hp,cap-w.repairAmount));p.hp+=heal;w.repairAmount+=heal;if(heal)event(w,'heal',p,{amount:heal,source:'U03'});}
+ if(w.utilities.U03&&w.time>=w.repairAt){w.repairAt+=10;const cap=TIER_EFFECTS.repairCap[w.utilities.U03-1]!,heal=Math.max(0,Math.min(utility(w,'U03'),p.maxHp-p.hp,cap-w.repairAmount));p.hp+=heal;w.repairAmount+=heal;if(heal)event(w,'heal',p,{amount:heal,source:'U03'});}
  const pickup=(w.chassis==='scavenger'?90:CONFIG.pickupBase)+utility(w,'U04');
  w.drops=w.drops.filter(drop=>{if(distance(drop,p)>pickup)return true;w.stats.goldEarned+=drop.value;event(w,'pickup',drop,{amount:drop.value,to:{x:p.x,y:p.y}});
   if(w.utilities.U04&&w.time>=w.pickupAt){p.dashCooldown=Math.max(0,p.dashCooldown-.2);w.pickupAt=w.time+1;}return false;});

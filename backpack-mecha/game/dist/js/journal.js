@@ -1,6 +1,6 @@
-import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=7c4d97a1694c";
-import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=7c4d97a1694c";
-import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=7c4d97a1694c";
+import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=4294331e0428";
+import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=4294331e0428";
+import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=4294331e0428";
 const EVENT_LIMIT = 400;
 export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
 const clone = (value) => structuredClone(value);
@@ -95,7 +95,7 @@ export function sanitizeJournal(value) {
     const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
     const wave = (v) => Number.isInteger(v) && Number(v) >= 1 && Number(v) <= 12;
     const ids = (v, known) => Array.isArray(v) && v.every(id => typeof id === 'string' && !!known[id]);
-    const items = (v) => Array.isArray(v) && v.length <= 20 && v.every(i => record(i) && typeof i.uid === 'string' && typeof i.id === 'string' && !!MODULE_BY_ID[i.id] && [1, 2, 3].includes(Number(i.tier)));
+    const items = (v) => Array.isArray(v) && v.length <= 20 && v.every(i => record(i) && typeof i.uid === 'string' && typeof i.id === 'string' && !!MODULE_BY_ID[i.id] && [1, 2, 3, 4].includes(Number(i.tier)));
     const stats = (v) => record(v) && ['kills', 'killedBudget', 'goldEarned', 'maxChain', 'damageTaken'].every(k => finite(v[k])) && record(v.damageByModule) && Object.values(v.damageByModule).every(finite) && record(v.damageTakenBy) && Object.values(v.damageTakenBy).every(finite);
     if (j.version !== 1 || typeof j.buildVersion !== 'string' || typeof j.rulesVersion !== 'string' ||
         !wave(j.startedAtWave) || typeof j.partial !== 'boolean' || !finite(j.nextSequence) || !finite(j.droppedEvents) ||

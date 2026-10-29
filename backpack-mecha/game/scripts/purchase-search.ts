@@ -1,6 +1,7 @@
 /** Bounded, visible-inventory search for probes. Never commits a hypothetical layout. */
 import * as e from '../src/economy.ts';
 import {MODULE_BY_ID} from '../src/content.ts';
+import {offerTier} from '../src/rarity.ts';
 import type {Item,Run} from '../src/types.ts';
 
 export type PurchaseAction =
@@ -83,13 +84,13 @@ function reachLayout(from:Run,target:Run):PurchaseAction[]|undefined {
 
 /** Keeps existing core parts, removes at most two others, and bounds expensive packing. */
 export function searchPurchase(run:Run,index:number,core:string[],score:(id:string)=>number,limit=48,packLimit=8):PurchaseSearch {
- const id=run.shop[index]?.id,m=MODULE_BY_ID[id],maximumSaleCash=run.gold+run.items.reduce((n,i)=>n+Math.floor(e.standardCost(i)*.5),0);
- const out:PurchaseSearch={status:'search-exhausted',constraints:[],attempts:0,packAttempts:0,limit,truncated:false,cash:run.gold,price:m?.price??0,maximumSaleCash};
+ const offer=run.shop[index],id=offer?.id,m=MODULE_BY_ID[id],price=m?e.offerPrice(offer):0,maximumSaleCash=run.gold+run.items.reduce((n,i)=>n+Math.floor(e.standardCost(i)*.5),0);
+ const out:PurchaseSearch={status:'search-exhausted',constraints:[],attempts:0,packAttempts:0,limit,truncated:false,cash:run.gold,price,maximumSaleCash};
  if(!m||run.phase!=='prep'||run.wave===1){out.status='unavailable';return out;}
  if(run.items.some(i=>i.id===id)){out.status='owned';return out;}
- if(run.gold<m.price)out.constraints.push('cash-before-sale');
+ if(run.gold<price)out.constraints.push('cash-before-sale');
  if(run.items.filter(i=>i.stored).length>=3)out.constraints.push('reserve-full');
- if(maximumSaleCash<m.price){out.status='insufficient-total-scrap';return out;}
+ if(maximumSaleCash<price){out.status='insufficient-total-scrap';return out;}
  const candidates=run.items.filter(i=>!core.includes(i.id)).sort((a,b)=>score(a.id)-score(b.id)||a.uid.localeCompare(b.uid));
  const removals:Item[][]=[[]];
  for(let i=0;i<candidates.length;i++){
@@ -103,9 +104,9 @@ export function searchPurchase(run:Run,index:number,core:string[],score:(id:stri
   const draft=ruleSnapshot(run),actions:PurchaseAction[]=[];
   let viable=true;
   for(const item of remove){const a:PurchaseAction={kind:'sell',uid:item.uid};if(!applyPurchaseAction(draft,a)){viable=false;break;}actions.push(a);}
-  if(!viable||draft.gold<m.price)continue;
+  if(!viable||draft.gold<price)continue;
   // Preview the desired inventory before doing geometric work. This draft is never committed.
-  const desired=ruleSnapshot(draft),candidate:Item={uid:`i${draft.nextUid}`,id,tier:1,x:0,y:0,rotation:0,stored:false};
+  const desired=ruleSnapshot(draft),candidate:Item={uid:`i${draft.nextUid}`,id,tier:offerTier(offer),x:0,y:0,rotation:0,stored:false};
   desired.items.push(candidate);
   const constraints=inventoryConstraints(desired);
   if(!remove.length)out.constraints.push(...constraints);
