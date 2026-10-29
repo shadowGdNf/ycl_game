@@ -1,0 +1,1065 @@
+{
+  "checkedAt": "2026-10-29T04:41:34.223Z",
+  "buildVersion": "0.2.0-dev.6",
+  "rulesVersion": "0.1.1",
+  "scope": "Combat feedback increment; full dev.6 acceptance is still pending",
+  "checks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 104,
+      "failed": 0,
+      "newRegressionCases": 10
+    },
+    "build": "passed",
+    "bundle": {
+      "checkedAt": "2026-10-29T04:37:37.720Z",
+      "files": 30,
+      "bytes": 9702482,
+      "mib": 9.25,
+      "spriteRegions": 86,
+      "counts": {
+        "modules": 36,
+        "chassis": 4,
+        "enemies": 12,
+        "bosses": 6,
+        "protocols": 9,
+        "events": 8,
+        "waves": 12,
+        "demoIds": 24
+      },
+      "status": "passed",
+      "note": "Static existence/content checks only; not a physical device performance result."
+    },
+    "natural": {
+      "runs": 60,
+      "wins": 60,
+      "resumeChecks": 720,
+      "sourceHashesVerified": true,
+      "comparisonBaseline": "natural-probe-dev4-legacy.json",
+      "matchesByField": {
+        "status": 60,
+        "wave": 60,
+        "battleSeconds": 60,
+        "items": 60,
+        "attainedAtWaves": 60,
+        "stats": 4
+      },
+      "damageChangedRuns": 56,
+      "comparison": [
+        {
+          "family": "wet",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 25.6021409455843,
+          "damageTakenDelta": 25.6021409455843
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 34.63790446841294,
+          "damageTakenDelta": 34.63790446841294
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 91.05668640012975,
+          "damageTakenDelta": 91.05668640012975
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 6,
+          "damageTakenAfter": 42.8421052631579,
+          "damageTakenDelta": 36.8421052631579
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 25.6021409455843,
+          "damageTakenDelta": 25.6021409455843
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 11.864406779661017,
+          "damageTakenDelta": 11.864406779661017
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 5.2631578947368425,
+          "damageTakenDelta": 5.2631578947368425
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 12.272727272727273,
+          "damageTakenAfter": 62.23444976076555,
+          "damageTakenDelta": 49.961722488038276
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 42.10526315789474,
+          "damageTakenAfter": 57.89473684210527,
+          "damageTakenDelta": 15.789473684210527
+        },
+        {
+          "family": "wet",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 20.338983050847457,
+          "damageTakenDelta": 20.338983050847457
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 21.626794258373206,
+          "damageTakenDelta": 21.626794258373206
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 40.092449922958394,
+          "damageTakenDelta": 40.092449922958394
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 68,
+          "damageTakenDelta": 68
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 27,
+          "damageTakenAfter": 100,
+          "damageTakenDelta": 73
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 36.949152542372886,
+          "damageTakenAfter": 78.57594680074608,
+          "damageTakenDelta": 41.626794258373195
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 14,
+          "damageTakenDelta": 14
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 20,
+          "damageTakenAfter": 77.99043062200957,
+          "damageTakenDelta": 57.99043062200957
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 8.474576271186441,
+          "damageTakenAfter": 13.737734165923284,
+          "damageTakenDelta": 5.2631578947368425
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 11.440677966101696,
+          "damageTakenAfter": 27.80431432973806,
+          "damageTakenDelta": 16.363636363636363
+        },
+        {
+          "family": "oil",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 28,
+          "damageTakenDelta": 28
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 52.631578947368425,
+          "damageTakenDelta": 52.631578947368425
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 23.728813559322035,
+          "damageTakenDelta": 23.728813559322035
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 7.894736842105263,
+          "damageTakenAfter": 114.02724839834562,
+          "damageTakenDelta": 106.13251155624036
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 16.526315789473685,
+          "damageTakenAfter": 83.19298245614036,
+          "damageTakenDelta": 66.66666666666667
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 16.363636363636363,
+          "damageTakenAfter": 84.64520314654125,
+          "damageTakenDelta": 68.28156678290489
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 22.390722569134702,
+          "damageTakenAfter": 38.75435893277107,
+          "damageTakenDelta": 16.363636363636367
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 10.526315789473685,
+          "damageTakenAfter": 75.98086124401914,
+          "damageTakenDelta": 65.45454545454545
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 27.966101694915253,
+          "damageTakenAfter": 68.64406779661016,
+          "damageTakenDelta": 40.677966101694906
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 64.30622009569379,
+          "damageTakenDelta": 64.30622009569379
+        },
+        {
+          "family": "ballistic",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 10.169491525423728,
+          "damageTakenAfter": 30.508474576271183,
+          "damageTakenDelta": 20.338983050847453
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves",
+            "stats"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 0,
+          "damageTakenDelta": 0
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 14,
+          "damageTakenDelta": 14
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 20,
+          "damageTakenAfter": 36.36363636363636,
+          "damageTakenDelta": 16.36363636363636
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 11.864406779661017,
+          "damageTakenDelta": 11.864406779661017
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 40,
+          "damageTakenAfter": 56.36363636363636,
+          "damageTakenDelta": 16.36363636363636
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 40,
+          "damageTakenAfter": 68.99197145405887,
+          "damageTakenDelta": 28.99197145405887
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 32.72727272727273,
+          "damageTakenDelta": 32.72727272727273
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves",
+            "stats"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 0,
+          "damageTakenDelta": 0
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 26.88995215311005,
+          "damageTakenAfter": 59.61722488038278,
+          "damageTakenDelta": 32.727272727272734
+        },
+        {
+          "family": "fortress",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves",
+            "stats"
+          ],
+          "damageTakenBefore": 20,
+          "damageTakenAfter": 20,
+          "damageTakenDelta": 0
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 36.12845673505798,
+          "damageTakenDelta": 36.12845673505798
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 7.894736842105263,
+          "damageTakenAfter": 51.96253345227475,
+          "damageTakenDelta": 44.06779661016949
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 5.2631578947368425,
+          "damageTakenDelta": 5.2631578947368425
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 11.864406779661017,
+          "damageTakenAfter": 64.40677966101694,
+          "damageTakenDelta": 52.542372881355924
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 11.25,
+          "damageTakenAfter": 83.25,
+          "damageTakenDelta": 72
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 56.45608628659476,
+          "damageTakenDelta": 56.45608628659476
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 5.2631578947368425,
+          "damageTakenDelta": 5.2631578947368425
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 10.526315789473685,
+          "damageTakenAfter": 46.654772524531666,
+          "damageTakenDelta": 36.12845673505798
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 10.526315789473685,
+          "damageTakenAfter": 26.315789473684212,
+          "damageTakenDelta": 15.789473684210527
+        },
+        {
+          "family": "drone",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 21.05263157894737,
+          "damageTakenAfter": 36.8421052631579,
+          "damageTakenDelta": 15.789473684210527
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-01",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 10.526315789473685,
+          "damageTakenDelta": 10.526315789473685
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-02",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 11.864406779661017,
+          "damageTakenDelta": 11.864406779661017
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-03",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 16.363636363636363,
+          "damageTakenAfter": 70.14354066985646,
+          "damageTakenDelta": 53.779904306220104
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-04",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 28,
+          "damageTakenDelta": 28
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-05",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 53.7799043062201,
+          "damageTakenDelta": 53.7799043062201
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-06",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 54.36363636363636,
+          "damageTakenDelta": 54.36363636363636
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-07",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 58.4688995215311,
+          "damageTakenDelta": 58.4688995215311
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-08",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 72.25691347011596,
+          "damageTakenDelta": 72.25691347011596
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-09",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves"
+          ],
+          "damageTakenBefore": 0,
+          "damageTakenAfter": 90.48252372070392,
+          "damageTakenDelta": 90.48252372070392
+        },
+        {
+          "family": "frost",
+          "seed": "natural-v02-10",
+          "matchingFields": [
+            "status",
+            "wave",
+            "battleSeconds",
+            "items",
+            "attainedAtWaves",
+            "stats"
+          ],
+          "damageTakenBefore": 10.169491525423728,
+          "damageTakenAfter": 10.169491525423728,
+          "damageTakenDelta": 0
+        }
+      ]
+    },
+    "browser": {
+      "independentChrome": {
+        "reportedVersion": "155.0.0.0 (user agent)",
+        "system": "macOS 26.6.2",
+        "origin": "http://localhost:4198/game/",
+        "seed": "FIRST-LIGHT",
+        "note": "First-run tutorial overrides the home seed with FIRST-LIGHT.",
+        "actions": [
+          "Normal launch and tutorial",
+          "Keyboard W/D, dash, pause",
+          "Save and return home",
+          "Reload and resume",
+          "Complete wave 1 normally",
+          "Enter wave 2 preparation",
+          "Export battle report"
+        ],
+        "end": {
+          "won": true,
+          "hp": 100,
+          "shield": 6,
+          "gold": 77.6,
+          "income": 37.6,
+          "seconds": 40,
+          "stats": {
+            "damageByModule": {
+              "W01": 342
+            },
+            "damageTakenBy": {
+              "E02": 6,
+              "E01": 8
+            },
+            "kills": 24,
+            "killedBudget": 24,
+            "goldEarned": 9.600000000000001,
+            "maxChain": 0,
+            "damageTaken": 14
+          }
+        },
+        "fullTwelveWaves": false,
+        "audio": "Browser showed playback; routing tested in unit tests; human listening quality not evaluated"
+      },
+      "inApp": {
+        "scenes": [
+          "crane",
+          "sweep",
+          "ballistic",
+          "element",
+          "flame",
+          "melee",
+          "dense"
+        ],
+        "reducedMotionAndColorAssist": "sweep checked",
+        "consoleErrors": 0,
+        "sweepComparison": {
+          "time": 1.5,
+          "initial": {
+            "hp": 100,
+            "shield": 5
+          },
+          "before": {
+            "hp": 100,
+            "shield": 5,
+            "damageTaken": 0
+          },
+          "after": {
+            "hp": 87,
+            "shield": 0,
+            "damageTaken": 18
+          }
+        }
+      }
+    },
+    "densePerformance": {
+      "build": "0.2.0-dev.6",
+      "rules": "0.1.1",
+      "scene": "dense",
+      "recordedAt": "2026-10-29T04:38:09.666Z",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "dpr": 2,
+      "viewport": [
+        712,
+        774
+      ],
+      "canvas": [
+        1424,
+        1190
+      ],
+      "reducedMotion": false,
+      "foreground": true,
+      "warmupMs": 1000,
+      "durationMs": 10010.100000047683,
+      "battleSeconds": 11.000000000000126,
+      "battleStatus": "playing",
+      "remainingEnemies": 37,
+      "playerMaxHp": 10000,
+      "interval": {
+        "samples": 600,
+        "p50": 16.699999999999818,
+        "p95": 17.5,
+        "max": 33.299999999999955,
+        "over50Pct": 0
+      },
+      "render": {
+        "samples": 600,
+        "p50": 1.199999988079071,
+        "p95": 1.699999988079071,
+        "max": 33.299999952316284,
+        "over50Pct": 0
+      }
+    },
+    "excludedPerformance": {
+      "file": "dev6-feedback-dense-performance-attempt1.json",
+      "reason": "Player died at 3.53s; stationary terminal rendering contaminates the 10s window."
+    }
+  },
+  "limitations": [
+    "Machine policies are not human win rates.",
+    "40-enemy performance fixture explicitly grants 10000 HP and equipment; not a natural run.",
+    "Local browser windows are not phone or sustained 20-minute performance.",
+    "No full twelve-wave browser, Safari, physical-phone or human playtest claim.",
+    "Area damage now checks every tick; old saves continue under corrected rules, not frozen buggy rules."
+  ],
+  "sourceHashes": {
+    ".gitignore": "e6ae5e522716d42c9ab742c64745b78281e3fc3eaf616f14cd2ee7ecc111fd00",
+    "package.json": "a5d318c525cf2ded95e67f3ee7a8d6d4b30eea9ad7fb1e2ed4f42fb8d120ab34",
+    "package-lock.json": "1d16d9d6e9a208099dde7aae2fe65a31913fd0b363dd6c050e4a50fc82dda202",
+    "src/app.ts": "9d94a77a57a3a3447f3b1b822cd0f7859426056c52d11b58458f16b45c1ce091",
+    "src/art.ts": "3c9090d96d69054dadbe6036bc8c1d2b7c0ba06b6a5485716fb69f0dd3cec63c",
+    "src/audio.ts": "d0c7c1951cf2e70fcc140119ba038b5ef8bdc01c6728c0393c508082e6c1ec49",
+    "src/combat.ts": "d29426e13f59006b5a8050e4fdd7dcd826a255069daa299b2050788ac8563243",
+    "src/content.ts": "dc31f0cbef17e4039df64961ce974d455ac8f6df5d4ea9251c24f740fcf1c2d8",
+    "src/economy.ts": "4d85b137cd388854de2e31b9d8ad023a6e1c0466d1562473e3c4b3ddccbf46f3",
+    "src/encounters.ts": "e98eb1997265066440a09934c0b3596a08fc53f455028f83ed71187a3bfe22bb",
+    "src/feedback.ts": "793330573f1ef15f713206b9685925025f4919fd898458de2fe793e3128f5ad1",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/journal.ts": "0e56d8ec5d3561b08ea5e7f261da9d57e5c3b2025a9021f0c76f16c4df4e07fd",
+    "src/motion-renderer.ts": "d4bf3396d97a98d557381719293d5e78d89432ed9af599d9efc9d03c02805a80",
+    "src/motion.ts": "5bf7da185885710c703b512af78be644e49b3b1506662d875e8b6eb8fa25d70b",
+    "src/performance.ts": "d51e16793055fd05e59ed9963480a1ab96ab63080794972df300d7b5ff1fed8a",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/renderer.ts": "6d57b0771ec1f374d53fd611fd76cfdba495d422fe4ff9f3b6fc642b6c3a08a8",
+    "src/storage.ts": "5733f0647760dea35fdfabe53fdd07874cc8e3f8fe8a5e7a798aed880849f519",
+    "src/types.ts": "a7ab61396f834dace1062336f8b36a3152b017599cf45df8cf92d49883cb0cb4",
+    "src/version.ts": "b212bdb003f5327436c49c0194b80c23b82b7f481ef582849afd192bd6cdb082",
+    "src/visual-motion.ts": "f61b463709d6ef088ab815ec38becec79eae4465a6f2455319cb31cb098c6c21",
+    "src/workshop.ts": "c77cfe751cfdf9cdfc2bec378ea35e06435f2f315816d334bbee76e50ec19fb3",
+    "tests/combat-feedback.test.ts": "99488c7877d1d2934fe419b9249fda10869c3f794ce88fa0cf45e693ca596bd9",
+    "scripts/feedback-preview.html": "19c430c5033ec6c4f903ad879f70245b8afae1e87733ed3294df8d475a32a7b9",
+    "scripts/serve-feedback.mjs": "4eb039a8e4a2b8b34588edad03a526f750436da21fa66e50b43784bbb90a68e4",
+    "scripts/dev6-feedback-evidence.mjs": "832640a66061b4b3fb62ff99e4c53d780eea72a28d292707b7df6cd8cfd85c69",
+    "docs/DEV6-COMBAT-FEEDBACK.md": "561da00baf48f74295e5dde1b565af516fbe9cdb361caeff2075de764a411cf5"
+  },
+  "evidenceHashes": {
+    "dev6-feedback-tests.txt": "b4d871fab8762f44d47d90602a65cbbc0d0a89cb87fa46a9f7de40a2b6bdf4b4",
+    "dev6-feedback-natural.json": "aff1868ff5ae9c8fff00a46ec6d3f60c8d2b87c4b563361078861de0d9369e6e",
+    "dev6-feedback-natural-runs.json.gz": "98c0dd68732413ea6d499510c67bbafc04545946a006164fd02c163a3f2840b2",
+    "dev6-feedback-chrome-first-light.json": "ccfe72ebf417f2920236bd6f35595e954ea0fd6515b1bde70fa674e8ff63a256",
+    "dev6-feedback-dense-performance.json": "26ca1c1d18f46f896d5047d5cd162d8ec877f94c68fca9cacb9e11cf6fac79e9",
+    "dev6-feedback-dense-performance-wide.json": "c5939e5152b8d7563409b0b3e63684fb2b66563528a08991ceaf44096a32be1d",
+    "dev6-feedback-dense-performance-attempt1.json": "b4dec4945ca575ec34d65333fa7a1b83c40d1a2ae3e887b2d95e5d1fb4d87328",
+    "dev6-crane-before.png": "f728c3f68fbecefd97239a9bb44ecd0106fc95712530a98a20ed7a053ef56cdf",
+    "dev6-crane-hit.png": "3a695651eb30b2f84365ccb7bc3e3d5199452b78c01e2d2b12ce6ba6ce943afd",
+    "dev6-weapon-feedback.png": "54637026865ab03539c7ebaeb3a65899d83b4b0fc43fbc97484040141269dcaf"
+  },
+  "deployment": {
+    "committed": false,
+    "pushed": false,
+    "onlineUpdated": false
+  },
+  "releaseManifest": "../releases/release-manifest-v0.2.0-dev.6.json"
+}

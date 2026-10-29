@@ -1,6 +1,9 @@
 node_modules/
 # dist/ is tracked for GitHub Pages, matching target/xinqicheng/dist/.
 qa/*.png
+!qa/dev6-crane-before.png
+!qa/dev6-crane-hit.png
+!qa/dev6-weapon-feedback.png
 qa/*.jpg
 *.tar.gz
 .DS_Store

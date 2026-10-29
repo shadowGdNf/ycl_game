@@ -52,7 +52,8 @@ export function motionFrame(view) {
     const out = new Map();
     for (const e of view.enemies) {
         const own = byOwner.get(e.eid) ?? (e.group ? byOwner.get(groups.get(e.group)) : undefined) ?? [];
-        const priority = (z) => (z.active ? 10 : 0) + (z.plan?.effect === 'charge' ? 3 : 0) + (1 - z.remaining / Math.max(.001, z.duration));
+        // The crane's final slam must anticipate over the still-running pull field.
+        const priority = (z) => (z.active ? 10 : 0) + (!z.active && (z.damage ?? 0) > 0 && z.remaining < .55 ? 12 : 0) + (z.plan?.effect === 'charge' ? 3 : 0) + (1 - z.remaining / Math.max(.001, z.duration));
         let zone;
         for (const z of own)
             if (!zone || priority(z) > priority(zone))

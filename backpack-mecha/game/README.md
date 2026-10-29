@@ -6,11 +6,11 @@
 
 本目录由 `ycl_game` 主仓库统一管理，不再使用嵌套的独立 Git 仓库。请在仓库根目录查看和提交变更。
 
-当前工作版本为 **v0.2.0-dev.5**：新增多输入模型的自然成长对照、事件和风险路线覆盖，战报保存有界原始帧时间并导出精确窗口 p95；修复触屏指针捕获丢失与页面恢复时的输入残留。沿用 A 方案素材及 `0.1.0` 战斗/经济规则。见 [dev.5 开发与验证](docs/DEV5-STABILITY.md)、[dev.4 动作](docs/DEV4-MOTION.md)和 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准。
+当前工作版本为 **v0.2.0-dev.6**，已完成战斗反馈首批修复：起重机摆锤逐帧接触判定、机械臂与砸地动作、双向命中反馈、十二种武器特效和移动/转向/后坐力平滑。规则版本为 `0.1.1`；修复伤害判定，武器数值、Boss 生命和经济价格未改。见 [dev.6 战斗反馈记录](docs/DEV6-COMBAT-FEEDBACK.md)及 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准，本批尚未部署。
 
 dev.4 基线提交为 `97cf0d3`（`feat: dev.4`）；dev.5 的实施与交付记录见上述文档，当前暂存/提交状态以 Git 为准。独立 Chrome 十二场完整远征、Safari 和真机持续运行仍待验收，机器模拟、内置浏览器和手机视口不能替代这些记录。
 
-下一阶段为 [dev.6 开发计划](docs/DEV6-PLAN.md)：补齐完整网页流程、四个事件分支、输入独立对照与 Android 持续验证，再进行小规模试玩和候选版准备。计划已制定，当前代码版本仍为 dev.5；iPhone 按既有决定保留待测。
+[dev.6 开发计划](docs/DEV6-PLAN.md)中的完整网页流程、四个事件分支、输入独立对照、Android 持续验证和真人试玩继续跟踪；本次战斗反馈修复不等于整版验收完成。iPhone 按既有决定保留待测。
 
 ## 本地启动
 
@@ -71,7 +71,7 @@ IndexedDB 数据库 `backpack-mecha-v1`，单一续局槽。交易与阶段变�
 
 不同浏览器、端口和部署域名拥有独立存档。保存失败时页面显示提示，当前内存游戏仍可继续；隐私模式和浏览器清理可能导致数据丢失。损坏的战斗快照退回当前战前装配，版本不兼容的整局会放弃并保留可识别的永久进度。结算页可导出本局战斗/购买记录 JSON，此记录不是可导入存档。
 
-v0.2 沿用原存档格式与数据库，兼容 v0.1 续局。新增战报独立校验，旧存档和损坏的战报不会导致有效游戏进度被删除。休整和结算都可以导出本局战报，包含最多 400 条操作/供货记录、逐场装配与战损、可见休整时间和浏览器帧间隔统计；全部留在本地，不自动上传。撤销交易会回滚经济状态，同时保留战报中的操作历史。战报不是输入回放或可导入存档。
+v0.2 沿用原存档格式与数据库，兼容 v0.1 续局。dev.6 恢复旧局后采用 `0.1.1` 的修正区域伤害判定，不锁定旧漏洞；新事件字段可缺省。新增战报独立校验，旧存档和损坏的战报不会导致有效游戏进度被删除。休整和结算都可以导出本局战报，包含最多 400 条操作/供货记录、逐场装配与战损、可见休整时间和浏览器帧间隔统计；全部留在本地，不自动上传。撤销交易会回滚经济状态，同时保留战报中的操作历史。战报不是输入回放或可导入存档。
 
 dev.5 战报额外保留每场最近 3,600 个前台战斗帧间隔和渲染耗时，导出最近窗口的 p50/p95、最长停顿和超过 50ms 比例。暂停、后台和刷新间隔不采样；构建、视口、画布或显示设置变化后重新开始窗口。整场分桶统计继续保留，窗口 p95 不能称为整场精确 p95。原始记录留在本地，旧续局仍兼容。
 
@@ -80,7 +80,7 @@ dev.5 战报额外保留每场最近 3,600 个前台战斗帧间隔和渲染耗�
 - `src/types.ts`：公共内容、装配、只读场景和事件接口。
 - `src/combat.ts` / `src/encounters.ts`：60 Hz规则、伤害状态、敌人、Boss、导航与刷怪。
 - `src/economy.ts`：装配合法性、交易原子性、路线、事件和结算。
-- `src/renderer.ts` / `src/art.ts` / `src/motion.ts` / `src/motion-renderer.ts`：图集、动作状态、分层部件与特效；只消费规则数据。
+- `src/renderer.ts` / `src/art.ts` / `src/motion.ts` / `src/motion-renderer.ts` / `src/feedback.ts` / `src/visual-motion.ts`：图集、动作状态、分层部件与特效；只消费规则数据。
 - `src/app.ts` / `styles.css`：流程、键鼠/触屏、中文/英文、界面。
 - `src/storage.ts` / `src/input.ts` / `src/audio.ts`：存档、技能输入、Web Audio 合成音效/音乐。
 - `src/journal.ts` / `src/version.ts`：有容量上限的本地战报、运行版本与规则版本。
@@ -102,6 +102,7 @@ npm run probe:natural -- --policy=expanded --diagnostics=1 # 扩展购买搜索�
 npm run compare:growth # 对照历史基线，重放购买方案，生成诊断摘要
 npm run probe:expeditions # dev.5 三输入模型、60组基线和12组扩展场景，共216局
 npm run probe:expeditions -- --suite=calibration --seeds=1 --output=dev5-expeditions-smoke.json
+node scripts/serve-feedback.mjs # 开发专用反馈场景，localhost:4198；不写存档
 python3 scripts/art-check.py  # 需要Pillow；检查图集和采样区域
 node scripts/check-bundle.mjs # 生产资源引用、内容数量与包体检查
 ```

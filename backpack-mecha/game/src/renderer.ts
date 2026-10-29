@@ -3,10 +3,13 @@ import {motionFrame,zoneRole,zoneVisible,chargeContactRadius} from './motion.ts'
 import type {EnemyMotion} from './motion.ts';
 import {enemyBody,enemyControl,enemyMotionLabel,zonePath,zoneSymbols} from './motion-renderer.ts';
 import {CHASSIS_BY_ID,MODULE_BY_ID} from './content.ts';
+import {drawCombatEffect,drawProjectile,drawHazardEnergy,effectLife} from './feedback.ts';
+import {locomotion,easeOut} from './visual-motion.ts';
+import type {Locomotion} from './visual-motion.ts';
 import type {BattleView,CombatEvent,EnemyView,Lang,Point,WeaponView,ZoneView} from './types.ts';
 
 type Options={lang:Lang;reducedMotion:boolean;colorAssist:boolean;target?:Point};
-type Effect={event:CombatEvent;born:number;life:number;end?:Point};
+type Effect={event:CombatEvent;born:number;life:number;end?:Point;label?:number;labelBorn?:number};
 type LegPose={x:number;y:number;angle:number};
 type WalkPose={left:LegPose;right:LegPose;rise:number;lean:number};
 const pose=(lx:number,ly:number,la:number,rx:number,ry:number,ra:number,rise:number,lean:number):WalkPose=>({left:{x:lx,y:ly,angle:la},right:{x:rx,y:ry,angle:ra},rise,lean});
@@ -69,6 +72,11 @@ export class Renderer {
   private lastPlayer:Point|null=null;
   private movement=0;
   private lastFacing=0;
+  private previousFacing=0;
+  private facingBlend=1;
+  private playerGait:Locomotion|undefined;
+  private enemyGaits=new Map<number,Locomotion>();
+  private attackBlend=new Map<number,number>();
   private effects:Effect[]=[];
   private seenEvents=new Set<number>();
   private shotTimes=new Map<string,{count:number;at:number}>();
@@ -101,17 +109,23 @@ export class Renderer {
     const vw=this.cssWidth/this.scale,vh=this.cssHeight/this.scale;
     this.camera.x=vw>=state.width?(state.width-vw)/2:clamp(state.player.x-vw/2,0,state.width-vw);
     this.camera.y=vh>=state.height?(state.height-vh)/2:clamp(state.player.y-vh/2,0,state.height-vh);
-    if(state.time<this.lastTime||this.lastTime<0){this.effects=[];this.seenEvents.clear();this.shotTimes.clear();this.lastPlayer=null;this.deathVisualStart=null;}
+    if(state.time<this.lastTime||this.lastTime<0){this.effects=[];this.seenEvents.clear();this.shotTimes.clear();this.lastPlayer=null;this.deathVisualStart=null;this.playerGait=undefined;this.enemyGaits.clear();this.attackBlend.clear();this.movement=0;this.facingBlend=1;}
     if(state.status==='lost'&&state.player.hp<=0){if(this.deathVisualStart===null)this.deathVisualStart=performance.now();}else this.deathVisualStart=null;
     const dt=clamp(state.time-this.lastTime,0,.1);this.lastTime=state.time;
     if(this.lastPlayer){
       const dx=state.player.x-this.lastPlayer.x,dy=state.player.y-this.lastPlayer.y;
-      this.movement=Math.hypot(dx,dy)>.15?Math.min(1,this.movement+dt*8):Math.max(0,this.movement-dt*8);
-      if(Math.hypot(dx,dy)>.15)this.lastFacing=facing(Math.atan2(dy,dx));
+      if(Math.hypot(dx,dy)>.15){const next=facing(Math.atan2(dy,dx));if(next!==this.lastFacing){this.previousFacing=this.lastFacing;this.lastFacing=next;this.facingBlend=0;}}
     }
+    this.playerGait=locomotion(this.playerGait,state.player,dt);this.movement=this.playerGait.amount;this.facingBlend=Math.min(1,this.facingBlend+dt/.12);
+    for(const e of state.enemies)this.enemyGaits.set(e.eid,locomotion(this.enemyGaits.get(e.eid),e,dt));
+    const aliveIds=new Set(state.enemies.map(e=>e.eid));for(const id of this.enemyGaits.keys())if(!aliveIds.has(id)){this.enemyGaits.delete(id);this.attackBlend.delete(id);}
     this.lastPlayer={x:state.player.x,y:state.player.y};
     for(const w of state.weapons){const old=this.shotTimes.get(w.uid);if(!old||old.count!==w.shotCount)this.shotTimes.set(w.uid,{count:w.shotCount,at:state.time});}
     this.captureEvents(state);
+    if(!options.reducedMotion){
+      const hit=state.events.filter(e=>(e.type==='player-hit'||e.type==='shield-break')&&state.time-e.at>=0&&state.time-e.at<.18).at(-1);
+      if(hit){const age=state.time-hit.at,power=(1-age/.18)*(hit.type==='shield-break'?4:2.8);this.camera.x-=Math.sin(age*95)*power;this.camera.y-=Math.cos(age*73)*power*.65;}
+    }
     ctx.fillStyle='#101b24';ctx.fillRect(0,0,this.cssWidth,this.cssHeight);
     ctx.save();ctx.scale(this.scale,this.scale);ctx.translate(-this.camera.x,-this.camera.y);
     this.floor(state);
@@ -120,28 +134,15 @@ export class Renderer {
     for(const drop of state.drops)this.drop(drop.x,drop.y,state.time,drop.id);
     const entities=state.enemies.filter(e=>(e as EnemyView&{exposed?:boolean}).exposed!==false&&e.hp>0).sort((a,b)=>a.y-b.y||a.eid-b.eid);
     const motions=motionFrame(state);
+    for(const [id,m] of motions){const goal=m.control?0:m.stage==='windup'?m.progress:m.stage==='active'?1:0;const before=this.attackBlend.get(id)??goal;
+      m.intensity=before+(goal-before)*(1-Math.exp(-dt*18));this.attackBlend.set(id,m.intensity);}
     let playerDrawn=false;
     for(const enemy of entities){
       if(!playerDrawn&&enemy.y>state.player.y){this.player(state);playerDrawn=true;}
       this.enemy(enemy,state.time,motions.get(enemy.eid)!);
     }
     if(!playerDrawn)this.player(state);
-    for(const bullet of state.bullets){
-      const angle=Math.atan2(bullet.vy,bullet.vx),speed=Math.hypot(bullet.vx,bullet.vy);
-      ctx.save();ctx.translate(bullet.x,bullet.y);ctx.rotate(angle);
-      const enemy=bullet.owner==='enemy';ctx.strokeStyle=enemy?'#ffcf9f':bullet.color;ctx.fillStyle=enemy?'#f05b5b':bullet.color;
-      ctx.lineWidth=enemy?2.5:2;
-      ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(-Math.min(22,speed*.025),0);ctx.lineTo(0,0);ctx.stroke();ctx.globalAlpha=1;
-      if(bullet.weapon==='W12'){
-        ctx.beginPath();ctx.moveTo(8,0);ctx.lineTo(-2,-4);ctx.lineTo(-5,0);ctx.lineTo(-2,4);ctx.closePath();ctx.fill();
-      }else if(bullet.weapon==='W10'){
-        ctx.fillStyle='#ffe7ae';rounded(ctx,-7,-3,15,6,2);ctx.fill();ctx.fillStyle='#f39443';ctx.fillRect(-12,-2,5,4);
-      }else{
-        ctx.beginPath();ctx.ellipse(0,0,Math.max(enemy?5:4,bullet.radius*1.3),Math.max(enemy?4:2.5,bullet.radius),0,0,TAU);ctx.fill();
-        ctx.fillStyle='#fff5d6';ctx.beginPath();ctx.arc(0,0,enemy?2:1.5,0,TAU);ctx.fill();
-      }
-      ctx.restore();
-    }
+    for(const bullet of state.bullets)drawProjectile(ctx,bullet,state.time,options.reducedMotion);
     this.drawEffects(state.time);
     this.playerFeedback(state);
     // Warning geometry is authoritative and always above friendly effects.
@@ -152,6 +153,7 @@ export class Renderer {
     if(options.target)this.target(options.target,state.time);
     this.edgeWarnings(state,vw,vh);
     ctx.restore();ctx.restore();
+    this.screenFeedback(state);
     this.hud(state);
   }
   private floor(state:BattleView):void{
@@ -184,12 +186,12 @@ export class Renderer {
     fade.addColorStop(1,'rgba(4,10,15,0)');
     c.fillStyle=fade;c.fillRect(-1,-1,2,2);c.restore();
   }
-  private mech(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,size:number,time:number,dir:number,moving:number,dashing=false):void{
+  private mech(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,size:number,time:number,dir:number,moving:number,dashing=false,gaitTime=time):void{
     if(!CHASSIS.includes(id))id='scavenger';
     const unit=size/64;
-    const walk=walkPose(dir,time),amount=this.options.reducedMotion||dashing?0:clamp(moving,0,1);
+    const walk=walkPose(dir,gaitTime),amount=this.options.reducedMotion||dashing?0:clamp(moving,0,1);
     const bob=this.options.reducedMotion?0:(walk.rise*amount+Math.sin(time*2)*.4)*unit;
-    const lean=this.options.reducedMotion?0:(dashing?.13:walk.lean*amount);
+    const lean=this.options.reducedMotion?0:(dashing?.10:walk.lean*amount);
     ctx.save();ctx.translate(x,y);ctx.rotate(lean);
     this.art.draw(ctx,`${id}.backpack`,0,-14*unit,39*unit,39*unit,0,.96);
     // Split the existing leg-pair sprite at its waist center in the renderer.
@@ -221,9 +223,14 @@ export class Renderer {
       ctx.strokeStyle=p.invulnerable>0?'#c1fff4':'rgba(72,209,196,.42)';ctx.lineWidth=p.invulnerable>0?3:1.5;
       ctx.beginPath();ctx.ellipse(p.x,p.y-3,34,39,0,0,TAU);ctx.stroke();
     }
-    const guns=state.weapons.slice(0,3).sort((a,b)=>a.uid.localeCompare(b.uid));
+    // Preserve combat order so drone muzzle positions match their drawn orbit.
+    const guns=state.weapons.slice(0,3);
     for(let i=0;i<guns.length;i++)if(Math.sin(guns[i].angle)<0)this.weapon(guns[i],i,p,t);
-    this.mech(ctx,state.chassis,p.x,p.y,64,t,this.lastFacing,this.movement,p.dashTime>0);
+    const gaitTime=(this.playerGait?.stride??0)*.48,blend=this.options.reducedMotion?1:easeOut(this.facingBlend);
+    if(blend<1){ctx.save();ctx.globalAlpha=1-blend;this.mech(ctx,state.chassis,p.x,p.y,64,t,this.previousFacing,this.movement,p.dashTime>0,gaitTime);ctx.restore();}
+    ctx.save();ctx.globalAlpha=blend;this.mech(ctx,state.chassis,p.x,p.y,64,t,this.lastFacing,this.movement,p.dashTime>0,gaitTime);ctx.restore();
+    const hurt=state.events.filter(e=>e.type==='player-hit'&&t-e.at>=0&&t-e.at<.15).at(-1);
+    if(hurt&&!this.options.reducedMotion)this.art.flash(ctx,`${state.chassis}.body.${this.lastFacing}`,p.x,p.y-9,53,50,(1-(t-hurt.at)/.15)*.65,(hurt.hullDamage??1)>0?'#ffe1c4':'#b7fff4');
     for(let i=0;i<guns.length;i++)if(Math.sin(guns[i].angle)>=0)this.weapon(guns[i],i,p,t);
     if(p.overloadTime>0){
       ctx.save();ctx.strokeStyle='#f8c16c';ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.lineDashOffset=-t*18;ctx.beginPath();ctx.arc(p.x,p.y,44,0,TAU);ctx.stroke();ctx.restore();
@@ -235,7 +242,7 @@ export class Renderer {
   private weapon(w:WeaponView,index:number,p:Point,time:number):void{
     const ctx=this.ctx;const mounts=[{x:-21,y:0},{x:21,y:0},{x:0,y:-29}];const m=mounts[index];
     const shot=this.shotTimes.get(w.uid),age=shot?time-shot.at:99;
-    const recoil=this.options.reducedMotion?0:age<.13?Math.sin(age/.13*Math.PI)*4:0;
+    const recoil=this.options.reducedMotion||!w.shotCount||age<0||age>.22?0:(1-easeOut(age/.22))*(w.id==='W07'||w.id==='W08'?7:4);
     let angle=w.angle;
     if(w.id==='W08'&&age<.3)angle+=Math.sin(age/.3*Math.PI)*.9;
     if(w.id==='W09')angle+=time*9;
@@ -247,7 +254,7 @@ export class Renderer {
     }
     if(w.id==='W11'){
       const count=(w as WeaponView&{droneCount?:number}).droneCount??2;
-      for(let n=0;n<count;n++){const a=time*(index%2?-.8:.8)+n*TAU/Math.max(1,count)+index;const dx=p.x+Math.cos(a)*(52+index*12),dy=p.y+Math.sin(a)*(40+index*12);this.shadow(dx,dy+7,7,3,.2);this.art.draw(ctx,'W11',dx,dy,18,18,w.angle);}
+      for(let n=0;n<count;n++){const a=time*1.2+n*TAU/Math.max(1,count)+(index%2?Math.PI/3:0);const dx=p.x+Math.cos(a)*48,dy=p.y+Math.sin(a)*48;this.shadow(dx,dy+7,7,3,.2);this.art.draw(ctx,'W11',dx,dy,20,20,w.angle);}
     }
   }
   private enemy(e:EnemyView,time:number,m:EnemyMotion):void{
@@ -256,7 +263,8 @@ export class Renderer {
     this.shadow(e.x,e.y+size*.25,size*.38,size*.14,boss?.42:.28);
     const offset=(e as EnemyView&{offsetX?:number}).offsetX??0;
     const key=e.id==='B2B'?`B2B.${offset<0?'left':'right'}`:e.id==='B3B'&&offset!==0?`B3B.${offset<0?'left':'right'}`:e.id;
-    enemyBody(c,this.art,key,e,m,size,time,this.options.reducedMotion);
+    enemyBody(c,this.art,key,e,m,size,time,this.options.reducedMotion,this.enemyGaits.get(e.eid));
+    if(m.hit>0&&!this.options.reducedMotion)this.art.flash(c,key,e.x,e.y-size*.08,size,size,m.hit*.62);
     enemyControl(c,e,m,size);
     if(e.shielded){c.strokeStyle='#ffce8a';c.lineWidth=3;c.beginPath();c.arc(e.x,e.y,e.radius+7,e.angle-Math.PI/3,e.angle+Math.PI/3);c.stroke();}
     if(e.wet){c.fillStyle='#7dd8ef';for(let i=0;i<2;i++){c.beginPath();c.ellipse(e.x-size*.3+i*9,e.y-size*.42,2.5,4,0,0,TAU);c.fill();}}
@@ -277,7 +285,9 @@ export class Renderer {
     const role=zoneRole(z),damage=role==='damage',charge=z.plan?.effect==='charge';
     c.save();c.translate(z.x,z.y);c.rotate(z.angle);zonePath(c,z);
     const color=damage?(z.active?'#ffd1aa':'#f88478'):role==='force'?'#83c6d8':'#b1cea0';
-    c.fillStyle=warning?color:z.color;c.globalAlpha=warning?(charge&&z.active?.06:z.active?.2:.07+progress*.12):.18;c.fill('evenodd');c.globalAlpha=1;
+    c.fillStyle=warning?color:z.color;c.globalAlpha=warning?(charge&&z.active?.06:z.active?.2:.07+progress*.12):.12;c.fill('evenodd');c.globalAlpha=1;
+    if(warning)drawHazardEnergy(c,z,time,this.options.reducedMotion);
+    zonePath(c,z);
     c.strokeStyle=warning?color:z.color;c.lineWidth=warning?(z.active&&!charge?3:2):1.5;
     if(warning&&(!z.active||!damage||charge))c.setLineDash(damage?[10,6]:[3,7]);c.stroke();c.setLineDash([]);
     if(warning&&!z.active&&(z.innerRadius??0)===0){
@@ -292,46 +302,37 @@ export class Renderer {
     c.save();c.translate(x,y+bob);c.rotate(Math.PI/4);c.fillStyle='#17262c';c.fillRect(-5,-5,10,10);c.fillStyle='#e8c47c';c.fillRect(-3,-3,6,6);c.strokeStyle='#ffefb4';c.lineWidth=1;c.strokeRect(-3,-3,6,6);c.restore();
   }
   private captureEvents(state:BattleView):void{
+    const visible=new Set(['fire','hit','critical','arc','player-hit','shield-break','kill','explosion','enemy-explosion','enemy-attack','enemy-fire','dash','overload','phase','stagger','heal','defeat']);
     for(const event of state.events){
       if(this.seenEvents.has(event.id))continue;this.seenEvents.add(event.id);
-      if(state.time-event.at>1.2)continue;
-      const life=/kill|death|explos|burn|arc/.test(event.type)?.48:/damage|hit|crit|heal/.test(event.type)?.65:.25;
-      const target=event.targetId!==undefined?state.enemies.find(e=>e.eid===event.targetId):undefined;
+      if(state.time-event.at>1.2||!visible.has(event.type))continue;
       const visualEvent={...event};
-      if(event.type==='hit'&&target?.kind!=='boss'&&(event.amount??0)<20)visualEvent.amount=undefined;
-      if(visualEvent.amount&&/hit|critical/.test(event.type)&&event.targetId!==undefined){
-        let merge:Effect|undefined;
-        for(let i=this.effects.length-1;i>=0;i--){const f=this.effects[i];if(event.at-f.born>=.2)break;if(f.event.targetId===event.targetId&&/hit|critical/.test(f.event.type)&&f.event.amount){merge=f;break;}}
-        if(merge){merge.event.amount=(merge.event.amount??0)+visualEvent.amount;continue;}
+      // Older saves stored a player hit at the attacker, not the hurt body.
+      if(event.type==='player-hit'&&!event.from){visualEvent.from={x:event.x,y:event.y};visualEvent.x=state.player.x;visualEvent.y=state.player.y;}
+      const target=event.targetId!==undefined?state.enemies.find(e=>e.eid===event.targetId):undefined;
+      const next:Effect={event:visualEvent,born:event.at,life:effectLife(event),end:event.to??(target?{x:target.x,y:target.y}:undefined),
+        label:['hit','critical','player-hit'].includes(event.type)?event.amount:undefined,labelBorn:event.at};
+      // Merge shotgun numbers, while each real contact still gets its own spark.
+      if(next.label&&event.targetId!==undefined&&['hit','critical'].includes(event.type)){
+        for(let i=this.effects.length-1;i>=0;i--){const old=this.effects[i];if(event.at-old.born>.14)break;
+          if(old.label&&old.event.targetId===event.targetId&&event.at-(old.labelBorn??old.born)<.14&&['hit','critical'].includes(old.event.type)){
+            next.label+=old.label;next.labelBorn=old.labelBorn??old.born;old.label=undefined;break;
+          }
+        }
       }
-      this.effects.push({event:visualEvent,born:event.at,life,end:target?{x:target.x,y:target.y}:undefined});
+      this.effects.push(next);
     }
     this.effects=this.effects.filter(f=>state.time-f.born<f.life).slice(-240);
     if(this.seenEvents.size>1200)this.seenEvents=new Set(state.events.map(e=>e.id));
   }
   private drawEffects(time:number):void{
-    const c=this.ctx;
-    for(const f of this.effects){
-      const age=time-f.born;if(age<0)continue;const k=clamp(age/f.life,0,1),e=f.event;
-      c.save();c.translate(e.x,e.y);c.globalAlpha=1-k;c.strokeStyle=e.color??'#f5cc83';c.fillStyle=e.color??'#f5cc83';
-      if(/explos|kill|death|break/.test(e.type)){
-        const r=8+k*(this.options.reducedMotion?12:28);c.lineWidth=3*(1-k);c.beginPath();c.arc(0,0,r,0,TAU);c.stroke();
-        if(!this.options.reducedMotion)for(let n=0;n<6;n++){const a=n*TAU/6+e.id;c.fillRect(Math.cos(a)*r,Math.sin(a)*r,3,3);}
-      }else if(/arc|electric/.test(e.type)){
-        const end=f.end?{x:f.end.x-e.x,y:f.end.y-e.y}:{x:24,y:0};
-        c.strokeStyle='#8ef9df';c.lineWidth=2;c.beginPath();c.moveTo(0,0);
-        for(let n=1;n<=6;n++){const p=n/6,j=n===6?0:Math.sin(e.id+n*9)*6;c.lineTo(end.x*p+j,end.y*p-j);}
-        c.stroke();
-      }else if(/heal|shield/.test(e.type)){
-        c.fillStyle='#7fe7be';c.font='bold 11px sans-serif';c.textAlign='center';c.fillText(e.amount?`+${Math.round(e.amount)}`:'+',0,-12-k*15);
-      }else if(e.amount&&(/damage|hit|crit/.test(e.type))){
-        c.font=`bold ${/crit/.test(e.type)?15:11}px sans-serif`;c.textAlign='center';c.strokeStyle='#17212a';c.lineWidth=3;
-        const text=Math.round(e.amount).toString();c.strokeText(text,0,-14-k*19);c.fillText(text,0,-14-k*19);
-      }else{
-        c.lineWidth=1.5;c.beginPath();c.moveTo(-4-k*6,0);c.lineTo(4+k*6,0);c.moveTo(0,-4-k*6);c.lineTo(0,4+k*6);c.stroke();
-      }
-      c.restore();
-    }
+    for(const f of this.effects)drawCombatEffect(this.ctx,f.event,time-f.born,f.life,this.options.reducedMotion,this.options.lang,this.scale,f.label,f.end);
+  }
+  private screenFeedback(state:BattleView):void{
+    const hit=state.events.filter(e=>e.type==='player-hit'&&state.time-e.at>=0&&state.time-e.at<.45).at(-1);if(!hit)return;
+    const c=this.ctx,k=1-(state.time-hit.at)/.45,shield=!(hit.hullDamage??1);
+    c.save();c.strokeStyle=shield?'#65dfd0':'#ff8c69';c.globalAlpha=(this.options.reducedMotion?.35:.55)*k;c.lineWidth=6;
+    c.strokeRect(3,3,this.cssWidth-6,this.cssHeight-6);c.restore();
   }
   private target(point:Point,time:number):void{
     const c=this.ctx;c.save();c.translate(point.x,point.y);c.strokeStyle='#f5df9b';c.lineWidth=2;
@@ -345,9 +346,9 @@ export class Renderer {
     const c=this.ctx,p=state.player;c.save();c.translate(p.x,p.y);
     if(hit){
       c.strokeStyle='#ffc3a0';c.lineWidth=3;c.globalAlpha=this.options.reducedMotion?1:Math.max(.25,1-(state.time-hit.at)/.7);
-      const direction=Math.atan2(hit.y-p.y,hit.x-p.x);
+      const direction=Math.atan2((hit.from?.y??hit.y)-p.y,(hit.from?.x??hit.x)-p.x);
       c.beginPath();c.arc(0,0,42,direction-.45,direction+.45);c.stroke();
-      if(Math.hypot(hit.x-p.x,hit.y-p.y)>5){c.rotate(direction);c.fillStyle='#ffc3a0';c.beginPath();c.moveTo(49,0);c.lineTo(40,-6);c.lineTo(40,6);c.closePath();c.fill();c.rotate(-direction);}
+      if(Math.hypot((hit.from?.x??hit.x)-p.x,(hit.from?.y??hit.y)-p.y)>5){c.rotate(direction);c.fillStyle='#ffc3a0';c.beginPath();c.moveTo(49,0);c.lineTo(40,-6);c.lineTo(40,6);c.closePath();c.fill();c.rotate(-direction);}
     }
     if(broken){
       c.globalAlpha=1;c.fillStyle='#17212a';rounded(c,-60,-77,120,23,4);c.fill();

@@ -4,7 +4,7 @@ import type {BattleView,ControlReason,EnemyView,Lang,ZoneView} from './types.ts'
 export type MotionKind='idle'|'charge'|'detonate'|'pull'|'sweep'|'fire'|'beam'|'ring'|'bombard'|'volley'|'summon'|'slam'|'conveyor';
 export interface EnemyMotion {
  stage:'idle'|'windup'|'active'|'recover';kind:MotionKind;progress:number;angle:number;
- control?:ControlReason|'unknown';weak:boolean;phaseAge:number;hit:number;zone?:ZoneView;
+ control?:ControlReason|'unknown';weak:boolean;phaseAge:number;hit:number;zone?:ZoneView;intensity?:number;
 }
 const clamp=(n:number)=>Math.max(0,Math.min(1,n));
 export function controlReason(enemy:EnemyView):EnemyMotion['control'] {
@@ -41,7 +41,8 @@ export function motionFrame(view:BattleView):Map<number,EnemyMotion> {
  const out=new Map<number,EnemyMotion>();
  for(const e of view.enemies){
   const own=byOwner.get(e.eid)??(e.group?byOwner.get(groups.get(e.group)!):undefined)??[];
-  const priority=(z:ZoneView)=>(z.active?10:0)+(z.plan?.effect==='charge'?3:0)+(1-z.remaining/Math.max(.001,z.duration));
+  // The crane's final slam must anticipate over the still-running pull field.
+  const priority=(z:ZoneView)=>(z.active?10:0)+(!z.active&&(z.damage??0)>0&&z.remaining<.55?12:0)+(z.plan?.effect==='charge'?3:0)+(1-z.remaining/Math.max(.001,z.duration));
   let zone:ZoneView|undefined;for(const z of own)if(!zone||priority(z)>priority(zone))zone=z;
   // Projectile warning zones disappear on release. The existing event keeps a short,
   // resumable muzzle pose; bullets, rather than a lingering zone, carry the danger.

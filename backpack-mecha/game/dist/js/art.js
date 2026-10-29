@@ -3,6 +3,7 @@ export class Art {
     manifest = null;
     pending = null;
     environmentPending = false;
+    flashes = new Map();
     get ready() { return this.manifest !== null && ['actors', 'modules', 'enemies'].every(key => this.images.has(key)); }
     load() {
         if (this.pending)
@@ -54,6 +55,35 @@ export class Art {
         ctx.drawImage(im, sprite.x, sprite.y, sprite.w, sprite.h, -dw / 2, -dh / 2, dw, dh);
         ctx.restore();
         return true;
+    }
+    /** Bounded cached silhouette; no per-frame pixel reads or mask allocations. */
+    flash(ctx, key, x, y, w, h, opacity, color = '#fff1cf') {
+        const s = this.manifest?.sprites[key], im = s && this.images.get(s.atlas);
+        if (!s || !im || opacity <= 0)
+            return;
+        const cacheKey = `${key}/${color}`;
+        let mask = this.flashes.get(cacheKey);
+        if (!mask) {
+            const fit = Math.min(1, 256 / Math.max(s.w, s.h)), mw = Math.ceil(s.w * fit), mh = Math.ceil(s.h * fit);
+            mask = typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(mw, mh) : document.createElement('canvas');
+            mask.width = mw;
+            mask.height = mh;
+            const c = mask.getContext('2d');
+            if (!c)
+                return;
+            c.drawImage(im, s.x, s.y, s.w, s.h, 0, 0, mw, mh);
+            c.globalCompositeOperation = 'source-in';
+            c.fillStyle = color;
+            c.fillRect(0, 0, mw, mh);
+            if (this.flashes.size >= 40)
+                this.flashes.delete(this.flashes.keys().next().value);
+            this.flashes.set(cacheKey, mask);
+        }
+        const fit = Math.min(w / s.w, h / s.h);
+        ctx.save();
+        ctx.globalAlpha *= opacity;
+        ctx.drawImage(mask, x - s.w * fit / 2, y - s.h * fit / 2, s.w * fit, s.h * fit);
+        ctx.restore();
     }
     tile(ctx, key, x, y, w, h) {
         const s = this.manifest?.sprites[key];

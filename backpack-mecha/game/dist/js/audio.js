@@ -1,3 +1,15 @@
+/** Actual combat event names are deliberately mapped; unhandled events stay silent. */
+export function combatSound(e) {
+    if (e.type === 'player-hit')
+        return (e.hullDamage ?? e.amount ?? 0) > 0 ? 'hurt' : 'shield';
+    if (e.type === 'warning')
+        return e.source?.startsWith('B') ? 'warning' : undefined;
+    const names = { 'shield-break': 'break', critical: 'critical', 'enemy-explosion': 'explosion', 'enemy-fire': 'enemy-shot',
+        'boss-overload-warning': 'warning', 'boss-overload': 'phase', stagger: 'break' };
+    if (e.type === 'enemy-attack')
+        return e.cue === 'circle' || e.cue === 'drill' ? 'slam' : undefined;
+    return names[e.type] ?? (['fire', 'hit', 'kill', 'explosion', 'dash', 'overload', 'phase', 'pickup', 'heal'].includes(e.type) ? e.type : undefined);
+}
 export class GameAudio {
     ctx = null;
     gain = null;
@@ -26,8 +38,8 @@ export class GameAudio {
         if (!this.settings.sound || !this.ctx)
             return;
         const t = this.ctx.currentTime;
-        const key = type + source;
-        if (t - (this.lastPlayed[key] ?? -100) < (type === 'fire' ? .10 : .045))
+        const key = type === 'fire' ? type + source : type;
+        if (t - (this.lastPlayed[key] ?? -100) < (type === 'fire' ? .10 : type === 'hit' ? .07 : .045))
             return;
         this.lastPlayed[key] = t;
         const weapon = source.slice(0, 3);
@@ -37,7 +49,7 @@ export class GameAudio {
             this.tone(f, l, k, v, .55);
             return;
         }
-        const presets = { click: [440, .04, 'sine', .13, 1.2], rotate: [290, .06, 'triangle', .15, 1.4], connect: [630, .12, 'sine', .24, 1.5], invalid: [110, .13, 'square', .12, .8], buy: [720, .14, 'triangle', .25, 1.5], upgrade: [420, .24, 'sine', .25, 2], sell: [500, .12, 'sine', .2, .65], dash: [180, .12, 'sawtooth', .2, 2.1], overload: [240, .35, 'triangle', .3, 3], hit: [95, .06, 'triangle', .12, .4], hurt: [73, .15, 'sawtooth', .25, .7], shield: [740, .2, 'sine', .2, .4], break: [160, .23, 'square', .26, .25], explosion: [65, .25, 'sawtooth', .28, .35], kill: [180, .08, 'triangle', .12, .7], pickup: [800, .05, 'sine', .13, 1.3], warning: [520, .18, 'triangle', .3, .7], phase: [240, .4, 'square', .22, 1.6], win: [520, .5, 'sine', .3, 2], lose: [230, .6, 'triangle', .3, .35], pause: [320, .12, 'sine', .15, .7], resume: [320, .12, 'sine', .15, 1.4], reward: [610, .3, 'triangle', .25, 1.7] };
+        const presets = { click: [440, .04, 'sine', .13, 1.2], rotate: [290, .06, 'triangle', .15, 1.4], connect: [630, .12, 'sine', .24, 1.5], invalid: [110, .13, 'square', .12, .8], buy: [720, .14, 'triangle', .25, 1.5], upgrade: [420, .24, 'sine', .25, 2], sell: [500, .12, 'sine', .2, .65], dash: [180, .12, 'sawtooth', .2, 2.1], overload: [240, .35, 'triangle', .3, 3], hit: [180, .07, 'triangle', .19, .35], critical: [620, .11, 'square', .2, .35], 'enemy-shot': [140, .1, 'sawtooth', .15, .5], slam: [65, .24, 'triangle', .3, .3], heal: [680, .16, 'sine', .13, 1.4], hurt: [73, .15, 'sawtooth', .25, .7], shield: [740, .2, 'sine', .2, .4], break: [160, .23, 'square', .26, .25], explosion: [65, .25, 'sawtooth', .28, .35], kill: [180, .08, 'triangle', .12, .7], pickup: [800, .05, 'sine', .13, 1.3], warning: [520, .18, 'triangle', .3, .7], phase: [240, .4, 'square', .22, 1.6], win: [520, .5, 'sine', .3, 2], lose: [230, .6, 'triangle', .3, .35], pause: [320, .12, 'sine', .15, .7], resume: [320, .12, 'sine', .15, 1.4], reward: [610, .3, 'triangle', .25, 1.7] };
         const p = presets[type] ?? presets.click;
         this.tone(...p);
     }
@@ -45,7 +57,9 @@ export class GameAudio {
         if (e.id <= this.last)
             continue;
         this.last = e.id;
-        this.play(e.type, e.source ?? '');
+        const sound = combatSound(e);
+        if (sound)
+            this.play(sound, e.source ?? '');
     } }
     resetEvents() { this.last = 0; }
     music(theme) { this.theme = theme; if (this.timer !== undefined)

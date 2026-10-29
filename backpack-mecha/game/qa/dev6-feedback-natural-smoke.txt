@@ -1,0 +1,11 @@
+
+> backpack-mecha@0.2.0-dev.6 probe:natural
+> node --experimental-strip-types scripts/natural-probe.ts --seeds=1 --policy=legacy --diagnostics=1 --output=dev6-feedback-natural-smoke.json
+
+wet / natural-v02-01: won, wave 12, 573.6s combat, core 8, resume 12
+oil / natural-v02-01: won, wave 12, 534.2s combat, core not attained, resume 12
+ballistic / natural-v02-01: won, wave 12, 565.6s combat, core 9, resume 12
+fortress / natural-v02-01: won, wave 12, 542.5s combat, core 3, resume 12
+drone / natural-v02-01: won, wave 12, 537.0s combat, core 7, resume 12
+frost / natural-v02-01: won, wave 12, 563.5s combat, core 3, resume 12
+Saved 6 natural runs to qa/dev6-feedback-natural-smoke.json

@@ -2,6 +2,8 @@ import type {Art} from './art.ts';
 import type {EnemyMotion} from './motion.ts';
 import {motionLabel,zoneRole} from './motion.ts';
 import type {EnemyView,Lang,ZoneView} from './types.ts';
+import {smoothStep} from './visual-motion.ts';
+import type {Locomotion} from './visual-motion.ts';
 
 const TAU=Math.PI*2;
 type Context=CanvasRenderingContext2D;
@@ -17,17 +19,20 @@ function arrow(c:Context,x:number,y:number,angle:number,length:number):void{
 }
 
 /** Draw parts in the original atlas perspective. All motion comes from this snapshot. */
-export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion,size:number,time:number,reduced:boolean):void {
+export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion,size:number,time:number,reduced:boolean,gait?:Locomotion):void {
  const wind=m.stage==='windup',active=m.stage==='active',free=!m.control;
- const amount=wind?m.progress:active?1:0;
- const bob=reduced||!free?0:Math.sin(time*(e.id==='E06'?2.6:8)+e.eid)*Math.min(2,size*.025);
- const recoil=reduced||!free?0:m.hit*size*.025;
+ const amount=smoothStep(m.intensity??(wind?m.progress:active?1:0));
+ const stride=(gait?.stride??0)*TAU,walking=gait?.amount??0;
+ const bob=reduced||!free?0:Math.sin(stride*2)*Math.min(2.5,size*.04)*walking+Math.sin(time*2+e.eid)*.35;
+ const recoil=reduced||!free?0:m.hit*size*.055;
  if(!special(e)){
-  const tilt=m.control==='impact'?-.045:m.control==='stagger'?.045:reduced||!free?0:Math.sin(time*5+e.eid)*.018;
-  art.draw(c,key,e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil,size,size,tilt);return;
+  const tilt=m.control==='impact'?-.045:m.control==='stagger'?.045:reduced||!free?0:Math.sin(stride)*.035*walking+(gait?.lean??0)*.025;
+  c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);c.rotate(tilt);
+  if(!reduced)c.scale(1+amount*.04,1-amount*.04);
+  art.draw(c,key,0,0,size,size);c.restore();return;
  }
  c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);
- if(!reduced&&free)c.rotate(Math.sin(time*5+e.eid)*.018);
+ if(!reduced&&free)c.rotate(Math.sin(stride)*.018*walking);
  if(m.control==='impact')c.rotate(-.045);else if(m.control==='stagger')c.rotate(.045);
  const part=(u:number,v:number,w:number,h:number,x=0,y=0)=>art.part(c,key,x,y,size,size,u,v,w,h);
  if(e.id==='E05'){
@@ -43,8 +48,8 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
  }else if(e.id==='B1B'){
   part(0,.58,1,.42);
   c.save();c.translate(-size*.12,size*.06);
-  const swing=m.kind==='sweep'?(wind?-.1:active?Math.sin(m.angle)*.14:0):m.kind==='pull'?-.04*amount:0;
-  c.rotate(free?swing:0);part(0,0,1,.58,size*.12,-size*.06);c.restore();
+  const swing=m.kind==='sweep'?(wind?-.16*amount:active?Math.sin(m.angle)*.22:0):-.07*amount;
+  c.rotate(free&&!reduced?swing:0);part(0,0,1,.58,size*.12,-size*.06-(reduced?0:size*.025*amount));c.restore();
   if(m.kind==='pull'&&active){c.strokeStyle='#a8dce6';c.lineWidth=2;arrow(c,-size*.35,-size*.12,0,size*.16);arrow(c,size*.35,-size*.12,Math.PI,size*.16);}
  }else if(e.id==='B2A'){
   // Four surrounding regions leave a real opening; the two door halves slide apart.
@@ -78,6 +83,19 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
   }
  }else art.draw(c,key,0,0,size,size);
  c.restore();
+ if(e.id==='B1B'&&free&&m.stage!=='idle'){
+  // Articulated boom and cable connect the machine to the real sweep endpoint.
+  const sweeping=m.kind==='sweep'&&m.zone;
+  const angle=m.zone?(m.zone.active?m.zone.angle:m.zone.plan?.angle??m.zone.angle):m.angle;
+  const end=sweeping?{x:m.zone!.x+Math.cos(angle)*m.zone!.radius,y:m.zone!.y+Math.sin(angle)*m.zone!.radius}:
+    {x:e.x+size*.13,y:e.y+size*.18-(reduced?0:wind?size*.43*amount:m.kind==='pull'?size*.2:0)};
+  const start={x:e.x-size*.08,y:e.y-size*.38},mid={x:(start.x+end.x)*.5,y:Math.min(start.y,end.y)-size*.17};
+  c.save();c.lineJoin='round';c.lineCap='round';c.strokeStyle='#1a2931';c.lineWidth=12;c.beginPath();c.moveTo(start.x,start.y);c.lineTo(mid.x,mid.y);c.lineTo(end.x,end.y);c.stroke();
+  c.strokeStyle='#c6a477';c.lineWidth=7;c.stroke();c.strokeStyle='#f8d4a0';c.lineWidth=2;c.stroke();
+  c.fillStyle='#546974';c.beginPath();c.arc(mid.x,mid.y,7,0,TAU);c.fill();c.strokeStyle='#cbd5cb';c.lineWidth=2;c.stroke();
+  if(!sweeping||!active){c.save();c.translate(end.x,end.y);c.rotate(sweeping?angle:0);c.fillStyle='#71838a';c.strokeStyle='#efc393';c.lineWidth=3;c.beginPath();c.roundRect(-17,-11,34,22,4);c.fill();c.stroke();c.fillStyle=active?'#b7f6f2':'#f1c383';c.fillRect(-9,4,18,4);c.restore();}
+  c.restore();
+ }
  // These cues are directions and body status, never collision or damage boundaries.
  if(special(e)&&m.stage!=='idle'&&!m.control&&(m.zone||m.kind==='charge')&&['charge','fire','sweep','volley','beam'].includes(m.kind)&&e.id!=='B2B'){
   c.strokeStyle=wind?'#ffe2a5':'#fff0c9';c.lineWidth=2;

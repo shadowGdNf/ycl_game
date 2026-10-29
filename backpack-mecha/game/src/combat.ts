@@ -146,7 +146,7 @@ function killEnemy(w:BattleState,e:EnemyState,kind:DamageKind,weapon?:WeaponStat
  if(e.group)for(const other of w.enemies)if(other.group===e.group){other.hp=0;other.dead=true;}
  w.stats.kills++;if(e.reward>0){w.stats.killedBudget+=e.cost;
   const nearby=w.drops.find(d=>distance(d,e)<35);if(nearby)nearby.value+=e.reward;else w.drops.push({id:w.nextId++,x:e.x,y:e.y,value:e.reward});}
- event(w,'kill',e,{source:weapon?.id||kind,targetId:e.eid});
+ event(w,'kill',e,{source:weapon?.id||kind,targetId:e.eid,radius:e.radius});
  if(w.utilities.U09&&['water','electric','fire','oil','ice'].includes(kind)&&w.time>=w.recoveryAt){w.player.shield=Math.min(w.player.maxShield,w.player.shield+utility(w,'U09'));w.recoveryAt=w.time+.5;}
  if(oilExplosion&&protocol(w,'P02')&&w.emberHeal<10){const heal=Math.min(1,w.player.maxHp-w.player.hp,10-w.emberHeal);w.player.hp+=heal;w.emberHeal+=heal;}
  if(e.id==='E10')for(let i=0;i<2;i++)if(w.enemies.filter(alive).length+w.zones.filter(z=>z.spawn).length<CONFIG.maxEnemies){
@@ -175,7 +175,7 @@ function applyStatus(w:BattleState,e:EnemyState,weapon:WeaponState):void {
 function areaDamage(w:BattleState,p:Point,radius:number,hit:Hit):void {
  const seen:string[]=[];
  for(const e of w.enemies){const key=groupKey(e);if(alive(e)&&distance(e,p)<=radius+e.radius&&!seen.includes(key)){seen.push(key);hitEnemy(w,e,{...hit,origin:p});}}
- event(w,'explosion',p,{amount:radius,source:hit.weapon?.id||hit.kind,color:hit.kind==='oil'?'#F5A24E':'#F6CF86'});
+ event(w,'explosion',p,{amount:radius,radius,source:hit.weapon?.id||hit.kind,color:hit.kind==='oil'?'#F5A24E':'#F6CF86'});
 }
 /** One resolver for every player-originating damage path, including secondary effects. */
 function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
@@ -194,7 +194,7 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
  if(e.id==='E07'&&Math.abs(angleDiff(angleTo(e,origin),e.angle))<Math.PI/3)amount*=.5;
  const actual=Math.min(e.hp,amount);e.hp=Math.max(0,e.hp-amount);syncBossHP(w,e);
  const source=weapon?.id||hit.kind;w.stats.damageByModule[source]=(w.stats.damageByModule[source]||0)+actual;
- event(w,crit?'critical':'hit',e,{amount:actual,source,targetId:e.eid,color:MODULE_BY_ID[source]?.color});
+ event(w,crit?'critical':'hit',e,{amount:actual,source,targetId:e.eid,color:MODULE_BY_ID[source]?.color,from:{x:origin.x,y:origin.y},radius:e.radius});
  if(direct&&weapon?.supports.S08&&crit&&w.time>=weapon.rectifierAt){w.player.shield=Math.min(w.player.maxShield,w.player.shield+support(weapon,'S08'));weapon.rectifierAt=w.time+1;}
  if(hit.status&&weapon)applyStatus(w,e,weapon);
  if(hit.kind==='fire'&&!hit.secondary&&e.oilUntil>w.time&&e.oilAt<=w.time){
@@ -214,7 +214,7 @@ export function damagePlayer(w:BattleState,raw:number,source:string,at:Point=w.p
  const damage=raw*100/(100+p.armor)*(w.capacitorDefense>w.time?.7:1),beforeShield=p.shield,beforeHP=p.hp;
  const absorbed=Math.min(p.shield,damage);p.shield-=absorbed;p.hp=Math.max(0,p.hp-(damage-absorbed));p.invulnerable=CONFIG.hitGrace;w.lastDamage=w.time;
  const actual=Math.min(damage,beforeShield+beforeHP);w.stats.damageTaken+=actual;w.stats.damageTakenBy[source]=(w.stats.damageTakenBy[source]||0)+actual;
- event(w,'player-hit',at,{amount:actual,source});
+ event(w,'player-hit',p,{amount:actual,source,from:{x:at.x,y:at.y},shieldDamage:absorbed,hullDamage:beforeHP-p.hp});
  if(beforeShield>0&&p.shield<=0){event(w,'shield-break',p);
   if(w.utilities.U08&&w.time>=w.capacitorAt){w.capacitorAt=w.time+8;w.capacitorDefense=w.time+1;areaDamage(w,p,150,{base:utility(w,'U08'),kind:'electric',direct:false,secondary:true});}}
  if(protocol(w,'P07')&&!w.emergencyUsed&&beforeHP/p.maxHp>=.35&&p.hp/p.maxHp<.35){w.emergencyUsed=true;p.shield=Math.min(p.maxShield,p.shield+15);}
@@ -241,11 +241,11 @@ function fireWeapon(w:BattleState,weapon:WeaponState,target:EnemyState,extra=fal
  const def=MODULE_BY_ID[weapon.id]!,origin=w.player,a=angleTo(origin,target);weapon.angle=a;weapon.x=origin.x;weapon.y=origin.y;
  if(!extra)weapon.shotCount++;
  let factor=1;if(weapon.supports.S11&&w.time-w.lastDash<=2&&!weapon.springUsed){factor=1+[.4,.55,.7][weapon.supports.S11-1]!;weapon.springUsed=true;}
- event(w,'fire',origin,{source:weapon.id,targetId:target.eid});
+ event(w,'fire',origin,{source:weapon.id,targetId:target.eid,angle:a,to:{x:target.x,y:target.y},radius:(def.range||100)*(1+support(weapon,'S11'))});
  if(weapon.id==='W04'){
   const maximum=Math.min(5,3+(target.wet>0?1:0)+(weapon.supports.S05?1:0)),seen:string[]=[];let current:EnemyState|undefined=target,previous:Point=origin;
   for(let chain=0;chain<maximum&&current;chain++){
-   seen.push(groupKey(current));event(w,'arc',previous,{targetId:current.eid,source:weapon.id,color:def.color});
+   seen.push(groupKey(current));event(w,'arc',previous,{targetId:current.eid,source:weapon.id,color:def.color,to:{x:current.x,y:current.y}});
    hitEnemy(w,current,{base:chain===0?10:6,kind:'electric',weapon,factor,status:true,arcFirst:chain===0});previous={x:current.x,y:current.y};
    current=w.enemies.filter(e=>alive(e)&&!seen.includes(groupKey(e))&&distance(e,previous)<=140).sort((x,y)=>distance(x,previous)-distance(y,previous)||x.eid-y.eid)[0];
   }
@@ -333,6 +333,7 @@ function difficultyDamage(w:BattleState):number{return w.difficulty>=4?1.15:w.di
 function triggerZone(w:BattleState,z:ZoneState):void {
  const plan=z.plan,source=w.enemies.find(e=>e.eid===z.sourceId);
  if(z.spawn){spawnEnemy(w,z.spawn);z.remaining=0;return;}
+ event(w,'enemy-attack',z,{source:z.source,targetId:z.sourceId,angle:z.angle,radius:z.radius,cue:plan.effect??z.kind});
  if(plan.effect==='spawn'){
   const existing=w.enemies.filter(e=>alive(e)&&e.id===plan.enemy&&e.summon).length,count=Math.min(plan.count||1,(plan.limit||8)-existing,CONFIG.maxEnemies-w.enemies.filter(alive).length);
   for(let i=0;i<count;i++){const a=(i/Math.max(1,count))*Math.PI*2,p={x:clamp(z.x+Math.cos(a)*120,40,w.width-40),y:clamp(z.y+Math.sin(a)*120,40,w.height-40)};
@@ -362,10 +363,13 @@ function tickZones(w:BattleState,dt:number):void {
   if(z.plan.effect==='charge')continue;
   if(z.plan.effect==='pull'&&contains(z,w.player,w.player.radius)){const a=angleTo(w.player,z);move(w,w.player,Math.cos(a)*(z.plan.speed||60)*dt,Math.sin(a)*(z.plan.speed||60)*dt);continue;}
   if(z.plan.effect==='conveyor'&&contains(z,w.player,w.player.radius)){move(w,w.player,Math.cos(z.angle)*(z.plan.speed||50)*dt,Math.sin(z.angle)*(z.plan.speed||50)*dt);continue;}
-  z.pulse-=dt;if(z.pulse>0)continue;z.pulse=z.plan.period||1000;
-  if(contains(z,w.player,w.player.radius)){
+  // Check moving hazards every simulation tick. The interval limits successful
+  // damage, not collision sampling: a sweep must not pass through a player
+  // between global pulse times without hitting them.
+  z.pulse=Math.max(0,z.pulse-dt);
+  if(z.pulse<=0&&contains(z,w.player,w.player.radius)){
    const amount=z.plan.effect==='fire'&&z.triggered?6*difficultyDamage(w):z.plan.damage;
-   damagePlayer(w,amount,z.source,z);
+   if(damagePlayer(w,amount,z.source,z)>0)z.pulse=z.plan.period||1000;
   }
   if(z.source==='E05'&&!z.triggered){const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){e.dead=true;e.hp=0;event(w,'enemy-explosion',e,{source:e.id,targetId:e.eid,amount:z.radius});}}
   z.triggered=true;
