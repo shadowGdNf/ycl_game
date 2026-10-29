@@ -52,7 +52,7 @@ test('all six bosses expose complete telegraphs and execute phase-specific chore
   for(const phase of [1,2,3])for(let index=0;index<3;index++){
    const turn=bossTurn(boss.id,phase,index,{x:800,y:300},{x:800,y:650});assert.ok(turn.plans.length>0);
    assert.ok(turn.plans.every(p=>p.warning>=.4));assert.ok(turn.plans.filter(p=>!p.delay).every(p=>p.warning>=.8));
-   assert.ok(turn.duration>0&&turn.recovery>=1);
+   assert.ok(turn.duration>0&&turn.recovery>=.4);
   }
   const run=newRun('bulwark','full',0,`boss-${boss.id}`);run.wave=boss.act*4;run.bosses[ boss.act-1]=boss.id;run.items=[];
   const world=createBattle(run);world.player.invulnerable=1000;world.enemies.forEach(e=>{e.hp=e.maxHp*.2;});

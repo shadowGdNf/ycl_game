@@ -74,7 +74,9 @@ test('combat sounds route shield, hull, critical and enemy shots and ignore book
 
 test('crane slam anticipation is visible before the active pull ends',()=>{
  const {w}=crane();w.bossTurn=0;w.player.invulnerable=100;
- stepBattle(w,idle,2.7);const m=motionFrame(w).get(w.enemies[0].eid)!;
+ stepBattle(w,idle,1/60);const slam=w.zones.find(z=>z.source==='B1B'&&z.plan.damage===22)!;
+ stepBattle(w,idle,slam.remaining-.2);const m=motionFrame(w).get(w.enemies[0].eid)!;
+ assert.ok(w.zones.some(z=>z.plan.effect==='pull'&&z.active&&z.remaining>0));
  assert.equal(m.kind,'slam');assert.equal(m.stage,'windup');assert.ok(m.progress>.8);
 });
 

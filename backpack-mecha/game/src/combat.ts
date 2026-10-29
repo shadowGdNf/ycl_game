@@ -1,7 +1,7 @@
 import {moduleValue,TIER_EFFECTS,damageScale} from './rarity.ts';
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {nextRandom} from './random.ts';
-import {ARENA,availableBudget,bossPhase,bossTurn,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
+import {ARENA,availableBudget,bossPhase,bossTurn,bossPursuitSpeed,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
 import type {AttackPlan,EncounterState,SpawnSpec} from './encounters.ts';
 import type {BattleView,BattleResult,Run,InputFrame,EnemyView,BulletView,ZoneView,WeaponView,Point,CombatStats,CombatEvent,Tier} from './types.ts';
 
@@ -365,7 +365,7 @@ function tickZones(w:BattleState,dt:number):void {
    continue;}
   if(z.sourceId!==undefined&&!w.enemies.some(e=>e.eid===z.sourceId&&alive(e))&&z.plan.effect!=='fire'){z.remaining=0;continue;}
   z.remaining-=dt;
-  if(z.active&&z.remaining<=0&&z.source==='B2A'&&z.kind==='cone')for(const e of w.enemies)if(e.id==='B2A')e.vulnerableUntil=w.time+3;
+  if(z.active&&z.remaining<=0&&z.source==='B2A'&&z.kind==='cone'&&z.plan.effect!=='projectile')for(const e of w.enemies)if(e.id==='B2A')e.vulnerableUntil=w.time+3;
   if(!z.active){if(z.remaining>0)continue;z.active=true;z.type='hazard';z.duration=z.plan.active;z.remaining=z.plan.active;z.age=0;z.kind=z.plan.kind;z.radius=z.plan.radius;z.width=z.plan.width;z.angle=z.plan.angle;triggerZone(w,z);}
   if(z.remaining<=0)continue;z.age+=dt;
   if(z.plan.sweep)z.angle=z.originalAngle+z.plan.sweep*Math.min(1,z.age/z.plan.active);
@@ -464,11 +464,11 @@ function tickBoss(w:BattleState,dt:number):void {
  if(w.bossClock<=0){
   const phase=bossPhase(w.bossId,root.hp/root.maxHp);
   if(phase!==root.phase){event(w,'phase',root,{amount:phase,source:root.id});for(const b of bodies){b.phase=phase;if(b.id==='B3B'&&b.offsetX)b.exposed=phase>=2;}}
-  const turn=bossTurn(w.bossId,phase,w.bossTurn++,w.bossCenter||root,w.player,w.difficulty);
+  const turn=bossTurn(w.bossId,phase,w.bossTurn++,w.bossCenter||root,w.player,w.difficulty,w.bossEnraged);
   for(const plan of turn.plans)addZone(w,{...plan,damage:plan.damage*(w.difficulty>=4?1.15:w.difficulty>=2?1.1:1)},root.eid,w.bossId);
-  w.bossClock=turn.duration+turn.recovery*(w.bossEnraged?.8:1);
- }else if(!w.zones.some(z=>z.sourceId===root.eid&&z.plan.effect!=='fire')&&(!root.charge||root.charge.until<=w.time)){
-  const center=w.bossCenter||root,a=angleTo(center,w.player),d=distance(center,w.player),speed=root.speed*(root.id==='B2A'&&root.phase>=3?1.15:1)*(1-enemySlow(w,root));
+  w.bossClock=turn.duration+turn.recovery;
+ }else if(!w.zones.some(z=>z.sourceId===root.eid&&z.plan.effect!=='fire'&&z.plan.effect!=='conveyor')&&(!root.charge||root.charge.until<=w.time)){
+  const center=w.bossCenter||root,a=angleTo(center,w.player),d=distance(center,w.player),speed=bossPursuitSpeed(root.speed,root.phase,w.difficulty,w.bossEnraged)*(1-enemySlow(w,root));
   if(d>240){center.x=clamp(center.x+Math.cos(a)*speed*dt,190,w.width-190);center.y=clamp(center.y+Math.sin(a)*speed*dt,150,w.height-150);}
   for(const e of bodies){e.x=center.x+e.offsetX;e.y=center.y;e.angle=a;}
  }

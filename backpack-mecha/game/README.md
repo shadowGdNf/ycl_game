@@ -6,7 +6,9 @@
 
 本目录由 `ycl_game` 主仓库统一管理，不再使用嵌套的独立 Git 仓库。请在仓库根目录查看和提交变更。
 
-当前工作版本为 **v0.2.0-dev.8**，规则版本 `0.2.0`。本批加入四档装备稀有度、同名同阶二合一、商店高阶供货和统一品质界面。见 [dev.8 实施与验证记录](docs/DEV8-RARITY-COMBINING.md)。线上试玩以最近一次 Pages 部署为准，本批尚未部署。
+当前工作版本为 **v0.2.0-dev.9**，规则版本 `0.2.1`。本批增强六个 Boss 的攻击频率、弹幕密度、弹速和追击速度；不同阶段增加连射或追加招式，同时保留预警与安全通道。见 [dev.9 Boss 强化与验证记录](docs/DEV9-BOSS-PRESSURE.md)。线上试玩以最近一次 Pages 部署为准，本批尚未部署。
+
+dev.8 的四档装备稀有度、同名同阶二合一、商店高阶供货和品质界面继续保留，见 [dev.8 记录](docs/DEV8-RARITY-COMBINING.md)。
 
 dev.7 的一屏装配、追击与远程技能、金色碎片反馈、全解锁开关、完整图鉴和自由配装首领试炼继续保留，见 [dev.7 记录](docs/DEV7-WORKSHOP-COMBAT.md)。
 
@@ -116,7 +118,7 @@ dev.5 战报额外保留每场最近 3,600 个前台战斗帧间隔和渲染耗�
 - `src/storage.ts` / `src/input.ts` / `src/audio.ts`：存档、技能输入、Web Audio 合成音效/音乐。
 - `src/journal.ts` / `src/version.ts`：有容量上限的本地战报、运行版本与规则版本。
 - `assets/content.json`：原始模块目录和 I–III 阶基值，dev.8 四档运行数值及二级效果以 `src/rarity.ts` 为准；`assets/source/design-baseline.json`：原设计基线。
-- `scripts/export-content.py`：从工程内设计基线生成结构化目录和中英文参数说明。
+- `scripts/export-content.py`：从工程内设计基线生成结构化目录和中英文参数说明；Boss 战术说明覆盖来自 `assets/source/boss-guide-dev9.json`，与 dev.9 实际招式同步。
 - `assets/atlases/` / `assets/atlas-manifest.json`：五张 PNG 原始图集、86 个采样区域及图集哈希；挂点位于渲染器。
 - `assets/optimized/`：网页使用的 WebP 图集和对应清单，保留原图尺寸、透明通道及采样坐标；`npm run art:optimize` 重新生成，普通构建直接使用已提交的文件。原始 PNG 不进入 `dist/`。
 - `assets/source/art-layout.json`：经透明通道检查的图集分区；旧图保存在 `assets/source/pre-style-a/`，不进入网页包。
@@ -135,7 +137,8 @@ npm run compare:growth # 对照历史基线，重放购买方案，生成诊断�
 npm run probe:expeditions # dev.5 三输入模型、60组基线和12组扩展场景，共216局
 npm run probe:expeditions -- --suite=calibration --seeds=1 --output=dev5-expeditions-smoke.json
 node scripts/serve-rarity.mjs # dev.8 四档商店/合成验收，localhost:4199；仅该独立端口写测试存档
-node scripts/serve-feedback.mjs # 开发专用反馈场景，localhost:4198；不写存档
+node scripts/serve-feedback.mjs # 含双子/母舰最终阶段压力场景；localhost:4198，不写存档
+node --experimental-strip-types scripts/boss-pressure-probe.ts # Boss招式频率、弹幕上限、72场预装试炼机器测试
 python3 scripts/art-check.py  # 需要Pillow；检查图集和采样区域
 node scripts/check-bundle.mjs # 生产资源引用、内容数量与包体检查
 ```

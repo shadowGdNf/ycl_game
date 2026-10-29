@@ -1,5 +1,5 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=4294331e0428";
-import { nextRandom } from "./random.js?v=4294331e0428";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=07c9480d5be3";
+import { nextRandom } from "./random.js?v=07c9480d5be3";
 export const ARENA = { width: 1600, height: 1200 };
 const layouts = [
     [{ x: 320, y: 240, w: 180, h: 100 }, { x: 1100, y: 860, w: 180, h: 100 }, { x: 1100, y: 240, w: 100, h: 160 }, { x: 400, y: 830, w: 100, h: 170 }],
@@ -153,93 +153,122 @@ function cone(p, angle, radius, width, warning, damage, extra = {}) {
 function landings(p, count, spread, radius, warning, damage, extra = {}) {
     return Array.from({ length: count }, (_, i) => circle({ x: Math.max(radius + 30, Math.min(1570 - radius, p.x + Math.cos(i * Math.PI * 2 / count) * spread)), y: Math.max(radius + 30, Math.min(1170 - radius, p.y + Math.sin(i * Math.PI * 2 / count) * spread)) }, radius, warning, damage, extra));
 }
+/** Pursuit remains slower than the slowest chassis; dashes and charges are separate. */
+export function bossPursuitSpeed(base, phase, difficulty = 0, enraged = false) {
+    return base * (1.4 + .1 * Math.max(0, phase - 1) + .05 * Math.max(0, Math.min(4, difficulty)) + (enraged ? .15 : 0));
+}
 /** Complete boss choreography. All damage is resolved by combat.ts, never here. */
-export function bossTurn(id, phase, index, boss, player, difficulty = 0) {
-    const a = toward(boss, player), slot = difficulty >= 4 && index % 4 === 3 ? 0 : index % 3;
-    let plans = [], recovery = 1;
+export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged = false) {
+    phase = Math.max(1, Math.min(['B1A', 'B1B', 'B2B'].includes(id) ? 2 : 3, phase));
+    const difficultyLevel = Math.max(0, Math.min(4, difficulty)), a = toward(boss, player), slot = index % 3;
+    const speedScale = 1 + .08 * (phase - 1) + .05 * difficultyLevel + (enraged ? .12 : 0);
+    const fan = (origin, angle, count, spread, speed, damage, warning = .85, delay = 0) => cone(origin, angle, 600, spread, warning, damage, { active: .08, effect: 'projectile', count, spread, speed, delay, projectileRadius: 5 });
+    let plans = [], recovery = .75;
     if (id === 'B1A') {
         if (slot === 0) {
-            const charge = { ...boss, kind: 'rect', radius: 0, w: 620, h: 90, angle: a, warning: 1, active: 1.4, damage: 20, effect: 'charge', speed: 400, target: { ...player } };
+            const charge = { ...boss, kind: 'rect', radius: 0, w: 660, h: 90, angle: a, warning: 1, active: 1.1, damage: 20, effect: 'charge', speed: 540, target: { ...player } };
             plans = [charge];
-            recovery = 2;
+            recovery = .85;
             if (phase >= 2) {
-                plans.push({ ...charge, warning: .8, delay: 2.5, target: { ...player } });
-                recovery = 3;
+                plans.push({ ...charge, warning: .8, delay: 2.15, target: { ...player } });
+                recovery = 1;
             }
         }
-        if (slot === 1)
-            plans = [cone(boss, a, 170, Math.PI * 2 / 3, .9, 18)];
+        if (slot === 1) {
+            plans = [cone(boss, a, 185, Math.PI * 2 / 3, .8, 18)];
+            recovery = .65;
+        }
         if (slot === 2) {
-            plans = landings(player, 3, 85, 45, .8, 12);
-            recovery = 2;
+            plans = [...landings(player, phase === 1 ? 5 : 7, 110, 45, .8, 12), fan(boss, a, phase === 1 ? 5 : 7, 1.45, 310, 10)];
+            recovery = .8;
         }
     }
     else if (id === 'B1B') {
         if (slot === 0) {
-            plans = [circle(boss, 450, 1, 0, { active: 2, effect: 'pull', speed: 60 }), circle(boss, 150, 3, 22)];
-            recovery = 1.5;
+            plans = [circle(boss, 450, 1, 0, { active: 1.65, effect: 'pull', speed: 85 }), circle(boss, 150, 2.65, 22)];
+            recovery = .8;
         }
         if (slot === 1) {
-            plans = [cone(boss, a - Math.PI / 2, 280, Math.PI / 5, .9, 18, { active: 1.5, innerRadius: 100, sweep: Math.PI, period: .5 })];
+            plans = [cone(boss, a - Math.PI / 2, 280, Math.PI / 5, .9, 18, { active: 1.25, innerRadius: 100, sweep: Math.PI, period: .5 })];
             if (phase >= 2)
-                plans.push(cone(boss, a + Math.PI / 2, 280, Math.PI / 5, .8, 18, { delay: 2.4, active: 1.5, innerRadius: 100, sweep: -Math.PI, period: .5 }));
+                plans.push(cone(boss, a + Math.PI / 2, 280, Math.PI / 5, .8, 18, { delay: 2.2, active: 1.25, innerRadius: 100, sweep: -Math.PI, period: .5 }));
         }
         if (slot === 2)
-            plans = [circle(boss, 75, 1, 0, { effect: 'spawn', enemy: 'E02', count: 3, limit: 6 })];
+            plans = [circle(boss, 75, 1, 0, { effect: 'spawn', enemy: 'E02', count: phase === 1 ? 3 : 4, limit: 8 }), fan(boss, a, phase === 1 ? 6 : 8, 1.65, 320, 10, .85, .3)];
     }
     else if (id === 'B2A') {
         if (slot === 0) {
-            plans = [cone(boss, a, 300, Math.PI / 2, 1, 12, { active: 1.6, period: .5 })];
-            recovery = 3;
+            plans = [cone(boss, a, 300, Math.PI / 2, 1, 12, { active: 1.35, period: .5 })];
+            recovery = .85;
             if (phase >= 2)
-                plans.push(...landings(player, 2, 70, 50, 1.1, 16, { delay: 2.6, effect: 'fire', active: 4, period: .5 }));
+                plans.push(...landings(player, 3, 95, 50, 1.1, 16, { delay: 2.4, effect: 'fire', active: 4, period: .5 }));
         }
         if (slot === 1)
-            plans = landings(player, 4, 105, 50, 1.1, 16, { effect: 'fire', active: 4, period: .5 });
+            plans = [...landings(player, 4 + phase, 125, 50, 1.1, 16, { effect: 'fire', active: 4, period: .5 }), fan(boss, a, 3 + phase * 2, 1.8, 330, 12, 1, .2)];
         if (slot === 2) {
-            plans = landings(boss, 4, 130, 65, .8, 20);
-            recovery = 1.8;
+            plans = landings(boss, phase === 1 ? 4 : 6, 145, 65, .8, 20);
+            recovery = .85;
         }
     }
     else if (id === 'B2B') {
         if (slot === 0)
-            plans = [{ x: boss.x - 145, y: boss.y, kind: 'line', radius: 0, angle: 0, w: 290, h: 22, warning: 1, active: 2, damage: 16, period: .5 }];
+            plans = [{ x: boss.x - 145, y: boss.y, kind: 'line', radius: 0, angle: 0, w: 290, h: 22, warning: 1, active: 1.65, damage: 16, period: .5 }];
         if (slot === 1) {
-            for (let i = 0; i < 4; i++)
-                plans.push({ ...boss, x: boss.x + (i % 2 === 0 ? -145 : 145), kind: 'line', radius: 0, w: 650, h: 12, angle: phase >= 2 ? Math.PI / 4 : 0, warning: .8, delay: i * .4, active: .1, damage: 12, effect: 'projectile', count: 4, spread: Math.PI * 2, speed: 220 });
+            const count = phase === 1 ? 6 : 8;
+            for (let i = 0; i < count; i++)
+                plans.push({ ...boss, x: boss.x + (i % 2 === 0 ? -145 : 145), kind: 'circle', radius: 70, angle: a + (i % 2) * Math.PI / count, warning: .8, delay: i * .26, active: .08, damage: 12, effect: 'projectile', count, spread: Math.PI * 2, speed: 330 });
         }
         if (slot === 2)
-            plans = [circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E05', count: 2, limit: 4 })];
+            plans = [circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E05', count: phase === 1 ? 2 : 3, limit: 6 })];
     }
     else if (id === 'B3A') {
         const s = phase === 1 ? index % 2 : slot;
         if (s === 0) {
-            plans = [{ ...boss, kind: 'line', radius: 0, w: 800, h: 36, angle: a - .55, warning: 1.2, active: 1.5, damage: 14, sweep: 1.1, period: .5 }];
+            plans = [{ ...boss, kind: 'line', radius: 0, w: 800, h: 36, angle: a - .7, warning: 1, active: 1.25, damage: 14, sweep: 1.4, period: .5 }];
             if (phase >= 3) {
-                plans.push(circle(player, 80, 1, 24, { delay: 2.7 }));
-                plans.push(circle(player, 20, .4, 14, { delay: 3.7, kind: 'ring', active: 2.2, grow: 190, innerRadius: 0, period: .5 }));
+                plans.push(circle(player, 80, 1, 24, { delay: 2.3 }));
+                plans.push(circle(player, 20, .6, 14, { delay: 3.4, kind: 'ring', active: 2, grow: 250, innerRadius: 0, period: .5 }));
             }
         }
         if (s === 1)
-            plans = [circle(player, 80, 1, 24), circle(player, 20, .4, 14, { delay: 1.1, kind: 'ring', active: 2.2, grow: 190, innerRadius: 0, period: .5 })];
-        if (s === 2)
-            plans = [{ x: 0, y: 350, kind: 'rect', radius: 0, w: 1600, h: 120, angle: 0, warning: 1, active: 4, damage: 0, effect: 'conveyor', speed: 50 },
-                { x: 1600, y: 850, kind: 'rect', radius: 0, w: 1600, h: 120, angle: Math.PI, warning: 1, active: 4, damage: 0, effect: 'conveyor', speed: 50 },
-                circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E01', count: 4, limit: 8 })];
-        recovery = 3;
+            plans = [circle(player, 80, 1, 24), circle(player, 20, .6, 14, { delay: 1.1, kind: 'ring', active: 2, grow: 250, innerRadius: 0, period: .5 }), fan(boss, a, 5 + phase * 2, 1.9, 350, 12, .9, .35)];
+        if (s === 2) {
+            plans = [{ x: 0, y: 350, kind: 'rect', radius: 0, w: 1600, h: 120, angle: 0, warning: 1, active: 3, damage: 0, effect: 'conveyor', speed: 75 },
+                { x: 1600, y: 850, kind: 'rect', radius: 0, w: 1600, h: 120, angle: Math.PI, warning: 1, active: 3, damage: 0, effect: 'conveyor', speed: 75 },
+                circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E01', count: 5, limit: 10 })];
+            for (let i = 0; i < 3; i++)
+                plans.push(fan(boss, a + (i - 1) * .12, 7, 2, 350, 12, .85, .2 + i * .3));
+        }
+        recovery = .9;
     }
     else if (id === 'B3B') {
-        if (slot === 0)
-            plans = [280, 800, 1320].map(x => ({ x, y: 0, kind: 'rect', radius: 0, w: 1200, h: 120, angle: Math.PI / 2, warning: 1.3, active: .15, damage: 24 }));
+        if (slot === 0) {
+            plans = [280, 800, 1320].map(x => ({ x, y: 0, kind: 'rect', radius: 0, w: 1200, h: 135, angle: Math.PI / 2, warning: 1.3, active: .15, damage: 24 }));
+            if (phase >= 2)
+                plans.push(...[360, 880, 1400].map(x => ({ x, y: 0, kind: 'rect', radius: 0, w: 1200, h: 135, angle: Math.PI / 2, warning: 1.1, delay: .7, active: .15, damage: 24 })));
+        }
         if (slot === 1)
-            plans = [circle(boss, 120, 1, 0, { effect: 'spawn', enemy: 'E02', count: 4, limit: 8, spawnHp: 30, spawnDamage: 8 })];
+            plans = [circle(boss, 120, 1, 0, { effect: 'spawn', enemy: 'E02', count: 4 + phase, limit: 10, spawnHp: 30, spawnDamage: 8 }), fan(boss, a, 5 + phase * 2, 2, 340, 10, 1, .25)];
         if (slot === 2) {
-            for (let i = 0; i < 5; i++)
-                plans.push(cone(boss, a, 650, Math.PI * 5 / 3, 1, 10, { delay: i * .35, active: .1, effect: 'projectile', count: 9, spread: Math.PI * 5 / 3, speed: 220 }));
-            recovery = 3;
+            for (let i = 0; i < 5 + phase; i++)
+                plans.push(fan(boss, a, 9 + phase * 2, Math.PI * 5 / 3, 340, 10, 1, i * .26));
+            recovery = .95;
         }
     }
-    const duration = plans.reduce((max, p) => Math.max(max, (p.delay || 0) + p.warning + p.active), 0);
+    for (const plan of plans) {
+        if (plan.effect === 'projectile')
+            plan.speed *= speedScale;
+        // Keep the traveled charge length inside the painted lane when speeding it up.
+        if (plan.effect === 'charge') {
+            plan.speed *= speedScale;
+            plan.active /= speedScale;
+        }
+        if (plan.grow)
+            plan.grow *= speedScale;
+    }
+    recovery = Math.max(.4, recovery / (1 + .1 * (phase - 1) + .08 * difficultyLevel + (enraged ? .2 : 0)));
+    // Lingering fire and conveyors continue after the cast; they must not stall the next turn.
+    const duration = plans.reduce((max, p) => Math.max(max, (p.delay || 0) + p.warning + (p.effect === 'fire' || p.effect === 'conveyor' ? Math.min(.15, p.active) : p.active)), 0);
     return { plans, duration, recovery };
 }
 export function bossPhase(id, fraction) {

@@ -1,7 +1,7 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=4294331e0428";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=4294331e0428";
-import { nextRandom } from "./random.js?v=4294331e0428";
-import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=4294331e0428";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=07c9480d5be3";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=07c9480d5be3";
+import { nextRandom } from "./random.js?v=07c9480d5be3";
+import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=07c9480d5be3";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -663,7 +663,7 @@ function tickZones(w, dt) {
             continue;
         }
         z.remaining -= dt;
-        if (z.active && z.remaining <= 0 && z.source === 'B2A' && z.kind === 'cone')
+        if (z.active && z.remaining <= 0 && z.source === 'B2A' && z.kind === 'cone' && z.plan.effect !== 'projectile')
             for (const e of w.enemies)
                 if (e.id === 'B2A')
                     e.vulnerableUntil = w.time + 3;
@@ -921,13 +921,13 @@ function tickBoss(w, dt) {
                     b.exposed = phase >= 2;
             }
         }
-        const turn = bossTurn(w.bossId, phase, w.bossTurn++, w.bossCenter || root, w.player, w.difficulty);
+        const turn = bossTurn(w.bossId, phase, w.bossTurn++, w.bossCenter || root, w.player, w.difficulty, w.bossEnraged);
         for (const plan of turn.plans)
             addZone(w, { ...plan, damage: plan.damage * (w.difficulty >= 4 ? 1.15 : w.difficulty >= 2 ? 1.1 : 1) }, root.eid, w.bossId);
-        w.bossClock = turn.duration + turn.recovery * (w.bossEnraged ? .8 : 1);
+        w.bossClock = turn.duration + turn.recovery;
     }
-    else if (!w.zones.some(z => z.sourceId === root.eid && z.plan.effect !== 'fire') && (!root.charge || root.charge.until <= w.time)) {
-        const center = w.bossCenter || root, a = angleTo(center, w.player), d = distance(center, w.player), speed = root.speed * (root.id === 'B2A' && root.phase >= 3 ? 1.15 : 1) * (1 - enemySlow(w, root));
+    else if (!w.zones.some(z => z.sourceId === root.eid && z.plan.effect !== 'fire' && z.plan.effect !== 'conveyor') && (!root.charge || root.charge.until <= w.time)) {
+        const center = w.bossCenter || root, a = angleTo(center, w.player), d = distance(center, w.player), speed = bossPursuitSpeed(root.speed, root.phase, w.difficulty, w.bossEnraged) * (1 - enemySlow(w, root));
         if (d > 240) {
             center.x = clamp(center.x + Math.cos(a) * speed * dt, 190, w.width - 190);
             center.y = clamp(center.y + Math.sin(a) * speed * dt, 150, w.height - 150);

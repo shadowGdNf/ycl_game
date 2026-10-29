@@ -1,8 +1,8 @@
-import { offerTier, moduleStat } from "./rarity.js?v=4294331e0428";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=4294331e0428";
-import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=4294331e0428";
-import * as economy from "./economy.js?v=4294331e0428";
-import { supportFeedback } from "./workshop.js?v=4294331e0428";
+import { offerTier, moduleStat } from "./rarity.js?v=07c9480d5be3";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=07c9480d5be3";
+import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=07c9480d5be3";
+import * as economy from "./economy.js?v=07c9480d5be3";
+import { supportFeedback } from "./workshop.js?v=07c9480d5be3";
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function workshopMarkup(r, o) {
     const t = (zh, en) => o.lang === 'zh' ? zh : en, name = (item) => escape(label(item, o.lang));

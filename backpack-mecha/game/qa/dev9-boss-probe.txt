@@ -1,0 +1,8 @@
+B1A: turns/min 14.241 -> 22.372, shots/min 0 -> 52.201, speed 0 -> 334.8
+B1B: turns/min 14.469 -> 17.407, shots/min 0 -> 46.418, speed 0 -> 345.6
+B2A: turns/min 9.221 -> 22.809, shots/min 0 -> 68.427, speed 0 -> 382.8
+B2B: turns/min 19.523 -> 21.138, shots/min 104.121 -> 450.945, speed 220 -> 356.4
+B3A: turns/min 7.5 -> 13.158, shots/min 0 -> 140.351, speed 0 -> 406
+B3B: turns/min 17.875 -> 21.893, shots/min 268.123 -> 956.011, speed 220 -> 394.4
+Practice tier 2: 31/36 won, 2 game timeouts, 0 unfinished, mean damage taken 95.252
+Practice tier 4: 35/36 won, 1 game timeouts, 0 unfinished, mean damage taken 54.43
