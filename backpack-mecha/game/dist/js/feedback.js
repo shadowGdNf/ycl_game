@@ -1,3 +1,4 @@
+import { roundRect } from "./canvas.js?v=7e39c4d69815";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -362,7 +363,7 @@ export function drawHazardEnergy(c, z, time, reduced) {
         c.strokeStyle = '#263138';
         c.lineWidth = 3;
         c.beginPath();
-        c.roundRect(outer - 21, -13, 31, 26, 4);
+        roundRect(c, outer - 21, -13, 31, 26, 4);
         c.fill();
         c.stroke();
         if (!reduced) {

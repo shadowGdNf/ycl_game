@@ -1,20 +1,20 @@
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, WAVES, label } from "./content.js";
-import * as economy from "./economy.js";
-import { createBattle, stepBattle, battleResult } from "./combat.js";
-import { Renderer } from "./renderer.js";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js";
-import { GameAudio } from "./audio.js";
-import { overloadRequested, FocusGesture } from "./input.js";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js";
-import { BUILD_VERSION } from "./version.js";
-import { ForegroundFrameClock } from "./performance.js";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints } from "./workshop.js";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, WAVES, label } from "./content.js?v=7e39c4d69815";
+import * as economy from "./economy.js?v=7e39c4d69815";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=7e39c4d69815";
+import { Renderer } from "./renderer.js?v=7e39c4d69815";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=7e39c4d69815";
+import { GameAudio } from "./audio.js?v=7e39c4d69815";
+import { overloadRequested, FocusGesture } from "./input.js?v=7e39c4d69815";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=7e39c4d69815";
+import { BUILD_VERSION } from "./version.js?v=7e39c4d69815";
+import { ForegroundFrameClock } from "./performance.js?v=7e39c4d69815";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints } from "./workshop.js?v=7e39c4d69815";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
 let deferPending = false, terminalElapsed = -1, displayedScreen = '';
 let selectedChassis = 'scavenger', selectedMode = 'full', selectedDifficulty = 0, selectedUid = '', pendingBuy = -1, pendingOfferId = '', heldRotation = 0, editUndo = null;
-let toastTimer = 0, lastFrame = 0, accumulator = 0, lastSave = 0, lastHud = 0, homeTime = 0, assetsReady = false, tutorialShown = '', activeDialog = '', lastUnlocks = [];
+let toastTimer = 0, lastFrame = 0, accumulator = 0, lastSave = 0, lastHud = 0, homeTime = 0, assetsReady = false, assetsLoading = false, assetsFailed = false, renderFailed = false, assetsLoaded = 0, tutorialShown = '', activeDialog = '', lastUnlocks = [];
 const renderer = new Renderer($('battle-canvas'));
 const audio = new GameAudio(profile.settings);
 const keys = new Set();
@@ -44,10 +44,39 @@ function showScreen(id) { if (displayedScreen !== id) {
     window.scrollTo(0, 0);
 } for (const key of ['home', 'prep', 'battle', 'result'])
     $(key + '-screen').hidden = key !== id; document.body.classList.toggle('battle-active', id === 'battle'); }
-function drawIcons(root = document) { if (!assetsReady)
-    return; root.querySelectorAll('canvas[data-icon]').forEach(c => renderer.icon(c, c.dataset.icon)); root.querySelectorAll('canvas[data-portrait]').forEach(c => renderer.portrait(c, c.dataset.portrait)); }
+function drawIcons(root = document) { root.querySelectorAll('canvas[data-icon]').forEach(c => renderer.icon(c, c.dataset.icon)); root.querySelectorAll('canvas[data-portrait]').forEach(c => renderer.portrait(c, c.dataset.portrait)); }
 function canvasIcon(id, cls = '') { return `<canvas class="${cls}" width="128" height="128" data-icon="${escape(id)}" aria-label="${escape(name(MODULE_BY_ID[id]))}"></canvas>`; }
 function unlockReason(id) { return id === 'bulwark' ? t('完成第一章解锁', 'Clear Act I to unlock') : id === 'kestrel' ? t('三章通关解锁', 'Complete a full run to unlock') : t('使用无人机击败第二章 Boss', 'Defeat an Act II boss with drones'); }
+function updateAssetStatus() {
+    const status = $('asset-status'), message = $('asset-message'), retry = $('asset-retry');
+    status.hidden = assetsReady && !renderFailed;
+    retry.hidden = !assetsFailed && !renderFailed;
+    message.textContent = renderFailed ? t('画面暂时无法显示，进度已尝试保存。请刷新页面；若仍失败，请更新浏览器。', 'Unable to draw the game. A save was attempted. Reload the page, or update your browser if this continues.') : assetsFailed ? t('图片加载中断，请检查网络后重试。已加载的图片会保留。', 'Artwork loading stopped. Check your connection and retry; loaded images are kept.') :
+        t(`正在加载机甲与武器… ${assetsLoaded}/4，首次打开请稍候。`, `Loading mechs and weapons… ${assetsLoaded}/4. Please wait on your first visit.`);
+    retry.textContent = renderFailed ? t('刷新页面', 'Reload page') : t('重试加载', 'Retry loading');
+    document.querySelectorAll('[data-action="new-run"],[data-action="continue"],[data-action="confirm-new"],[data-action="again"],[data-action="deploy"]').forEach(button => { button.disabled = !assetsReady || renderFailed; });
+}
+async function loadArtwork() {
+    if (assetsLoading || assetsReady)
+        return;
+    assetsLoading = true;
+    assetsFailed = false;
+    updateAssetStatus();
+    try {
+        await renderer.load(progress => { assetsLoaded = progress.loaded; updateAssetStatus(); drawIcons(); });
+        assetsReady = true;
+        drawIcons();
+        drawBoard();
+    }
+    catch (error) {
+        console.error(error);
+        assetsFailed = true;
+    }
+    finally {
+        assetsLoading = false;
+        updateAssetStatus();
+    }
+}
 function renderHome() {
     showScreen('home');
     audio.stop();
@@ -56,6 +85,7 @@ function renderHome() {
     const c = CHASSIS_BY_ID[selectedChassis];
     $('home-screen').innerHTML = `<div class="home-layout"><div class="home-intro"><div class="eyebrow">FIELD NOTES / 001 <span class="orange">&nbsp; · &nbsp; ${t('废铁也有第二次机会', 'A SECOND LIFE FOR SCRAP')}</span></div><h1>${t('把废铁，<br>装成<em>王牌。</em>', 'Small pack.<br><em>Big firepower.</em>')}</h1><p class="lead">${t('空间有限，组合无限。拼好你的机甲，穿过失控的回收工厂，把每一次失败变成新的打法。', 'Build a better machine from what you find. Fit your weapons, discover a synergy, and take back the runaway factories.')}</p><div class="hero-rig"><canvas id="hero-portrait" width="640" height="480" data-portrait="${c.id}"></canvas><div class="rig-caption"><strong>${escape(name(c))}</strong>${t('模块化回收机体', 'MODULAR SALVAGE RIG')}<br>UNIT / ${String(CHASSIS.indexOf(c) + 1).padStart(2, '0')}</div></div></div><div class="launch-panel"><div class="panel-heading"><h2>${t('选择你的机体', 'Choose your chassis')}</h2><span class="serial">ASSEMBLY / 01</span></div><div class="chassis-list">${CHASSIS.map(ch => `<button class="chassis ${ch.id === c.id ? 'selected' : ''}" data-action="chassis" data-id="${ch.id}" aria-pressed="${ch.id === c.id}" title="${escape(profile.unlocked.includes(ch.id) ? name(ch) : unlockReason(ch.id))}"><canvas width="192" height="192" data-portrait="${ch.id}"></canvas><span>${escape(name(ch))}</span>${profile.unlocked.includes(ch.id) ? '' : '<b class="lock-mark">◇</b>'}</button>`).join('')}</div><div class="chassis-description"><strong>${escape(name(c))}</strong><p>${escape(profile.language === 'zh' ? c.trait : c.traitEn)}</p><div class="mini-stats"><span>HP ${c.hp}</span><span>${t('护盾', 'SHIELD')} ${c.shield}</span><span>${t('移速', 'SPEED')} ${c.speed}</span></div></div><div class="launch-fields"><label class="field">${t('远征长度', 'EXPEDITION')}<select id="mode-select"><option value="full" ${selectedMode === 'full' ? 'selected' : ''}>${t('三章远征 · 约15分钟', 'Full expedition · ~15 min')}</option><option value="demo" ${selectedMode === 'demo' ? 'selected' : ''}>${t('两章试炼 · 约10分钟', 'Two-act trial · ~10 min')}</option><option value="prototype" ${selectedMode === 'prototype' ? 'selected' : ''}>${t('首章训练 · 约4分钟', 'Act I training · ~4 min')}</option></select></label><label class="field">${t('警戒等级', 'THREAT LEVEL')}<select id="difficulty-select">${Array.from({ length: 5 }, (_, i) => `<option value="${i}" ${i === selectedDifficulty ? 'selected' : ''} ${i > profile.maxDifficulty || selectedMode !== 'full' && i > 0 ? 'disabled' : ''}>${i === 0 ? t('0 · 标准', '0 · Standard') : i + ' · ' + t('警戒', 'Alert')}${i > profile.maxDifficulty ? ' ◇' : ''}</option>`).join('')}</select></label><label class="field wide">${t('远征种子 · 可分享相同路线', 'SEED · SHARE THE SAME EXPEDITION')}<input id="seed-input" maxlength="48" value="${escape(homeSeed)}" spellcheck="false"></label></div><button class="primary large" data-action="new-run"><span>${t('启动远征', 'BEGIN EXPEDITION')}</span><span>↗</span></button>${run && !['won', 'lost'].includes(run.phase) ? `<button class="continue" data-action="continue">${t('继续上次远征', 'Continue expedition')} · ${t('第', 'Wave ')}${run.wave}${t('场', '')}</button>` : ''}<p class="milestone">${t('自动攻击 · 手动走位 · 局间拼装 · 随时暂停', 'Auto fire · Manual movement · Build between waves · Pause anytime')}</p></div></div><div class="home-foot"><div><strong>36 ${t('件模块', 'MODULES')}</strong>${t('为每一格找到用途', 'EVERY CELL COUNTS')}</div><div><strong>06 ${t('条构筑路线', 'BUILD FAMILIES')}</strong>${t('在随机中找到组合', 'FIND YOUR SYNERGY')}</div><div><strong>03 ${t('座失控工厂', 'ROGUE FACTORIES')}</strong>${t('六种首领，三场决战', 'SIX BOSSES. THREE SHOWDOWNS.')}</div><div><strong>${String(profile.wins).padStart(2, '0')} ${t('次归来', 'RETURNS')}</strong>${t('带回经验，再次出发', 'REBUILD. RETURN. REPEAT.')}</div></div>`;
     drawIcons($('home-screen'));
+    updateAssetStatus();
 }
 function selectedItem() { return run?.items.find(i => i.uid === selectedUid); }
 function renderPlacementHelp() {
@@ -395,14 +425,15 @@ else if (r.phase === 'expansion') {
     selectedCorners.clear();
     openModal(`<div class="eyebrow">FRAME / EXPANSION</div><h2>${t('扩展背包框架', 'Expand the frame')}</h2><p>${t('选择两个角格解锁。机体电力与模块升级等级同步开放。', 'Choose two corners to unlock. Power and module upgrades also expand.')}</p><div class="corner-grid">${[t('左上角', 'Top left'), t('右上角', 'Top right'), t('左下角', 'Bottom left'), t('右下角', 'Bottom right')].map((v, i) => `<button data-action="corner" data-index="${i}" ${r.unlockedCorners.includes(i) ? 'disabled' : ''}>${v}${r.unlockedCorners.includes(i) ? ' ✓' : ''}</button>`).join('')}</div><button class="primary" data-action="expand">${t('确认扩容', 'Confirm expansion')}</button>`, 'expansion');
 } }
-function deploy() { if (!run)
+function deploy() { if (!run || !assetsReady || renderFailed)
     return; resetControls(); if (run.phase !== 'prep') {
     showPending();
     return;
 } updateCodex(); const result = economy.startWave(run); if (!actResult(result, 'click', false))
     return; battle = createBattle(run); terminalElapsed = -1; screen = 'run'; paused = false; accumulator = 0; lastFrame = performance.now(); lastSave = 0; lastHud = 0; pendingBuy = -1; editUndo = null; targetQueued = undefined; targetMarker = undefined; audio.resetEvents(); audio.stop(); audio.music('battle'); if (run.wave >= 2 && run.items.some(i => i.link))
     profile.tutorial = true; render(); persist(); }
-function beginNewRun() { const value = $('seed-input')?.value.trim() || homeSeed; homeSeed = value; if (selectedMode === 'prototype' || selectedMode === 'demo' && !['scavenger', 'bulwark'].includes(selectedChassis))
+function beginNewRun() { if (!assetsReady || renderFailed)
+    return; const value = $('seed-input')?.value.trim() || homeSeed; homeSeed = value; if (selectedMode === 'prototype' || selectedMode === 'demo' && !['scavenger', 'bulwark'].includes(selectedChassis))
     selectedChassis = 'scavenger'; run = economy.newRun(selectedChassis, selectedMode, selectedDifficulty, profile.tutorial ? value : 'FIRST-LIGHT'); battle = null; selectedUid = ''; pendingBuy = -1; lastUnlocks = []; screen = 'run'; profile.totalRuns++; if (!profile.tutorial) {
     const support = run.items.find(i => i.id === 'S01');
     if (support)
@@ -434,6 +465,10 @@ async function dispatch(button) {
     const action = button.dataset.action;
     if (!action)
         return;
+    if (['new-run', 'confirm-new', 'continue', 'again', 'deploy'].includes(action) && (!assetsReady || renderFailed)) {
+        updateAssetStatus();
+        return;
+    }
     audio.unlock();
     const index = Number(button.dataset.index), id = button.dataset.id ?? '';
     if (action === 'chassis') {
@@ -762,6 +797,10 @@ $('modal-content').addEventListener('change', e => { const input = e.target, k =
     profile.settings.volume = Number(input.value);
 else
     profile.settings[k] = input.checked; applySettings(); persist(); });
+$('asset-retry').onclick = () => { if (renderFailed)
+    location.reload();
+else
+    void loadArtwork(); };
 $('language-button').onclick = () => { profile.language = profile.language === 'zh' ? 'en' : 'zh'; applySettings(); persist(); render(); if (activeDialog === 'settings')
     settings(); if (activeDialog === 'codex')
     codex(); };
@@ -865,6 +904,27 @@ window.addEventListener('pageshow', e => { if (e.persisted) {
         setPause();
 } });
 function frame(now) {
+    try {
+        advanceFrame(now);
+    }
+    catch (error) {
+        console.error(error);
+        renderFailed = true;
+        paused = true;
+        resetControls();
+        audio.suspend();
+        try {
+            persist();
+        }
+        catch (saveError) {
+            console.error(saveError);
+        }
+        $('modal').close();
+        activeDialog = '';
+        updateAssetStatus();
+    }
+}
+function advanceFrame(now) {
     const rawMs = Math.max(0, now - lastFrame);
     const dt = Math.min(.1, rawMs / 1000);
     lastFrame = now;
@@ -925,14 +985,5 @@ function frame(now) {
     }
     requestAnimationFrame(frame);
 }
-async function boot() { const saved = await loadSave(); profile = saved.profile; run = saved.run; battle = saved.battle; selectedChassis = run?.chassis ?? 'scavenger'; selectedMode = run?.mode ?? 'full'; selectedDifficulty = run?.difficulty ?? 0; audio.configure(profile.settings); applySettings(); renderHome(); try {
-    await renderer.load();
-    assetsReady = true;
-    drawIcons();
-    drawBoard();
-}
-catch (error) {
-    console.error(error);
-    toast(t('部分素材未能加载，请刷新页面重试。', 'Some artwork could not load. Please refresh.'));
-} lastFrame = performance.now(); requestAnimationFrame(frame); }
+async function boot() { const saved = await loadSave(); profile = saved.profile; run = saved.run; battle = saved.battle; selectedChassis = run?.chassis ?? 'scavenger'; selectedMode = run?.mode ?? 'full'; selectedDifficulty = run?.difficulty ?? 0; audio.configure(profile.settings); applySettings(); renderHome(); lastFrame = performance.now(); requestAnimationFrame(frame); void loadArtwork(); }
 void boot();

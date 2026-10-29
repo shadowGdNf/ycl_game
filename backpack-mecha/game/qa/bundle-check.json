@@ -1,8 +1,9 @@
 {
-  "checkedAt": "2026-10-29T04:37:37.720Z",
-  "files": 30,
-  "bytes": 9702482,
-  "mib": 9.25,
+  "checkedAt": "2026-10-29T06:27:21.823Z",
+  "files": 31,
+  "bytes": 1743026,
+  "mib": 1.66,
+  "startupImageBytes": 1177366,
   "spriteRegions": 86,
   "counts": {
     "modules": 36,

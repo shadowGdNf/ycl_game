@@ -6,7 +6,9 @@
 
 本目录由 `ycl_game` 主仓库统一管理，不再使用嵌套的独立 Git 仓库。请在仓库根目录查看和提交变更。
 
-当前工作版本为 **v0.2.0-dev.6**，已完成战斗反馈首批修复：起重机摆锤逐帧接触判定、机械臂与砸地动作、双向命中反馈、十二种武器特效和移动/转向/后坐力平滑。规则版本为 `0.1.1`；修复伤害判定，武器数值、Boss 生命和经济价格未改。见 [dev.6 战斗反馈记录](docs/DEV6-COMBAT-FEEDBACK.md)及 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准，本批尚未部署。
+当前工作版本为 **v0.2.0-dev.6.1**，已完成战斗反馈首批修复：起重机摆锤逐帧接触判定、机械臂与砸地动作、双向命中反馈、十二种武器特效和移动/转向/后坐力平滑。规则版本为 `0.1.1`；修复伤害判定，武器数值、Boss 生命和经济价格未改。见 [dev.6 战斗反馈记录](docs/DEV6-COMBAT-FEEDBACK.md)及 [v0.2 开发记录](docs/V0.2-DEVELOPMENT.md)。线上试玩以最近一次 Pages 部署为准，本批尚未部署。
+
+dev.6.1 修复手机图片加载中断与提前进入战斗灰屏：发布图集使用 WebP，首屏图片约 1.18 MB；显示加载进度、15 秒超时、自动重试与手动重试。脚本和资源包含内容版本，降低更新时旧缓存混用风险。详见 [加载修复与验证记录](docs/LOADING-FIX.md)。本地构建不代表 GitHub Pages 已更新。
 
 dev.4 基线提交为 `97cf0d3`（`feat: dev.4`）；dev.5 的实施与交付记录见上述文档，当前暂存/提交状态以 Git 为准。独立 Chrome 十二场完整远征、Safari 和真机持续运行仍待验收，机器模拟、内置浏览器和手机视口不能替代这些记录。
 
@@ -86,7 +88,8 @@ dev.5 战报额外保留每场最近 3,600 个前台战斗帧间隔和渲染耗�
 - `src/journal.ts` / `src/version.ts`：有容量上限的本地战报、运行版本与规则版本。
 - `assets/content.json`：可阅读数值目录；`assets/source/design-baseline.json`：原设计基线。
 - `scripts/export-content.py`：从工程内设计基线生成结构化目录和中英文参数说明。
-- `assets/atlases/` / `assets/atlas-manifest.json`：五张 PNG 图集、86 个采样区域及图集哈希；挂点位于渲染器。
+- `assets/atlases/` / `assets/atlas-manifest.json`：五张 PNG 原始图集、86 个采样区域及图集哈希；挂点位于渲染器。
+- `assets/optimized/`：网页使用的 WebP 图集和对应清单，保留原图尺寸、透明通道及采样坐标；`npm run art:optimize` 重新生成，普通构建直接使用已提交的文件。原始 PNG 不进入 `dist/`。
 - `assets/source/art-layout.json`：经透明通道检查的图集分区；旧图保存在 `assets/source/pre-style-a/`，不进入网页包。
 - [美术规范](docs/ART.md)、[A 方案素材提示](docs/ASSET-PROMPTS-A.json)、[原版素材提示](docs/ASSET-PROMPTS.txt)、[接口与实现说明](docs/IMPLEMENTATION.md)、[测试与限制](docs/QA.md)。
 
@@ -116,7 +119,7 @@ node scripts/check-bundle.mjs # 生产资源引用、内容数量与包体检查
 - 未执行 Android Chrome / iPhone Safari 真机性能测量、完整桌面 Chrome/Safari 矩阵和十二名新玩家观察。
 - 已登记小米 MIX 2S / Android 10，但设备未安装 Chrome，本轮设备交互测试未完成。用户确认暂无 iPhone，Safari 保留待测。390×844 布局检查不计为真机验收。
 - 完整预装构筑的部分Boss击杀时间短于设计目标，下一轮需依据真实商店成长的完整局数据调优。
-- 角色采用 3D 质感透明图片与四姿态插值；敌人每种一张基础姿态。未新增真实 3D 模型、逐敌人动画帧或实时材质光照。PNG 保留生成原像素，通过元数据裁切采样。
+- 角色采用 3D 质感透明图片与四姿态插值；敌人每种一张基础姿态。未新增真实 3D 模型、逐敌人动画帧或实时材质光照。原始 PNG 保留生成原像素，网页使用压缩 WebP 副本，通过相同元数据裁切采样。
 - 每日轮换、皮肤、联网排行、广告、支付均属于后续扩展。
 
 素材由内置图像生成工具按本项目统一参考生成，来源与提示保存在工程中。背景音乐和音效由工程内 Web Audio 代码合成，没有外部歌曲或商业素材包依赖。

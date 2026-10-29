@@ -1,6 +1,6 @@
-import { BUILD_VERSION, RULESET_VERSION } from "./version.js";
-import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js";
-import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js";
+import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=7e39c4d69815";
+import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=7e39c4d69815";
+import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=7e39c4d69815";
 const EVENT_LIMIT = 400;
 export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
 const clone = (value) => structuredClone(value);

@@ -1,5 +1,6 @@
-import { motionLabel, zoneRole } from "./motion.js";
-import { smoothStep } from "./visual-motion.js";
+import { roundRect } from "./canvas.js?v=7e39c4d69815";
+import { motionLabel, zoneRole } from "./motion.js?v=7e39c4d69815";
+import { smoothStep } from "./visual-motion.js?v=7e39c4d69815";
 const TAU = Math.PI * 2;
 const special = (e) => e.kind === 'boss' || e.id === 'E05' || e.id === 'E12';
 const labelWidths = new Map();
@@ -191,7 +192,7 @@ export function enemyBody(c, art, key, e, m, size, time, reduced, gait) {
             c.strokeStyle = '#efc393';
             c.lineWidth = 3;
             c.beginPath();
-            c.roundRect(-17, -11, 34, 22, 4);
+            roundRect(c, -17, -11, 34, 22, 4);
             c.fill();
             c.stroke();
             c.fillStyle = active ? '#b7f6f2' : '#f1c383';
@@ -293,7 +294,7 @@ export function enemyMotionLabel(c, e, m, size, scale, lang, view, dpr = 1) {
                     t.scale(density, density);
                     t.fillStyle = 'rgba(12,24,31,.93)';
                     t.beginPath();
-                    t.roundRect(0, 0, width, font * 1.4, 3);
+                    roundRect(t, 0, 0, width, font * 1.4, 3);
                     t.fill();
                     t.font = c.font;
                     t.textAlign = 'center';
@@ -319,7 +320,7 @@ export function enemyMotionLabel(c, e, m, size, scale, lang, view, dpr = 1) {
     }
     c.fillStyle = 'rgba(12,24,31,.93)';
     c.beginPath();
-    c.roundRect(x - width / 2, y - font * .7, width, font * 1.4, 3);
+    roundRect(c, x - width / 2, y - font * .7, width, font * 1.4, 3);
     c.fill();
     c.fillStyle = ink;
     c.fillText(label, x, y);

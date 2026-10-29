@@ -2,11 +2,11 @@
   "version": 2,
   "style": "A — stylized satin metal",
   "atlases": {
-    "actors": "atlases/actors.png",
-    "modules": "atlases/modules.png",
-    "enemies": "atlases/enemies.png",
-    "environment": "atlases/environment.png",
-    "cargo": "atlases/cargo.png"
+    "actors": "atlases/actors.3263215cadfa.webp",
+    "modules": "atlases/modules.cfd9d25a2bf5.webp",
+    "enemies": "atlases/enemies.c03b407e7d48.webp",
+    "environment": "atlases/environment.aa128abbbdf9.webp",
+    "cargo": "atlases/cargo.f672617de56a.webp"
   },
   "sprites": {
     "scavenger.body.0": {
@@ -616,36 +616,37 @@
     "actors": {
       "width": 1024,
       "height": 1536,
-      "bytes": 2474863,
-      "sha256": "3021cedde031c10a9e54c9b21961892b6831e4073ede94f1f53603bc2ea33636",
+      "bytes": 357200,
+      "sha256": "3263215cadfa6c7070eda4930481de6d6863bba37086a4c4422fd8fd4f800b81",
       "transparent_fraction": 0.45
     },
     "modules": {
       "width": 1254,
       "height": 1254,
-      "bytes": 1982972,
-      "sha256": "9ddcecd0a3b72beb6f9540b02ac27e3a46182c97e36541e9900e0234e5ea5e34",
+      "bytes": 418298,
+      "sha256": "cfd9d25a2bf5cee8ff1c678b08cf3e09f3a46cf13e53e89cc632b3b2d0649279",
       "transparent_fraction": 0.4902
     },
     "enemies": {
       "width": 1774,
       "height": 887,
-      "bytes": 1258612,
-      "sha256": "0aa97072b3c4e4b56fd5af91d9889acc2f00f1dae722b1405bfd54e047072a6a",
+      "bytes": 272394,
+      "sha256": "c03b407e7d48b5c542a12226da3486cbe4575ca34888df4ff80cda28f3e6b221",
       "transparent_fraction": 0.6855
     },
     "environment": {
       "width": 1254,
       "height": 1254,
-      "bytes": 2573931,
-      "sha256": "3dde65966c3350252f657179da3ee5fe10cc7b91b980aa328791d48c8133d4f2"
+      "bytes": 157332,
+      "sha256": "aa128abbbdf9e24b4c4994beec2c38ef73043dec33791dbdc12e2ea428fc074e"
     },
     "cargo": {
       "width": 1774,
       "height": 887,
-      "bytes": 1010789,
-      "sha256": "49aa7e58ca9468e6ef5025d4ba285cd6f3516231c8580c3e16173be1b09284e1",
+      "bytes": 129474,
+      "sha256": "f672617de56ae6af12027087726541e90155f4f16b7c26e495570427e0b8a369",
       "transparent_fraction": 0.6852
     }
-  }
+  },
+  "sourceManifestSha256": "c52578aa275fd6911140a4c4f54481f4ad65370e881b8565567d6aabb4bd06bd"
 }

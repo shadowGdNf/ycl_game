@@ -1,3 +1,4 @@
+import {roundRect} from './canvas.ts';
 import type {Art} from './art.ts';
 import type {EnemyMotion} from './motion.ts';
 import {motionLabel,zoneRole} from './motion.ts';
@@ -93,7 +94,7 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
   c.save();c.lineJoin='round';c.lineCap='round';c.strokeStyle='#1a2931';c.lineWidth=12;c.beginPath();c.moveTo(start.x,start.y);c.lineTo(mid.x,mid.y);c.lineTo(end.x,end.y);c.stroke();
   c.strokeStyle='#c6a477';c.lineWidth=7;c.stroke();c.strokeStyle='#f8d4a0';c.lineWidth=2;c.stroke();
   c.fillStyle='#546974';c.beginPath();c.arc(mid.x,mid.y,7,0,TAU);c.fill();c.strokeStyle='#cbd5cb';c.lineWidth=2;c.stroke();
-  if(!sweeping||!active){c.save();c.translate(end.x,end.y);c.rotate(sweeping?angle:0);c.fillStyle='#71838a';c.strokeStyle='#efc393';c.lineWidth=3;c.beginPath();c.roundRect(-17,-11,34,22,4);c.fill();c.stroke();c.fillStyle=active?'#b7f6f2':'#f1c383';c.fillRect(-9,4,18,4);c.restore();}
+  if(!sweeping||!active){c.save();c.translate(end.x,end.y);c.rotate(sweeping?angle:0);c.fillStyle='#71838a';c.strokeStyle='#efc393';c.lineWidth=3;c.beginPath();roundRect(c,-17,-11,34,22,4);c.fill();c.stroke();c.fillStyle=active?'#b7f6f2':'#f1c383';c.fillRect(-9,4,18,4);c.restore();}
   c.restore();
  }
  // These cues are directions and body status, never collision or damage boundaries.
@@ -141,13 +142,13 @@ export function enemyMotionLabel(c:Context,e:EnemyView,m:EnemyMotion,size:number
   const density=Math.max(1,scale*dpr),key=`${cacheKey}/${ink}/${density}`;let tile=labelTiles.get(key);
   if(!tile)try{
    const next=new OffscreenCanvas(Math.ceil(width*density),Math.ceil(font*1.4*density)),t=next.getContext('2d');
-   if(t){t.scale(density,density);t.fillStyle='rgba(12,24,31,.93)';t.beginPath();t.roundRect(0,0,width,font*1.4,3);t.fill();t.font=c.font;t.textAlign='center';t.textBaseline='middle';t.fillStyle=ink;t.fillText(label,width/2,font*.7);
+   if(t){t.scale(density,density);t.fillStyle='rgba(12,24,31,.93)';t.beginPath();roundRect(t,0,0,width,font*1.4,3);t.fill();t.font=c.font;t.textAlign='center';t.textBaseline='middle';t.fillStyle=ink;t.fillText(label,width/2,font*.7);
     if(labelTiles.size>=48)labelTiles.delete(labelTiles.keys().next().value!);labelTiles.set(key,next);tile=next;
    }else canCacheLabels=false;
   }catch{canCacheLabels=false;}
   if(tile){c.drawImage(tile,x-width/2,y-font*.7,width,font*1.4);c.restore();return;}
  }
- c.fillStyle='rgba(12,24,31,.93)';c.beginPath();c.roundRect(x-width/2,y-font*.7,width,font*1.4,3);c.fill();
+ c.fillStyle='rgba(12,24,31,.93)';c.beginPath();roundRect(c,x-width/2,y-font*.7,width,font*1.4,3);c.fill();
  c.fillStyle=ink;c.fillText(label,x,y);c.restore();
 }
 

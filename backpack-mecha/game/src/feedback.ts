@@ -1,3 +1,4 @@
+import {roundRect} from './canvas.ts';
 /** Bounded, deterministic Canvas effects. These helpers never touch battle state. */
 import type {BulletView,CombatEvent,Lang,Point,ZoneView} from './types.ts';
 const TAU=Math.PI*2;
@@ -137,7 +138,7 @@ export function drawHazardEnergy(c:CanvasRenderingContext2D,z:ZoneView,time:numb
  }else if(z.active&&z.kind==='cone'&&z.source==='B1B'){
   const inner=z.innerRadius??100,outer=z.radius;c.strokeStyle='#ffc48c';c.globalAlpha=.3;c.lineWidth=20;line(c,inner,0,outer,0);
   c.globalAlpha=1;c.strokeStyle='#fff0c0';c.lineWidth=5;line(c,inner,0,outer,0);
-  c.fillStyle='#e3b170';c.strokeStyle='#263138';c.lineWidth=3;c.beginPath();c.roundRect(outer-21,-13,31,26,4);c.fill();c.stroke();
+  c.fillStyle='#e3b170';c.strokeStyle='#263138';c.lineWidth=3;c.beginPath();roundRect(c,outer-21,-13,31,26,4);c.fill();c.stroke();
   if(!reduced){c.strokeStyle='#ffd6a0';c.lineWidth=2;for(let i=0;i<3;i++){c.beginPath();c.arc(0,0,outer-15-i*19,-.35,-.08);c.stroke();}}
  }else if(z.active&&z.kind==='line'&&effect!=='projectile'){
   c.strokeStyle='#ffb77f';c.globalAlpha=.3;c.lineWidth=(z.h??20)*.7;line(c,0,0,z.w??z.radius,0);

@@ -1,40 +1,85 @@
+const REQUIRED = ['actors', 'modules', 'enemies', 'cargo'];
 export class Art {
     images = new Map();
     manifest = null;
     pending = null;
     environmentPending = false;
     flashes = new Map();
-    get ready() { return this.manifest !== null && ['actors', 'modules', 'enemies'].every(key => this.images.has(key)); }
-    load() {
+    timeoutMs;
+    constructor(timeoutMs = 15000) { this.timeoutMs = timeoutMs; }
+    get ready() { return this.manifest !== null && REQUIRED.every(key => this.images.has(key)); }
+    load(onProgress) {
         if (this.pending)
             return this.pending;
-        this.pending = this.fetchAssets().catch(error => { this.pending = null; throw error; });
+        this.pending = this.fetchAssets(onProgress).finally(() => { this.pending = null; });
         return this.pending;
     }
-    async fetchAssets() {
-        const response = await fetch(new URL('../assets/atlas-manifest.json', import.meta.url));
-        if (!response.ok)
-            throw new Error(`Atlas manifest failed: ${response.status}`);
-        const data = await response.json();
-        await Promise.all(Object.entries(data.atlases).filter(([name]) => name !== 'environment').map(async ([name, path]) => {
+    async retry(operation) {
+        try {
+            return await operation();
+        }
+        catch {
+            return operation();
+        }
+    }
+    async fetchAssets(onProgress) {
+        if (!this.manifest)
+            this.manifest = await this.retry(async () => {
+                const controller = new AbortController(), timer = setTimeout(() => controller.abort(), this.timeoutMs);
+                try {
+                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=7e39c4d69815', import.meta.url), { signal: controller.signal });
+                    if (!response.ok)
+                        throw new Error(`Atlas manifest failed: ${response.status}`);
+                    const data = await response.json();
+                    if (!data.sprites || REQUIRED.some(key => !data.atlases?.[key]))
+                        throw new Error('Incomplete atlas manifest');
+                    return data;
+                }
+                finally {
+                    clearTimeout(timer);
+                }
+            });
+        const report = () => onProgress?.({ loaded: REQUIRED.filter(key => this.images.has(key)).length, total: REQUIRED.length });
+        report();
+        // Retain successful images across retries; settle every request before enabling retry.
+        const results = await Promise.allSettled(REQUIRED.map(async (name) => {
+            if (this.images.has(name))
+                return;
+            this.images.set(name, await this.retry(() => this.loadImage(this.manifest.atlases[name])));
+            report();
+        }));
+        const failed = results.find(result => result.status === 'rejected');
+        if (failed?.status === 'rejected')
+            throw failed.reason;
+    }
+    loadImage(path) {
+        return new Promise((resolve, reject) => {
             const img = new Image();
             img.decoding = 'async';
-            const loaded = new Promise((resolve, reject) => { img.onload = () => resolve(); img.onerror = () => reject(new Error(`Cannot load artwork: ${path}`)); });
+            const finish = (error) => {
+                clearTimeout(timer);
+                img.onload = null;
+                img.onerror = null;
+                if (error) {
+                    img.src = '';
+                    reject(error);
+                }
+                else
+                    resolve(img);
+            };
+            const timer = setTimeout(() => finish(new Error(`Artwork timed out: ${path}`)), this.timeoutMs);
+            img.onload = () => finish();
+            img.onerror = () => finish(new Error(`Cannot load artwork: ${path}`));
             img.src = new URL(`../assets/${path}`, import.meta.url).href;
-            await loaded;
-            this.images.set(name, img);
-        }));
-        this.manifest = data;
+        });
     }
-    /** The 2.7 MB ground atlas is decorative and starts loading only during battle. */
+    /** Decorative ground loading never blocks the first playable frame. */
     prepareEnvironment() {
         if (this.environmentPending || !this.manifest)
             return;
         this.environmentPending = true;
-        const img = new Image();
-        img.decoding = 'async';
-        img.onload = () => { this.images.set('environment', img); };
-        img.src = new URL(`../assets/${this.manifest.atlases.environment}`, import.meta.url).href;
+        void this.retry(() => this.loadImage(this.manifest.atlases.environment))
+            .then(img => { this.images.set('environment', img); }).catch(() => { });
     }
     has(key) { return Boolean(this.manifest?.sprites[key]); }
     draw(ctx, key, x, y, w, h, angle = 0, opacity = 1, flip = false) {

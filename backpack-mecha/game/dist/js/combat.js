@@ -1,6 +1,6 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js";
-import { nextRandom } from "./random.js";
-import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, createEncounter, findPath, traversable } from "./encounters.js";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=7e39c4d69815";
+import { nextRandom } from "./random.js?v=7e39c4d69815";
+import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, createEncounter, findPath, traversable } from "./encounters.js?v=7e39c4d69815";
 const DAMAGE_SCALE = [1, 1.35, 1.8];
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };

@@ -1,9 +1,10 @@
-import { Art } from "./art.js";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js";
-import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js";
-import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js";
-import { locomotion, easeOut } from "./visual-motion.js";
+import { roundRect } from "./canvas.js?v=7e39c4d69815";
+import { Art } from "./art.js?v=7e39c4d69815";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=7e39c4d69815";
+import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=7e39c4d69815";
+import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js?v=7e39c4d69815";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=7e39c4d69815";
+import { locomotion, easeOut } from "./visual-motion.js?v=7e39c4d69815";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -49,7 +50,7 @@ function facing(angle) {
 }
 function rounded(ctx, x, y, w, h, r = 4) {
     ctx.beginPath();
-    ctx.roundRect(x, y, w, h, r);
+    roundRect(ctx, x, y, w, h, r);
 }
 /** Canvas presentation only. All gameplay, collision, damage and clocks come from BattleView. */
 export class Renderer {
@@ -82,7 +83,7 @@ export class Renderer {
             throw new Error('Canvas 2D is unavailable');
         this.ctx = ctx;
     }
-    load() { return this.art.load(); }
+    load(onProgress) { return this.art.load(onProgress); }
     resize() {
         const bounds = this.canvas.getBoundingClientRect();
         this.cssWidth = Math.max(1, bounds.width || this.canvas.width || 720);

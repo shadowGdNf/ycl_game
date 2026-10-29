@@ -1,6 +1,6 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js";
-import { createBattle } from "./combat.js";
-import { sanitizeJournal } from "./journal.js";
+import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=7e39c4d69815";
+import { createBattle } from "./combat.js?v=7e39c4d69815";
+import { sanitizeJournal } from "./journal.js?v=7e39c4d69815";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);

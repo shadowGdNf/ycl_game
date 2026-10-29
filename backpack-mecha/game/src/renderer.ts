@@ -1,4 +1,6 @@
+import {roundRect} from './canvas.ts';
 import {Art} from './art.ts';
+import type {ArtProgress} from './art.ts';
 import {motionFrame,zoneRole,zoneVisible,chargeContactRadius} from './motion.ts';
 import type {EnemyMotion} from './motion.ts';
 import {enemyBody,enemyControl,enemyMotionLabel,zonePath,zoneSymbols} from './motion-renderer.ts';
@@ -56,7 +58,7 @@ function facing(angle:number):number{
   return Math.abs(x)>Math.abs(y)?(x>=0?1:3):(y>=0?0:2);
 }
 function rounded(ctx:CanvasRenderingContext2D,x:number,y:number,w:number,h:number,r=4):void{
-  ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+  ctx.beginPath();roundRect(ctx,x,y,w,h,r);
 }
 
 /** Canvas presentation only. All gameplay, collision, damage and clocks come from BattleView. */
@@ -87,7 +89,7 @@ export class Renderer {
     this.canvas=canvas;
     const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D is unavailable');this.ctx=ctx;
   }
-  load():Promise<void>{return this.art.load();}
+  load(onProgress?:(progress:ArtProgress)=>void):Promise<void>{return this.art.load(onProgress);}
   private resize():void{
     const bounds=this.canvas.getBoundingClientRect();
     this.cssWidth=Math.max(1,bounds.width||this.canvas.width||720);
