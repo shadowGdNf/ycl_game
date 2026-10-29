@@ -1,6 +1,6 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=7e39c4d69815";
-import { createBattle } from "./combat.js?v=7e39c4d69815";
-import { sanitizeJournal } from "./journal.js?v=7e39c4d69815";
+import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=7c4d97a1694c";
+import { createBattle } from "./combat.js?v=7c4d97a1694c";
+import { sanitizeJournal } from "./journal.js?v=7c4d97a1694c";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -39,7 +39,7 @@ export function applyProgress(profile, run, completedWave, won, usedDrones) { co
     if (!profile.best[key] || profile.best[key].score < score)
         profile.best[key] = { score, seconds: run.elapsed };
 } return unlocked; }
-export function freshProfile() { return { version: 1, language: 'zh', unlocked: ['scavenger'], maxDifficulty: 0, codex: ['W01', 'S01'], connections: [], best: {}, settings: { sound: true, music: true, reducedMotion: typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches, leftHanded: false, colorAssist: false, autoOverload: false, volume: .45 }, tutorial: false, totalRuns: 0, wins: 0 }; }
+export function freshProfile() { return { version: 1, language: 'zh', unlocked: ['scavenger'], maxDifficulty: 0, codex: ['W01', 'S01'], connections: [], best: {}, settings: { sound: true, music: true, reducedMotion: typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches, leftHanded: false, colorAssist: false, autoOverload: false, unlockAll: false, volume: .45 }, tutorial: false, totalRuns: 0, wins: 0 }; }
 export function sanitizeSave(raw) {
     const fresh = { version: 1, profile: freshProfile(), run: null, battle: null, savedAt: 0 };
     if (!raw || typeof raw !== 'object')
@@ -57,7 +57,7 @@ export function sanitizeSave(raw) {
         fresh.profile.totalRuns = finite(p.totalRuns) ? Math.max(0, Math.floor(p.totalRuns)) : 0;
         fresh.profile.wins = finite(p.wins) ? Math.max(0, Math.floor(p.wins)) : 0;
         if (p.settings) {
-            for (const k of ['sound', 'music', 'reducedMotion', 'leftHanded', 'colorAssist', 'autoOverload'])
+            for (const k of ['sound', 'music', 'reducedMotion', 'leftHanded', 'colorAssist', 'autoOverload', 'unlockAll'])
                 if (typeof p.settings[k] === 'boolean')
                     fresh.profile.settings[k] = p.settings[k];
             if (Number.isFinite(p.settings.volume))

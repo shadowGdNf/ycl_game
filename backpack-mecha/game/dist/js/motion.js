@@ -13,6 +13,8 @@ function action(e, z) {
         return 'summon';
     if (effect === 'projectile')
         return 'volley';
+    if (effect === 'mortar' || effect === 'drill')
+        return 'bombard';
     if (e.id === 'E05')
         return 'detonate';
     if (z.kind === 'ring')
@@ -45,7 +47,7 @@ export function motionFrame(view) {
         if (ev.type === 'phase' && ev.at <= view.time)
             phaseAt = Math.max(phaseAt, ev.at);
         if (ev.type === 'enemy-fire' && ev.source && ev.at <= view.time && view.time - ev.at < .18)
-            fires.set(ev.source, Math.max(fires.get(ev.source) ?? -Infinity, ev.at));
+            fires.set(ev.targetId ?? -1, Math.max(fires.get(ev.targetId ?? -1) ?? -Infinity, ev.at));
         if (ev.targetId !== undefined && /^(hit|critical)$/.test(ev.type) && ev.at <= view.time)
             hits.set(ev.targetId, Math.max(hits.get(ev.targetId) ?? -Infinity, ev.at));
     }
@@ -60,7 +62,7 @@ export function motionFrame(view) {
                 zone = z;
         // Projectile warning zones disappear on release. The existing event keeps a short,
         // resumable muzzle pose; bullets, rather than a lingering zone, carry the danger.
-        const fired = fires.has(e.id);
+        const fired = fires.has(e.eid);
         if (fired)
             zone = undefined;
         const control = controlReason(e), charging = !!e.charge && e.charge.until > view.time && !control;

@@ -8,7 +8,7 @@ export interface EncounterState {mode:Mode;budget:number;spent:number;nextSpawn:
 export interface AttackPlan extends Point {
  kind:'circle'|'rect'|'cone'|'ring'|'line'; warning:number;active:number;damage:number;
  radius:number;angle:number;width?:number;w?:number;h?:number;innerRadius?:number;
- delay?:number;period?:number;effect?:'damage'|'charge'|'pull'|'projectile'|'spawn'|'conveyor'|'fire'|'drill';
+ delay?:number;period?:number;effect?:'damage'|'charge'|'pull'|'projectile'|'spawn'|'conveyor'|'fire'|'drill'|'mortar';
  count?:number;enemy?:string;limit?:number;speed?:number;spread?:number;projectileRadius?:number;
  length?:number;sweep?:number;grow?:number;slow?:number;target?:Point;spawnHp?:number;spawnDamage?:number;
 }
@@ -81,6 +81,20 @@ export function circleHitsRect(p:Point,r:number,b:Rect):boolean {
 }
 export function traversable(p:Point,r:number,obstacles:Rect[],width=ARENA.width,height=ARENA.height):boolean {
  return insideArena(p,r,width,height)&&!obstacles.some(b=>circleHitsRect(p,r,b));
+}
+/** Conservative swept-circle visibility, including clearance around obstacle corners. */
+export function clearPath(start:Point,end:Point,obstacles:Rect[],radius:number,width=1600,height=1200):boolean {
+ if(!insideArena(end,radius,width,height))return false;
+ const dx=end.x-start.x,dy=end.y-start.y;
+ for(const b of obstacles){
+  let lo=0,hi=1;
+  for(const [p,d,min,max] of [[start.x,dx,b.x-radius,b.x+b.w+radius],[start.y,dy,b.y-radius,b.y+b.h+radius]]){
+   if(Math.abs(d)<1e-8){if(p<min||p>max){lo=2;break;}}
+   else{const a=(min-p)/d,z=(max-p)/d;lo=Math.max(lo,Math.min(a,z));hi=Math.min(hi,Math.max(a,z));}
+  }
+  if(lo<=hi&&hi>=0&&lo<=1)return false;
+ }
+ return true;
 }
 /** Shared navigation service; AI never changes collision rules. Paths are plain JSON. */
 export function findPath(start:Point,end:Point,obstacles:Rect[],radius:number,width=1600,height=1200):Point[] {

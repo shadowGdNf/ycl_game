@@ -1,6 +1,6 @@
-import { roundRect } from "./canvas.js?v=7e39c4d69815";
-import { motionLabel, zoneRole } from "./motion.js?v=7e39c4d69815";
-import { smoothStep } from "./visual-motion.js?v=7e39c4d69815";
+import { roundRect } from "./canvas.js?v=7c4d97a1694c";
+import { motionLabel, zoneRole } from "./motion.js?v=7c4d97a1694c";
+import { smoothStep } from "./visual-motion.js?v=7c4d97a1694c";
 const TAU = Math.PI * 2;
 const special = (e) => e.kind === 'boss' || e.id === 'E05' || e.id === 'E12';
 const labelWidths = new Map();
@@ -25,13 +25,56 @@ export function enemyBody(c, art, key, e, m, size, time, reduced, gait) {
     const bob = reduced || !free ? 0 : Math.sin(stride * 2) * Math.min(2.5, size * .04) * walking + Math.sin(time * 2 + e.eid) * .35;
     const recoil = reduced || !free ? 0 : m.hit * size * .055;
     if (!special(e)) {
-        const tilt = m.control === 'impact' ? -.045 : m.control === 'stagger' ? .045 : reduced || !free ? 0 : Math.sin(stride) * .035 * walking + (gait?.lean ?? 0) * .025;
+        const tilt = m.control === 'impact' ? -.045 : m.control === 'stagger' ? .045 : reduced || !free ? 0 : Math.sin(stride) * .018 * walking + (gait?.lean ?? 0) * .02;
         c.save();
         c.translate(e.x - Math.cos(m.angle) * recoil, e.y - size * .08 + bob - Math.sin(m.angle) * recoil);
         c.rotate(tilt);
-        if (!reduced)
-            c.scale(1 + amount * .04, 1 - amount * .04);
-        art.draw(c, key, 0, 0, size, size);
+        const part = (u, v, w, h, x = 0, y = 0) => art.part(c, key, x, y, size, size, u, v, w, h);
+        const strideLift = reduced || !free ? 0 : Math.sin(stride) * size * .035 * walking;
+        if (e.id === 'E03' || e.id === 'E08') {
+            // Separate track beds from the sprung hull; each side responds to travel.
+            part(0, 0, .23, 1, 0, strideLift * .4);
+            part(.77, 0, .23, 1, 0, -strideLift * .4);
+            part(.23, 0, .54, 1, Math.cos(e.angle) * size * .015, wind ? size * .025 * amount : 0);
+            c.strokeStyle = 'rgba(214,226,211,.45)';
+            c.lineWidth = 1;
+            if (walking > .1 && !reduced)
+                for (const side of [-1, 1])
+                    for (let j = 0; j < 3; j++) {
+                        const yy = ((j / 3 + (gait?.stride ?? 0)) % 1 - .5) * size * .45;
+                        stroke(c, side * size * .34 - size * .055, yy, size * .11, 0);
+                    }
+        }
+        else if (e.id === 'E06') {
+            part(0, 0, 1, .65, 0, -size * .025);
+            part(0, .65, .5, .35, -size * .012 * amount, strideLift);
+            part(.5, .65, .5, .35, size * .012 * amount, -strideLift);
+            c.fillStyle = m.stage === 'active' ? 'rgba(255,212,120,.75)' : 'rgba(96,225,201,.4)';
+            c.beginPath();
+            c.ellipse(0, size * .33, size * .055, size * (reduced ? .05 : .055 + .02 * Math.sin(time * 9)), 0, 0, TAU);
+            c.fill();
+        }
+        else {
+            // Independent leg groups keep a stable center shell rather than scaling the whole sprite.
+            part(0, .48, .32, .52, -strideLift * .3, strideLift);
+            part(.68, .48, .32, .52, strideLift * .3, -strideLift);
+            part(.32, .48, .36, .52);
+            part(0, 0, 1, .48, Math.cos(e.angle) * size * .015, wind ? -size * .018 * amount : active ? size * .02 : 0);
+        }
+        if (['E04', 'E07', 'E09', 'E11'].includes(e.id) && m.stage !== 'idle' && free) {
+            const px = Math.cos(m.angle) * size * .28, py = Math.sin(m.angle) * size * .22;
+            c.strokeStyle = active ? '#fff4cf' : '#ffd397';
+            c.lineWidth = 1.5;
+            c.beginPath();
+            c.arc(px, py, size * (.045 + amount * .025), 0, TAU);
+            c.stroke();
+            if (active) {
+                c.fillStyle = '#ffe6a7';
+                c.beginPath();
+                c.arc(px, py, size * .04, 0, TAU);
+                c.fill();
+            }
+        }
         c.restore();
         return;
     }

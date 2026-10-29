@@ -7,3 +7,8 @@ qa/*.png
 qa/*.jpg
 *.tar.gz
 .DS_Store
+!qa/dev7-workshop-mobile.jpg
+!qa/dev7-archive-mobile.jpg
+!qa/dev7-boss-lab-mobile.jpg
+!qa/dev7-scrap-mobile.jpg
+!qa/dev7-enemies-mobile.jpg

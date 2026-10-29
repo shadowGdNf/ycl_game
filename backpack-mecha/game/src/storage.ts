@@ -17,7 +17,7 @@ function validBattle(raw:unknown,run:Run):raw is BattleView {
 }
 export function scoreRun(r:Run):number{return Math.round((r.phase==='won'?10000:0)+Math.max(0,r.hp)*20+r.stats.killedBudget*5+r.difficulty*2000);}
 export function applyProgress(profile:Profile,run:Run,completedWave:number,won:boolean,usedDrones:boolean):string[]{const unlocked:string[]=[];const unlock=(id:string)=>{if(!profile.unlocked.includes(id)){profile.unlocked.push(id);unlocked.push(id);}};if(won&&completedWave===4)unlock('bulwark');if(won&&completedWave===8&&usedDrones)unlock('hive');if(won&&run.phase==='won'){profile.wins++;if(run.mode==='full'){unlock('kestrel');profile.maxDifficulty=Math.max(profile.maxDifficulty,Math.min(4,run.difficulty+1));}const key=`${run.mode}:${run.chassis}:${run.difficulty}`,score=scoreRun(run);if(!profile.best[key]||profile.best[key].score<score)profile.best[key]={score,seconds:run.elapsed};}return unlocked;}
-export function freshProfile():Profile{return {version:1,language:'zh',unlocked:['scavenger'],maxDifficulty:0,codex:['W01','S01'],connections:[],best:{},settings:{sound:true,music:true,reducedMotion:typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches,leftHanded:false,colorAssist:false,autoOverload:false,volume:.45},tutorial:false,totalRuns:0,wins:0};}
+export function freshProfile():Profile{return {version:1,language:'zh',unlocked:['scavenger'],maxDifficulty:0,codex:['W01','S01'],connections:[],best:{},settings:{sound:true,music:true,reducedMotion:typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches,leftHanded:false,colorAssist:false,autoOverload:false,unlockAll:false,volume:.45},tutorial:false,totalRuns:0,wins:0};}
 export function sanitizeSave(raw:unknown):SaveEnvelope {
  const fresh:SaveEnvelope={version:1,profile:freshProfile(),run:null,battle:null,savedAt:0};
  if(!raw||typeof raw!=='object')return fresh;const x=raw as Partial<SaveEnvelope>;
@@ -28,7 +28,7 @@ export function sanitizeSave(raw:unknown):SaveEnvelope {
   fresh.profile.codex=Array.isArray(p.codex)?p.codex.filter(v=>typeof v==='string'&&MODULE_BY_ID[v]):['W01','S01'];
   fresh.profile.connections=Array.isArray(p.connections)?p.connections.filter(v=>typeof v==='string').slice(-100):[];
   fresh.profile.tutorial=p.tutorial===true;fresh.profile.totalRuns=finite(p.totalRuns)?Math.max(0,Math.floor(p.totalRuns)):0;fresh.profile.wins=finite(p.wins)?Math.max(0,Math.floor(p.wins)):0;
-  if(p.settings){for(const k of ['sound','music','reducedMotion','leftHanded','colorAssist','autoOverload'] as const)if(typeof p.settings[k]==='boolean')fresh.profile.settings[k]=p.settings[k];if(Number.isFinite(p.settings.volume))fresh.profile.settings.volume=Math.max(0,Math.min(1,p.settings.volume));}
+  if(p.settings){for(const k of ['sound','music','reducedMotion','leftHanded','colorAssist','autoOverload','unlockAll'] as const)if(typeof p.settings[k]==='boolean')fresh.profile.settings[k]=p.settings[k];if(Number.isFinite(p.settings.volume))fresh.profile.settings.volume=Math.max(0,Math.min(1,p.settings.volume));}
   if(p.best&&typeof p.best==='object')for(const [key,value]of Object.entries(p.best)){if(value&&Number.isFinite(value.score)&&Number.isFinite(value.seconds))fresh.profile.best[key]={score:Math.max(0,value.score),seconds:Math.max(0,value.seconds)};}
  }
  if(x.version!==1)return fresh;

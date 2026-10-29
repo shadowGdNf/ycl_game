@@ -7,6 +7,8 @@ const noise=(n:number)=>{const v=Math.sin(n*12.9898)*43758.5453;return v-Math.fl
 const circle=(c:CanvasRenderingContext2D,x:number,y:number,r:number)=>{c.beginPath();c.arc(x,y,Math.max(.01,r),0,TAU);};
 function line(c:CanvasRenderingContext2D,x:number,y:number,xx:number,yy:number):void{c.beginPath();c.moveTo(x,y);c.lineTo(xx,yy);c.stroke();}
 export function effectLife(e:CombatEvent):number {
+ if(e.type==='pickup')return 1;
+ if(e.type==='scrap-drop')return .75;
  if(e.type==='player-hit')return .75;
  if(e.type==='shield-break')return .65;
  if(e.type==='hit'||e.type==='critical')return .52;
@@ -89,7 +91,15 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
  const k=clamp(age/life),alpha=1-k;if(age<0||k>=1)return;
  c.save();c.translate(e.x,e.y);c.globalAlpha=alpha;c.lineCap='round';c.lineJoin='round';
  c.strokeStyle=e.color??'#ffd58f';c.fillStyle=e.color??'#ffd58f';
- if(e.type==='fire')weaponEffect(c,e,k,reduced);
+ if(e.type==='pickup'){
+  const target=e.to??e,dx=target.x-e.x,dy=target.y-e.y,travel=reduced?1:1-(1-Math.min(1,k*2.3))**3;
+  c.translate(dx*travel,dy*travel-(reduced?0:Math.sin(travel*Math.PI)*20));
+  c.fillStyle='#ffd76d';c.strokeStyle='#fff2b5';c.lineWidth=2/scale;circle(c,0,0,5/scale);c.fill();c.stroke();
+  if(k>.25||reduced){const text=`+${Number((e.amount??0).toFixed(1))} ${lang==='zh'?'碎片':'scrap'}`;c.font=`800 ${12/scale}px sans-serif`;c.textAlign='center';c.strokeStyle='#17262b';c.lineWidth=4/scale;c.fillStyle='#ffe7a3';c.strokeText(text,0,-18/scale-k*14);c.fillText(text,0,-18/scale-k*14);}
+ }else if(e.type==='scrap-drop'){
+  c.strokeStyle='#ffd96b';c.lineWidth=2/scale;circle(c,0,0,(8+18*k)/scale);c.stroke();
+  if(!reduced)sparks(c,e.id,k,5,25);
+ }else if(e.type==='fire')weaponEffect(c,e,k,reduced);
  else if(e.type==='hit'||e.type==='critical'){
   const critical=e.type==='critical',angle=e.from?Math.atan2(e.y-e.from.y,e.x-e.from.x):undefined;
   c.lineWidth=critical?2.8:2;c.strokeStyle=critical?'#ffe390':e.color??'#f6d39f';

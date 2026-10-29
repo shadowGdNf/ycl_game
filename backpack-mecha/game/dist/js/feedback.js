@@ -1,10 +1,14 @@
-import { roundRect } from "./canvas.js?v=7e39c4d69815";
+import { roundRect } from "./canvas.js?v=7c4d97a1694c";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
 const circle = (c, x, y, r) => { c.beginPath(); c.arc(x, y, Math.max(.01, r), 0, TAU); };
 function line(c, x, y, xx, yy) { c.beginPath(); c.moveTo(x, y); c.lineTo(xx, yy); c.stroke(); }
 export function effectLife(e) {
+    if (e.type === 'pickup')
+        return 1;
+    if (e.type === 'scrap-drop')
+        return .75;
     if (e.type === 'player-hit')
         return .75;
     if (e.type === 'shield-break')
@@ -222,7 +226,35 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
     c.lineJoin = 'round';
     c.strokeStyle = e.color ?? '#ffd58f';
     c.fillStyle = e.color ?? '#ffd58f';
-    if (e.type === 'fire')
+    if (e.type === 'pickup') {
+        const target = e.to ?? e, dx = target.x - e.x, dy = target.y - e.y, travel = reduced ? 1 : 1 - (1 - Math.min(1, k * 2.3)) ** 3;
+        c.translate(dx * travel, dy * travel - (reduced ? 0 : Math.sin(travel * Math.PI) * 20));
+        c.fillStyle = '#ffd76d';
+        c.strokeStyle = '#fff2b5';
+        c.lineWidth = 2 / scale;
+        circle(c, 0, 0, 5 / scale);
+        c.fill();
+        c.stroke();
+        if (k > .25 || reduced) {
+            const text = `+${Number((e.amount ?? 0).toFixed(1))} ${lang === 'zh' ? '碎片' : 'scrap'}`;
+            c.font = `800 ${12 / scale}px sans-serif`;
+            c.textAlign = 'center';
+            c.strokeStyle = '#17262b';
+            c.lineWidth = 4 / scale;
+            c.fillStyle = '#ffe7a3';
+            c.strokeText(text, 0, -18 / scale - k * 14);
+            c.fillText(text, 0, -18 / scale - k * 14);
+        }
+    }
+    else if (e.type === 'scrap-drop') {
+        c.strokeStyle = '#ffd96b';
+        c.lineWidth = 2 / scale;
+        circle(c, 0, 0, (8 + 18 * k) / scale);
+        c.stroke();
+        if (!reduced)
+            sparks(c, e.id, k, 5, 25);
+    }
+    else if (e.type === 'fire')
         weaponEffect(c, e, k, reduced);
     else if (e.type === 'hit' || e.type === 'critical') {
         const critical = e.type === 'critical', angle = e.from ? Math.atan2(e.y - e.from.y, e.x - e.from.x) : undefined;

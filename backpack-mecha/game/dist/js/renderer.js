@@ -1,10 +1,10 @@
-import { roundRect } from "./canvas.js?v=7e39c4d69815";
-import { Art } from "./art.js?v=7e39c4d69815";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=7e39c4d69815";
-import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=7e39c4d69815";
-import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js?v=7e39c4d69815";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=7e39c4d69815";
-import { locomotion, easeOut } from "./visual-motion.js?v=7e39c4d69815";
+import { roundRect } from "./canvas.js?v=7c4d97a1694c";
+import { Art } from "./art.js?v=7c4d97a1694c";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=7c4d97a1694c";
+import { enemyBody, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=7c4d97a1694c";
+import { CHASSIS_BY_ID, MODULE_BY_ID } from "./content.js?v=7c4d97a1694c";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=7c4d97a1694c";
+import { locomotion, easeOut } from "./visual-motion.js?v=7c4d97a1694c";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -183,7 +183,7 @@ export class Renderer {
             if (zone.type === 'friendly')
                 this.zone(zone, state.time, false);
         for (const drop of state.drops)
-            this.drop(drop.x, drop.y, state.time, drop.id);
+            this.drop(drop.x, drop.y, state.time, drop.id, drop.value);
         const entities = state.enemies.filter(e => e.exposed !== false && e.hp > 0).sort((a, b) => a.y - b.y || a.eid - b.eid);
         const motions = motionFrame(state);
         for (const [id, m] of motions) {
@@ -321,7 +321,31 @@ export class Renderer {
             this.art.draw(ctx, `${id}.legs`, 0, 0, 40 * unit, 29 * unit);
             ctx.restore();
         }
-        this.art.draw(ctx, `${id}.body.${dir}`, 0, -9 * unit + bob, 53 * unit, 50 * unit);
+        const body = `${id}.body.${dir}`, swing = Math.sin(gaitTime / .48 * TAU) * amount;
+        ctx.strokeStyle = '#172b32';
+        ctx.lineWidth = 4 * unit;
+        ctx.beginPath();
+        ctx.moveTo(-9 * unit, 3 * unit);
+        ctx.lineTo(9 * unit, 3 * unit);
+        ctx.stroke();
+        for (const side of [-1, 1]) {
+            const lift = (side * swing * 1.8 + (dashing ? -1.5 : 0)) * unit;
+            ctx.save();
+            ctx.translate(side * 18 * unit, -9 * unit + bob);
+            ctx.rotate(side * swing * .045);
+            ctx.translate(-side * 18 * unit, 0);
+            this.art.part(ctx, body, 0, lift, 53 * unit, 50 * unit, side < 0 ? 0 : .8, 0, .2, 1);
+            ctx.restore();
+        }
+        this.art.part(ctx, body, 0, -9 * unit + bob, 53 * unit, 50 * unit, .2, 0, .6, 1);
+        if (dashing || id === 'hive') {
+            ctx.fillStyle = dashing ? 'rgba(112,241,228,.65)' : 'rgba(112,241,228,.2)';
+            for (const side of [-1, 1]) {
+                ctx.beginPath();
+                ctx.ellipse(side * 12 * unit, 8 * unit, 2.5 * unit, (dashing ? 9 : 3) * unit, 0, 0, TAU);
+                ctx.fill();
+            }
+        }
         if (dir === 2)
             this.art.draw(ctx, `${id}.backpack`, 0, -11 * unit + bob, 31 * unit, 33 * unit);
         ctx.restore();
@@ -543,23 +567,61 @@ export class Renderer {
         }
         c.restore();
     }
-    drop(x, y, time, id) {
-        const c = this.ctx;
-        const bob = this.options.reducedMotion ? 0 : Math.sin(time * 3 + id) * 2;
+    drop(x, y, time, id, value) {
+        const c = this.ctx, u = Math.max(1, 1 / this.scale), bob = this.options.reducedMotion ? 0 : Math.sin(time * 4 + id) * 2;
         c.save();
-        c.translate(x, y + bob);
-        c.rotate(Math.PI / 4);
-        c.fillStyle = '#17262c';
-        c.fillRect(-5, -5, 10, 10);
-        c.fillStyle = '#e8c47c';
-        c.fillRect(-3, -3, 6, 6);
-        c.strokeStyle = '#ffefb4';
+        c.translate(x, y);
+        c.scale(u, u);
+        c.fillStyle = 'rgba(255,196,61,.13)';
+        c.beginPath();
+        c.ellipse(0, 2, 17, 8, 0, 0, TAU);
+        c.fill();
+        c.strokeStyle = 'rgba(255,219,104,.5)';
         c.lineWidth = 1;
-        c.strokeRect(-3, -3, 6, 6);
+        c.beginPath();
+        c.ellipse(0, 2, 13, 6, 0, 0, TAU);
+        c.stroke();
+        if (!this.options.reducedMotion) {
+            c.fillStyle = 'rgba(255,210,89,.11)';
+            c.fillRect(-4, -25, 8, 25);
+            c.strokeStyle = '#ffe69a';
+            c.beginPath();
+            c.moveTo(0, -23);
+            c.lineTo(0, -17);
+            c.moveTo(-3, -20);
+            c.lineTo(3, -20);
+            c.stroke();
+        }
+        c.translate(0, -5 + bob);
+        const count = value >= 3 ? 3 : value >= 1 ? 2 : 1;
+        for (let i = 0; i < count; i++) {
+            const xx = (i - (count - 1) / 2) * 5, yy = -i * 3;
+            c.beginPath();
+            for (let k = 0; k < 6; k++) {
+                const a = k * TAU / 6 - Math.PI / 6, px = xx + Math.cos(a) * 7, py = yy + Math.sin(a) * 7;
+                k ? c.lineTo(px, py) : c.moveTo(px, py);
+            }
+            c.closePath();
+            c.fillStyle = '#f3b83f';
+            c.strokeStyle = '#fff0ac';
+            c.lineWidth = 1.5;
+            c.fill();
+            c.stroke();
+            c.fillStyle = '#855415';
+            c.fillRect(xx - 1, yy - 3, 2, 6);
+        }
+        c.font = 'bold 10px sans-serif';
+        c.textAlign = 'center';
+        c.strokeStyle = '#172126';
+        c.lineWidth = 3;
+        c.fillStyle = '#ffe6a0';
+        const text = String(Number(value.toFixed(1)));
+        c.strokeText(text, 0, 18);
+        c.fillText(text, 0, 18);
         c.restore();
     }
     captureEvents(state) {
-        const visible = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'phase', 'stagger', 'heal', 'defeat']);
+        const visible = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'phase', 'stagger', 'heal', 'defeat', 'scrap-drop', 'pickup']);
         for (const event of state.events) {
             if (this.seenEvents.has(event.id))
                 continue;
@@ -737,6 +799,7 @@ export class Renderer {
         c.textAlign = 'center';
         c.fillText(`RECOVERY UNIT  /  ${String(Math.max(0, CHASSIS.indexOf(chassis)) + 1).padStart(2, '0')}`, x, h - 17);
     }
+    thumbnail(canvas, id) { this.icon(canvas, id); }
     icon(canvas, id) {
         const ctx = canvas.getContext('2d');
         if (!ctx)

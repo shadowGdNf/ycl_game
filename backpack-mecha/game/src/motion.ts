@@ -16,6 +16,7 @@ function action(e:EnemyView,z:ZoneView):MotionKind {
  if(effect==='charge'||effect==='pull'||effect==='conveyor')return effect;
  if(effect==='spawn')return 'summon';
  if(effect==='projectile')return 'volley';
+ if(effect==='mortar'||effect==='drill')return 'bombard';
  if(e.id==='E05')return 'detonate';
  if(z.kind==='ring')return 'ring';
  if(e.id==='B1B'&&z.kind==='cone')return 'sweep';
@@ -25,7 +26,7 @@ function action(e:EnemyView,z:ZoneView):MotionKind {
  return 'slam';
 }
 export function motionFrame(view:BattleView):Map<number,EnemyMotion> {
- const byOwner=new Map<number,ZoneView[]>(),groups=new Map<string,number>(),hits=new Map<number,number>(),fires=new Map<string,number>();
+ const byOwner=new Map<number,ZoneView[]>(),groups=new Map<string,number>(),hits=new Map<number,number>(),fires=new Map<number,number>();
  for(const e of view.enemies)if(e.group&&!groups.has(e.group))groups.set(e.group,e.eid);
  for(const z of view.zones){
   // A delayed attack has no visible wind-up yet. Persistent ground fire is not a body action.
@@ -35,7 +36,7 @@ export function motionFrame(view:BattleView):Map<number,EnemyMotion> {
  let phaseAt=-Infinity;
  for(const ev of view.events){
   if(ev.type==='phase'&&ev.at<=view.time)phaseAt=Math.max(phaseAt,ev.at);
-  if(ev.type==='enemy-fire'&&ev.source&&ev.at<=view.time&&view.time-ev.at<.18)fires.set(ev.source,Math.max(fires.get(ev.source)??-Infinity,ev.at));
+  if(ev.type==='enemy-fire'&&ev.source&&ev.at<=view.time&&view.time-ev.at<.18)fires.set(ev.targetId??-1,Math.max(fires.get(ev.targetId??-1)??-Infinity,ev.at));
   if(ev.targetId!==undefined&&/^(hit|critical)$/.test(ev.type)&&ev.at<=view.time)hits.set(ev.targetId,Math.max(hits.get(ev.targetId)??-Infinity,ev.at));
  }
  const out=new Map<number,EnemyMotion>();
@@ -46,7 +47,7 @@ export function motionFrame(view:BattleView):Map<number,EnemyMotion> {
   let zone:ZoneView|undefined;for(const z of own)if(!zone||priority(z)>priority(zone))zone=z;
   // Projectile warning zones disappear on release. The existing event keeps a short,
   // resumable muzzle pose; bullets, rather than a lingering zone, carry the danger.
-  const fired=fires.has(e.id);if(fired)zone=undefined;
+  const fired=fires.has(e.eid);if(fired)zone=undefined;
   const control=controlReason(e),charging=!!e.charge&&e.charge.until>view.time&&!control;
   const weak=(e.vulnerableUntil??0)>view.time;
   const recovery=!zone&&!charging&&(weak||(e.kind==='boss'&&(view.bossTurn??0)>0&&(view.bossClock??0)>0)||(e.aiUntil??0)>view.time);

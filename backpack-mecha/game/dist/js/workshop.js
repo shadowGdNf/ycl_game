@@ -1,6 +1,6 @@
 /** Read-only explanations derived from the same connection and placement checks as play. */
-import { MODULE_BY_ID, label } from "./content.js?v=7e39c4d69815";
-import { getCapacity, linkOptions, validateLoadout } from "./economy.js?v=7e39c4d69815";
+import { MODULE_BY_ID, label } from "./content.js?v=7c4d97a1694c";
+import { getCapacity, linkOptions, validateLoadout } from "./economy.js?v=7c4d97a1694c";
 const format = (n) => Number(n.toFixed(2)).toString();
 export function supportBenefit(item, lang) {
     const m = MODULE_BY_ID[item.id], v = m.values?.[item.tier - 1] ?? 0, pct = format(v * 100), en = lang === 'en';

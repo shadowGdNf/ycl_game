@@ -1,5 +1,5 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=7e39c4d69815";
-import { nextRandom } from "./random.js?v=7e39c4d69815";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=7c4d97a1694c";
+import { nextRandom } from "./random.js?v=7c4d97a1694c";
 export const ARENA = { width: 1600, height: 1200 };
 const layouts = [
     [{ x: 320, y: 240, w: 180, h: 100 }, { x: 1100, y: 860, w: 180, h: 100 }, { x: 1100, y: 240, w: 100, h: 160 }, { x: 400, y: 830, w: 100, h: 170 }],
@@ -76,6 +76,31 @@ export function circleHitsRect(p, r, b) {
 }
 export function traversable(p, r, obstacles, width = ARENA.width, height = ARENA.height) {
     return insideArena(p, r, width, height) && !obstacles.some(b => circleHitsRect(p, r, b));
+}
+/** Conservative swept-circle visibility, including clearance around obstacle corners. */
+export function clearPath(start, end, obstacles, radius, width = 1600, height = 1200) {
+    if (!insideArena(end, radius, width, height))
+        return false;
+    const dx = end.x - start.x, dy = end.y - start.y;
+    for (const b of obstacles) {
+        let lo = 0, hi = 1;
+        for (const [p, d, min, max] of [[start.x, dx, b.x - radius, b.x + b.w + radius], [start.y, dy, b.y - radius, b.y + b.h + radius]]) {
+            if (Math.abs(d) < 1e-8) {
+                if (p < min || p > max) {
+                    lo = 2;
+                    break;
+                }
+            }
+            else {
+                const a = (min - p) / d, z = (max - p) / d;
+                lo = Math.max(lo, Math.min(a, z));
+                hi = Math.min(hi, Math.max(a, z));
+            }
+        }
+        if (lo <= hi && hi >= 0 && lo <= 1)
+            return false;
+    }
+    return true;
 }
 /** Shared navigation service; AI never changes collision rules. Paths are plain JSON. */
 export function findPath(start, end, obstacles, radius, width = 1600, height = 1200) {

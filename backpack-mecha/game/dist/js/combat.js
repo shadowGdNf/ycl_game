@@ -1,6 +1,6 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=7e39c4d69815";
-import { nextRandom } from "./random.js?v=7e39c4d69815";
-import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, createEncounter, findPath, traversable } from "./encounters.js?v=7e39c4d69815";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=7c4d97a1694c";
+import { nextRandom } from "./random.js?v=7c4d97a1694c";
+import { ARENA, availableBudget, bossPhase, bossTurn, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=7c4d97a1694c";
 const DAMAGE_SCALE = [1, 1.35, 1.8];
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
@@ -102,18 +102,32 @@ function move(w, p, dx, dy) {
     return Math.abs(p.x - ox - dx) > .1 || Math.abs(p.y - oy - dy) > .1;
 }
 function follow(w, e, target, speed, dt) {
-    if (e.pathAt <= w.time || !e.path.length) {
-        e.path = findPath(e, target, w.obstacles, e.radius, w.width, w.height);
-        e.pathAt = w.time + .6 + (e.eid % 4) * .03;
+    let next = target;
+    if (clearPath(e, target, w.obstacles, e.radius + 2, w.width, w.height)) {
+        e.path = [];
     }
-    while (e.path.length && distance(e, e.path[0]) < 28)
-        e.path.shift();
-    const next = e.path[0] || target;
-    let a = angleTo(e, next);
-    if (e.id === 'E02')
-        a = e.angle + clamp(angleDiff(a, e.angle), -Math.PI * dt, Math.PI * dt);
+    else {
+        if (e.pathAt <= w.time || !e.path.length) {
+            e.path = findPath(e, target, w.obstacles, e.radius, w.width, w.height);
+            e.pathAt = w.time + .32 + (e.eid % 4) * .03;
+        }
+        while (e.path.length && distance(e, e.path[0]) < 8)
+            e.path.shift();
+        // Look ahead along the route, so four-way grid search does not become a zigzag gait.
+        for (let i = e.path.length - 1; i > 0; i--)
+            if (clearPath(e, e.path[i], w.obstacles, e.radius + 2, w.width, w.height)) {
+                e.path.splice(0, i);
+                break;
+            }
+        next = e.path[0] || target;
+    }
+    const d = distance(e, next);
+    if (d < 1)
+        return;
+    const a = angleTo(e, next), step = Math.min(speed * dt, d);
     e.angle = a;
-    move(w, e, Math.cos(a) * speed * dt, Math.sin(a) * speed * dt);
+    if (move(w, e, Math.cos(a) * step, Math.sin(a) * step))
+        e.pathAt = 0;
 }
 function addZone(w, plan, sourceId, source = 'hazard', spawn) {
     const z = { id: w.nextId++, x: plan.x, y: plan.y, kind: plan.kind, radius: plan.radius, w: plan.w, h: plan.h, angle: plan.angle, width: plan.width, innerRadius: plan.innerRadius,
@@ -201,6 +215,7 @@ function killEnemy(w, e, kind, weapon, oilExplosion = false) {
             nearby.value += e.reward;
         else
             w.drops.push({ id: w.nextId++, x: e.x, y: e.y, value: e.reward });
+        event(w, 'scrap-drop', e, { amount: e.reward });
     }
     event(w, 'kill', e, { source: weapon?.id || kind, targetId: e.eid, radius: e.radius });
     if (w.utilities.U09 && ['water', 'electric', 'fire', 'oil', 'ice'].includes(kind) && w.time >= w.recoveryAt) {
@@ -606,7 +621,7 @@ function triggerZone(w, z) {
             const offset = count <= 1 ? 0 : spread >= Math.PI * 2 - .01 ? i / count * spread : ((i / (count - 1)) - .5) * spread;
             makeBullet(w, z, z.angle + offset, plan.speed || CONFIG.enemyShotSpeed, plan.damage, 'ballistic', undefined, { owner: 'enemy', source: z.source, slow: plan.slow || 0, radius: plan.projectileRadius || 5, life: 5, range: 1200 });
         }
-        event(w, 'enemy-fire', z, { source: z.source });
+        event(w, 'enemy-fire', z, { source: z.source, targetId: z.sourceId, angle: z.angle });
         z.remaining = 0;
     }
     else if (plan.effect === 'charge' && source) {
@@ -759,20 +774,26 @@ function tickEnemies(w, dt) {
         }
         if (e.aiUntil > w.time)
             continue;
-        if (e.id === 'E04' || e.id === 'E09') {
-            if (d <= 360 && e.cooldown <= 0) {
-                const tether = e.id === 'E09';
-                e.angle = a;
-                e.cooldown = tether ? 3 : 2.2;
-                e.aiUntil = w.time + (tether ? .5 : .6);
-                addZone(w, { x: e.x, y: e.y, kind: 'line', radius: 0, w: 360, h: 8, angle: a, warning: tether ? .5 : .6, active: .05, damage: e.damage, effect: 'projectile', count: 1, speed: tether ? 230 : 280, slow: tether ? .25 : 0 }, e.eid, e.id);
+        const sight = clearPath(e, target, w.obstacles, 5, w.width, w.height);
+        const aim = (lead) => angleTo(e, { x: target.x + (target === w.player ? (w.playerVelocity?.x ?? 0) * lead : 0), y: target.y + (target === w.player ? (w.playerVelocity?.y ?? 0) * lead : 0) });
+        if (e.id === 'E04' || e.id === 'E09' || e.id === 'E07') {
+            const tether = e.id === 'E09', guard = e.id === 'E07', range = guard ? 430 : 420;
+            if (d <= range && sight && e.cooldown <= 0) {
+                e.angle = aim(tether ? .2 : .12);
+                e.cooldown = tether ? 3.2 : guard ? 3.4 : 2.4;
+                e.aiUntil = w.time + .7;
+                addZone(w, { x: e.x, y: e.y, kind: guard || tether ? 'cone' : 'line', radius: guard || tether ? range : 0, width: guard ? .26 : tether ? .18 : undefined, w: range, h: 12, angle: e.angle, warning: .7, active: .05, damage: e.damage * (guard ? .65 : 1), effect: 'projectile', count: tether ? 2 : guard ? 3 : 1, spread: tether ? .14 : guard ? .22 : 0, speed: tether ? 240 : 280, slow: tether ? .3 : 0, projectileRadius: tether ? 7 : 5 }, e.eid, e.id);
             }
-            else if (d > 260)
+            else if (d > range * .65 || !sight)
                 follow(w, e, target, speed, dt);
-            else if (d < 160) {
+            else if (d < 150 && !guard) {
                 e.angle = a;
-                move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
+                const blocked = move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
+                if (blocked)
+                    move(w, e, -Math.sin(a) * speed * dt, Math.cos(a) * speed * dt);
             }
+            else
+                e.angle = a;
         }
         else if (e.id === 'E05') {
             if (d < 95 && e.cooldown <= 0) {
@@ -794,10 +815,16 @@ function tickEnemies(w, dt) {
                     event(w, 'heal', e, { source: e.id, targetId: ally.eid });
                 }
             }
-            else if (d < 200) {
+            else if (d <= 400 && sight && e.cooldown <= 0) {
                 e.angle = a;
-                move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
+                e.cooldown = 3.5;
+                e.aiUntil = w.time + .8;
+                addZone(w, { ...e, kind: 'line', radius: 0, w: 400, h: 10, angle: a, warning: .8, active: .05, damage: 6 * difficultyDamage(w), effect: 'projectile', count: 1, speed: 220 }, e.eid, e.id);
             }
+            else if (d > 260 || !sight)
+                follow(w, e, target, speed, dt);
+            else
+                e.angle = a;
         }
         else if (e.id === 'E08') {
             if (e.cooldown <= 0 && d < 650) {
@@ -808,14 +835,32 @@ function tickEnemies(w, dt) {
             else
                 follow(w, e, target, speed, dt);
         }
-        else if (e.id === 'E11') {
-            if (e.cooldown <= 0 && d < 600) {
-                e.cooldown = 3.5;
-                e.aiUntil = w.time + .8;
-                addZone(w, { x: e.x, y: e.y, kind: 'cone', radius: 300, width: Math.PI * 5 / 3, angle: a + Math.PI, warning: .8, active: .05, damage: e.damage, effect: 'projectile', count: 11, spread: Math.PI * 5 / 3, speed: 180 }, e.eid, e.id);
+        else if (e.id === 'E10') {
+            if (e.cooldown <= 0 && d < 550) {
+                e.cooldown = 4.5;
+                e.aiUntil = w.time + 1.1;
+                e.angle = a;
+                addZone(w, { x: target.x, y: target.y, kind: 'circle', radius: 62, angle: 0, warning: 1.1, active: .15, damage: e.damage * .85, effect: 'mortar' }, e.eid, e.id);
             }
-            else if (d > 320)
+            else if (d > 250)
                 follow(w, e, target, speed, dt);
+            else
+                e.angle = a;
+        }
+        else if (e.id === 'E11') {
+            if (e.cooldown <= 0 && d < 560 && sight) {
+                e.cooldown = 3.6;
+                e.aiUntil = w.time + .9;
+                e.angle = aim(.2);
+                addZone(w, { x: e.x, y: e.y, kind: 'cone', radius: 560, width: 1.05, angle: e.angle, warning: .9, active: .05, damage: e.damage * .8, effect: 'projectile', count: 5, spread: 1.05, speed: 240, projectileRadius: 7 }, e.eid, e.id);
+            }
+            else if (d > 350 || !sight)
+                follow(w, e, target, speed, dt);
+            else {
+                e.angle = a;
+                if (d < 180)
+                    move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
+            }
         }
         else if (e.id === 'E12') {
             if (e.cooldown <= 0 && d < 650) {
@@ -911,7 +956,7 @@ function contactDamage(w) {
     }
 }
 function tickPlayer(w, input, dt) {
-    const p = w.player, wasDashing = p.dashTime > 0;
+    const p = w.player, wasDashing = p.dashTime > 0, previous = { x: p.x, y: p.y };
     p.dashCooldown = Math.max(0, p.dashCooldown - dt);
     p.overloadCooldown = Math.max(0, p.overloadCooldown - dt);
     p.dashTime = Math.max(0, p.dashTime - dt);
@@ -961,6 +1006,7 @@ function tickPlayer(w, input, dt) {
             p.angle = Math.atan2(y, x);
         move(w, p, x * p.speed * (1 - slow) * dt, y * p.speed * (1 - slow) * dt);
     }
+    w.playerVelocity = { x: (p.x - previous.x) / dt, y: (p.y - previous.y) / dt };
     if (w.time - w.lastDamage >= 4)
         p.shield = Math.min(p.maxShield, p.shield + w.shieldRegen * dt);
     if (w.utilities.U03 && w.time >= w.repairAt) {
@@ -976,7 +1022,7 @@ function tickPlayer(w, input, dt) {
         if (distance(drop, p) > pickup)
             return true;
         w.stats.goldEarned += drop.value;
-        event(w, 'pickup', drop, { amount: drop.value });
+        event(w, 'pickup', drop, { amount: drop.value, to: { x: p.x, y: p.y } });
         if (w.utilities.U04 && w.time >= w.pickupAt) {
             p.dashCooldown = Math.max(0, p.dashCooldown - .2);
             w.pickupAt = w.time + 1;

@@ -133,7 +133,7 @@ export class Renderer {
     this.floor(state);
     ctx.save();ctx.beginPath();ctx.rect(0,0,state.width,state.height);ctx.clip();
     for(const zone of state.zones)if(zone.type==='friendly')this.zone(zone,state.time,false);
-    for(const drop of state.drops)this.drop(drop.x,drop.y,state.time,drop.id);
+    for(const drop of state.drops)this.drop(drop.x,drop.y,state.time,drop.id,drop.value);
     const entities=state.enemies.filter(e=>(e as EnemyView&{exposed?:boolean}).exposed!==false&&e.hp>0).sort((a,b)=>a.y-b.y||a.eid-b.eid);
     const motions=motionFrame(state);
     for(const [id,m] of motions){const goal=m.control?0:m.stage==='windup'?m.progress:m.stage==='active'?1:0;const before=this.attackBlend.get(id)??goal;
@@ -204,7 +204,18 @@ export class Renderer {
       ctx.scale(dir===1||dir===3?.88:1,1);ctx.beginPath();ctx.rect(side===0?-24*unit:0,-20*unit,24*unit,45*unit);ctx.clip();
       this.art.draw(ctx,`${id}.legs`,0,0,40*unit,29*unit);ctx.restore();
     }
-    this.art.draw(ctx,`${id}.body.${dir}`,0,-9*unit+bob,53*unit,50*unit);
+    const body=`${id}.body.${dir}`,swing=Math.sin(gaitTime/.48*TAU)*amount;
+    ctx.strokeStyle='#172b32';ctx.lineWidth=4*unit;ctx.beginPath();ctx.moveTo(-9*unit,3*unit);ctx.lineTo(9*unit,3*unit);ctx.stroke();
+    for(const side of [-1,1]){
+      const lift=(side*swing*1.8+(dashing?-1.5:0))*unit;
+      ctx.save();ctx.translate(side*18*unit,-9*unit+bob);ctx.rotate(side*swing*.045);ctx.translate(-side*18*unit,0);
+      this.art.part(ctx,body,0,lift,53*unit,50*unit,side<0?0:.8,0,.2,1);ctx.restore();
+    }
+    this.art.part(ctx,body,0,-9*unit+bob,53*unit,50*unit,.2,0,.6,1);
+    if(dashing||id==='hive'){
+      ctx.fillStyle=dashing?'rgba(112,241,228,.65)':'rgba(112,241,228,.2)';
+      for(const side of [-1,1]){ctx.beginPath();ctx.ellipse(side*12*unit,8*unit,2.5*unit,(dashing?9:3)*unit,0,0,TAU);ctx.fill();}
+    }
     if(dir===2)this.art.draw(ctx,`${id}.backpack`,0,-11*unit+bob,31*unit,33*unit);
     ctx.restore();
   }
@@ -299,12 +310,18 @@ export class Renderer {
     if(warning&&damage&&this.options.colorAssist&&(z.innerRadius??0)===0){c.strokeStyle='#ffe8c5';c.lineWidth=1;c.beginPath();c.moveTo(-5,-5);c.lineTo(5,5);c.moveTo(5,-5);c.lineTo(-5,5);c.stroke();}
     c.restore();
   }
-  private drop(x:number,y:number,time:number,id:number):void{
-    const c=this.ctx;const bob=this.options.reducedMotion?0:Math.sin(time*3+id)*2;
-    c.save();c.translate(x,y+bob);c.rotate(Math.PI/4);c.fillStyle='#17262c';c.fillRect(-5,-5,10,10);c.fillStyle='#e8c47c';c.fillRect(-3,-3,6,6);c.strokeStyle='#ffefb4';c.lineWidth=1;c.strokeRect(-3,-3,6,6);c.restore();
+  private drop(x:number,y:number,time:number,id:number,value:number):void{
+    const c=this.ctx,u=Math.max(1,1/this.scale),bob=this.options.reducedMotion?0:Math.sin(time*4+id)*2;
+    c.save();c.translate(x,y);c.scale(u,u);
+    c.fillStyle='rgba(255,196,61,.13)';c.beginPath();c.ellipse(0,2,17,8,0,0,TAU);c.fill();
+    c.strokeStyle='rgba(255,219,104,.5)';c.lineWidth=1;c.beginPath();c.ellipse(0,2,13,6,0,0,TAU);c.stroke();
+    if(!this.options.reducedMotion){c.fillStyle='rgba(255,210,89,.11)';c.fillRect(-4,-25,8,25);c.strokeStyle='#ffe69a';c.beginPath();c.moveTo(0,-23);c.lineTo(0,-17);c.moveTo(-3,-20);c.lineTo(3,-20);c.stroke();}
+    c.translate(0,-5+bob);const count=value>=3?3:value>=1?2:1;
+    for(let i=0;i<count;i++){const xx=(i-(count-1)/2)*5,yy=-i*3;c.beginPath();for(let k=0;k<6;k++){const a=k*TAU/6-Math.PI/6,px=xx+Math.cos(a)*7,py=yy+Math.sin(a)*7;k?c.lineTo(px,py):c.moveTo(px,py);}c.closePath();c.fillStyle='#f3b83f';c.strokeStyle='#fff0ac';c.lineWidth=1.5;c.fill();c.stroke();c.fillStyle='#855415';c.fillRect(xx-1,yy-3,2,6);}
+    c.font='bold 10px sans-serif';c.textAlign='center';c.strokeStyle='#172126';c.lineWidth=3;c.fillStyle='#ffe6a0';const text=String(Number(value.toFixed(1)));c.strokeText(text,0,18);c.fillText(text,0,18);c.restore();
   }
   private captureEvents(state:BattleView):void{
-    const visible=new Set(['fire','hit','critical','arc','player-hit','shield-break','kill','explosion','enemy-explosion','enemy-attack','enemy-fire','dash','overload','phase','stagger','heal','defeat']);
+    const visible=new Set(['fire','hit','critical','arc','player-hit','shield-break','kill','explosion','enemy-explosion','enemy-attack','enemy-fire','dash','overload','phase','stagger','heal','defeat','scrap-drop','pickup']);
     for(const event of state.events){
       if(this.seenEvents.has(event.id))continue;this.seenEvents.add(event.id);
       if(state.time-event.at>1.2||!visible.has(event.type))continue;
@@ -388,6 +405,7 @@ export class Renderer {
     this.art.draw(c,'W04',x+size*.39,y-size*.02,size*.4,size*.3,.18);
     c.fillStyle='#9bb9b5';c.font='600 10px system-ui,sans-serif';c.textAlign='center';c.fillText(`RECOVERY UNIT  /  ${String(Math.max(0,CHASSIS.indexOf(chassis))+1).padStart(2,'0')}`,x,h-17);
   }
+  thumbnail(canvas:HTMLCanvasElement,id:string):void{this.icon(canvas,id);}
   icon(canvas:HTMLCanvasElement,id:string):void{
     const ctx=canvas.getContext('2d');if(!ctx)return;const rect=canvas.getBoundingClientRect();
     const w=rect.width||canvas.width||80,h=rect.height||canvas.height||80,dpr=Math.min(2,globalThis.devicePixelRatio||1);

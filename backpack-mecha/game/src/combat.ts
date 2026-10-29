@@ -1,6 +1,6 @@
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {nextRandom} from './random.ts';
-import {ARENA,availableBudget,bossPhase,bossTurn,chooseEnemy,circleHitsRect,createEncounter,findPath,traversable} from './encounters.ts';
+import {ARENA,availableBudget,bossPhase,bossTurn,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
 import type {AttackPlan,EncounterState,SpawnSpec} from './encounters.ts';
 import type {BattleView,BattleResult,Run,InputFrame,EnemyView,BulletView,ZoneView,WeaponView,Point,CombatStats,CombatEvent,Tier} from './types.ts';
 
@@ -25,6 +25,7 @@ export interface BattleState extends BattleView {
  decoy?:Point&{hp:number;until:number};priority?:number;priorityUntil:number;slowUntil:number;slowAmount:number;
  bossClock:number;bossTurn:number;bossCenter?:Point;bossStarted:boolean;bossOverloadWarned:boolean;bossEnraged:boolean;slainGroups:string[];
  failureReason?:string;
+ playerVelocity?:Point;
 }
 interface Hit {base:number;kind:DamageKind;weapon?:WeaponState;factor?:number;direct?:boolean;status?:boolean;secondary?:boolean;origin?:Point;arcFirst?:boolean;oilExplosion?:boolean}
 const DAMAGE_SCALE=[1,1.35,1.8];
@@ -95,11 +96,18 @@ function move(w:BattleState,p:Point&{radius:number},dx:number,dy:number):boolean
  return Math.abs(p.x-ox-dx)>.1||Math.abs(p.y-oy-dy)>.1;
 }
 function follow(w:BattleState,e:EnemyState,target:Point,speed:number,dt:number):void {
- if(e.pathAt<=w.time||!e.path.length){e.path=findPath(e,target,w.obstacles,e.radius,w.width,w.height);e.pathAt=w.time+.6+(e.eid%4)*.03;}
- while(e.path.length&&distance(e,e.path[0]!)<28)e.path.shift();
- const next=e.path[0]||target;let a=angleTo(e,next);
- if(e.id==='E02')a=e.angle+clamp(angleDiff(a,e.angle),-Math.PI*dt,Math.PI*dt);
- e.angle=a;move(w,e,Math.cos(a)*speed*dt,Math.sin(a)*speed*dt);
+ let next=target;
+ if(clearPath(e,target,w.obstacles,e.radius+2,w.width,w.height)){e.path=[];}
+ else{
+  if(e.pathAt<=w.time||!e.path.length){e.path=findPath(e,target,w.obstacles,e.radius,w.width,w.height);e.pathAt=w.time+.32+(e.eid%4)*.03;}
+  while(e.path.length&&distance(e,e.path[0]!)<8)e.path.shift();
+  // Look ahead along the route, so four-way grid search does not become a zigzag gait.
+  for(let i=e.path.length-1;i>0;i--)if(clearPath(e,e.path[i]!,w.obstacles,e.radius+2,w.width,w.height)){e.path.splice(0,i);break;}
+  next=e.path[0]||target;
+ }
+ const d=distance(e,next);if(d<1)return;
+ const a=angleTo(e,next),step=Math.min(speed*dt,d);
+ e.angle=a;if(move(w,e,Math.cos(a)*step,Math.sin(a)*step))e.pathAt=0;
 }
 function addZone(w:BattleState,plan:AttackPlan,sourceId?:number,source='hazard',spawn?:SpawnSpec):ZoneState {
  const z:ZoneState={id:w.nextId++,x:plan.x,y:plan.y,kind:plan.kind,radius:plan.radius,w:plan.w,h:plan.h,angle:plan.angle,width:plan.width,innerRadius:plan.innerRadius,
@@ -145,7 +153,8 @@ function killEnemy(w:BattleState,e:EnemyState,kind:DamageKind,weapon?:WeaponStat
  w.slainGroups.push(key);e.dead=true;e.hp=0;
  if(e.group)for(const other of w.enemies)if(other.group===e.group){other.hp=0;other.dead=true;}
  w.stats.kills++;if(e.reward>0){w.stats.killedBudget+=e.cost;
-  const nearby=w.drops.find(d=>distance(d,e)<35);if(nearby)nearby.value+=e.reward;else w.drops.push({id:w.nextId++,x:e.x,y:e.y,value:e.reward});}
+  const nearby=w.drops.find(d=>distance(d,e)<35);if(nearby)nearby.value+=e.reward;else w.drops.push({id:w.nextId++,x:e.x,y:e.y,value:e.reward});
+  event(w,'scrap-drop',e,{amount:e.reward});}
  event(w,'kill',e,{source:weapon?.id||kind,targetId:e.eid,radius:e.radius});
  if(w.utilities.U09&&['water','electric','fire','oil','ice'].includes(kind)&&w.time>=w.recoveryAt){w.player.shield=Math.min(w.player.maxShield,w.player.shield+utility(w,'U09'));w.recoveryAt=w.time+.5;}
  if(oilExplosion&&protocol(w,'P02')&&w.emberHeal<10){const heal=Math.min(1,w.player.maxHp-w.player.hp,10-w.emberHeal);w.player.hp+=heal;w.emberHeal+=heal;}
@@ -343,7 +352,7 @@ function triggerZone(w:BattleState,z:ZoneState):void {
   const count=plan.count||1,spread=plan.spread||0;
   for(let i=0;i<count;i++){const offset=count<=1?0:spread>=Math.PI*2-.01?i/count*spread:((i/(count-1))-.5)*spread;
    makeBullet(w,z,z.angle+offset,plan.speed||CONFIG.enemyShotSpeed,plan.damage,'ballistic',undefined,{owner:'enemy',source:z.source,slow:plan.slow||0,radius:plan.projectileRadius||5,life:5,range:1200});}
-  event(w,'enemy-fire',z,{source:z.source});z.remaining=0;
+  event(w,'enemy-fire',z,{source:z.source,targetId:z.sourceId,angle:z.angle});z.remaining=0;
  }else if(plan.effect==='charge'&&source){source.charge={vx:Math.cos(z.angle)*(plan.speed||260),vy:Math.sin(z.angle)*(plan.speed||260),until:w.time+plan.active,damage:plan.damage,radius:(plan.h||source.radius*2)/2};}
  else if(plan.effect==='drill'&&source){source.x=z.x;source.y=z.y;source.aiUntil=0;source.path=[];}
 }
@@ -400,25 +409,37 @@ function tickEnemies(w:BattleState,dt:number):void {
   const speed=e.speed*(1-enemySlow(w,e));
   if(e.healingUntil>w.time){for(const other of w.enemies)if(alive(other)&&other.kind!=='boss'&&other.eid!==e.eid&&distance(e,other)<220)other.hp=Math.min(other.maxHp,other.hp+6*dt);continue;}
   if(e.aiUntil>w.time)continue;
-  if(e.id==='E04'||e.id==='E09'){
-   if(d<=360&&e.cooldown<=0){const tether=e.id==='E09';e.angle=a;e.cooldown=tether?3:2.2;e.aiUntil=w.time+(tether?.5:.6);
-    addZone(w,{x:e.x,y:e.y,kind:'line',radius:0,w:360,h:8,angle:a,warning:tether?.5:.6,active:.05,damage:e.damage,effect:'projectile',count:1,speed:tether?230:280,slow:tether?.25:0},e.eid,e.id);
-   }else if(d>260)follow(w,e,target,speed,dt);else if(d<160){e.angle=a;move(w,e,-Math.cos(a)*speed*dt,-Math.sin(a)*speed*dt);}
+  const sight=clearPath(e,target,w.obstacles,5,w.width,w.height);
+  const aim=(lead:number)=>angleTo(e,{x:target.x+(target===w.player?(w.playerVelocity?.x??0)*lead:0),y:target.y+(target===w.player?(w.playerVelocity?.y??0)*lead:0)});
+  if(e.id==='E04'||e.id==='E09'||e.id==='E07'){
+   const tether=e.id==='E09',guard=e.id==='E07',range=guard?430:420;
+   if(d<=range&&sight&&e.cooldown<=0){e.angle=aim(tether?.2:.12);e.cooldown=tether?3.2:guard?3.4:2.4;e.aiUntil=w.time+.7;
+    addZone(w,{x:e.x,y:e.y,kind:guard||tether?'cone':'line',radius:guard||tether?range:0,width:guard?.26:tether?.18:undefined,w:range,h:12,angle:e.angle,warning:.7,active:.05,damage:e.damage*(guard?.65:1),effect:'projectile',count:tether?2:guard?3:1,spread:tether?.14:guard?.22:0,speed:tether?240:280,slow:tether?.3:0,projectileRadius:tether?7:5},e.eid,e.id);
+   }else if(d>range*.65||!sight)follow(w,e,target,speed,dt);
+   else if(d<150&&!guard){e.angle=a;const blocked=move(w,e,-Math.cos(a)*speed*dt,-Math.sin(a)*speed*dt);if(blocked)move(w,e,-Math.sin(a)*speed*dt,Math.cos(a)*speed*dt);}
+   else e.angle=a;
   }else if(e.id==='E05'){
    if(d<95&&e.cooldown<=0){e.aiUntil=w.time+2;e.cooldown=1000;addZone(w,{x:e.x,y:e.y,kind:'circle',radius:70,angle:0,warning:.8,active:.1,damage:e.damage},e.eid,e.id);}
    else follow(w,e,target,speed,dt);
   }else if(e.id==='E06'){
    const ally=w.enemies.filter(o=>alive(o)&&o.kind!=='boss'&&o.eid!==e.eid).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp)||distance(e,a)-distance(e,b))[0];
    if(ally){if(distance(e,ally)>160)follow(w,e,ally,speed,dt);if(e.cooldown<=0&&distance(e,ally)<220){e.cooldown=3;e.healingUntil=w.time+2;event(w,'heal',e,{source:e.id,targetId:ally.eid});}}
-   else if(d<200){e.angle=a;move(w,e,-Math.cos(a)*speed*dt,-Math.sin(a)*speed*dt);}
+   else if(d<=400&&sight&&e.cooldown<=0){e.angle=a;e.cooldown=3.5;e.aiUntil=w.time+.8;
+    addZone(w,{...e,kind:'line',radius:0,w:400,h:10,angle:a,warning:.8,active:.05,damage:6*difficultyDamage(w),effect:'projectile',count:1,speed:220},e.eid,e.id);
+   }else if(d>260||!sight)follow(w,e,target,speed,dt);else e.angle=a;
   }else if(e.id==='E08'){
    if(e.cooldown<=0&&d<650){e.cooldown=5;e.aiUntil=w.time+1.1;
     addZone(w,{x:target.x,y:target.y,kind:'circle',radius:48,angle:0,warning:1,active:.1,damage:e.damage,effect:'drill'},e.eid,e.id);}
    else follow(w,e,target,speed,dt);
+  }else if(e.id==='E10'){
+   if(e.cooldown<=0&&d<550){e.cooldown=4.5;e.aiUntil=w.time+1.1;e.angle=a;
+    addZone(w,{x:target.x,y:target.y,kind:'circle',radius:62,angle:0,warning:1.1,active:.15,damage:e.damage*.85,effect:'mortar'},e.eid,e.id);
+   }else if(d>250)follow(w,e,target,speed,dt);else e.angle=a;
   }else if(e.id==='E11'){
-   if(e.cooldown<=0&&d<600){e.cooldown=3.5;e.aiUntil=w.time+.8;
-    addZone(w,{x:e.x,y:e.y,kind:'cone',radius:300,width:Math.PI*5/3,angle:a+Math.PI,warning:.8,active:.05,damage:e.damage,effect:'projectile',count:11,spread:Math.PI*5/3,speed:180},e.eid,e.id);}
-   else if(d>320)follow(w,e,target,speed,dt);
+   if(e.cooldown<=0&&d<560&&sight){e.cooldown=3.6;e.aiUntil=w.time+.9;e.angle=aim(.2);
+    addZone(w,{x:e.x,y:e.y,kind:'cone',radius:560,width:1.05,angle:e.angle,warning:.9,active:.05,damage:e.damage*.8,effect:'projectile',count:5,spread:1.05,speed:240,projectileRadius:7},e.eid,e.id);
+   }else if(d>350||!sight)follow(w,e,target,speed,dt);
+   else {e.angle=a;if(d<180)move(w,e,-Math.cos(a)*speed*dt,-Math.sin(a)*speed*dt);}
   }else if(e.id==='E12'){
    if(e.cooldown<=0&&d<650){e.cooldown=6;e.aiUntil=w.time+2.5;e.angle=a;
     addZone(w,{x:e.x,y:e.y,kind:'rect',radius:0,w:390,h:65,angle:a,warning:1,active:1.5,damage:e.damage,effect:'charge',speed:260},e.eid,e.id);}
@@ -459,7 +480,7 @@ function contactDamage(w:BattleState):void {
  }
 }
 function tickPlayer(w:BattleState,input:InputFrame,dt:number):void {
- const p=w.player,wasDashing=p.dashTime>0;
+ const p=w.player,wasDashing=p.dashTime>0,previous={x:p.x,y:p.y};
  p.dashCooldown=Math.max(0,p.dashCooldown-dt);p.overloadCooldown=Math.max(0,p.overloadCooldown-dt);p.dashTime=Math.max(0,p.dashTime-dt);p.overloadTime=Math.max(0,p.overloadTime-dt);p.invulnerable=Math.max(0,p.invulnerable-dt);
  if(input.target){const chosen=w.enemies.filter(alive).sort((a,b)=>distance(a,input.target!)-distance(b,input.target!))[0];if(chosen&&distance(chosen,input.target)<chosen.radius+55){w.priority=chosen.eid;w.priorityUntil=w.time+2;}}
  if(w.priorityUntil<=w.time||!w.enemies.some(e=>e.eid===w.priority&&alive(e)))w.priority=undefined;
@@ -472,10 +493,11 @@ function tickPlayer(w:BattleState,input:InputFrame,dt:number):void {
  w.dashReleased=!input.dash;w.overloadReleased=!input.overload;
  if(p.dashTime>0){p.angle=w.dashAngle;move(w,p,Math.cos(w.dashAngle)*p.speed*3.2*dt,Math.sin(w.dashAngle)*p.speed*3.2*dt);}
  else {const slow=w.slowUntil>w.time?w.slowAmount:0;if(length>.01)p.angle=Math.atan2(y,x);move(w,p,x*p.speed*(1-slow)*dt,y*p.speed*(1-slow)*dt);}
+ w.playerVelocity={x:(p.x-previous.x)/dt,y:(p.y-previous.y)/dt};
  if(w.time-w.lastDamage>=4)p.shield=Math.min(p.maxShield,p.shield+w.shieldRegen*dt);
  if(w.utilities.U03&&w.time>=w.repairAt){w.repairAt+=10;const cap=[8,10,12][w.utilities.U03-1]!,heal=Math.max(0,Math.min(utility(w,'U03'),p.maxHp-p.hp,cap-w.repairAmount));p.hp+=heal;w.repairAmount+=heal;if(heal)event(w,'heal',p,{amount:heal,source:'U03'});}
  const pickup=(w.chassis==='scavenger'?90:CONFIG.pickupBase)+utility(w,'U04');
- w.drops=w.drops.filter(drop=>{if(distance(drop,p)>pickup)return true;w.stats.goldEarned+=drop.value;event(w,'pickup',drop,{amount:drop.value});
+ w.drops=w.drops.filter(drop=>{if(distance(drop,p)>pickup)return true;w.stats.goldEarned+=drop.value;event(w,'pickup',drop,{amount:drop.value,to:{x:p.x,y:p.y}});
   if(w.utilities.U04&&w.time>=w.pickupAt){p.dashCooldown=Math.max(0,p.dashCooldown-.2);w.pickupAt=w.time+1;}return false;});
 }
 function stepFixed(w:BattleState,input:InputFrame,dt:number):void {

@@ -4,7 +4,7 @@
 <style>
 *{box-sizing:border-box}body{margin:0;height:100dvh;background:#111e26;color:#e8dfc9;font:14px system-ui;display:flex;flex-direction:column}header{padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #49606a}strong{color:#f3c487}button,select{font:inherit;padding:8px 12px;color:inherit;background:#263b44;border:1px solid #5a747b;border-radius:5px}select{max-width:100%}button:hover{background:#35535d}canvas{display:block;width:100%;flex:1;min-height:0}footer{padding:10px 16px;font:12px monospace;white-space:pre-wrap;border-top:1px solid #49606a}label{white-space:nowrap}small{color:#a7bdc5}#report{max-height:110px;overflow:auto;margin:0;padding:0 16px;background:#162a34;font:11px monospace}
 </style>
-<header><strong>战斗反馈 · 开发场景</strong><select id="scene" aria-label="验证场景"><option value="crane">起重机 · 完整循环</option><option value="sweep">起重机 · 摆锤命中</option><option value="ballistic">铆钉 / 霰弹 / 穿甲</option><option value="element">水弹 / 电链 / 冰晶</option><option value="flame">火焰 / 燃油 / 导弹</option><option value="melee">重锤 / 圆锯 / 无人机</option><option value="dense">第三章 · 密集战斗</option><option value="B1A">压路王</option><option value="B2A">熔炉蟹</option><option value="B2B">磁轨双子</option><option value="B3A">回收者</option><option value="B3B">回收母舰</option></select><button id="play">播放</button><button id="step">推进 0.5 秒</button><button id="tick">推进 1 帧</button><button id="reset">重置</button><label><input id="reduced" type="checkbox">减少动态</label><label><input id="assist" type="checkbox">色彩辅助</label><label><input id="sound" type="checkbox">声音</label><button id="benchmark">采样 10 秒</button><small>WASD 移动 · 空格冲刺 · E 超载 · 不写入存档</small></header>
+<header><strong>战斗反馈 · 开发场景</strong><select id="scene" aria-label="验证场景"><option value="crane">起重机 · 完整循环</option><option value="sweep">起重机 · 摆锤命中</option><option value="ballistic">铆钉 / 霰弹 / 穿甲</option><option value="element">水弹 / 电链 / 冰晶</option><option value="flame">火焰 / 燃油 / 导弹</option><option value="melee">重锤 / 圆锯 / 无人机</option><option value="scrap">金色碎片 · 掉落与拾取</option><option value="pursuit">后期敌人 · 追击与技能</option><option value="dense">第三章 · 密集战斗</option><option value="B1A">压路王</option><option value="B2A">熔炉蟹</option><option value="B2B">磁轨双子</option><option value="B3A">回收者</option><option value="B3B">回收母舰</option></select><button id="play">播放</button><button id="step">推进 0.5 秒</button><button id="tick">推进 1 帧</button><button id="reset">重置</button><label><input id="reduced" type="checkbox">减少动态</label><label><input id="assist" type="checkbox">色彩辅助</label><label><input id="sound" type="checkbox">声音</label><button id="benchmark">采样 10 秒</button><small>WASD 移动 · 空格冲刺 · E 超载 · 不写入存档</small></header>
 <canvas id="view"></canvas><footer id="status"></footer><pre id="report"></pre>
 <script type="module">
 const base=new URLSearchParams(location.search).has('baseline')?'/baseline':'/game';
@@ -14,13 +14,15 @@ await renderer.load();const profile=freshProfile();profile.settings.music=false;
 let w,playing=false,previous=0,samples=null;const keys=new Set(),options={lang:'zh',reducedMotion:false,colorAssist:false};
 function reset(){
  const id=select.value,run=newRun('scavenger','full',0,'FEEDBACK-DEVELOPMENT-FIXTURE');
- const weapons={crane:['W01'],sweep:[],ballistic:['W01','W02','W07'],element:['W03','W04','W12'],flame:['W05','W06','W10'],melee:['W08','W09','W11'],dense:['W03','W04','W10']}[id]??['W01'];
+ const weapons={crane:['W01'],sweep:[],ballistic:['W01','W02','W07'],element:['W03','W04','W12'],flame:['W05','W06','W10'],melee:['W08','W09','W11'],dense:['W03','W04','W10'],scrap:[],pursuit:[]}[id]??['W01'];
  run.items=weapons.map((id,i)=>({id,uid:`fixture-${i}`,tier:1,x:i*2,y:1,rotation:0,stored:false}));
  const boss=id==='crane'||id==='sweep'?'B1B':id.startsWith('B')?id:null;run.wave=boss?Number(boss[1])*4:11;if(boss)run.bosses[Number(boss[1])-1]=boss;
  w=createBattle(run);w.obstacles=[];w.encounter.budget=0;w.encounter.nextSpawn=10000;
  if(id==='sweep'){w.bossClock=0;w.bossTurn=1;w.player.x=1000;w.player.y=300;w.player.shield=5;w.lastDamage=0;}
  if(id==='dense')w.player.hp=w.player.maxHp=10000; // Sustained render fixture; never a natural run.
- if(!boss){for(let i=0;i<(id==='dense'?40:10);i++){const angle=i*Math.PI*2/10,r=id==='melee'?80:id==='flame'?100:180+i%3*25;
+ if(id==='scrap'){w.drops=[{id:9001,x:650,y:590,value:.8},{id:9002,x:940,y:700,value:2.5},{id:9003,x:770,y:820,value:5}];w.events.push({id:9004,at:0,type:'pickup',x:735,y:640,to:{x:800,y:650},amount:2.5});w.time=.35;}
+ if(id==='pursuit'){w.player.invulnerable=1000;for(const [i,id] of ['E07','E09','E10','E11','E06','E12'].entries()){const a=i*Math.PI/3;spawnEnemy(w,{id,x:800+Math.cos(a)*250,y:650+Math.sin(a)*250,elite:false,affix:0,reward:false,cost:0});}}
+ if(!boss&&!['scrap','pursuit'].includes(id)){for(let i=0;i<(id==='dense'?40:10);i++){const angle=i*Math.PI*2/10,r=id==='melee'?80:id==='flame'?100:180+i%3*25;
    const e=spawnEnemy(w,{id:id==='dense'?`E${String(i%12+1).padStart(2,'0')}`:'E03',x:800+Math.cos(angle)*r,y:650+Math.sin(angle)*r,elite:i%7===0,affix:0,reward:false,cost:0});e.hp=e.maxHp=500;e.speed=20;}
  }
  playing=false;samples=null;keys.clear();previous=0;audio.resetEvents();document.querySelector('#play').textContent='播放';report.textContent='';
