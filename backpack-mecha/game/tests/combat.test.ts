@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newRun,resolveBattle,startWave} from '../src/economy.ts';
+import {newRun,resolveBattle,startWave,autoPack} from '../src/economy.ts';
 import {MODULE_BY_ID} from '../src/content.ts';
 import {battleResult,createBattle,damagePlayer,spawnEnemy,stepBattle} from '../src/combat.ts';
 import type {BattleState,EnemyState} from '../src/combat.ts';
@@ -12,6 +12,7 @@ function setup(ids=['W01'],supports:{id:string;weapon:number;tier?:Tier}[]=[],ut
  run.items=ids.map((id,i)=>({uid:`w${i}`,id,tier:1,x:i*2,y:1,rotation:0,stored:false}));
  for(const [i,s] of supports.entries())run.items.push({uid:`s${i}`,id:s.id,tier:s.tier||1,x:i,y:3,rotation:0,stored:false,link:`w${s.weapon}`});
  for(const [i,id] of utilities.entries())run.items.push({uid:`u${i}`,id,tier:1,x:i,y:4,rotation:0,stored:false});
+ run.power=30;run.unlockedCorners=[0,1,2,3];assert.ok(autoPack(run).ok);
  const w=createBattle(run);w.obstacles=[];w.encounter.budget=0;w.encounter.nextSpawn=1000;w.rng=12345;return w;
 }
 function dummy(w:BattleState,x=w.player.x+110,y=w.player.y):EnemyState {
@@ -84,7 +85,7 @@ test('split children grant normal kill events but cannot duplicate scrap or kill
  const crate=spawnEnemy(w,{id:'E10',x:850,y:650,elite:false,affix:0,reward:true,cost:3});crate.hp=1;crate.armor=0;crate.speed=0;crate.damage=0;
  advance(w,5);
  assert.equal(w.stats.kills,3);assert.equal(w.stats.killedBudget,3);
- assert.ok(Math.abs(w.stats.goldEarned-w.encounter.wave.bonus*3/100)<1e-8);
+ assert.ok(Math.abs(w.stats.goldEarned-.4*3)<1e-8);
 });
 
 test('insurance resolves once, shield overflow reaches hull, and hit protection blocks repeated damage',()=>{

@@ -1,5 +1,5 @@
-import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID } from "./content.js?v=07c9480d5be3";
-import { newRun, autoPack, getCells } from "./economy.js?v=07c9480d5be3";
+import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID } from "./content.js?v=0ed06082a6ae";
+import { newRun, autoPack, getCells, validateLoadout } from "./economy.js?v=0ed06082a6ae";
 export const TRAINING_PRESETS = [
     { name: '铆钉齐射', en: 'Rivet battery', modules: ['W01', 'W02', 'S01', 'S02', 'U01', 'U02'] },
     { name: '潮湿电链', en: 'Wet circuit', modules: ['W03', 'W04', 'S01', 'S05', 'U01', 'U02'] },
@@ -35,5 +35,8 @@ export function trainingRun(setup) {
     const result = autoPack(r);
     if (!result.ok)
         return result;
+    const ready = validateLoadout(r);
+    if (!ready.ok)
+        return ready;
     return { ok: true, run: r };
 }

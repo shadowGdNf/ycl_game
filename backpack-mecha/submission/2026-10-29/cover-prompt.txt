@@ -1,0 +1,14 @@
+生成方式：内置 image_gen
+参考素材：backpack-mecha/game/assets/source/art-direction-a.png
+用途：作品投稿宣传封面；非游戏实机截图。
+
+Use case: ads-marketing.
+Asset type: attractive horizontal key art cover for the existing original browser game 背包机甲 (Backpack Mecha), for a game-jam submission wall. Deliver one polished wide 16:9 image, ideally 1536×864.
+Primary request: transform the supplied game art reference into an exciting, professionally composed game cover. This is promotional illustration, not a screenshot.
+Input image: existing approved art-direction reference. Preserve the recognizable hero design and materials: squat compact ivory and orange scavenger robot, thick beveled armor, two vertical cyan luminous eyes on a round black faceplate, chunky short legs, prominent cyan energy backpack and orange modular rivet cannon. Use the reference as character/style reference, not as a collage layout.
+Scene: atmospheric blue-gray abandoned salvage factory, steel floor, distant industrial machinery. Hero in dynamic three-quarter view fills the right half, braced and aiming its rivet cannon. A few recognizable rust-red compact mechanical enemies in the distance, restrained orange sparks and cyan electrical arcs. Convey playful mechanical ingenuity and punchy combat, not grim military realism.
+On the lower left, a tasteful partially transparent 5×5 backpack equipment grid with a small handful of orange cannon and cyan support modules fitted as polyomino pieces; a cyan connector traces between compatible neighboring modules. It is a simple visual motif supporting the game's backpack-building hook, not fake dense game UI.
+Composition: strong clean focal hierarchy visible at thumbnail size, dramatic diagonal energy, hero separated from dark background, deliberate negative space at upper left for title. Premium stylized 3D-rendered metal, satin enamel, generous bevels, soft cinematic light, readable large shapes. Orange/ivory hero against deep teal and graphite, controlled cyan glow.
+Text (verbatim): large bold beautifully legible Chinese title "背包机甲" at upper left; small uppercase subtitle "BACKPACK MECHA"; a small line "把废铁，装成王牌。". Keep Chinese characters exact, no extra copy. Title takes roughly one quarter of image width or more and remains high contrast. Keep all title text and hero face within central safe margins for wall cropping.
+Constraints: one finished cover, no logos of other companies, no awards or review claims, no watermark, no app-store badges, no extra human pilots, no giant humanoid Gundam, no photorealistic war. Do not duplicate the hero. Do not include the reference's detached product-display objects or gray studio backdrop. Background fully opaque.
+

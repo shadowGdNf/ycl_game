@@ -11,6 +11,10 @@ export const ENEMY_TACTICS:Record<string,{role:[string,string];skill:[string,str
  E09:{role:['牵制射手','Tether'],skill:['0.7 秒预警后发射双减速弹，命中降低移速。','Two slowing bolts after a 0.7s warning.'],counter:['横移躲弹，避免被追击怪夹住。','Dodge sideways and avoid being pinned by chasers.']},
  E10:{role:['迫击 / 分裂','Mortar / split'],skill:['1.1 秒落点预警炮击，死亡后分裂成两只拾荒螨。','Mortar strike after 1.1s; splits into two mites on death.'],counter:['躲开红色落点，准备清理分裂单位。','Leave the marked landing and clear the offspring.']},
  E11:{role:['磁暴弹幕','Pulse fan'],skill:['朝主角发射五枚扇形弹，0.9 秒预警，可被障碍阻挡。','Five-shot fan aimed at you after 0.9s; cover blocks shots.'],counter:['提前横移，利用弹幕间隙和掩体。','Strafe early, use gaps and cover.']},
+ E13:{role:['侧翼突袭','Flanker'],skill:['绕向侧翼，0.6 秒直线预警后短距突进；撞墙会硬直。','Flanks, then lunges after a 0.6s lane warning; wall impacts stagger it.'],counter:['侧向走出窄预警，借障碍阻断突进。','Sidestep the narrow lane and use cover to stop its lunge.']},
+ E14:{role:['远距狙击','Sniper'],skill:['远距离蓄力 1.25 秒后射出高速单发；近身时后撤。','Charges for 1.25s, fires one fast shot, and retreats when approached.'],counter:['瞄准线锁定后横移，利用掩体挡弹。','Strafe after the aim locks; cover blocks the shot.']},
+ E15:{role:['布雷封路','Minelayer'],skill:['1.2 秒预警后在落点两侧布置双雷区，持续 2.2 秒。','Places two minefields after 1.2s, lasting 2.2s.'],counter:['保留中间通道，绕开两侧持续危险区。','Use the central lane and avoid the persistent side hazards.']},
+ E16:{role:['环形弹幕','Ring sentinel'],skill:['蓄力 1 秒后向四周发射十枚慢速弹，攻击后短暂停顿。','Charges for 1s, releases ten slow radial bolts, then briefly recovers.'],counter:['从弹幕间隙穿过，避免贴身吃弹。','Move through the gaps and avoid point-blank bursts.']},
  E12:{role:['重型冲锋','Heavy charge'],skill:['1 秒矩形预警后直线冲锋，撞墙会短暂失衡。','Charges after a 1s lane warning; walls cause a stagger.'],counter:['侧向躲开，引导它撞上障碍。','Step sideways and bait it into cover.']},
 };
 export const ELITE_AFFIXES=[

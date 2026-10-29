@@ -71,7 +71,7 @@ export function motionFrame(view) {
         out.set(e.eid, { stage: charging || fired ? 'active' : zone ? (zone.active ? 'active' : 'windup') : recovery ? 'recover' : 'idle',
             kind: charging ? 'charge' : fired ? 'volley' : zone ? action(e, zone) : 'idle', progress: fired ? 1 : zone ? clamp(1 - zone.remaining / Math.max(.001, zone.duration)) : 0,
             angle: charging ? Math.atan2(e.charge.vy, e.charge.vx) : zone ? (zone.active ? zone.angle : zone.plan?.angle ?? zone.angle) : e.angle,
-            control, weak, phaseAge: e.kind === 'boss' ? view.time - phaseAt : Infinity, hit: clamp(1 - (view.time - (hits.get(e.eid) ?? -Infinity)) / .16), zone });
+            control, weak, fireAge: fires.has(e.eid) ? view.time - fires.get(e.eid) : undefined, phaseAge: e.kind === 'boss' ? view.time - phaseAt : Infinity, hit: clamp(1 - (view.time - (hits.get(e.eid) ?? -Infinity)) / .16), zone });
     }
     return out;
 }

@@ -3,8 +3,8 @@ import {Art} from './art.ts';
 import type {ArtProgress} from './art.ts';
 import {motionFrame,zoneRole,zoneVisible,chargeContactRadius} from './motion.ts';
 import type {EnemyMotion} from './motion.ts';
-import {enemyBody,enemyControl,enemyMotionLabel,zonePath,zoneSymbols} from './motion-renderer.ts';
-import {CHASSIS_BY_ID,MODULE_BY_ID} from './content.ts';
+import {enemyBody,enemyHardware,enemyControl,enemyMotionLabel,zonePath,zoneSymbols} from './motion-renderer.ts';
+import {CHASSIS_BY_ID,MODULE_BY_ID,ENEMY_BY_ID} from './content.ts';
 import {drawCombatEffect,drawProjectile,drawHazardEnergy,effectLife} from './feedback.ts';
 import {locomotion,easeOut} from './visual-motion.ts';
 import type {Locomotion} from './visual-motion.ts';
@@ -195,7 +195,8 @@ export class Renderer {
     const bob=this.options.reducedMotion?0:(walk.rise*amount+Math.sin(time*2)*.4)*unit;
     const lean=this.options.reducedMotion?0:(dashing?.10:walk.lean*amount);
     ctx.save();ctx.translate(x,y);ctx.rotate(lean);
-    this.art.draw(ctx,`${id}.backpack`,0,-14*unit,39*unit,39*unit,0,.96);
+    const packSway=this.options.reducedMotion?0:Math.sin(gaitTime/.48*TAU-.6)*amount*1.3;
+    this.art.draw(ctx,`${id}.backpack`,packSway*unit,(-14+packSway*.4)*unit,39*unit,39*unit,-packSway*.012,.96);
     // Split the existing leg-pair sprite at its waist center in the renderer.
     // The torso covers the joint, while each foot follows its own key pose.
     for(const side of dir===3?[1,0]:[0,1]){
@@ -204,6 +205,11 @@ export class Renderer {
       ctx.scale(dir===1||dir===3?.88:1,1);ctx.beginPath();ctx.rect(side===0?-24*unit:0,-20*unit,24*unit,45*unit);ctx.clip();
       this.art.draw(ctx,`${id}.legs`,0,0,40*unit,29*unit);ctx.restore();
     }
+    // Hydraulic knees and planted feet reinforce weight without shifting collision geometry.
+    ctx.strokeStyle='#809995';ctx.lineWidth=1.6*unit;
+    for(const side of [-1,1]){const leg=side<0?walk.left:walk.right,footX=(side*9+leg.x*amount)*unit,footY=(18+leg.y*amount)*unit;
+      ctx.beginPath();ctx.moveTo(side*8*unit,7*unit);ctx.lineTo(footX,footY-4*unit);ctx.stroke();
+      if(amount>.1&&leg.y>=0){ctx.fillStyle='rgba(14,26,30,.4)';ctx.beginPath();ctx.ellipse(footX,footY+2*unit,5*unit,1.4*unit,0,0,TAU);ctx.fill();}}
     const body=`${id}.body.${dir}`,swing=Math.sin(gaitTime/.48*TAU)*amount;
     ctx.strokeStyle='#172b32';ctx.lineWidth=4*unit;ctx.beginPath();ctx.moveTo(-9*unit,3*unit);ctx.lineTo(9*unit,3*unit);ctx.stroke();
     for(const side of [-1,1]){
@@ -259,7 +265,10 @@ export class Renderer {
     let angle=w.angle;
     if(w.id==='W08'&&age<.3)angle+=Math.sin(age/.3*Math.PI)*.9;
     if(w.id==='W09')angle+=time*9;
-    const x=p.x+m.x-Math.cos(angle)*recoil,y=p.y+m.y-Math.sin(angle)*recoil;
+    const sway=this.options.reducedMotion?0:Math.sin((this.playerGait?.stride??0)*TAU+(index===1?Math.PI:0))*this.movement*1.8;
+    const x=p.x+m.x-Math.cos(angle)*recoil+sway*.45,y=p.y+m.y-Math.sin(angle)*recoil+sway;
+    ctx.strokeStyle='#425d64';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(p.x+m.x*.55,p.y-7);ctx.lineTo(x,y);ctx.stroke();
+    ctx.fillStyle='#9ab8b4';ctx.beginPath();ctx.arc(x,y,3,0,TAU);ctx.fill();
     const big=w.id==='W08'||w.id==='W07';this.art.draw(ctx,w.id,x,y,big?40:34,big?32:27,angle,1,Math.cos(angle)<0);
     if(age<.085&&w.shotCount>0&&w.id!=='W11'&&w.id!=='W09'){
       ctx.save();ctx.translate(x+Math.cos(angle)*19,y+Math.sin(angle)*19);ctx.rotate(angle);ctx.globalAlpha=1-age/.085;ctx.fillStyle=MODULE_BY_ID[w.id]?.color??'#ffe4ae';
@@ -405,7 +414,11 @@ export class Renderer {
     this.art.draw(c,'W04',x+size*.39,y-size*.02,size*.4,size*.3,.18);
     c.fillStyle='#9bb9b5';c.font='600 10px system-ui,sans-serif';c.textAlign='center';c.fillText(`RECOVERY UNIT  /  ${String(Math.max(0,CHASSIS.indexOf(chassis))+1).padStart(2,'0')}`,x,h-17);
   }
-  thumbnail(canvas:HTMLCanvasElement,id:string):void{this.icon(canvas,id);}
+  thumbnail(canvas:HTMLCanvasElement,id:string):void{
+    this.icon(canvas,id);if(!ENEMY_BY_ID[id]?.sprite)return;const c=canvas.getContext('2d');if(!c)return;
+    const w=canvas.width/Math.min(2,globalThis.devicePixelRatio||1),h=canvas.height/Math.min(2,globalThis.devicePixelRatio||1);
+    c.save();c.translate(w/2,h/2);enemyHardware(c,{id,eid:0,x:0,y:0,hp:1,maxHp:1,radius:20,angle:-.4,kind:'normal',phase:1},{stage:'idle',kind:'idle',progress:0,angle:-.4,weak:false,phaseAge:Infinity,hit:0},Math.min(w,h)*.8,0,true);c.restore();
+  }
   icon(canvas:HTMLCanvasElement,id:string):void{
     const ctx=canvas.getContext('2d');if(!ctx)return;const rect=canvas.getBoundingClientRect();
     const w=rect.width||canvas.width||80,h=rect.height||canvas.height||80,dpr=Math.min(2,globalThis.devicePixelRatio||1);

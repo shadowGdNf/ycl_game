@@ -57,6 +57,7 @@ export function enemyPool(wave:number,mode:Mode):string[] {
  wave<=4?['E01','E02','E03','E04','E05']:wave<=6?['E01','E02','E03','E04','E05','E06','E07']:
  wave<=8?['E01','E02','E03','E04','E05','E06','E07','E08','E09']:
  ['E01','E02','E03','E04','E05','E06','E07','E08','E09','E10','E11','E12'];
+ if(mode==='full'){if(wave>=2)ids.push('E13');if(wave>=3)ids.push('E14');if(wave>=5)ids.push('E15');if(wave>=7)ids.push('E16');}
  return ids.filter(id=>mode==='full'||Number(id.slice(1))<=(mode==='prototype'?5:6));
 }
 export function chooseEnemy(enc:EncounterState,allowance:number,random:number):string|undefined {
@@ -64,7 +65,7 @@ export function chooseEnemy(enc:EncounterState,allowance:number,random:number):s
  if(!pool.length)return undefined;
  const weights=pool.map(id=>{
   const e=ENEMY_BY_ID[id]!,act=enc.wave.act;
-  const group=id==='E01'||id==='E02'?'chase':id==='E04'||id==='E11'?'ranged':id==='E06'||id==='E09'?'support':'heavy';
+  const group=['E01','E02','E13'].includes(id)?'chase':['E04','E11','E14','E16'].includes(id)?'ranged':['E06','E09'].includes(id)?'support':'heavy';
   const weight=({chase:[.65,.4,.3],ranged:[.2,.25,.25],support:[0,.2,.2],heavy:[.15,.15,.25]}[group])[act-1]!;
   return Math.max(.01,weight)/e.cost;
  });

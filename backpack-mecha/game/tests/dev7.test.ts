@@ -29,8 +29,8 @@ test('all six training presets fit every chassis and launch the chosen boss with
  }
  assert.equal(JSON.stringify(career),before);assert.equal(JSON.stringify(TRAINING_PRESETS),presets);
 });
-test('training refuses empty, duplicated, incompatible, overpowered and over-armed loadouts',()=>{
- for(const modules of [[],['W01','W01'],['W01','S05'],['W01','W02','W03','W04'],['unknown'],['W10','W11','W12','S01','S02','S04','U02']]){
+test('training refuses empty, duplicated, overpowered and over-armed loadouts',()=>{
+ for(const modules of [[],['W01','W01'],['W01','W02','W03','W04'],['unknown'],['W10','W11','W12','S01','S02','S04','U02']]){
   assert.equal(trainingRun({...setup,power:10,modules}).ok,false,modules.join(','));
  }
  assert.equal(trainingRun({...setup,difficulty:8}).ok,false);

@@ -6,7 +6,7 @@ export type Rect=Point&{w:number;h:number};
 export type ModuleKind='weapon'|'support'|'utility';
 export interface ModuleDef {id:string;name:string;en:string;kind:ModuleKind;shape:string[];power:number;rarity:'C'|'U'|'R';price:number;effect:string;effectEn:string;tags:string[];color:string;damage?:number;interval?:number;range?:number;attack?:string;values?:number[];[key:string]:unknown}
 export interface ChassisDef {id:string;name:string;en:string;hp:number;shield:number;speed:number;armor:number;dash:number;trait:string;traitEn:string;unlock:string}
-export interface EnemyDef {id:string;name:string;en:string;act:number;hp:number;armor:number;speed:number;damage:number;cost:number;behavior:string;radius:number}
+export interface EnemyDef {id:string;name:string;en:string;act:number;hp:number;armor:number;speed:number;damage:number;cost:number;behavior:string;radius:number;sprite?:string}
 export interface BossDef {id:string;name:string;en:string;act:number;hp:number;armor:number;radius:number;speed:number;attacks:string[][];phases:string;counter:string}
 export interface ProtocolDef {id:string;name:string;en:string;effect:string;effectEn:string;tags:string[]}
 export interface EventDef {id:string;name:string;en:string;description:string;descriptionEn:string}

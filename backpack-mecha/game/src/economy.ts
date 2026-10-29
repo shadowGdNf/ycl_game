@@ -1,6 +1,8 @@
 import {moduleValue,equipmentPrice,offerTier,validTier,rollShopTier} from './rarity.ts';
 import type {BattleResult,CombatStats,Item,Mode,ModuleDef,Point,Result,Run,Tier} from './types.ts';
 import {BOSSES,CHASSIS,CHASSIS_BY_ID,DEMO_IDS,EVENTS,MODULES,MODULE_BY_ID,PROTOCOLS,PROTOTYPE_IDS,WAVES} from './content.ts';
+import {createEncounter} from './encounters.ts';
+import {waveScrapLimit} from './progression.ts';
 import {hashSeed,nextRandom} from './random.ts';
 import {ensureJournal,recordAction,beginWaveRecord,finishWaveRecord,preserveJournal} from './journal.ts';
 
@@ -69,13 +71,20 @@ function checkInventory(r:Run,complete:boolean,power=true):Result {
  if(weapons.length>3)return fail('最多装备3件武器','Equip at most three weapons.');
  if(complete&&!weapons.length)return fail('至少装备一件武器才能出战','Equip at least one weapon before battle.');
  if(power&&equipped.reduce((sum,i)=>sum+def(i).power,0)>getCapacity(r))return fail('电力不足，请移出模块或装备扩容电池','Power exceeded. Remove modules or equip a battery.');
- if(complete){const slots:Record<string,number>={};for(const s of equipped.filter(i=>def(i).kind==='support')){
-  const w=weapons.find(w=>w.uid===s.link);if(!validLink(r,s,w))return fail('支持模块需要连接相邻的兼容武器','Connect each support to an adjacent compatible weapon.');
-  slots[s.link!]=(slots[s.link!]??0)+1;if(slots[s.link!]>2)return fail('每件武器最多连接两个支持模块','Each weapon accepts at most two supports.');
- }}
  return ok();
 }
 export function validateLoadout(r:Run):Result {return checkInventory(r,true);}
+/** One source of truth for both warning UI and combat effects, including stale links. */
+export function activeSupports(r:Run):Item[] {
+ const slots=new Map<string,number>();return active(r).filter(s=>{
+  if(def(s).kind!=='support'||!validLink(r,s,r.items.find(w=>w.uid===s.link)))return false;
+  const count=slots.get(s.link!)??0;if(count>=2)return false;slots.set(s.link!,count+1);return true;
+ });
+}
+export function inactiveSupports(r:Run):Item[] {const enabled=new Set(activeSupports(r).map(s=>s.uid));return active(r).filter(s=>def(s).kind==='support'&&!enabled.has(s.uid));}
+export function rewardTier(r:Run,index:number):Tier {const tier=r.extra?.[`rewardTier${index}`];return validTier(tier)?tier:1;}
+function rollRewardTiers(r:Run):void {r.rewardOptions.forEach((_,i)=>extra(r)[`rewardTier${i}`]=rollShopTier(r.wave,roll(r,'event')));}
+
 export interface PlacementPreview extends Result {item?:Item;linkedWeapon?:Item;power:number;capacity:number;cells:number;ready:boolean}
 /** Copy only rule state: pointer previews never clone growing reports or sale snapshots. */
 function previewRun(r:Run):Run {const {journal,saleUndo,...rules}=r;return copy({...rules,history:[]});}
@@ -87,7 +96,7 @@ export function previewPlacement(r:Run,uid:string,x:number,y:number,rotation:num
  else if(!Number.isInteger(rotation))result=fail('旋转参数无效','Invalid rotation.');
  else {Object.assign(item,{x,y,rotation:normalizeRotation(rotation),stored:false});repairLinks(d);result=checkInventory(d,false);}
  const linkedWeapon=item?.link?d.items.find(w=>w.uid===item.link):undefined;
- return {...result,item,linkedWeapon,power:active(d).reduce((n,i)=>n+def(i).power,0),capacity:getCapacity(d),cells:active(d).reduce((n,i)=>n+getCells(i).length,0),ready:result.ok&&validateLoadout(d).ok};
+ return {...result,item,linkedWeapon,power:active(d).reduce((n,i)=>n+def(i).power,0),capacity:getCapacity(d),cells:active(d).reduce((n,i)=>n+getCells(i).length,0),ready:result.ok&&validateLoadout(d).ok&&!!item&&(def(item).kind!=='support'||activeSupports(d).some(s=>s.uid===item.uid))};
 }
 export function placementOptions(r:Run,uid:string,rotation?:number):PlacementPreview[] {
  const options:PlacementPreview[]=[];
@@ -101,7 +110,7 @@ export function linkOptions(r:Run,uid:string):{weapon:Item;result:Result;reason:
  const s=r.items.find(i=>i.uid===uid);if(!s||def(s).kind!=='support')return [];
  return active(r).filter(i=>def(i).kind==='weapon').map(weapon=>{
   const reason:LinkReason=!compatible(def(s),def(weapon))?'incompatible':
-   active(r).filter(i=>i.uid!==uid&&i.link===weapon.uid).length>=2?'slots-full':
+   activeSupports(r).filter(i=>i.uid!==uid&&i.link===weapon.uid).length>=2?'slots-full':
    s.stored||!adjacent(s,weapon)?'not-adjacent':'ready';
   const result=reason==='incompatible'?fail('标签不兼容','Incompatible tags'):reason==='slots-full'?fail('连接位已满','Support slots full'):
    reason==='not-adjacent'?fail('需要边缘相邻','Place along a shared edge'):ok();
@@ -145,7 +154,7 @@ export function setLink(r:Run,uid:string,targetUid:string):Result {return invent
 type Placement={x:number;y:number;rotation:number;mask:number;cells:Point[]};
 function packEquipped(r:Run):boolean {
  const items=active(r),weapons=items.filter(i=>def(i).kind==='weapon'),supports=items.filter(i=>def(i).kind==='support');
- if(items.reduce((n,i)=>n+shape(i.id,0).length,0)>21+r.unlockedCorners.length||supports.length>weapons.length*2)return false;
+ if(items.reduce((n,i)=>n+shape(i.id,0).length,0)>21+r.unlockedCorners.length)return false;
  let blocked=0;CORNERS.forEach((p,n)=>{if(!r.unlockedCorners.includes(n))blocked|=1<<(p.y*5+p.x);});
  const options:Record<string,Placement[]>={};
  for(const item of items){const seen=new Set<string>();options[item.uid]=[];for(let rotation=0;rotation<4;rotation++){
@@ -153,10 +162,11 @@ function packEquipped(r:Run):boolean {
   const width=Math.max(...pts.map(p=>p.x))+1,height=Math.max(...pts.map(p=>p.y))+1;
   for(let y=0;y<=5-height;y++)for(let x=0;x<=5-width;x++){const cells=pts.map(p=>({x:x+p.x,y:y+p.y})),mask=cells.reduce((n,p)=>n|(1<<(p.y*5+p.x)),0);if(!(mask&blocked))options[item.uid].push({x,y,rotation,mask,cells});}
  }}
- const assigned:Record<string,string>={},slots:Record<string,number>={};let nodes=0;
+ supports.sort((a,b)=>weapons.filter(w=>compatible(def(a),def(w))).length-weapons.filter(w=>compatible(def(b),def(w))).length);
+ const assigned:Record<string,string>={},slots:Record<string,number>={};let nodes=0,limit=18000;
  const touching=(a:Placement,b:Placement)=>a.cells.some(p=>b.cells.some(q=>Math.abs(p.x-q.x)+Math.abs(p.y-q.y)===1));
  function positions(placed:Record<string,Placement>,used:number):Record<string,Placement>|undefined {
-  if(++nodes>70000)return undefined;if(Object.keys(placed).length===items.length)return placed;
+  if(++nodes>limit)return undefined;if(Object.keys(placed).length===items.length)return placed;
   let best:Item|undefined,bestOptions:Placement[]=[];
   for(const item of items){if(placed[item.uid])continue;const neighbors=Object.entries(assigned).flatMap(([s,w])=>s===item.uid?[w]:w===item.uid?[s]:[]);
    const available=options[item.uid].filter(p=>!(p.mask&used)&&neighbors.every(n=>!placed[n]||touching(p,placed[n])));
@@ -166,18 +176,27 @@ function packEquipped(r:Run):boolean {
   for(const p of bestOptions){const result=positions({...placed,[best!.uid]:p},used|p.mask);if(result)return result;}return undefined;
  }
  function links(index:number):boolean {
-  if(nodes>70000)return false;
+  if(nodes>limit)return false;
   if(index===supports.length){const result=positions({},blocked);if(!result)return false;for(const i of items){const p=result[i.uid];Object.assign(i,{x:p.x,y:p.y,rotation:p.rotation});if(def(i).kind==='support')i.link=assigned[i.uid];}return true;}
   const s=supports[index];const choices=weapons.filter(w=>compatible(def(s),def(w))).sort((a,b)=>Number(b.uid===s.link)-Number(a.uid===s.link));
-  for(const w of choices){if((slots[w.uid]??0)>=2)continue;assigned[s.uid]=w.uid;slots[w.uid]=(slots[w.uid]??0)+1;if(links(index+1))return true;slots[w.uid]--;delete assigned[s.uid];}return false;
+  for(const w of choices){if((slots[w.uid]??0)>=2)continue;assigned[s.uid]=w.uid;slots[w.uid]=(slots[w.uid]??0)+1;if(links(index+1))return true;slots[w.uid]--;delete assigned[s.uid];}
+  // An unsupported part may remain in the bag. Space and activation are separate.
+  return links(index+1);
  }
- return links(0);
+ if(links(0))return true;
+ // Start a fresh spatial-only budget if connection search exhausted its allowance.
+ nodes=0;limit=10000;for(const key of Object.keys(assigned))delete assigned[key];
+ const loose=positions({},blocked);if(!loose)return false;
+ for(const item of items){const p=loose[item.uid];Object.assign(item,{x:p.x,y:p.y,rotation:p.rotation});delete item.link;}
+ repairLinks(r);return true;
 }
 export function autoPack(r:Run):Result {return inventoryAction(r,d=>{
- const weapons=active(d).filter(i=>def(i).kind==='weapon');if(!weapons.length)return fail('先从备件架装备一件武器','Equip a weapon from reserve first.');
- if(active(d).reduce((n,i)=>n+def(i).power,0)>getCapacity(d))return fail('先降低耗电，自动整理不会替你出售装备','Reduce power use first. Auto-arrange never sells equipment.');
- if(!packEquipped(d))return fail('当前模块无法自动排入，请移出一些模块','Unable to pack these modules; move some to reserve.');
- log(d,'auto-pack');return validateLoadout(d);
+ const original=copy(d.items),originalValid=checkInventory(d,false,false).ok,connected=activeSupports(d).length;
+ if(!packEquipped(d)){
+  if(!originalValid)return fail('已装备模块超过可用空间，请移出一件后再整理','Equipped modules exceed the available space. Store one and try again.');
+  d.items=original;repairLinks(d);
+ }else if(originalValid&&activeSupports(d).length<connected){d.items=original;repairLinks(d);}
+ log(d,'auto-pack');return checkInventory(d,false,false);
 });}
 
 function available(r:Run):ModuleDef[] {const ids=eligibleIds(r);return MODULES.filter(m=>ids.includes(m.id));}
@@ -301,7 +320,7 @@ function enterPrep(r:Run):void {
 }
 function rewardOptions(r:Run,rarity:string):string[] {const ids:string[]=[];for(let i=0;i<3;i++){const pool=available(r).filter(m=>!ids.includes(m.id)&&(rarity!=='U'||m.rarity==='U'));if(!pool.length)break;ids.push(weighted(r,pool,'event').id);}return ids;}
 function beginRewards(r:Run,kinds:string[],returnTo:'newPrep'|'existingPrep'):void {
- extra(r).pendingRewardKinds=JSON.stringify(kinds.slice(1));extra(r).rewardReturn=returnTo;r.rewardOptions=rewardOptions(r,kinds[0]);r.phase='reward';
+ extra(r).pendingRewardKinds=JSON.stringify(kinds.slice(1));extra(r).rewardReturn=returnTo;r.rewardOptions=rewardOptions(r,kinds[0]);rollRewardTiers(r);r.phase='reward';
  recordAction(r,'reward-offer');
 }
 function protocols(r:Run):string[] {
@@ -332,7 +351,7 @@ export function resolveBattle(r:Run,result:BattleResult):Result {return transact
  if(d.phase!=='battle')return fail('这场战斗已经结算','This battle has already been resolved.');if(!finite(result.hp)||!finite(result.shield)||!finite(result.elapsed))return fail('战斗结算数据无效','Invalid battle result.');
  const wave=WAVES[d.wave-1],completed=d.wave,e=extra(d);if(!wave)return fail('战斗节点无效','Invalid battle node.');
  d.hp=Math.min(maxHP(d),result.hp);d.shield=result.shield;d.elapsed+=result.elapsed;d.insuranceUsed||=result.insuranceUsed;if(result.rng!==undefined)d.rng.combat=result.rng;
- const s=copy(result.stats);s.goldEarned=Math.max(0,Math.min(wave.bonus,Number.isFinite(s.goldEarned)?s.goldEarned:0));mergeStats(d,s);d.gold+=s.goldEarned;
+ const s=copy(result.stats);s.goldEarned=Math.max(0,Math.min(waveScrapLimit(d.wave,createEncounter(d).state.budget),Number.isFinite(s.goldEarned)?s.goldEarned:0));mergeStats(d,s);d.gold+=s.goldEarned;
  if(!result.won||d.hp<=0){d.phase='lost';finishWaveRecord(d,{...result,stats:s},s.goldEarned);log(d,`lost:${completed}:${result.reason??''}`);return ok();}
  const riskGold=wave.kind==='normal'?(d.route===1?30:Number(e.eventRewardGold??0)):0;
  const riskModule=wave.kind==='normal'&&(d.route===2||e.eventRewardModule===true);
@@ -351,10 +370,10 @@ export function chooseReward(r:Run,index:number):Result {return transaction(r,d=
  if(d.phase!=='reward')return fail('当前没有模块奖励','No module reward is pending.');
  let queue:string[];
  try{const parsed:unknown=JSON.parse(String(extra(d).pendingRewardKinds??'[]'));if(!Array.isArray(parsed)||!parsed.every(v=>v==='any'||v==='U'))return fail('奖励记录损坏，请从之前的存档恢复','The reward record is damaged. Restore a previous save.');queue=parsed;}catch{return fail('奖励记录损坏，请从之前的存档恢复','The reward record is damaged. Restore a previous save.');}
- if(index===-1)d.gold+=12;else {if(!Number.isInteger(index)||!d.rewardOptions[index])return fail('奖励选项无效','Invalid reward choice.');const received=receive(d,d.rewardOptions[index]);if(!received.ok)return received;}
+ if(index===-1)d.gold+=12;else {if(!Number.isInteger(index)||!d.rewardOptions[index])return fail('奖励选项无效','Invalid reward choice.');const received=receive(d,d.rewardOptions[index],undefined,rewardTier(d,index));if(!received.ok)return received;}
  log(d,`reward:${index===-1?'scrap':d.rewardOptions[index]}`);
- if(queue.length){const next=queue.shift()!;extra(d).pendingRewardKinds=JSON.stringify(queue);d.rewardOptions=rewardOptions(d,next);recordAction(d,'reward-offer');return ok();}
- d.rewardOptions=[];delete extra(d).pendingRewardKinds;const returnTo=extra(d).rewardReturn;delete extra(d).rewardReturn;if(returnTo==='existingPrep')d.phase='prep';else enterPrep(d);return ok();
+ if(queue.length){const next=queue.shift()!;extra(d).pendingRewardKinds=JSON.stringify(queue);d.rewardOptions=rewardOptions(d,next);rollRewardTiers(d);recordAction(d,'reward-offer');return ok();}
+ d.rewardOptions=[];for(let i=0;i<3;i++)delete extra(d)[`rewardTier${i}`];delete extra(d).pendingRewardKinds;const returnTo=extra(d).rewardReturn;delete extra(d).rewardReturn;if(returnTo==='existingPrep')d.phase='prep';else enterPrep(d);return ok();
 });}
 export function chooseExpansion(r:Run,corners:number[]):Result {return transaction(r,d=>{
  if(d.phase!=='expansion')return fail('当前没有扩容奖励','No expansion reward is pending.');

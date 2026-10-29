@@ -49,7 +49,7 @@ test('buy-and-combine works with a full reserve, charges once and cannot replay'
  assert.equal(r.gold,gold-24);assert.equal(r.items.filter(i=>i.stored).length,3);assert.equal(r.items.find(i=>i.uid===target.uid)?.tier,2);assert.equal(r.shop[0].id,'');
  const after=structuredClone(r);assert.equal(economy.buyAndMerge(r,0,target.uid).ok,false);assert.deepEqual(r,after);
 });
-test('combining two equipped weapons reports detached supports and blocks deployment until repaired',()=>{
+test('combining two equipped weapons reports detached supports without blocking deployment',()=>{
  const r=shop();r.items=[
   {uid:'first',id:'W01',tier:1,x:0,y:0,rotation:0,stored:false},
   {uid:'second',id:'W01',tier:1,x:3,y:3,rotation:0,stored:false},
@@ -57,8 +57,8 @@ test('combining two equipped weapons reports detached supports and blocks deploy
  ];
  assert.ok(economy.validateLoadout(r).ok);
  const before=structuredClone(r),preview=economy.previewMerge(r,'first');assert.ok(preview.ok);assert.deepEqual(preview.disconnected,['coil']);assert.deepEqual(r,before);
- assert.ok(economy.merge(r,'first').ok);assert.equal(r.items.length,2);assert.equal(r.items.find(i=>i.uid==='coil')?.link,undefined);assert.equal(economy.startWave(r).ok,false);
- assert.ok(economy.autoPack(r).ok);assert.ok(economy.startWave(r).ok);
+ assert.ok(economy.merge(r,'first').ok);assert.equal(r.items.length,2);assert.equal(r.items.find(i=>i.uid==='coil')?.link,undefined);assert.equal(economy.inactiveSupports(r).length,1);assert.ok(economy.startWave(structuredClone(r)).ok);
+ assert.ok(economy.autoPack(r).ok);assert.equal(economy.inactiveSupports(r).length,0);assert.ok(economy.startWave(r).ok);
 });
 test('high rarity reserve and direct-board purchases carry their tier and use the displayed price',()=>{
  for(const direct of [false,true]){const r=shop();r.items=[];const offer=r.shop[1],cost=economy.offerPrice(offer),gold=r.gold;
@@ -76,7 +76,7 @@ test('shop odds grow by wave; generated rare offers preserve tier when locked',(
  }
  const r=shop();r.wave=12;r.gold=100000;const counts=[0,0,0,0];
  for(let i=0;i<400;i++){delete r.journal;r.history=[];assert.ok(economy.refreshShop(r).ok);r.shop.forEach(o=>counts[offerTier(o)-1]++);}
- assert.ok(counts[0]>counts[1]&&counts[1]>counts[2]&&counts[2]>counts[3]&&counts[3]>0,counts.join(','));
+ assert.ok(counts[1]>counts[0]&&counts[1]>counts[2]&&counts[2]>counts[3]&&counts[3]>0,counts.join(','));
  r.shop[0]={id:'W01',tier:4,locked:true};const locked={...r.shop[0]};assert.ok(economy.refreshShop(r).ok);assert.deepEqual(r.shop[0],locked);
 });
 test('legacy offers default to Common; Legendary inventory, offers and battles survive saving',()=>{

@@ -12,7 +12,7 @@ for(const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)){assert(!/^https?:/
 const version=html.match(/app\.js\?v=([a-f0-9]+)/)?.[1];assert(version,'Entry module needs a content version');
 for(const file of all.filter(f=>f.endsWith('.js'))){const js=await readFile(file,'utf8');for(const m of js.matchAll(/(?:from\s*|import\s*)['"](\.[^'"]+)['"]/g)){await access(path.resolve(path.dirname(file),m[1].split('?')[0]));assert(m[1].endsWith(`?v=${version}`),'All modules must use the same content version');}}
 const content=JSON.parse(await readFile(path.join(dist,'assets/content.json'),'utf8'));
-for(const [key,count]of Object.entries({modules:36,chassis:4,enemies:12,bosses:6,protocols:9,events:8,waves:12,demoIds:24})){assert.equal(content[key].length,count,key);}
+for(const [key,count]of Object.entries({modules:36,chassis:4,enemies:16,bosses:6,protocols:9,events:8,waves:12,demoIds:24})){assert.equal(content[key].length,count,key);}
 const manifest=JSON.parse(await readFile(path.join(dist,'assets/atlas-manifest.json'),'utf8'));
 assert(!all.some(f=>f.endsWith('.png')),'PNG masters must not enter the web package');
 let startupImageBytes=0;
@@ -23,7 +23,7 @@ for(const [name,atlas] of Object.entries(manifest.atlases)){
   if(name!=='environment'){startupImageBytes+=buffer.length;assert(html.includes(`href="./assets/${atlas}"`),'Preload required artwork');}
 }
 assert.equal(Object.keys(manifest.sprites).length,86,'Expected all sprite regions and boss subparts');
-for(const item of [...content.modules,...content.enemies,...content.bosses])assert(manifest.sprites[item.id],`Missing sprite ${item.id}`);
+for(const item of [...content.modules,...content.enemies,...content.bosses])assert(manifest.sprites[item.sprite??item.id],`Missing sprite ${item.id}`);
 for(const c of content.chassis)for(const part of ['body.0','body.1','body.2','body.3','legs','backpack'])assert(manifest.sprites[`${c.id}.${part}`],`Missing chassis part ${c.id}.${part}`);
 const bytes=(await Promise.all(all.map(f=>stat(f)))).reduce((sum,s)=>sum+s.size,0);
 assert(bytes<3*1024*1024,'Review runtime size above 3 MiB');

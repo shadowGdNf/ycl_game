@@ -1,0 +1,58 @@
+{
+  "build": "0.2.0-dev.10",
+  "date": "2026-10-29",
+  "browser": "Codex in-app browser",
+  "viewport": [
+    390,
+    844
+  ],
+  "checks": [
+    "arrange with two incompatible supports succeeds without losing items",
+    "warnings name both supports and required weapon tags",
+    "cancel returns to workshop",
+    "confirm enters wave 9 combat",
+    "pause and battle completion work",
+    "four new enemy hardware animations render",
+    "no browser error or warning logs observed"
+  ],
+  "screenshots": [
+    "dev10-enemies.jpg",
+    "dev10-inactive-mobile.jpg",
+    "dev10-battle-mobile.jpg"
+  ],
+  "limits": [
+    "viewport emulation, not physical device",
+    "motion preview is not dense battlefield performance"
+  ],
+  "sourceHashes": {
+    "src/encounters.ts": "24289648ce5f3cf35b816673cdd3078598f0ca37a0832ace27104def3faa327a",
+    "src/canvas.ts": "cd67d44a83fc618af18f5b3b75d00ce122a13d66d6ee573b525b2017a6025c86",
+    "src/training.ts": "2d06acc5b6a30f2a3485bcc8c2e2042bb91033c818d793541d5b5a6dc7da23ac",
+    "src/visual-motion.ts": "f61b463709d6ef088ab815ec38becec79eae4465a6f2455319cb31cb098c6c21",
+    "src/performance.ts": "d51e16793055fd05e59ed9963480a1ab96ab63080794972df300d7b5ff1fed8a",
+    "src/ui-workshop.ts": "1969f3b43fb0c6f26d0cfa9684fea9ba1c80705c6e45ca11b8a775246dc5d008",
+    "src/audio.ts": "4c2b83bb5277a982f06e820558281aafa3dddbcbd058d88eb4e062b6d34d5246",
+    "src/art.ts": "a0cd9bef18cf7630cc19b1459103b01981c72f77f41258d15808731e74515525",
+    "src/app.ts": "51efe7c892108f2703b5a80ceafab8f7547a50d4b2772b68685aff8a9c17cfc1",
+    "src/input.ts": "5f6e2eb41ea87ba9082fbe962d3af5deb42a4bd6c490cda29734d6079eee3c21",
+    "src/storage.ts": "9951051904b5550ffd8d08e2dcb91e74a9b0a74f2c15f44c418330e8091a251b",
+    "src/motion.ts": "2e069e7aa0bfea83a570a9623cf69808d23955fe553eeefafb9724d333a29765",
+    "src/content.ts": "079a780e6bfefc48f66cc830000ee7de868e43d8a47bb88564fb5c39222b4235",
+    "src/motion-renderer.ts": "994edaa277007650116f2bd60308f5a98cf75d35396e9ef497250ccab58eb60f",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/types.ts": "c7ac043a19273ca490800b26c57d5dfb5209755353645c4aa5d7657a0c055630",
+    "src/rarity.ts": "c23827e03534fdc3fd8ee2643980f1eb1a3a74feca5531edb8b01fa94ce38a7d",
+    "src/combat.ts": "a4071723fa57b212b85bc5b4f843cac318e45a61c47906d10544fb2dea9e4866",
+    "src/feedback.ts": "3acadad8e32bd5dedf13693d996f500b6139652c67c2e075e22a5c059b7ac83a",
+    "src/workshop.ts": "23e13cd2f11db8952acdc42a8d42164fd5d62f7a40f102a5272e98a87ad1126a",
+    "src/renderer.ts": "dff7ac1e318c387bcecb8a2c815ea15cdd70f5f925df249f7b1b9995863848cc",
+    "src/bestiary.ts": "1d3b29796f228bdf2bd507bb0347079dc0fcb73d480b474b1baae722a92db948",
+    "src/economy.ts": "e105964b72003f29571ebd7b5c12663a5884bcd8a530c5091dafec26c2bb8242",
+    "src/version.ts": "c410e44f1bf8720be896ffadeade60dff0f20971a09253d1ba830fe769b52210",
+    "src/journal.ts": "523bfefa37a094a20414255ffebf7a042e44971282ffcaf10b225d7b8f3721e9",
+    "src/progression.ts": "b314d3c44386928aeefb74170a92842ebe50cf29e2cecfea5d6c9a538d6c8844",
+    "src/equipment-ui.ts": "3d85cbe09038d4b80e35d1fc4ad671535f53af8bce5ebea6bfa2265164e3d28e",
+    "assets/content.json": "9bb250634afa1c5576e604dc6e41415a8682403da8cad6c1d5c1091b3c967296",
+    "scripts/natural-probe.ts": "380efc2190f40044d9a3646aef417fdd59aefb43909553c07b0ab784850303a2"
+  }
+}

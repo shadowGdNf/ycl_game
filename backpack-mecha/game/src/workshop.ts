@@ -1,7 +1,7 @@
 import {moduleValue,damageScale,TIER_EFFECTS} from './rarity.ts';
 /** Read-only explanations derived from the same connection and placement checks as play. */
 import {MODULE_BY_ID,label} from './content.ts';
-import {getCapacity,linkOptions,validateLoadout} from './economy.ts';
+import {getCapacity,linkOptions,validateLoadout,activeSupports,inactiveSupports} from './economy.ts';
 import type {Item,Lang,Run} from './types.ts';
 
 export type SupportStatus='reserve'|'active'|'power'|'no-weapon'|'incompatible'|'slots-full'|'not-adjacent'|'disconnected';
@@ -26,7 +26,7 @@ export function supportBenefit(item:Item,lang:Lang):string {
 }
 export function supportFeedback(run:Run,uid:string,lang:Lang):SupportFeedback|undefined {
  const item=run.items.find(i=>i.uid===uid);if(!item||MODULE_BY_ID[item.id].kind!=='support')return;
- const en=lang==='en',benefit=supportBenefit(item,lang),options=linkOptions(run,uid),linked=options.find(o=>o.weapon.uid===item.link&&o.result.ok);
+ const en=lang==='en',benefit=supportBenefit(item,lang),options=linkOptions(run,uid),linked=activeSupports(run).some(s=>s.uid===uid)?options.find(o=>o.weapon.uid===item.link):undefined;
  let status:SupportStatus;
  if(item.stored)status='reserve';
  else if(run.items.filter(i=>!i.stored).reduce((n,i)=>n+MODULE_BY_ID[i.id].power,0)>getCapacity(run))status='power';
@@ -47,6 +47,11 @@ export function supportFeedback(run:Run,uid:string,lang:Lang):SupportFeedback|un
   disconnected:['位置正确，尚未选择连接','Ready to connect','在下方选择相邻武器，或重新放置以自动连接。','Choose an adjacent weapon below, or place the support again to connect automatically.'],
  };
  const row=words[status];let detail=en?row[3]:row[2];
+ if(status==='incompatible'){
+  const tags:Record<string,string>={'全部':'All','实弹':'Ballistic','单弹':'Single shot','散射':'Spread','水':'Water','电':'Electric','火':'Fire','持续':'Continuous','油':'Oil','爆炸':'Explosive','近战':'Melee','召唤':'Drone','冰':'Ice'};
+  const required=MODULE_BY_ID[item.id].tags.map(tag=>en?tags[tag]??tag:tag).join(' / '),equipped=options.map(o=>label(MODULE_BY_ID[o.weapon.id],lang)).join(' / ');
+  detail=en?`Requires a ${required} weapon. Equipped: ${equipped}. This support grants no bonus until connected to a matching weapon.`:`需要「${required}」武器；当前装备为「${equipped}」。连接到匹配武器前，这件配件不提供增益。`;
+ }
  if(status==='active'&&linked){
   detail=`${label(MODULE_BY_ID[item.id],lang)} → ${label(MODULE_BY_ID[linked.weapon.id],lang)} · ${benefit}`;
   if(item.id==='S01'&&linked.weapon.id==='W01'){
@@ -71,4 +76,8 @@ export function workshopHints(run:Run,lang:Lang):string[] {
  if(has('W03')&&!has('W04'))hints.push(en?'Water applies Wet. An arc weapon can turn it into chain damage.':'水压枪可以施加潮湿；找到电弧武器后，可尝试潮湿电链。');
  else if(has('W06')&&!has('W05'))hints.push(en?'Oil needs fire to ignite. A flame weapon can complete the combination.':'油污需要火焰引燃；可留意火焰武器，补上引爆方式。');
  return hints.slice(0,2);
+}
+
+export function deploymentWarnings(run:Run,lang:Lang):{uid:string;name:string;reason:string;detail:string}[] {
+ return inactiveSupports(run).map(item=>{const f=supportFeedback(run,item.uid,lang)!;return {uid:item.uid,name:label(MODULE_BY_ID[item.id],lang),reason:f.title,detail:f.detail};});
 }

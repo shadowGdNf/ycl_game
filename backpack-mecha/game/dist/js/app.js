@@ -1,19 +1,19 @@
-import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=07c9480d5be3";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=07c9480d5be3";
-import { workshopMarkup } from "./ui-workshop.js?v=07c9480d5be3";
-import { TRAINING_PRESETS, trainingRun, chassisUnlocked, difficultyLimit } from "./training.js?v=07c9480d5be3";
-import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=07c9480d5be3";
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=07c9480d5be3";
-import * as economy from "./economy.js?v=07c9480d5be3";
-import { createBattle, stepBattle, battleResult } from "./combat.js?v=07c9480d5be3";
-import { Renderer } from "./renderer.js?v=07c9480d5be3";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=07c9480d5be3";
-import { GameAudio } from "./audio.js?v=07c9480d5be3";
-import { overloadRequested, FocusGesture } from "./input.js?v=07c9480d5be3";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=07c9480d5be3";
-import { BUILD_VERSION } from "./version.js?v=07c9480d5be3";
-import { ForegroundFrameClock } from "./performance.js?v=07c9480d5be3";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints } from "./workshop.js?v=07c9480d5be3";
+import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=0ed06082a6ae";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=0ed06082a6ae";
+import { workshopMarkup } from "./ui-workshop.js?v=0ed06082a6ae";
+import { TRAINING_PRESETS, trainingRun, chassisUnlocked, difficultyLimit } from "./training.js?v=0ed06082a6ae";
+import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=0ed06082a6ae";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=0ed06082a6ae";
+import * as economy from "./economy.js?v=0ed06082a6ae";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=0ed06082a6ae";
+import { Renderer } from "./renderer.js?v=0ed06082a6ae";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=0ed06082a6ae";
+import { GameAudio } from "./audio.js?v=0ed06082a6ae";
+import { overloadRequested, FocusGesture } from "./input.js?v=0ed06082a6ae";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=0ed06082a6ae";
+import { BUILD_VERSION } from "./version.js?v=0ed06082a6ae";
+import { ForegroundFrameClock } from "./performance.js?v=0ed06082a6ae";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=0ed06082a6ae";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
@@ -146,7 +146,7 @@ function previewPurchase(index) {
 }
 function showRarityHelp() {
     const odds = shopTierChances(run?.wave ?? 2);
-    openModal(`<div class="eyebrow">SALVAGE / RARITY</div><h2>${t('装备稀有度', 'Equipment rarity')}</h2><p>${t('两件同名、同稀有度装备可免费合成到下一阶，传说为最高阶。合成不改变形状与耗电。', 'Combine two identical modules of the same rarity for free, up to Legendary. Shape and power draw stay unchanged.')}</p><div class="rarity-comparison">${TIERS.map(level => `<div class="rarity-${level}">${rarityBadge(level, profile.language)}<b>${t('武器伤害', 'Weapon damage')} ×${rarity(level).damage} · ${t('价格', 'Price')} ×${rarity(level).price}</b><p>${t('当前每格商店概率', 'Current chance per shop slot')} ${(odds[level - 1] * 100).toFixed(1)}%</p></div>`).join('')}</div><p>${t('高阶商品随远征进度逐步出现：第 2 场可见精良，第 5 场可见史诗，第 9 场可见传说。支持件与功能件按各自效果成长，详情和图鉴显示实际数值。', 'Higher rarities enter at waves 2 / 5 / 9. Supports and utilities scale their own effects; details and the archive show exact values.')}</p>`, 'rarity-help');
+    openModal(`<div class="eyebrow">SALVAGE / RARITY</div><h2>${t('装备稀有度', 'Equipment rarity')}</h2><p>${t('两件同名、同稀有度装备可免费合成到下一阶，传说为最高阶。合成不改变形状与耗电。', 'Combine two identical modules of the same rarity for free, up to Legendary. Shape and power draw stay unchanged.')}</p><div class="rarity-comparison">${TIERS.map(level => `<div class="rarity-${level}">${rarityBadge(level, profile.language)}<b>${t('武器伤害', 'Weapon damage')} ×${rarity(level).damage} · ${t('价格', 'Price')} ×${rarity(level).price}</b><p>${t('当前商店 / 新战利品概率', 'Current shop / new salvage chance')} ${(odds[level - 1] * 100).toFixed(1)}%</p></div>`).join('')}</div><p>${t('商店与新战利品共用当前概率。高阶装备随远征进度逐步出现：第 2 场可见精良，第 5 场可见史诗，第 9 场可见传说。支持件与功能件按各自效果成长，详情和图鉴显示实际数值。', 'Shop and new salvage share these odds. Higher rarities enter at waves 2 / 5 / 9. Supports and utilities scale their own effects; details and the archive show exact values.')}</p>`, 'rarity-help');
 }
 function showMerge(uid, shopIndex) {
     if (!run)
@@ -163,7 +163,7 @@ function showMerge(uid, shopIndex) {
         return;
     }
     const result = preview?.item ?? { ...source, tier: (source.tier + 1) }, price = offer ? economy.offerPrice(offer) : 0;
-    openModal(`<div class="eyebrow">WORKSHOP / COMBINE</div><h2>${t('合成升阶', 'Combine equipment')}</h2><p>${escape(name(MODULE_BY_ID[source.id]))}</p><div class="merge-flow"><div class="rarity-${source.tier}">${canvasIcon(source.id)}${rarityBadge(source.tier, profile.language)}<b>× 2</b></div><span>→</span><div class="rarity-${result.tier}">${canvasIcon(result.id)}${rarityBadge(result.tier, profile.language)}<b>× 1</b></div></div><div class="merge-stats"><p>${moduleStat(source.id, source.tier, profile.language)} → <strong>${moduleStat(result.id, result.tier, profile.language)}</strong></p><p>${escape(equipmentDescription(result, profile.language))}</p></div><p>${buying ? t(`支付 ${price} 碎片购买材料，随即合成；不占备件空间。`, `Buy the material for ${price} scrap and combine immediately; no reserve space needed.`) : t('消耗两件同名同阶装备，合成为一件。无需碎片，优先保留已装备的位置。', 'Consumes two matching modules to create one. No scrap cost; preserves the equipped position when possible.')}</p>${preview?.disconnected?.length ? `<p class="invalid">${t('合成会使部分支持件失去连接；请重新摆放或自动整理后出击。', 'Some supports will lose their connection. Reposition or auto-arrange before deploying.')}</p>` : ''}<div class="modal-actions"><button class="primary" data-action="${buying ? 'confirm-buy-merge' : 'confirm-merge'}" data-uid="${uid}" ${buying ? `data-index="${shopIndex}"` : ''}>${buying ? t('购买并合成', 'Buy & combine') : t('免费合成', 'Combine for free')} ↑</button><button data-action="close">${t('取消', 'Cancel')}</button></div>`, 'merge');
+    openModal(`<div class="eyebrow">WORKSHOP / COMBINE</div><h2>${t('合成升阶', 'Combine equipment')}</h2><p>${escape(name(MODULE_BY_ID[source.id]))}</p><div class="merge-flow"><div class="rarity-${source.tier}">${canvasIcon(source.id)}${rarityBadge(source.tier, profile.language)}<b>× 2</b></div><span>→</span><div class="rarity-${result.tier}">${canvasIcon(result.id)}${rarityBadge(result.tier, profile.language)}<b>× 1</b></div></div><div class="merge-stats"><p>${moduleStat(source.id, source.tier, profile.language)} → <strong>${moduleStat(result.id, result.tier, profile.language)}</strong></p><p>${escape(equipmentDescription(result, profile.language))}</p></div><p>${buying ? t(`支付 ${price} 碎片购买材料，随即合成；不占备件空间。`, `Buy the material for ${price} scrap and combine immediately; no reserve space needed.`) : t('消耗两件同名同阶装备，合成为一件。无需碎片，优先保留已装备的位置。', 'Consumes two matching modules to create one. No scrap cost; preserves the equipped position when possible.')}</p>${preview?.disconnected?.length ? `<p class="invalid">${t('合成会使部分支持件失去连接；可重新摆放或整理，也可确认后带着失效配件出击。', 'Some supports will disconnect. Reposition, arrange, or confirm deployment with those supports inactive.')}</p>` : ''}<div class="modal-actions"><button class="primary" data-action="${buying ? 'confirm-buy-merge' : 'confirm-merge'}" data-uid="${uid}" ${buying ? `data-index="${shopIndex}"` : ''}>${buying ? t('购买并合成', 'Buy & combine') : t('免费合成', 'Combine for free')} ↑</button><button data-action="close">${t('取消', 'Cancel')}</button></div>`, 'merge');
     drawIcons();
 }
 function renderWaveReport() {
@@ -199,7 +199,7 @@ function renderPrep() {
 }
 function renderEvent() { if (!run || !run.eventId || run.eventResolved)
     return ''; const e = EVENT_BY_ID[run.eventId]; if (!e)
-    return ''; const ids = run.items.filter(i => run.eventId !== 'EV03' || i.tier === 1); const tags = [...new Set(run.items.filter(i => !i.stored && MODULE_BY_ID[i.id].kind === 'weapon').flatMap(i => MODULE_BY_ID[i.id].tags))]; return `<div class="event-box"><div class="eyebrow orange">${t('偶遇', 'ENCOUNTER')} / ${escape(name(e))}</div><p>${escape(e.id === 'EV01' ? t('支付24碎片，从三件进阶型号的普通装备中选择一件；或离开。', 'Pay 24 scrap to choose one Common module from three advanced designs, or leave.') : e.id === 'EV04' ? t('下一战额外出现1只精英；胜利后从三件进阶型号的普通装备中选择一件。', 'Face an extra elite next wave; on victory choose a Common module from three advanced designs.') : profile.language === 'zh' ? e.description : e.descriptionEn)}</p>${['EV03', 'EV05'].includes(e.id) ? `<select id="event-target" style="width:100%;font-size:11px;margin-bottom:8px"><option value="">${t('选择处理的模块', 'Select a module')}</option>${ids.map(i => `<option value="${i.uid}" ${run.extra?.eventTargetUid === i.uid ? 'selected' : ''}>${escape(name(MODULE_BY_ID[i.id]))} ${tier(i.tier)}</option>`).join('')}</select>` : ''}${e.id === 'EV06' ? `<select id="event-tag" style="width:100%;font-size:11px;margin-bottom:8px"><option value="">${t('选择武器标签', 'Select weapon tag')}</option>${tags.map(tag => `<option value="${escape(tag)}" ${run.extra?.eventTargetTag === tag ? 'selected' : ''}>${escape(tagName(tag))}</option>`).join('')}</select>` : ''}<div class="event-actions"><button data-action="event" data-index="0">${eventChoice(e.id, 0)}</button><button data-action="event" data-index="1">${eventChoice(e.id, 1)}</button>${['EV01', 'EV02', 'EV04'].includes(e.id) ? '' : `<button data-action="event" data-index="-1">${t('离开', 'Leave')}</button>`}</div></div>`; }
+    return ''; const ids = run.items.filter(i => run.eventId !== 'EV03' || i.tier === 1); const tags = [...new Set(run.items.filter(i => !i.stored && MODULE_BY_ID[i.id].kind === 'weapon').flatMap(i => MODULE_BY_ID[i.id].tags))]; return `<div class="event-box"><div class="eyebrow orange">${t('偶遇', 'ENCOUNTER')} / ${escape(name(e))}</div><p>${escape(e.id === 'EV01' ? t('支付24碎片，从三件进阶型号中选择一件，稀有度随关卡提升；或离开。', 'Pay 24 scrap to choose from three advanced designs. Rarity improves with progress, or you can leave.') : e.id === 'EV04' ? t('下一战额外出现1只精英；胜利后从三件进阶型号中选择一件，稀有度随关卡提升。', 'Face an extra elite next wave; on victory choose from three advanced designs with progress-scaled rarity.') : profile.language === 'zh' ? e.description : e.descriptionEn)}</p>${['EV03', 'EV05'].includes(e.id) ? `<select id="event-target" style="width:100%;font-size:11px;margin-bottom:8px"><option value="">${t('选择处理的模块', 'Select a module')}</option>${ids.map(i => `<option value="${i.uid}" ${run.extra?.eventTargetUid === i.uid ? 'selected' : ''}>${escape(name(MODULE_BY_ID[i.id]))} ${tier(i.tier)}</option>`).join('')}</select>` : ''}${e.id === 'EV06' ? `<select id="event-tag" style="width:100%;font-size:11px;margin-bottom:8px"><option value="">${t('选择武器标签', 'Select weapon tag')}</option>${tags.map(tag => `<option value="${escape(tag)}" ${run.extra?.eventTargetTag === tag ? 'selected' : ''}>${escape(tagName(tag))}</option>`).join('')}</select>` : ''}<div class="event-actions"><button data-action="event" data-index="0">${eventChoice(e.id, 0)}</button><button data-action="event" data-index="1">${eventChoice(e.id, 1)}</button>${['EV01', 'EV02', 'EV04'].includes(e.id) ? '' : `<button data-action="event" data-index="-1">${t('离开', 'Leave')}</button>`}</div></div>`; }
 function eventChoice(id, index) { const zh = { EV01: ['支付24', '离开'], EV02: ['换取35碎片', '放弃'], EV03: ['免费升级', '领取20碎片'], EV04: ['接受救援', '离开'], EV05: ['出售选中模块', '12碎片维修'], EV06: ['预订支持模块', '领取12碎片'], EV07: ['恢复25生命', '下场+15护盾'], EV08: ['接受捷径', '普通路线'] }; const en = { EV01: ['Pay 24', 'Leave'], EV02: ['Take 35 scrap', 'Decline'], EV03: ['Free upgrade', 'Take 20 scrap'], EV04: ['Accept rescue', 'Leave'], EV05: ['Sell selected', 'Heal for 12'], EV06: ['Reserve support', 'Take 12 scrap'], EV07: ['Heal 25 HP', 'Next wave +15 shield'], EV08: ['Take shortcut', 'Safe route'] }; return (profile.language === 'zh' ? zh : en)[id][index]; }
 function tagName(tag) { const tags = { '全部': 'All', '实弹': 'Ballistic', '单弹': 'Single shot', '散射': 'Spread', '水': 'Water', '电': 'Electric', '火': 'Fire', '持续': 'Continuous', '油': 'Oil', '爆炸': 'Explosive', '近战': 'Melee', '召唤': 'Drone', '冰': 'Ice' }; return profile.language === 'zh' ? tag : tags[tag] ?? tag; }
 function drawBoard() {
@@ -449,7 +449,7 @@ function setPause() { if (!battle || run?.phase !== 'battle')
     return; paused = true; resetControls(); audio.suspend(); persist(); openModal(`<div class="eyebrow">SYSTEM / PAUSED</div><h2>${t('引擎暂歇', 'Engines on hold')}</h2><p>${t('战斗与冷却已暂停。当前装配只能在休整时调整。', 'Combat and cooldowns are paused. Equipment can be changed between waves.')}</p><div class="protocol-list">${run.items.filter(i => !i.stored).map(i => `<span class="chip rarity-${i.tier}">${escape(name(MODULE_BY_ID[i.id]))} ${rarityBadge(i.tier, profile.language)}</span>`).join('')}</div><div class="modal-actions"><button class="primary" data-action="resume">${t('继续战斗', 'Resume')}</button><button data-action="save-home">${careerState ? t('退出练习，回到首页', 'Exit practice') : t('保存并回到回收站', 'Save & return to depot')}</button><button data-action="settings">${t('设置', 'Settings')}</button></div>`, 'pause'); }
 function showPending() { if (!run)
     return; deferPending = false; const r = run; if (r.phase === 'reward') {
-    openModal(`<div class="eyebrow">SALVAGE / ${t('战利品', 'REWARD')}</div><h2>${t('发现可用模块', 'Salvage recovered')}</h2><p>${t('选择一件带走，也可以换成12碎片。备件架满时先整理。', 'Take one module, or collect 12 scrap. Make room in your reserve if needed.')}</p><div class="choice-grid">${r.rewardOptions.map((id, index) => `<button class="choice-card" data-action="reward" data-index="${index}">${canvasIcon(id)}<strong>${escape(name(MODULE_BY_ID[id]))} ${rarityBadge(1, profile.language)}</strong><small>${escape(equipmentDescription({ id, tier: 1 }, profile.language))}</small></button>`).join('')}</div><div class="modal-actions"><button data-action="reward" data-index="-1">⬡ +12 ${t('碎片', 'scrap')}</button><button data-action="close">${t('先整理背包', 'Arrange backpack first')}</button></div>`, 'reward');
+    openModal(`<div class="eyebrow">SALVAGE / ${t('战利品', 'REWARD')}</div><h2>${t('发现可用模块', 'Salvage recovered')}</h2><p>${t('选择一件带走，也可以换成12碎片。备件架满时先整理。', 'Take one module, or collect 12 scrap. Make room in your reserve if needed.')}</p><div class="choice-grid">${r.rewardOptions.map((id, index) => `<button class="choice-card" data-action="reward" data-index="${index}">${canvasIcon(id)}<strong>${escape(name(MODULE_BY_ID[id]))} ${rarityBadge(economy.rewardTier(r, index), profile.language)}</strong><small>${escape(equipmentDescription({ id, tier: economy.rewardTier(r, index) }, profile.language))}</small></button>`).join('')}</div><div class="modal-actions"><button data-action="reward" data-index="-1">⬡ +12 ${t('碎片', 'scrap')}</button><button data-action="close">${t('先整理背包', 'Arrange backpack first')}</button></div>`, 'reward');
 }
 else if (r.phase === 'protocol') {
     openModal(`<div class="eyebrow">SYSTEM / UPGRADE</div><h2>${t('选择战术协议', 'Choose a protocol')}</h2><p>${t('协议持续到本次远征结束，不占格子。', 'Protocols last for this expedition and use no backpack space.')}</p><div class="choice-grid">${r.protocolOptions.map(id => { const p = PROTOCOL_BY_ID[id]; return `<button class="choice-card" data-action="protocol" data-id="${id}"><strong>${escape(name(p))}</strong><small>${escape(profile.language === 'zh' ? p.effect : p.effectEn)}</small></button>`; }).join('')}</div>`, 'protocol');
@@ -458,13 +458,57 @@ else if (r.phase === 'expansion') {
     selectedCorners.clear();
     openModal(`<div class="eyebrow">FRAME / EXPANSION</div><h2>${t('扩展背包框架', 'Expand the frame')}</h2><p>${t('选择两个角格解锁，机体基础电力也会提升。', 'Choose two corners to unlock. Base power also increases.')}</p><div class="corner-grid">${[t('左上角', 'Top left'), t('右上角', 'Top right'), t('左下角', 'Bottom left'), t('右下角', 'Bottom right')].map((v, i) => `<button data-action="corner" data-index="${i}" ${r.unlockedCorners.includes(i) ? 'disabled' : ''}>${v}${r.unlockedCorners.includes(i) ? ' ✓' : ''}</button>`).join('')}</div><button class="primary" data-action="expand">${t('确认扩容', 'Confirm expansion')}</button>`, 'expansion');
 } }
-function deploy() { if (!run || !assetsReady || renderFailed)
-    return; resetControls(); if (run.phase !== 'prep') {
-    showPending();
-    return;
-} updateCodex(); const result = economy.startWave(run); if (!actResult(result, 'click', false))
-    return; battle = createBattle(run); terminalElapsed = -1; screen = 'run'; paused = false; accumulator = 0; lastFrame = performance.now(); lastSave = 0; lastHud = 0; pendingBuy = -1; editUndo = null; targetQueued = undefined; targetMarker = undefined; audio.resetEvents(); audio.stop(); audio.music('battle'); if (run.wave >= 2 && run.items.some(i => i.link))
-    profile.tutorial = true; render(); persist(); }
+function warningMarkup(r) { return `<ul class="deployment-warnings">${deploymentWarnings(r, profile.language).map(w => `<li><strong>${escape(w.name)} · ${escape(w.reason)}</strong><p>${escape(w.detail)}</p></li>`).join('')}</ul>`; }
+function confirmInactive(r, action) {
+    if (!deploymentWarnings(r, profile.language).length)
+        return false;
+    openModal(`<div class="eyebrow">LOADOUT / NOTICE</div><h2>${t('部分配件不会生效', 'Some supports will be inactive')}</h2><p>${t('以下配件保留在背包里并占用格子与电力，但本场不会提供增益。其他武器和模块正常工作。', 'These supports keep their space and power cost but grant no bonuses this battle. Other equipment works normally.')}</p>${warningMarkup(r)}<div class="modal-actions"><button class="primary" data-action="${action}">${t('仍然出击', 'Deploy anyway')} ↗</button><button data-action="${action === 'practice-confirm' ? 'practice' : 'close'}">${t('返回调整', 'Adjust loadout')}</button></div>`, 'inactive-supports');
+    return true;
+}
+function deploy(confirmed = false) {
+    if (!run || !assetsReady || renderFailed)
+        return;
+    resetControls();
+    if (run.phase !== 'prep') {
+        showPending();
+        return;
+    }
+    const check = economy.validateLoadout(run);
+    if (!check.ok) {
+        actResult(check, 'click', false);
+        return;
+    }
+    if (run.eventId && !run.eventResolved) {
+        actResult(economy.startWave(run), 'click', false);
+        return;
+    }
+    if (!confirmed && confirmInactive(run, 'deploy-confirm'))
+        return;
+    closeModal();
+    updateCodex();
+    const result = economy.startWave(run);
+    if (!actResult(result, 'click', false))
+        return;
+    battle = createBattle(run);
+    terminalElapsed = -1;
+    screen = 'run';
+    paused = false;
+    accumulator = 0;
+    lastFrame = performance.now();
+    lastSave = 0;
+    lastHud = 0;
+    pendingBuy = -1;
+    editUndo = null;
+    targetQueued = undefined;
+    targetMarker = undefined;
+    audio.resetEvents();
+    audio.stop();
+    audio.music('battle');
+    if (run.wave >= 2 && run.items.some(i => i.link))
+        profile.tutorial = true;
+    render();
+    persist();
+}
 function beginNewRun() { if (!assetsReady || renderFailed)
     return; const value = $('seed-input')?.value.trim() || homeSeed; homeSeed = value; if (selectedMode === 'prototype' || selectedMode === 'demo' && !['scavenger', 'bulwark'].includes(selectedChassis))
     selectedChassis = 'scavenger'; run = economy.newRun(selectedChassis, selectedMode, selectedDifficulty, profile.tutorial ? value : 'FIRST-LIGHT'); battle = null; selectedUid = ''; pendingBuy = -1; lastUnlocks = []; screen = 'run'; profile.totalRuns++; if (!profile.tutorial) {
@@ -538,7 +582,7 @@ function renderPractice() {
  <label>${t('装备稀有度', 'Rarity')}<select data-practice="tier">${TIERS.map(n => `<option value="${n}" ${practiceSetup.tier === n ? 'selected' : ''}>${tier(n)} · ${rarityName(n, profile.language)}</option>`).join('')}</select></label>
  <label>${t('基础电力', 'Base power')}<select data-practice="power">${[10, 14, 18, 24].map(n => `<option ${practiceSetup.power === n ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
  <label>${t('预设构筑', 'Preset')}<select id="practice-preset"><option value="" ${presetIndex < 0 ? 'selected' : ''}>${t('自定义', 'Custom')}</option>${TRAINING_PRESETS.map((preset, i) => `<option value="${i}" ${presetIndex === i ? 'selected' : ''}>${profile.language === 'zh' ? preset.name : preset.en}</option>`).join('')}</select></label></div>
- <div class="practice-preview"><canvas id="training-preview" width="250" height="250" aria-label="${t('自动装配预览', 'Auto-arranged loadout preview')}"></canvas><div><strong>${t('已选', 'Selected')} ${chosen.size}/12 · ${t('最多三件武器', 'Up to three weapons')}</strong><p class="${preview.ok ? '' : 'invalid'}" role="status">${preview.ok ? t('装配通过：25 格内自动连接，可以开战。', 'Valid loadout: fits 25 cells with supports connected.') : escape(profile.language === 'zh' ? preview.reason : preview.reasonEn)}</p><button data-action="practice-clear">${t('清空模块', 'Clear modules')}</button></div></div>
+ <div class="practice-preview"><canvas id="training-preview" width="250" height="250" aria-label="${t('自动装配预览', 'Auto-arranged loadout preview')}"></canvas><div><strong>${t('已选', 'Selected')} ${chosen.size}/12 · ${t('最多三件武器', 'Up to three weapons')}</strong><p class="${preview.ok ? '' : 'invalid'}" role="status">${preview.ok ? t('装配已排入；如有未生效配件，开战前会列出原因。', 'Loadout fits. Any inactive supports will be listed before battle.') : escape(profile.language === 'zh' ? preview.reason : preview.reasonEn)}</p><button data-action="practice-clear">${t('清空模块', 'Clear modules')}</button></div></div>
  <div class="practice-modules">${MODULES.map(m => `<button class="rarity-${practiceSetup.tier} ${chosen.has(m.id) ? 'selected' : ''}" data-action="practice-module" data-id="${m.id}" aria-pressed="${chosen.has(m.id)}">${canvasIcon(m.id)}<span>${escape(name(m))}</span><small>${moduleStat(m.id, practiceSetup.tier, profile.language)} · ${m.shape.join('').replaceAll('.', '').length}${t('格', ' cells')}</small></button>`).join('')}</div><div class="practice-launch"><button data-action="close">${t('返回', 'Back')}</button><button class="primary" data-action="practice-start" ${preview.ok && assetsReady && !renderFailed ? '' : 'disabled'}>${t('进入首领战', 'Fight boss')} ↗</button></div>`, 'practice');
     drawIcons();
     drawTrainingPreview(preview.run);
@@ -564,7 +608,7 @@ function drawTrainingPreview(preview) {
         ctx.fillText(item.id, item.x * 50 + 6, item.y * 50 + 22);
     }
 }
-function startPractice() {
+function startPractice(confirmed = false) {
     if (!assetsReady || renderFailed)
         return;
     const prepared = trainingRun(practiceSetup);
@@ -572,6 +616,8 @@ function startPractice() {
         toast((profile.language === 'zh' ? prepared.reason : prepared.reasonEn));
         return;
     }
+    if (!confirmed && confirmInactive(prepared.run, 'practice-confirm'))
+        return;
     if (!careerState)
         careerState = { run, battle };
     run = prepared.run;
@@ -668,7 +714,7 @@ async function dispatch(button) {
     if (action === 'loadout-details') {
         if (run) {
             const check = economy.validateLoadout(run);
-            openModal(`<h2>${t('出击检查', 'Deployment check')}</h2><p>${check.ok ? t('装配合法，可以出击。', 'Loadout is ready.') : escape(profile.language === 'zh' ? check.reason : check.reasonEn)}</p>${workshopHints(run, profile.language).map(h => `<p>${escape(h)}</p>`).join('')}`, 'loadout-check');
+            openModal(`<h2>${t('出击检查', 'Deployment check')}</h2><p>${check.ok ? t('装配合法，可以出击。', 'Loadout is ready.') : escape(profile.language === 'zh' ? check.reason : check.reasonEn)}</p>${warningMarkup(run)}${workshopHints(run, profile.language).map(h => `<p>${escape(h)}</p>`).join('')}`, 'loadout-check');
         }
         return;
     }
@@ -711,8 +757,8 @@ async function dispatch(button) {
         renderPractice();
         return;
     }
-    if (action === 'practice-start') {
-        startPractice();
+    if (action === 'practice-start' || action === 'practice-confirm') {
+        startPractice(action === 'practice-confirm');
         return;
     }
     if (action === 'practice-exit') {
@@ -853,8 +899,8 @@ async function dispatch(button) {
         renderPrep();
         return;
     }
-    if (action === 'deploy') {
-        deploy();
+    if (action === 'deploy' || action === 'deploy-confirm') {
+        deploy(action === 'deploy-confirm');
         return;
     }
     if (action === 'preview-buy') {
@@ -930,6 +976,8 @@ async function dispatch(button) {
         if (result.ok)
             editUndo = before;
         actResult(result, 'connect');
+        if (result.ok)
+            toast(t('背包已整理，优先保留有效连接；未连接配件可在出击前确认。', 'Backpack arranged; active links preserved where possible. Review inactive supports before deployment.'));
         return;
     }
     if (action === 'undo-edit') {

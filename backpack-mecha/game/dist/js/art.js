@@ -1,3 +1,5 @@
+import { ENEMY_BY_ID } from "./content.js?v=0ed06082a6ae";
+const spriteKey = (key) => ENEMY_BY_ID[key]?.sprite ?? key;
 const REQUIRED = ['actors', 'modules', 'enemies', 'cargo'];
 export class Art {
     images = new Map();
@@ -27,7 +29,7 @@ export class Art {
             this.manifest = await this.retry(async () => {
                 const controller = new AbortController(), timer = setTimeout(() => controller.abort(), this.timeoutMs);
                 try {
-                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=07c9480d5be3', import.meta.url), { signal: controller.signal });
+                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=0ed06082a6ae', import.meta.url), { signal: controller.signal });
                     if (!response.ok)
                         throw new Error(`Atlas manifest failed: ${response.status}`);
                     const data = await response.json();
@@ -81,9 +83,9 @@ export class Art {
         void this.retry(() => this.loadImage(this.manifest.atlases.environment))
             .then(img => { this.images.set('environment', img); }).catch(() => { });
     }
-    has(key) { return Boolean(this.manifest?.sprites[key]); }
+    has(key) { return Boolean(this.manifest?.sprites[spriteKey(key)]); }
     draw(ctx, key, x, y, w, h, angle = 0, opacity = 1, flip = false) {
-        const sprite = this.manifest?.sprites[key];
+        const sprite = this.manifest?.sprites[spriteKey(key)];
         if (!sprite)
             return false;
         const im = this.images.get(sprite.atlas);
@@ -103,7 +105,7 @@ export class Art {
     }
     /** Bounded cached silhouette; no per-frame pixel reads or mask allocations. */
     flash(ctx, key, x, y, w, h, opacity, color = '#fff1cf') {
-        const s = this.manifest?.sprites[key], im = s && this.images.get(s.atlas);
+        const s = this.manifest?.sprites[spriteKey(key)], im = s && this.images.get(s.atlas);
         if (!s || !im || opacity <= 0)
             return;
         const cacheKey = `${key}/${color}`;
@@ -131,7 +133,7 @@ export class Art {
         ctx.restore();
     }
     tile(ctx, key, x, y, w, h) {
-        const s = this.manifest?.sprites[key];
+        const s = this.manifest?.sprites[spriteKey(key)];
         if (!s)
             return;
         const im = this.images.get(s.atlas);
@@ -141,7 +143,7 @@ export class Art {
     }
     /** A normalized portion of an existing sprite, aligned to its full fitted rectangle. */
     part(ctx, key, x, y, w, h, u, v, uw, vh) {
-        const s = this.manifest?.sprites[key];
+        const s = this.manifest?.sprites[spriteKey(key)];
         if (!s)
             return;
         const im = this.images.get(s.atlas);

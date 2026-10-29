@@ -8,7 +8,7 @@ import type {Locomotion} from './visual-motion.ts';
 
 const TAU=Math.PI*2;
 type Context=CanvasRenderingContext2D;
-const special=(e:EnemyView)=>e.kind==='boss'||e.id==='E05'||e.id==='E12';
+const special=(e:EnemyView)=>e.kind==='boss'||['E05','E12'].includes(e.id);
 const labelWidths=new Map<string,number>();
 const labelTiles=new Map<string,OffscreenCanvas>();
 let canCacheLabels=typeof OffscreenCanvas==='function';
@@ -25,13 +25,14 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
  const amount=smoothStep(m.intensity??(wind?m.progress:active?1:0));
  const stride=(gait?.stride??0)*TAU,walking=gait?.amount??0;
  const bob=reduced||!free?0:Math.sin(stride*2)*Math.min(2.5,size*.04)*walking+Math.sin(time*2+e.eid)*.35;
- const recoil=reduced||!free?0:m.hit*size*.055;
+ const shotKick=m.fireAge===undefined?0:Math.exp(-m.fireAge*22);
+ const recoil=reduced||!free?0:(m.hit*.055+shotKick*.045)*size;
  if(!special(e)){
   const tilt=m.control==='impact'?-.045:m.control==='stagger'?.045:reduced||!free?0:Math.sin(stride)*.018*walking+(gait?.lean??0)*.02;
   c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);c.rotate(tilt);
   const part=(u:number,v:number,w:number,h:number,x=0,y=0)=>art.part(c,key,x,y,size,size,u,v,w,h);
   const strideLift=reduced||!free?0:Math.sin(stride)*size*.035*walking;
-  if(e.id==='E03'||e.id==='E08'){
+  if(['E03','E08','E15'].includes(e.id)){
    // Separate track beds from the sprung hull; each side responds to travel.
    part(0,0,.23,1,0,strideLift*.4);part(.77,0,.23,1,0,-strideLift*.4);
    part(.23,0,.54,1,Math.cos(e.angle)*size*.015,wind?size*.025*amount:0);
@@ -45,11 +46,12 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
    part(0,.48,.32,.52,-strideLift*.3,strideLift);part(.68,.48,.32,.52,strideLift*.3,-strideLift);
    part(.32,.48,.36,.52);part(0,0,1,.48,Math.cos(e.angle)*size*.015,wind?-size*.018*amount:active?size*.02:0);
   }
-  if(['E04','E07','E09','E11'].includes(e.id)&&m.stage!=='idle'&&free){
+  if(['E04','E07','E09','E11','E14','E16'].includes(e.id)&&m.stage!=='idle'&&free){
    const px=Math.cos(m.angle)*size*.28,py=Math.sin(m.angle)*size*.22;
    c.strokeStyle=active?'#fff4cf':'#ffd397';c.lineWidth=1.5;c.beginPath();c.arc(px,py,size*(.045+amount*.025),0,TAU);c.stroke();
    if(active){c.fillStyle='#ffe6a7';c.beginPath();c.arc(px,py,size*.04,0,TAU);c.fill();}
   }
+  enemyHardware(c,e,m,size,time,reduced);
   c.restore();return;
  }
  c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);
@@ -126,6 +128,38 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
   c.strokeStyle=m.phaseAge<.8?'#f6dba7':'#b8ac91';c.lineWidth=2;
   for(let i=0;i<(e.phase??1);i++)stroke(c,e.x-size*.2+i*size*.12,e.y+size*.35,0,6);
  }
+}
+
+
+/** Local-space articulated hardware differentiates new units from the donor chassis. */
+export function enemyHardware(c:Context,e:EnemyView,m:EnemyMotion,size:number,time:number,reduced:boolean):void {
+ const wind=m.stage==='windup',active=m.stage==='active',amount=wind?smoothStep(m.progress):active?1:0;
+ const pulse=reduced||m.control?0:Math.sin(time*5+e.eid)*.015;
+ const kick=reduced||m.control||m.fireAge===undefined?0:Math.exp(-m.fireAge*22)*size*.08;
+ c.save();c.lineJoin='round';c.lineCap='round';c.lineWidth=Math.max(1.4,size*.035);
+ if(e.id==='E13'){
+  c.strokeStyle='#6ee6bc';c.fillStyle='#253d46';
+  for(const side of [-1,1]){c.save();c.translate(side*size*.25,0);c.rotate(side*(wind?-.3*amount:active?.32:.08));
+   c.beginPath();c.moveTo(0,size*.22);c.lineTo(side*size*.22,-size*.16);c.lineTo(side*size*.09,-size*.34);c.lineTo(-side*size*.04,size*.02);c.closePath();c.fill();c.stroke();c.restore();}
+  c.fillStyle='#a7ffe0';c.fillRect(-size*.10,-size*.18,size*.2,size*.045);
+ }else if(e.id==='E14'){
+  c.save();c.rotate(m.angle);c.translate(-kick,0);
+  c.strokeStyle='#1a2834';c.lineWidth=size*.13;stroke(c,0,0,size*.56,0);
+  c.strokeStyle='#b6d4e9';c.lineWidth=size*.065;stroke(c,0,0,size*.56,0);
+  c.strokeStyle='#f38f7d';c.lineWidth=size*.025;stroke(c,size*.45,-size*.08,0,size*.16);
+  c.fillStyle=wind?'#ffc4a3':'#f17e6c';c.beginPath();c.arc(size*.12,-size*.1,size*(.035+.03*amount),0,TAU);c.fill();c.restore();
+ }else if(e.id==='E15'){
+  for(const side of [-1,1]){const x=side*size*.29,y=-size*(.10+.07*amount);c.fillStyle='#253540';c.strokeStyle='#eeb365';
+   c.beginPath();roundRect(c,x-size*.10,y-size*.22,size*.20,size*.40,size*.04);c.fill();c.stroke();
+   for(let i=0;i<3;i++){c.fillStyle=wind&&m.progress>i/3?'#fff0b9':'#b07e45';c.fillRect(x-size*.055,y-size*.14+i*size*.1,size*.11,size*.055);}}
+ }else if(e.id==='E16'){
+  c.strokeStyle='#b89bf5';c.lineWidth=size*.035;
+  c.beginPath();c.ellipse(0,-size*.1,size*(.42+amount*.07),size*(.20+amount*.035),0,0,TAU);c.stroke();
+  for(let i=0;i<4;i++){const a=i*TAU/4+(reduced||m.control?0:time*.8),x=Math.cos(a)*size*.42,y=-size*.1+Math.sin(a)*size*.2;
+   c.fillStyle=wind||active?'#f4e4ff':'#937dcc';c.beginPath();c.arc(x,y,size*(.05+pulse),0,TAU);c.fill();}
+  c.fillStyle='#d8c6ff';c.beginPath();c.arc(0,-size*.1,size*(.06+amount*.04),0,TAU);c.fill();
+ }
+ c.restore();
 }
 
 export function enemyControl(c:Context,e:EnemyView,m:EnemyMotion,size:number):void {

@@ -1,0 +1,79 @@
+{
+  "game": "背包机甲",
+  "build": "0.2.0-dev.9",
+  "capture_date": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "game_url": "https://shadowgdnf.github.io/ycl_game/backpack-mecha/game/dist/",
+  "destination": "https://cwtus1pn64.feishu.cn/wiki/JsxkwoWuPi3r0XkMNOVcrXLFnHc",
+  "cover": {
+    "file": "00-cover.png",
+    "method": "Built-in image_gen",
+    "kind": "promotional artwork, not gameplay screenshot",
+    "reference": "backpack-mecha/game/assets/source/art-direction-a.png"
+  },
+  "screenshots": [
+    {
+      "file": "01-home.jpg",
+      "stage": "homepage before starting the run",
+      "size": [
+        1280,
+        1104
+      ]
+    },
+    {
+      "file": "02-boss-battle.jpg",
+      "stage": "first-chapter training, wave 4, Roller King battle in progress, heavy-attack telegraph",
+      "boss_hp": "620/1100",
+      "player_hp": "99/100",
+      "battle_seconds": 12,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "file": "03-workshop.jpg",
+      "stage": "same run, wave 4 preparation before boss",
+      "power": "8/12",
+      "cells": "13/21",
+      "weapons": "2/3",
+      "size": [
+        1280,
+        720
+      ]
+    }
+  ],
+  "process": "Started a new run through the public homepage. Played waves 1-3 with keyboard movement and overdrive. Bought and placed Scatter cannon and Shield generator, connected the free Amplifier, collected and equipped a Power battery, bought and merged a Rivet gun to tier II. Captured the wave-4 workshop and the actual boss battle. No injected state, developer scenes or generated screenshot replacements.",
+  "files": [
+    {
+      "name": "00-cover.png",
+      "bytes": 2534034,
+      "sha256": "4bffc8c654988767960f1fb4cd0db4c9deba744de6b6f1c99ff316ede2a50393"
+    },
+    {
+      "name": "01-home.jpg",
+      "bytes": 102760,
+      "sha256": "841a4cd72a3a8255903083daff0ed60689ce488829d4e53247b1dcf7f486f21e"
+    },
+    {
+      "name": "02-boss-battle.jpg",
+      "bytes": 109269,
+      "sha256": "0d8554c0406e3b084d48a5c72599b8d13048bb5a6edce82ada2679b88a05504f"
+    },
+    {
+      "name": "03-workshop.jpg",
+      "bytes": 70820,
+      "sha256": "92feee15b495973a2fbded7447d3b49b0decc3958bb3209fb68b98a850cfa051"
+    },
+    {
+      "name": "cover-prompt.txt",
+      "bytes": 2779,
+      "sha256": "da8f7ee61645be73ae6bd83d1a4a2c31511f2d4899d0939fa1c42eb3b835de01"
+    },
+    {
+      "name": "submission-info.txt",
+      "bytes": 1890,
+      "sha256": "e442db30f84802ed090de9f81b3f3e84bfba0ae876bf72725730f5ef6f0a55ed"
+    }
+  ]
+}

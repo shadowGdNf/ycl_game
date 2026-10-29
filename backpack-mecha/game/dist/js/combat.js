@@ -1,7 +1,9 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=07c9480d5be3";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=07c9480d5be3";
-import { nextRandom } from "./random.js?v=07c9480d5be3";
-import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=07c9480d5be3";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=0ed06082a6ae";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=0ed06082a6ae";
+import { activeSupports } from "./economy.js?v=0ed06082a6ae";
+import { scrapPerCost } from "./progression.js?v=0ed06082a6ae";
+import { nextRandom } from "./random.js?v=0ed06082a6ae";
+import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=0ed06082a6ae";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -37,7 +39,7 @@ export function createBattle(run) {
     const speed = chassis.speed * clamp(1 + value('U07', utilities.U07) - (utilities.U06 ? .03 : 0), .65, 1.6);
     const dashBase = Math.max(3.5, chassis.dash - (utilities.U07 ? TIER_EFFECTS.dashReduction[utilities.U07 - 1] : 0) + (run.protocols.includes('P04') ? .5 : 0));
     const weapons = equipped.filter(i => MODULE_BY_ID[i.id]?.kind === 'weapon').map((i, index) => ({ uid: i.uid, id: i.id, tier: i.tier, x: 800, y: 650, angle: -Math.PI / 2, cooldown: .1 + index * .05, shotCount: 0,
-        supports: Object.fromEntries(equipped.filter(s => MODULE_BY_ID[s.id]?.kind === 'support' && s.link === i.uid).map(s => [s.id, s.tier])), targetUntil: 0, rectifierAt: 0, springUsed: true, fuseAt: {}, droneCount: 0 }));
+        supports: Object.fromEntries(activeSupports(run).filter(s => s.link === i.uid).map(s => [s.id, s.tier])), targetUntil: 0, rectifierAt: 0, springUsed: true, fuseAt: {}, droneCount: 0 }));
     let drones = 0;
     for (const weapon of weapons)
         if (weapon.id === 'W11') {
@@ -84,7 +86,7 @@ export function spawnEnemy(w, spec) {
     const e = { eid: w.nextId++, id: spec.id, x: spec.x, y: spec.y, hp, maxHp: hp, radius: boss?.radius || base.radius, angle: Math.PI / 2, kind: boss ? 'boss' : spec.elite ? 'elite' : 'normal', phase: 1,
         ...(spec.group ? { group: spec.group } : {}), armor: (boss?.armor || base?.armor || 0) + (spec.elite && spec.affix === 1 ? 10 : 0), speed: (boss?.speed || base?.speed || 0) * (boss ? 1 : [1, 1.06, 1.1][w.act - 1]) * (spec.elite && spec.affix === 0 ? 1.15 : 1),
         damage: (base?.damage || 20) * (boss ? 1 : [1, 1.25, 1.5][w.act - 1]) * damageDifficulty * (spec.elite ? 1.2 : 1), cost: spec.cost,
-        reward: spec.reward && w.encounter.budget > 0 ? w.encounter.wave.bonus * spec.cost / w.encounter.budget : 0,
+        reward: spec.reward && w.encounter.budget > 0 ? scrapPerCost(w.wave) * spec.cost : 0,
         born: w.time, dead: false, cooldown: boss ? 2 : .5, contactAt: 0, path: [], pathAt: 0, aiUntil: 0, healingUntil: 0, affix: spec.elite ? spec.affix : -1,
         oilUntil: 0, oilAt: 0, chill: 0, chillUntil: 0, chillStrength: .06, frozen: 0, wet: 0, burns: [], stagger: 0, staggerUntil: 0, vulnerableUntil: 0, summon: !spec.reward, exposed: true, offsetX: 0 };
     w.enemies.push(e);
@@ -861,6 +863,63 @@ function tickEnemies(w, dt) {
                 if (d < 180)
                     move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
             }
+        }
+        else if (e.id === 'E13') {
+            // Approach from alternating flanks, then commit to a short, dodgeable lunge.
+            if (d < 285 && sight && e.cooldown <= 0) {
+                e.cooldown = 3.4;
+                e.aiUntil = w.time + .95;
+                e.angle = a;
+                addZone(w, { x: e.x, y: e.y, kind: 'rect', radius: 0, w: 240, h: 28, angle: a, warning: .6, active: .6, damage: e.damage, effect: 'charge', speed: 400 }, e.eid, e.id);
+            }
+            else {
+                const side = e.eid % 2 ? 1 : -1, flank = a + side * (d > 130 ? .6 : 0);
+                follow(w, e, { x: target.x - Math.cos(flank) * 75, y: target.y - Math.sin(flank) * 75 }, speed, dt);
+            }
+        }
+        else if (e.id === 'E14') {
+            if (d < 740 && sight && e.cooldown <= 0) {
+                e.cooldown = 4.4;
+                e.aiUntil = w.time + 1.5;
+                e.angle = aim(.12);
+                addZone(w, { x: e.x, y: e.y, kind: 'line', radius: 0, w: 740, h: 10, angle: e.angle, warning: 1.25, active: .05, damage: e.damage, effect: 'projectile', count: 1, speed: 620, projectileRadius: 4 }, e.eid, e.id);
+            }
+            else if (d > 580 || !sight)
+                follow(w, e, target, speed, dt);
+            else {
+                e.angle = a;
+                if (d < 300)
+                    move(w, e, -Math.cos(a) * speed * dt, -Math.sin(a) * speed * dt);
+            }
+        }
+        else if (e.id === 'E15') {
+            if (e.cooldown <= 0 && d < 540) {
+                e.cooldown = 5.2;
+                e.aiUntil = w.time + 1.2;
+                e.angle = a;
+                // Two stationary mines straddle the marked position, leaving a central escape lane.
+                for (const side of [-1, 1]) {
+                    const p = { x: clamp(target.x - Math.sin(a) * side * 95, 60, w.width - 60), y: clamp(target.y + Math.cos(a) * side * 95, 60, w.height - 60) };
+                    if (traversable(p, 38, w.obstacles))
+                        addZone(w, { ...p, kind: 'circle', radius: 48, angle: 0, warning: 1.2, active: 2.2, damage: e.damage, period: 1, effect: 'mortar' }, e.eid, e.id);
+                }
+            }
+            else if (d > 360 || !sight)
+                follow(w, e, target, speed, dt);
+            else
+                e.angle = a;
+        }
+        else if (e.id === 'E16') {
+            if (e.cooldown <= 0 && d < 500) {
+                e.cooldown = 4.8;
+                e.aiUntil = w.time + 1.3;
+                e.angle = a;
+                addZone(w, { x: e.x, y: e.y, kind: 'circle', radius: 90, angle: a, warning: 1, active: .05, damage: e.damage, effect: 'projectile', count: 10, spread: Math.PI * 2, speed: 185, projectileRadius: 6 }, e.eid, e.id);
+            }
+            else if (d > 300 || !sight)
+                follow(w, e, target, speed, dt);
+            else
+                e.angle = a;
         }
         else if (e.id === 'E12') {
             if (e.cooldown <= 0 && d < 650) {

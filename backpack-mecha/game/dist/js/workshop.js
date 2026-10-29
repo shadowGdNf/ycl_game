@@ -1,7 +1,7 @@
-import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=07c9480d5be3";
+import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=0ed06082a6ae";
 /** Read-only explanations derived from the same connection and placement checks as play. */
-import { MODULE_BY_ID, label } from "./content.js?v=07c9480d5be3";
-import { getCapacity, linkOptions, validateLoadout } from "./economy.js?v=07c9480d5be3";
+import { MODULE_BY_ID, label } from "./content.js?v=0ed06082a6ae";
+import { getCapacity, linkOptions, validateLoadout, activeSupports, inactiveSupports } from "./economy.js?v=0ed06082a6ae";
 const format = (n) => Number(n.toFixed(2)).toString();
 export function supportBenefit(item, lang) {
     const m = MODULE_BY_ID[item.id], v = moduleValue(item.id, item.tier), pct = format(v * 100), en = lang === 'en';
@@ -40,7 +40,7 @@ export function supportFeedback(run, uid, lang) {
     const item = run.items.find(i => i.uid === uid);
     if (!item || MODULE_BY_ID[item.id].kind !== 'support')
         return;
-    const en = lang === 'en', benefit = supportBenefit(item, lang), options = linkOptions(run, uid), linked = options.find(o => o.weapon.uid === item.link && o.result.ok);
+    const en = lang === 'en', benefit = supportBenefit(item, lang), options = linkOptions(run, uid), linked = activeSupports(run).some(s => s.uid === uid) ? options.find(o => o.weapon.uid === item.link) : undefined;
     let status;
     if (item.stored)
         status = 'reserve';
@@ -70,6 +70,11 @@ export function supportFeedback(run, uid, lang) {
     };
     const row = words[status];
     let detail = en ? row[3] : row[2];
+    if (status === 'incompatible') {
+        const tags = { '全部': 'All', '实弹': 'Ballistic', '单弹': 'Single shot', '散射': 'Spread', '水': 'Water', '电': 'Electric', '火': 'Fire', '持续': 'Continuous', '油': 'Oil', '爆炸': 'Explosive', '近战': 'Melee', '召唤': 'Drone', '冰': 'Ice' };
+        const required = MODULE_BY_ID[item.id].tags.map(tag => en ? tags[tag] ?? tag : tag).join(' / '), equipped = options.map(o => label(MODULE_BY_ID[o.weapon.id], lang)).join(' / ');
+        detail = en ? `Requires a ${required} weapon. Equipped: ${equipped}. This support grants no bonus until connected to a matching weapon.` : `需要「${required}」武器；当前装备为「${equipped}」。连接到匹配武器前，这件配件不提供增益。`;
+    }
     if (status === 'active' && linked) {
         detail = `${label(MODULE_BY_ID[item.id], lang)} → ${label(MODULE_BY_ID[linked.weapon.id], lang)} · ${benefit}`;
         if (item.id === 'S01' && linked.weapon.id === 'W01') {
@@ -103,4 +108,7 @@ export function workshopHints(run, lang) {
     else if (has('W06') && !has('W05'))
         hints.push(en ? 'Oil needs fire to ignite. A flame weapon can complete the combination.' : '油污需要火焰引燃；可留意火焰武器，补上引爆方式。');
     return hints.slice(0, 2);
+}
+export function deploymentWarnings(run, lang) {
+    return inactiveSupports(run).map(item => { const f = supportFeedback(run, item.uid, lang); return { uid: item.uid, name: label(MODULE_BY_ID[item.id], lang), reason: f.title, detail: f.detail }; });
 }

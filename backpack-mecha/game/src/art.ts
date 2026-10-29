@@ -1,3 +1,5 @@
+import {ENEMY_BY_ID} from './content.ts';
+const spriteKey=(key:string)=>ENEMY_BY_ID[key]?.sprite??key;
 /** Raster atlas access. Atlas rectangles come from alpha inspection, not grid guesses. */
 export interface SpriteRect {atlas:string;x:number;y:number;w:number;h:number}
 interface Manifest {version:number;atlases:Record<string,string>;sprites:Record<string,SpriteRect>}
@@ -59,9 +61,9 @@ export class Art {
     void this.retry(()=>this.loadImage(this.manifest!.atlases.environment))
       .then(img=>{this.images.set('environment',img);}).catch(()=>{/* Solid floor remains playable. */});
   }
-  has(key:string):boolean{return Boolean(this.manifest?.sprites[key]);}
+  has(key:string):boolean{return Boolean(this.manifest?.sprites[spriteKey(key)]);}
   draw(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number,angle=0,opacity=1,flip=false):boolean{
-    const sprite=this.manifest?.sprites[key];if(!sprite)return false;
+    const sprite=this.manifest?.sprites[spriteKey(key)];if(!sprite)return false;
     const im=this.images.get(sprite.atlas);if(!im)return false;
     const fit=Math.min(w/sprite.w,h/sprite.h);const dw=sprite.w*fit,dh=sprite.h*fit;
     ctx.save();ctx.translate(x,y);ctx.rotate(angle);if(flip)ctx.scale(1,-1);ctx.globalAlpha*=opacity;
@@ -69,7 +71,7 @@ export class Art {
   }
   /** Bounded cached silhouette; no per-frame pixel reads or mask allocations. */
   flash(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number,opacity:number,color='#fff1cf'):void{
-    const s=this.manifest?.sprites[key],im=s&&this.images.get(s.atlas);if(!s||!im||opacity<=0)return;
+    const s=this.manifest?.sprites[spriteKey(key)],im=s&&this.images.get(s.atlas);if(!s||!im||opacity<=0)return;
     const cacheKey=`${key}/${color}`;let mask=this.flashes.get(cacheKey);
     if(!mask){
       const fit=Math.min(1,256/Math.max(s.w,s.h)),mw=Math.ceil(s.w*fit),mh=Math.ceil(s.h*fit);
@@ -81,12 +83,12 @@ export class Art {
     const fit=Math.min(w/s.w,h/s.h);ctx.save();ctx.globalAlpha*=opacity;ctx.drawImage(mask,x-s.w*fit/2,y-s.h*fit/2,s.w*fit,s.h*fit);ctx.restore();
   }
   tile(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number):void{
-    const s=this.manifest?.sprites[key];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
+    const s=this.manifest?.sprites[spriteKey(key)];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
     ctx.drawImage(im,s.x,s.y,s.w,s.h,x,y,w,h);
   }
   /** A normalized portion of an existing sprite, aligned to its full fitted rectangle. */
   part(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number,u:number,v:number,uw:number,vh:number):void{
-    const s=this.manifest?.sprites[key];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
+    const s=this.manifest?.sprites[spriteKey(key)];if(!s)return;const im=this.images.get(s.atlas);if(!im)return;
     const fit=Math.min(w/s.w,h/s.h),dw=s.w*fit,dh=s.h*fit;
     ctx.drawImage(im,s.x+s.w*u,s.y+s.h*v,s.w*uw,s.h*vh,x-dw/2+dw*u,y-dh/2+dh*v,dw*uw,dh*vh);
   }

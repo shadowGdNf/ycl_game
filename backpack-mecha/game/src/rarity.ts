@@ -22,9 +22,10 @@ export const moduleValue=(id:string,tier:number|undefined):number=>tier===4?lege
 export const TIER_EFFECTS={dashReduction:[1,1.3,1.8,2.4],shieldRegen:[1,1.5,2,2.7],cryoStagger:[5,7,9,12],springDamage:[.4,.55,.7,.95],decoyHP:[20,27,36,48],repairCap:[8,10,12,16]} as const;
 /** Per-slot odds, adapted to a 12-wave run. They are independent of module-family supply weights. */
 export function shopTierChances(wave:number):number[]{
- const blue=wave>=2?Math.min(.28,.08+(wave-2)*.02):0;
- const purple=wave>=5?Math.min(.12,.02+(wave-5)*.014):0;
- const red=wave>=9?Math.min(.02,.005+(wave-9)*.005):0;
+ const n=Math.max(1,Math.min(12,Math.floor(wave)||1));
+ const blue=n>=2?Math.min(.38,.12+(n-2)*.026):0;
+ const purple=n>=5?Math.min(.26,.06+(n-5)*(.20/7)):0;
+ const red=n>=9?Math.min(.10,.04+(n-9)*.02):0;
  return [1-blue-purple-red,blue,purple,red];
 }
 export function rollShopTier(wave:number,random:number):Tier {

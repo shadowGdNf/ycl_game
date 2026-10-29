@@ -1,5 +1,5 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=07c9480d5be3";
-import { nextRandom } from "./random.js?v=07c9480d5be3";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=0ed06082a6ae";
+import { nextRandom } from "./random.js?v=0ed06082a6ae";
 export const ARENA = { width: 1600, height: 1200 };
 const layouts = [
     [{ x: 320, y: 240, w: 180, h: 100 }, { x: 1100, y: 860, w: 180, h: 100 }, { x: 1100, y: 240, w: 100, h: 160 }, { x: 400, y: 830, w: 100, h: 170 }],
@@ -47,6 +47,16 @@ export function enemyPool(wave, mode) {
         wave <= 4 ? ['E01', 'E02', 'E03', 'E04', 'E05'] : wave <= 6 ? ['E01', 'E02', 'E03', 'E04', 'E05', 'E06', 'E07'] :
             wave <= 8 ? ['E01', 'E02', 'E03', 'E04', 'E05', 'E06', 'E07', 'E08', 'E09'] :
                 ['E01', 'E02', 'E03', 'E04', 'E05', 'E06', 'E07', 'E08', 'E09', 'E10', 'E11', 'E12'];
+    if (mode === 'full') {
+        if (wave >= 2)
+            ids.push('E13');
+        if (wave >= 3)
+            ids.push('E14');
+        if (wave >= 5)
+            ids.push('E15');
+        if (wave >= 7)
+            ids.push('E16');
+    }
     return ids.filter(id => mode === 'full' || Number(id.slice(1)) <= (mode === 'prototype' ? 5 : 6));
 }
 export function chooseEnemy(enc, allowance, random) {
@@ -55,7 +65,7 @@ export function chooseEnemy(enc, allowance, random) {
         return undefined;
     const weights = pool.map(id => {
         const e = ENEMY_BY_ID[id], act = enc.wave.act;
-        const group = id === 'E01' || id === 'E02' ? 'chase' : id === 'E04' || id === 'E11' ? 'ranged' : id === 'E06' || id === 'E09' ? 'support' : 'heavy';
+        const group = ['E01', 'E02', 'E13'].includes(id) ? 'chase' : ['E04', 'E11', 'E14', 'E16'].includes(id) ? 'ranged' : ['E06', 'E09'].includes(id) ? 'support' : 'heavy';
         const weight = ({ chase: [.65, .4, .3], ranged: [.2, .25, .25], support: [0, .2, .2], heavy: [.15, .15, .25] }[group])[act - 1];
         return Math.max(.01, weight) / e.cost;
     });

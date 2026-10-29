@@ -19,6 +19,7 @@ for i,(id,nameen,hp,shield,speed,armor,dash,traiten) in enumerate([('scavenger',
 enames=['Scrap mite','Needle runner','Heavy hauler','Pin sentry','Volatile cell','Repair orb','Shield guard','Burrow drill','Cable spider','Split crate','Pulse caster','Street sweeper']
 behaviors=['chase','runner','tank','ranged','suicide','healer','shield','burrow','tether','split','pulse','charger']
 enemies=[dict(id=r[0],name=r[1],en=enames[i],act=r[2],hp=r[3],armor=r[4],speed=r[5],damage=r[6],cost=r[7],behavior=behaviors[i],radius=[13,11,22,16,14,16,20,17,17,20,19,28][i]) for i,r in enumerate(data['enemies'])]
+enemies+=json.loads((root/'assets'/'source'/'enemies-dev10.json').read_text())
 bnames=['The Compactor','Magnet Crane','Furnace Crab','Storm Twins','Recycler Zero','Orbital Carrier']
 bosses=[{k:v for k,v in dict(**b,en=bnames[i]).items() if k in ['id','name','en','act','hp','armor','radius','speed','attacks','phases','counter']} for i,b in enumerate(data['bosses'])]
 # Keep the original design baseline intact; the live boss guide follows dev.9 choreography.
@@ -32,6 +33,8 @@ evnames=['Scrap exchange','Dangerous battery','Old workbench','Rescue signal','D
 eventen=['Pay 24 scrap for a choice of uncommon modules, or leave.','Lose 15 HP for 35 scrap, or leave.','Upgrade one module to tier II for free, or take 20 scrap.','Face an extra elite next wave for an uncommon module reward.','Sell a module for 75% value, or pay 12 scrap to heal 20 HP.','Guarantee compatible support in the next shop, or take 12 scrap.','Repair 25 HP, or gain 15 temporary shield next wave.','Next wave gets 15% more enemies; gain 30 extra scrap.']
 events=[dict(id=f'EV{i+1:02}',name=e[0],en=evnames[i],description=e[1],descriptionEn=eventen[i]) for i,e in enumerate(data['events'])]
 waves=[{k:v for k,v in w.items() if k in ['n','act','kind','duration','budget','base','bonus']} for w in data['waves']]
+events[0].update(description='支付24碎片，从三件进阶型号中选择一件，稀有度随关卡提升；或离开。',descriptionEn='Pay 24 scrap to choose from three advanced designs with progress-scaled rarity, or leave.')
+events[3].update(description='下一战额外出现1只精英；胜利后从三件进阶型号中选择一件，稀有度随关卡提升。',descriptionEn='Face an extra elite next wave for advanced salvage with progress-scaled rarity.')
 content=dict(modules=mods,chassis=chassis,enemies=enemies,bosses=bosses,protocols=protocols,events=events,waves=waves,demoIds=data['demo_module_ids'])
 (root/'assets'/'content.json').write_text(json.dumps(content,ensure_ascii=False,indent=2))
 lines=["// Generated from the design baseline by scripts/export-content.py. No description parsing at runtime.","import type {ModuleDef,ChassisDef,EnemyDef,BossDef,ProtocolDef,EventDef,WaveDef,Lang} from './types.ts';"]
@@ -44,4 +47,4 @@ lines.append("export const PROTOTYPE_IDS=['W01','W02','W03','W04','S01','S02','S
 lines.append("export function label(d:{name:string;en:string},lang:Lang):string{return lang==='zh'?d.name:d.en;}")
 lines.append("export const VERSION='0.1.0';")
 (root/'src'/'content.ts').write_text('\n'.join(lines)+'\n')
-print('Exported structured catalog: 36 modules, 4 chassis, 12 enemies, 6 bosses')
+print('Exported structured catalog: 36 modules, 4 chassis, 16 enemies, 6 bosses')

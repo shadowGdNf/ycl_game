@@ -10,7 +10,7 @@ const idle={x:0,y:0,dash:false,overload:false};
 test('prototype, demo and full encounters exclude content that is not in their tier',()=>{
  assert.ok(enemyPool(7,'demo').every(id=>Number(id.slice(1))<=6));
  assert.ok(enemyPool(3,'prototype').every(id=>Number(id.slice(1))<=5));
- assert.equal(enemyPool(11,'full').length,12);
+ assert.equal(enemyPool(11,'full').length,16);
  for(const mode of ['prototype','demo'] as const){const run=newRun('scavenger',mode,0,'boss-tier');run.wave=4;run.bosses=['B1B'];assert.equal(createEncounter(run).boss,'B1A');}
 });
 

@@ -1,6 +1,6 @@
 import type {Run,Tier,Result,Profile} from './types.ts';
 import {MODULE_BY_ID,CHASSIS_BY_ID,BOSS_BY_ID} from './content.ts';
-import {newRun,autoPack,getCells} from './economy.ts';
+import {newRun,autoPack,getCells,validateLoadout} from './economy.ts';
 
 export interface TrainingSetup {chassis:string;boss:string;difficulty:number;tier:Tier;power:number;modules:string[]}
 export const TRAINING_PRESETS=[
@@ -24,6 +24,6 @@ export function trainingRun(setup:TrainingSetup):Result&{run?:Run}{
  r.wave=BOSS_BY_ID[setup.boss].act*4;r.bosses[BOSS_BY_ID[setup.boss].act-1]=setup.boss;r.power=setup.power;r.maxTier=4;r.gold=0;r.unlockedCorners=[0,1,2,3];
  r.extra={training:true};r.items=setup.modules.map((id,index)=>({uid:`lab-${index}`,id,tier:setup.tier,x:0,y:0,rotation:0,stored:false}));
  if(r.items.reduce((sum,item)=>sum+getCells(item).length,0)>25)return fail('超过 25 格，请减少模块','More than 25 cells. Remove modules');
- const result=autoPack(r);if(!result.ok)return result;
+ const result=autoPack(r);if(!result.ok)return result;const ready=validateLoadout(r);if(!ready.ok)return ready;
  return {ok:true,run:r};
 }

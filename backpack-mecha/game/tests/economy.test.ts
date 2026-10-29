@@ -31,7 +31,7 @@ test('placement is atomic, corners are locked, rotation uses quarter turns',()=>
  assert.equal(e.placeItem(r,gun.uid,1,0,1).ok,false); // overlaps the connected support below.
  assert.equal(e.getCells({...gun,x:2,y:2,rotation:1}).length,2);
  assert.deepEqual(e.getCells({...gun,x:2,y:2,rotation:1}),[{x:2,y:2},{x:2,y:3}]);
- assert.equal(e.placeItem(r,gun.uid,3,2,1).ok,true);assert.equal(e.validateLoadout(r).ok,false);
+ assert.equal(e.placeItem(r,gun.uid,3,2,1).ok,true);assert.equal(e.validateLoadout(r).ok,true);assert.equal(e.inactiveSupports(r).length,1);
  assert.equal(e.autoPack(r).ok,true);assert.equal(e.validateLoadout(r).ok,true);
 });
 

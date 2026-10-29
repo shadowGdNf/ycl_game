@@ -13,7 +13,7 @@ test('all placement previews agree with real actions, including rotation, power 
  for(let rotation=0;rotation<4;rotation++)for(let y=-1;y<6;y++)for(let x=-1;x<6;x++){
   const preview=e.previewPlacement(r,uid,x,y,rotation),actual=structuredClone(r),result=e.placeItem(actual,uid,x,y,rotation);
   assert.equal(preview.ok,result.ok);assert.equal(preview.reason,result.reason);
-  if(result.ok){assert.equal(preview.ready,e.validateLoadout(actual).ok);assert.equal(preview.linkedWeapon?.uid,actual.items.find(i=>i.uid===uid)?.link);}
+  if(result.ok){assert.equal(preview.ready,e.validateLoadout(actual).ok&&e.inactiveSupports(actual).length===0);assert.equal(preview.linkedWeapon?.uid,actual.items.find(i=>i.uid===uid)?.link);}
  }
  assert.deepEqual(r,before);
 });

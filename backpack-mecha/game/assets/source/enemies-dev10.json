@@ -1,0 +1,58 @@
+[
+  {
+    "id": "E13",
+    "name": "侧刃游猎者",
+    "en": "Flank stalker",
+    "act": 1,
+    "hp": 34,
+    "armor": 0,
+    "speed": 125,
+    "damage": 9,
+    "cost": 2,
+    "behavior": "flanker",
+    "radius": 14,
+    "sprite": "E02"
+  },
+  {
+    "id": "E14",
+    "name": "长针狙击手",
+    "en": "Longpin sniper",
+    "act": 1,
+    "hp": 30,
+    "armor": 0,
+    "speed": 62,
+    "damage": 15,
+    "cost": 3,
+    "behavior": "sniper",
+    "radius": 17,
+    "sprite": "E04"
+  },
+  {
+    "id": "E15",
+    "name": "熔渣布雷车",
+    "en": "Slag minelayer",
+    "act": 2,
+    "hp": 65,
+    "armor": 12,
+    "speed": 64,
+    "damage": 12,
+    "cost": 4,
+    "behavior": "minelayer",
+    "radius": 22,
+    "sprite": "E03"
+  },
+  {
+    "id": "E16",
+    "name": "环波哨兵",
+    "en": "Ring sentinel",
+    "act": 2,
+    "hp": 58,
+    "armor": 6,
+    "speed": 72,
+    "damage": 11,
+    "cost": 4,
+    "behavior": "ring",
+    "radius": 20,
+    "sprite": "E11"
+  }
+]
