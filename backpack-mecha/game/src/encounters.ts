@@ -1,3 +1,4 @@
+import {comboTurn} from './boss-patterns.ts';
 import {BOSS_BY_ID, ENEMY_BY_ID, WAVES} from './content.ts';
 import {nextRandom} from './random.ts';
 import type {Mode, Point, Rect, Run, WaveDef} from './types.ts';
@@ -12,8 +13,9 @@ export interface AttackPlan extends Point {
  delay?:number;period?:number;effect?:'damage'|'charge'|'pull'|'projectile'|'spawn'|'conveyor'|'fire'|'drill'|'mortar';
  count?:number;enemy?:string;limit?:number;speed?:number;spread?:number;projectileRadius?:number;
  length?:number;sweep?:number;grow?:number;slow?:number;target?:Point;spawnHp?:number;spawnDamage?:number;
+ gapAngle?:number;gapWidth?:number;beat?:1|2;lockTarget?:boolean;
 }
-export interface BossTurn {plans:AttackPlan[];duration:number;recovery:number}
+export interface BossTurn {plans:AttackPlan[];duration:number;recovery:number;combo?:[string,string,string,string]}
 const layouts:Rect[][]=[
  [{x:320,y:240,w:180,h:100},{x:1100,y:860,w:180,h:100},{x:1100,y:240,w:100,h:160},{x:400,y:830,w:100,h:170}],
  [{x:320,y:330,w:120,h:270},{x:1160,y:600,w:120,h:270},{x:700,y:160,w:200,h:90},{x:700,y:950,w:200,h:90}],
@@ -146,12 +148,13 @@ export function bossPursuitSpeed(base:number,phase:number,difficulty=0,enraged=f
  return base*(1.6+.08*Math.max(0,phase-1)+.04*Math.max(0,Math.min(4,difficulty))+(enraged?.1:0));
 }
 /** Complete boss choreography. All damage is resolved by combat.ts, never here. */
-export function bossTurn(id:string,phase:number,index:number,boss:Point,player:Point,difficulty=0,enraged=false):BossTurn {
+export function bossTurn(id:string,phase:number,index:number,boss:Point,player:Point,difficulty=0,enraged=false,velocity:Point={x:0,y:0}):BossTurn {
  phase=Math.max(1,Math.min(['B1A','B1B','B2B'].includes(id)?2:3,phase));
  const difficultyLevel=Math.max(0,Math.min(4,difficulty)),a=toward(boss,player),slot=index%3;
  const speedScale=1.12+.08*(phase-1)+.05*difficultyLevel+(enraged?.12:0);
  const fan=(origin:Point,angle:number,count:number,spread:number,speed:number,damage:number,warning=.85,delay=0):AttackPlan=>
   cone(origin,angle,600,spread,warning,damage,{active:.08,effect:'projectile',count,spread,speed,delay,projectileRadius:5});
+ const combined=comboTurn(id,phase,index,boss,player,velocity);
  let plans:AttackPlan[]=[],recovery=.75;
  if(id==='B1A'){
   if(slot===0){const charge:AttackPlan={...boss,kind:'rect',radius:0,w:660,h:90,angle:a,warning:1,active:1.1,damage:20,effect:'charge',speed:540,target:{...player}};plans=[charge];recovery=.85;
@@ -188,18 +191,20 @@ export function bossTurn(id:string,phase:number,index:number,boss:Point,player:P
   if(slot===1)plans=[circle(boss,120,1,0,{effect:'spawn',enemy:'E02',count:4+phase,limit:10,spawnHp:30,spawnDamage:8}),fan(boss,a,5+phase*2,2,340,10,1,.25)];
   if(slot===2){for(let i=0;i<5+phase;i++)plans.push(fan(boss,a,9+phase*2,Math.PI*5/3,340,10,1,i*.26));recovery=.95;}
  }
+ if(combined){plans=combined.plans;recovery=combined.recovery;}
  for(const plan of plans){
+  if(plan.kind==='ring'&&!plan.gapWidth){plan.gapAngle=toward(plan,{x:800,y:600});plan.gapWidth=Math.PI*.62;}
   plan.damage*=BOSS_DAMAGE_SCALE;
   if(plan.spawnDamage)plan.spawnDamage*=BOSS_DAMAGE_SCALE;
   if(plan.effect==='projectile')plan.speed!*=speedScale;
   // Keep the traveled charge length inside the painted lane when speeding it up.
   if(plan.effect==='charge'){plan.speed!*=speedScale;plan.active/=speedScale;}
-  if(plan.grow)plan.grow*=speedScale;
+  if(plan.grow&&!combined)plan.grow*=speedScale;
  }
- recovery=Math.max(.4,recovery*.8/(1+.1*(phase-1)+.08*difficultyLevel+(enraged?.2:0)));
+ if(!combined)recovery=Math.max(.4,recovery*.8/(1+.1*(phase-1)+.08*difficultyLevel+(enraged?.2:0)));
  // Lingering fire and conveyors continue after the cast; they must not stall the next turn.
- const duration=plans.reduce((max,p)=>Math.max(max,(p.delay||0)+p.warning+(p.effect==='fire'||p.effect==='conveyor'?Math.min(.15,p.active):p.active)),0);
- return {plans,duration,recovery};
+ const duration=plans.reduce((max,p)=>Math.max(max,(p.delay||0)+p.warning+(!combined&&(p.effect==='fire'||p.effect==='conveyor')?Math.min(.15,p.active):p.active)),0);
+ return {plans,duration,recovery,...(combined?{combo:combined.combo}:{})};
 }
 export function bossPhase(id:string,fraction:number):number {
  if(id==='B1A'||id==='B2B')return fraction<=.5?2:1;

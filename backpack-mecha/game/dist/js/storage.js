@@ -1,7 +1,7 @@
-import { normalizeGrowth, chassisStats } from "./progression.js?v=430d749de471";
-import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=430d749de471";
-import { createBattle } from "./combat.js?v=430d749de471";
-import { sanitizeJournal } from "./journal.js?v=430d749de471";
+import { normalizeGrowth, chassisStats } from "./progression.js?v=46fa266b192c";
+import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=46fa266b192c";
+import { createBattle } from "./combat.js?v=46fa266b192c";
+import { sanitizeJournal } from "./journal.js?v=46fa266b192c";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -20,6 +20,8 @@ function validBattle(raw, run) {
         const numeric = (v, fields) => record(v) && fields.every(k => finite(v[k]));
         // Missing skill fields are dev.10 saves; malformed new fields must not enter combat.
         const state = raw;
+        if (b.bossIntent && (!record(b.bossIntent) || !['name', 'en', 'hint', 'hintEn'].every(k => typeof b.bossIntent[k] === 'string') || !finite(b.bossIntent.recoverAt) || !finite(b.bossIntent.until)))
+            return false;
         if (['baseDamage', 'baseAttackSpeed'].some(k => !finite(state[k]) || Number(state[k]) < 1 || Number(state[k]) > 3))
             return false;
         if (['skillCooldown', 'skillTime'].some(k => { const n = b.player[k]; return n !== undefined && (!finite(n) || n < 0 || n > 24); }) ||

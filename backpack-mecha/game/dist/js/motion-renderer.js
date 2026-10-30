@@ -1,6 +1,6 @@
-import { roundRect } from "./canvas.js?v=430d749de471";
-import { motionLabel, zoneRole } from "./motion.js?v=430d749de471";
-import { smoothStep } from "./visual-motion.js?v=430d749de471";
+import { roundRect } from "./canvas.js?v=46fa266b192c";
+import { motionLabel, zoneRole } from "./motion.js?v=46fa266b192c";
+import { smoothStep } from "./visual-motion.js?v=46fa266b192c";
 const TAU = Math.PI * 2;
 const special = (e) => e.kind === 'boss' || ['E05', 'E12'].includes(e.id);
 const labelWidths = new Map();
@@ -460,8 +460,17 @@ export function zonePath(c, z) {
     if (z.kind === 'circle')
         c.arc(0, 0, z.radius, 0, TAU);
     else if (z.kind === 'ring') {
-        c.arc(0, 0, z.radius, 0, TAU);
-        c.arc(0, 0, z.innerRadius ?? Math.max(0, z.radius - 22), 0, TAU, true);
+        const inner = z.innerRadius ?? Math.max(0, z.radius - 22);
+        if (z.gapWidth) {
+            const gap = (z.gapAngle ?? 0) - (z.angle ?? 0), start = gap + z.gapWidth / 2, end = gap + TAU - z.gapWidth / 2;
+            c.arc(0, 0, z.radius, start, end);
+            c.arc(0, 0, inner, end, start, true);
+            c.closePath();
+        }
+        else {
+            c.arc(0, 0, z.radius, 0, TAU);
+            c.arc(0, 0, inner, 0, TAU, true);
+        }
     }
     else if (z.kind === 'cone') {
         const spread = z.width ?? Math.PI / 2, inner = z.innerRadius ?? 0;
@@ -479,6 +488,27 @@ export function zonePath(c, z) {
 export function zoneSymbols(c, z, scale) {
     const role = zoneRole(z);
     c.lineWidth = 2;
+    if (z.kind === 'ring' && z.gapWidth) {
+        const a = (z.gapAngle ?? 0) - z.angle;
+        c.strokeStyle = '#9fe8cc';
+        arrow(c, Math.cos(a) * (z.radius + 12), Math.sin(a) * (z.radius + 12), a, 22);
+    }
+    if (z.beat) {
+        const x = z.kind === 'line' || z.kind === 'rect' ? (z.w ?? z.radius) / 2 : 0;
+        c.save();
+        c.translate(x, 0);
+        c.rotate(-z.angle);
+        c.font = `bold ${Math.max(16, 13 / scale)}px sans-serif`;
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillStyle = '#172832';
+        c.beginPath();
+        c.arc(0, 0, 13 / scale, 0, TAU);
+        c.fill();
+        c.fillStyle = z.beat === 1 ? '#ffe3c9' : '#ffe19a';
+        c.fillText(z.beat === 1 ? '①' : '②', 0, 0);
+        c.restore();
+    }
     if (role === 'force') {
         c.strokeStyle = '#a8dce6';
         if (z.plan?.effect === 'pull')
@@ -505,7 +535,7 @@ export function zoneSymbols(c, z, scale) {
     }
     if (!z.active && role === 'damage') {
         // Keep the exclamation at the origin, outside an annulus's intentionally empty center.
-        if ((z.innerRadius ?? 0) > 0)
+        if ((z.innerRadius ?? 0) > 0 || z.beat)
             return;
         c.fillStyle = '#ffe5c7';
         c.font = `bold ${Math.max(12, 10 / scale)}px sans-serif`;

@@ -1,3 +1,7 @@
+import {contains} from './hazards.ts';
+export {contains} from './hazards.ts';
+import {bossAttackSlot} from './boss-patterns.ts';
+import {guardBossTurn} from './boss-safety.ts';
 import {moduleValue,TIER_EFFECTS,damageScale} from './rarity.ts';
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {activeSupports} from './economy.ts';
@@ -118,7 +122,7 @@ function follow(w:BattleState,e:EnemyState,target:Point,speed:number,dt:number):
  e.angle=a;if(move(w,e,Math.cos(a)*step,Math.sin(a)*step))e.pathAt=0;
 }
 function addZone(w:BattleState,plan:AttackPlan,sourceId?:number,source='hazard',spawn?:SpawnSpec):ZoneState {
- const z:ZoneState={id:w.nextId++,x:plan.x,y:plan.y,kind:plan.kind,radius:plan.radius,w:plan.w,h:plan.h,angle:plan.angle,width:plan.width,innerRadius:plan.innerRadius,
+ const z:ZoneState={id:w.nextId++,x:plan.x,y:plan.y,kind:plan.kind,radius:plan.radius,w:plan.w,h:plan.h,angle:plan.angle,width:plan.width,innerRadius:plan.innerRadius,gapAngle:plan.gapAngle,gapWidth:plan.gapWidth,beat:plan.beat,
   remaining:plan.warning,duration:plan.warning,active:false,color:'#F05B5B',type:'warning',damage:plan.damage,plan:{...plan},sourceId,source,delay:plan.delay||0,age:0,pulse:0,triggered:false,originalAngle:plan.angle,...(spawn?{spawn}:{} )};
  if(plan.sweep){z.kind='cone';z.radius=plan.kind==='line'?plan.w||plan.radius:plan.radius;z.width=Math.min(Math.PI*2,Math.abs(plan.sweep)+(plan.kind==='cone'?plan.width||0:.08));z.angle=plan.angle+plan.sweep/2;}
  w.zones.push(z);event(w,'warning',z,{source});return z;
@@ -349,19 +353,12 @@ function tickBullets(w:BattleState,dt:number):void {
  w.bullets=w.bullets.filter(b=>b.life>0);
 }
 
-export function contains(z:Pick<ZoneView,'x'|'y'|'kind'|'radius'|'w'|'h'|'angle'|'width'|'innerRadius'>,p:Point,radius=0):boolean {
- const dx=p.x-z.x,dy=p.y-z.y,d=Math.hypot(dx,dy);
- if(z.kind==='circle')return d<=z.radius+radius;
- if(z.kind==='ring')return d<=z.radius+radius&&d>=Math.max(0,(z.innerRadius??z.radius-22)-radius);
- if(z.kind==='cone')return d<=z.radius+radius&&d>=Math.max(0,(z.innerRadius||0)-radius)&&Math.abs(angleDiff(Math.atan2(dy,dx),z.angle))<=(z.width||Math.PI/2)/2+Math.asin(Math.min(1,radius/Math.max(d,1)));
- const along=dx*Math.cos(z.angle)+dy*Math.sin(z.angle),across=-dx*Math.sin(z.angle)+dy*Math.cos(z.angle);
- return along>=-radius&&along<=(z.w||z.radius)+radius&&Math.abs(across)<=(z.h||z.width||20)/2+radius;
-}
+
 function difficultyDamage(w:BattleState):number{return w.difficulty>=4?1.15:w.difficulty>=2?1.1:1;}
 function triggerZone(w:BattleState,z:ZoneState):void {
  const plan=z.plan,source=w.enemies.find(e=>e.eid===z.sourceId);
  if(z.spawn){spawnEnemy(w,z.spawn);z.remaining=0;return;}
- event(w,'enemy-attack',z,{source:z.source,targetId:z.sourceId,angle:z.angle,radius:z.radius,cue:plan.effect??z.kind,shape:plan.kind,w:plan.w,h:plan.h,width:plan.width,innerRadius:plan.innerRadius});
+ event(w,'enemy-attack',z,{source:z.source,targetId:z.sourceId,angle:z.angle,radius:z.radius,cue:plan.effect??z.kind,shape:plan.kind,w:plan.w,h:plan.h,width:plan.width,innerRadius:plan.innerRadius,gapAngle:plan.gapAngle,gapWidth:plan.gapWidth});
  if(plan.effect==='spawn'){
   const existing=w.enemies.filter(e=>alive(e)&&e.id===plan.enemy&&e.summon).length,count=Math.min(plan.count||1,(plan.limit||8)-existing,CONFIG.maxEnemies-w.enemies.filter(alive).length);
   for(let i=0;i<count;i++){const a=(i/Math.max(1,count))*Math.PI*2,p={x:clamp(z.x+Math.cos(a)*120,40,w.width-40),y:clamp(z.y+Math.sin(a)*120,40,w.height-40)};
@@ -379,7 +376,7 @@ function tickZones(w:BattleState,dt:number):void {
  for(const z of w.zones){if(w.status!=='playing')break;
   if(z.type==='friendly'){z.remaining-=dt;continue;}
   if(z.delay>0){z.delay-=dt;if(z.delay<=0&&z.plan.effect==='charge'){
-    const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){z.x=e.x;z.y=e.y;z.angle=angleTo(e,w.player);z.originalAngle=z.angle;z.plan.x=z.x;z.plan.y=z.y;z.plan.angle=z.angle;}}
+    const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){z.x=e.x;z.y=e.y;z.angle=z.plan.lockTarget?z.plan.angle:angleTo(e,w.player);z.originalAngle=z.angle;z.plan.x=z.x;z.plan.y=z.y;z.plan.angle=z.angle;}}
    continue;}
   if(z.sourceId!==undefined&&!w.enemies.some(e=>e.eid===z.sourceId&&alive(e))&&z.plan.effect!=='fire'){z.remaining=0;continue;}
   z.remaining-=dt;
@@ -502,10 +499,13 @@ function tickBoss(w:BattleState,dt:number):void {
  if(w.bossClock<=0){
   const phase=bossPhase(w.bossId,root.hp/root.maxHp);
   if(phase!==root.phase){event(w,'phase',root,{amount:phase,source:root.id});for(const b of bodies){b.phase=phase;if(b.id==='B3B'&&b.offsetX)b.exposed=phase>=2;}}
-  const turn=bossTurn(w.bossId,phase,w.bossTurn++,w.bossCenter||root,w.player,w.difficulty,w.bossEnraged);
+  const sequence=Math.floor(w.bossTurn/6)*6+bossAttackSlot(w.bossTurn),proposed=bossTurn(w.bossId,phase,sequence,w.bossCenter||root,w.player,w.difficulty,w.bossEnraged,w.playerVelocity);
+  const turn=proposed.combo?guardBossTurn(w,proposed):proposed;
+  if(!turn){w.bossClock=.6;return;}w.bossTurn++;
+  if(turn.combo){const [name,en,hint,hintEn]=turn.combo;w.bossIntent={name,en,hint,hintEn,recoverAt:w.time+turn.duration,until:w.time+turn.duration+turn.recovery};}else delete w.bossIntent;
   for(const plan of turn.plans)addZone(w,{...plan,damage:plan.damage*(w.difficulty>=4?1.15:w.difficulty>=2?1.1:1)},root.eid,w.bossId);
   w.bossClock=turn.duration+turn.recovery;
- }else if(!w.zones.some(z=>z.sourceId===root.eid&&z.plan.effect!=='fire'&&z.plan.effect!=='conveyor')&&(!root.charge||root.charge.until<=w.time)){
+ }else if(!(w.bossIntent&&w.time<w.bossIntent.until)&&!w.zones.some(z=>z.sourceId===root.eid&&z.plan.effect!=='fire'&&z.plan.effect!=='conveyor')&&(!root.charge||root.charge.until<=w.time)){
   const center=w.bossCenter||root,a=angleTo(center,w.player),d=distance(center,w.player),speed=bossPursuitSpeed(root.speed,root.phase,w.difficulty,w.bossEnraged)*(1-enemySlow(w,root));
   if(d>240){center.x=clamp(center.x+Math.cos(a)*speed*dt,190,w.width-190);center.y=clamp(center.y+Math.sin(a)*speed*dt,150,w.height-150);}
   for(const e of bodies){e.x=center.x+e.offsetX;e.y=center.y;e.angle=a;}

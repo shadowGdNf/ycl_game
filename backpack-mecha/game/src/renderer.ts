@@ -314,20 +314,24 @@ export class Renderer {
     }
   }
   private zone(z:ZoneView,time:number,warning:boolean):void{
-    if(((z as ZoneView&{delay?:number}).delay??0)>0)return;
+    const pending=(z.delay??0)>0;if(pending&&!z.beat)return;
     const c=this.ctx,progress=clamp(1-z.remaining/Math.max(.001,z.duration),0,1);
     const role=zoneRole(z),damage=role==='damage',charge=z.plan?.effect==='charge';
     c.save();c.translate(z.x,z.y);c.rotate(z.angle);zonePath(c,z);
-    const color=damage?(z.active?'#ffd1aa':'#f88478'):role==='force'?'#83c6d8':'#b1cea0';
-    c.fillStyle=warning?color:z.color;c.globalAlpha=warning?(charge&&z.active?.06:z.active?.2:.07+progress*.12):.12;c.fill('evenodd');c.globalAlpha=1;
+    const color=damage?(z.active?'#ffd1aa':z.beat===2?'#efc45c':'#f88478'):role==='force'?'#83c6d8':'#b1cea0';
+    c.fillStyle=warning?color:z.color;c.globalAlpha=pending?.04:warning?(charge&&z.active?.06:z.active?.2:.07+progress*.12):.12;c.fill('evenodd');c.globalAlpha=1;
     if(warning)drawHazardEnergy(c,z,time,this.options.reducedMotion);
     zonePath(c,z);
     c.strokeStyle=warning?color:z.color;c.lineWidth=warning?(z.active&&!charge?3:2):1.5;
-    if(warning&&(!z.active||!damage||charge))c.setLineDash(damage?[10,6]:[3,7]);c.stroke();c.setLineDash([]);
+    if(warning&&(!z.active||!damage||charge))c.setLineDash(pending?[3,8]:damage?[10,6]:[3,7]);c.stroke();c.setLineDash([]);
     if(warning&&!z.active&&(z.innerRadius??0)===0){
       c.strokeStyle=color;c.lineWidth=2;c.beginPath();c.arc(0,0,18,-Math.PI/2,-Math.PI/2+progress*TAU);c.stroke();
     }
     if(warning)zoneSymbols(c,z,this.scale);
+    if(warning&&!z.active&&z.kind==='ring'&&z.plan?.grow){
+      const radius=z.radius+z.plan.grow*(z.plan.active??0);
+      zonePath(c,{...z,radius,innerRadius:Math.max(0,radius-3)});c.globalAlpha=.4;c.strokeStyle=color;c.lineWidth=1;c.setLineDash([4,10]);c.stroke();c.setLineDash([]);c.globalAlpha=1;
+    }
     if(warning&&damage&&this.options.colorAssist&&(z.innerRadius??0)===0){c.strokeStyle='#ffe8c5';c.lineWidth=1;c.beginPath();c.moveTo(-5,-5);c.lineTo(5,5);c.moveTo(5,-5);c.lineTo(-5,5);c.stroke();}
     c.restore();
   }

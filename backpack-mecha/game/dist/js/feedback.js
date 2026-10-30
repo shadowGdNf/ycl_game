@@ -1,5 +1,5 @@
-import { roundRect } from "./canvas.js?v=430d749de471";
-import { zonePath } from "./motion-renderer.js?v=430d749de471";
+import { roundRect } from "./canvas.js?v=46fa266b192c";
+import { zonePath } from "./motion-renderer.js?v=46fa266b192c";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -57,7 +57,7 @@ function damageText(c, value, k, scale, color, critical, prefix = '') {
  * Keep the impact within the same path as the warning, including safe inner arcs. */
 function enemyAttack(c, e, k, reduced) {
     const alpha = 1 - k, kind = e.shape ?? (['rect', 'cone', 'line', 'ring'].includes(e.cue ?? '') ? e.cue : 'circle');
-    const shape = { kind, radius: e.radius ?? 60, w: e.w, h: e.h, width: e.width, innerRadius: e.innerRadius };
+    const shape = { kind, radius: e.radius ?? 60, w: e.w, h: e.h, width: e.width, innerRadius: e.innerRadius, angle: e.angle, gapAngle: e.gapAngle, gapWidth: e.gapWidth };
     c.rotate(e.angle ?? 0);
     if (e.cue === 'projectile') {
         c.strokeStyle = '#fff0b9';
@@ -480,6 +480,8 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
 export function drawHazardEnergy(c, z, time, reduced) {
     const effect = z.plan?.effect, progress = clamp(1 - z.remaining / Math.max(.001, z.duration));
     c.save();
+    zonePath(c, z);
+    c.clip('evenodd');
     c.lineCap = 'round';
     if (effect === 'pull') {
         c.strokeStyle = '#9fd5df';

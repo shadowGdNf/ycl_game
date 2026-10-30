@@ -207,10 +207,15 @@ export function enemyMotionLabel(c:Context,e:EnemyView,m:EnemyMotion,size:number
 }
 
 /** Same inner/outer geometry as combat.contains, including the crane's safe inner arc. */
-export function zonePath(c:Context,z:Pick<ZoneView,'kind'|'radius'|'innerRadius'|'width'|'w'|'h'>):void {
+export function zonePath(c:Context,z:Pick<ZoneView,'kind'|'radius'|'innerRadius'|'width'|'w'|'h'|'gapAngle'|'gapWidth'>&{angle?:number}):void {
  c.beginPath();
  if(z.kind==='circle')c.arc(0,0,z.radius,0,TAU);
- else if(z.kind==='ring'){c.arc(0,0,z.radius,0,TAU);c.arc(0,0,z.innerRadius??Math.max(0,z.radius-22),0,TAU,true);}
+ else if(z.kind==='ring'){
+  const inner=z.innerRadius??Math.max(0,z.radius-22);
+  if(z.gapWidth){const gap=(z.gapAngle??0)-(z.angle??0),start=gap+z.gapWidth/2,end=gap+TAU-z.gapWidth/2;
+   c.arc(0,0,z.radius,start,end);c.arc(0,0,inner,end,start,true);c.closePath();
+  }else {c.arc(0,0,z.radius,0,TAU);c.arc(0,0,inner,0,TAU,true);}
+ }
  else if(z.kind==='cone'){
   const spread=z.width??Math.PI/2,inner=z.innerRadius??0;
   c.moveTo(Math.cos(-spread/2)*inner,Math.sin(-spread/2)*inner);
@@ -222,6 +227,15 @@ export function zonePath(c:Context,z:Pick<ZoneView,'kind'|'radius'|'innerRadius'
 
 export function zoneSymbols(c:Context,z:ZoneView,scale:number):void {
  const role=zoneRole(z);c.lineWidth=2;
+ if(z.kind==='ring'&&z.gapWidth){
+  const a=(z.gapAngle??0)-z.angle;c.strokeStyle='#9fe8cc';
+  arrow(c,Math.cos(a)*(z.radius+12),Math.sin(a)*(z.radius+12),a,22);
+ }
+ if(z.beat){
+  const x=z.kind==='line'||z.kind==='rect'?(z.w??z.radius)/2:0;
+  c.save();c.translate(x,0);c.rotate(-z.angle);c.font=`bold ${Math.max(16,13/scale)}px sans-serif`;c.textAlign='center';c.textBaseline='middle';
+  c.fillStyle='#172832';c.beginPath();c.arc(0,0,13/scale,0,TAU);c.fill();c.fillStyle=z.beat===1?'#ffe3c9':'#ffe19a';c.fillText(z.beat===1?'①':'②',0,0);c.restore();
+ }
  if(role==='force'){
   c.strokeStyle='#a8dce6';
   if(z.plan?.effect==='pull')for(let i=0;i<4;i++){const a=i*TAU/4,r=z.radius*.65;arrow(c,Math.cos(a)*r,Math.sin(a)*r,a+Math.PI,24);}
@@ -233,7 +247,7 @@ export function zoneSymbols(c:Context,z:ZoneView,scale:number):void {
  }
  if(!z.active&&role==='damage'){
   // Keep the exclamation at the origin, outside an annulus's intentionally empty center.
-  if((z.innerRadius??0)>0)return;
+  if((z.innerRadius??0)>0||z.beat)return;
   c.fillStyle='#ffe5c7';c.font=`bold ${Math.max(12,10/scale)}px sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillText('!',0,0);
  }
 }

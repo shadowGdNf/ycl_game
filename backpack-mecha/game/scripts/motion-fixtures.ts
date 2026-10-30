@@ -21,15 +21,18 @@ export function makeFixtures():Fixture[] {
  for(const id of ['E05','E12',...BOSSES.map(b=>b.id)]){
   const phases=id.startsWith('E')?1:['B1A','B1B','B2B'].includes(id)?2:3;
   for(let phase=1;phase<=phases;phase++){
-   const w=fixtureWorld(id,phase),seen=new Set<string>();
-   for(let frame=0;frame<60*28&&w.status==='playing';frame++){
-    stepBattle(w,idle);const e=w.enemies.find(e=>e.id===id&&e.hp>0),m=e?motionFrame(w).get(e.eid):undefined;
+   const seen=new Set<string>();
+   for(let slot=0;slot<(id.startsWith('B')?3:1);slot++){
+   const w=fixtureWorld(id,phase);w.bossTurn=slot*2;w.bossClock=0;
+   for(let frame=0;frame<60*10&&w.status==='playing';frame++){
+    stepBattle(w,idle);if(id.startsWith('B'))w.bossClock=1000;const e=w.enemies.find(e=>e.id===id&&e.hp>0),m=e?motionFrame(w).get(e.eid):undefined;
     if(m&&(m.stage==='windup'&&m.progress>=.45||m.stage==='active'&&m.progress>=.1||m.stage==='recover')){
      const key=`${id}-p${phase}-${m.kind}-${m.stage}`;
      if(!seen.has(key)){seen.add(key);capture(key,`${id} · P${phase} · ${m.kind} · ${m.stage}`,w);}
     }
     if(id==='E05'&&w.events.some(e=>e.type==='enemy-explosion')&&!seen.has('explosion')){seen.add('explosion');capture(`${id}-explosion`,`${id} · 爆炸与消失`,w);}
     if(id==='E05'&&!e)break;
+   }
    }
   }
  }

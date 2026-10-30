@@ -22,7 +22,7 @@ async function choreography(root:string){
   return {boss:boss.id,phase,difficulty,turnsPerMinute:round(360/cycle),shotsPerMinute:round(shotCount*60/cycle),meanShotSpeed:shots.length?round(shots.reduce((n,p)=>n+p.speed*p.count,0)/shotCount):0,chargeSpeed:round(plans.find(p=>p.effect==='charge')?.speed??0),pursuitSpeed:round(bossPursuitSpeed?bossPursuitSpeed(boss.speed,phase,difficulty):boss.speed*(boss.id==='B2A'&&phase===3?1.15:1)),minWarning:Math.min(...plans.map(p=>p.warning)),maxShotCountPerTurn:Math.max(...turns.map(t=>t.plans.filter(p=>p.effect==='projectile').reduce((n,p)=>n+p.count,0)))};
  })));
 }
-const sourceNames=['combat','encounters','rarity','training','content','version'];
+const sourceNames=['combat','encounters','boss-patterns','boss-safety','hazards','rarity','training','content','version'];
 const hashes=()=>Object.fromEntries(sourceNames.map(n=>[n,createHash('sha256').update(readFileSync(new URL(`../src/${n}.ts`,import.meta.url))).digest('hex')]));
 const before=hashes(),current=await choreography('.'),previous=baseline?await choreography(baseline):undefined;
 const runtime=BOSSES.map(boss=>{

@@ -1,5 +1,6 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=430d749de471";
-import { nextRandom } from "./random.js?v=430d749de471";
+import { comboTurn } from "./boss-patterns.js?v=46fa266b192c";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=46fa266b192c";
+import { nextRandom } from "./random.js?v=46fa266b192c";
 export const ARENA = { width: 1600, height: 1200 };
 export const BOSS_DAMAGE_SCALE = 1.5;
 const layouts = [
@@ -194,11 +195,12 @@ export function bossPursuitSpeed(base, phase, difficulty = 0, enraged = false) {
     return base * (1.6 + .08 * Math.max(0, phase - 1) + .04 * Math.max(0, Math.min(4, difficulty)) + (enraged ? .1 : 0));
 }
 /** Complete boss choreography. All damage is resolved by combat.ts, never here. */
-export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged = false) {
+export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged = false, velocity = { x: 0, y: 0 }) {
     phase = Math.max(1, Math.min(['B1A', 'B1B', 'B2B'].includes(id) ? 2 : 3, phase));
     const difficultyLevel = Math.max(0, Math.min(4, difficulty)), a = toward(boss, player), slot = index % 3;
     const speedScale = 1.12 + .08 * (phase - 1) + .05 * difficultyLevel + (enraged ? .12 : 0);
     const fan = (origin, angle, count, spread, speed, damage, warning = .85, delay = 0) => cone(origin, angle, 600, spread, warning, damage, { active: .08, effect: 'projectile', count, spread, speed, delay, projectileRadius: 5 });
+    const combined = comboTurn(id, phase, index, boss, player, velocity);
     let plans = [], recovery = .75;
     if (id === 'B1A') {
         if (slot === 0) {
@@ -291,7 +293,15 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
             recovery = .95;
         }
     }
+    if (combined) {
+        plans = combined.plans;
+        recovery = combined.recovery;
+    }
     for (const plan of plans) {
+        if (plan.kind === 'ring' && !plan.gapWidth) {
+            plan.gapAngle = toward(plan, { x: 800, y: 600 });
+            plan.gapWidth = Math.PI * .62;
+        }
         plan.damage *= BOSS_DAMAGE_SCALE;
         if (plan.spawnDamage)
             plan.spawnDamage *= BOSS_DAMAGE_SCALE;
@@ -302,13 +312,14 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
             plan.speed *= speedScale;
             plan.active /= speedScale;
         }
-        if (plan.grow)
+        if (plan.grow && !combined)
             plan.grow *= speedScale;
     }
-    recovery = Math.max(.4, recovery * .8 / (1 + .1 * (phase - 1) + .08 * difficultyLevel + (enraged ? .2 : 0)));
+    if (!combined)
+        recovery = Math.max(.4, recovery * .8 / (1 + .1 * (phase - 1) + .08 * difficultyLevel + (enraged ? .2 : 0)));
     // Lingering fire and conveyors continue after the cast; they must not stall the next turn.
-    const duration = plans.reduce((max, p) => Math.max(max, (p.delay || 0) + p.warning + (p.effect === 'fire' || p.effect === 'conveyor' ? Math.min(.15, p.active) : p.active)), 0);
-    return { plans, duration, recovery };
+    const duration = plans.reduce((max, p) => Math.max(max, (p.delay || 0) + p.warning + (!combined && (p.effect === 'fire' || p.effect === 'conveyor') ? Math.min(.15, p.active) : p.active)), 0);
+    return { plans, duration, recovery, ...(combined ? { combo: combined.combo } : {}) };
 }
 export function bossPhase(id, fraction) {
     if (id === 'B1A' || id === 'B2B')

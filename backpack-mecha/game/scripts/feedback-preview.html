@@ -21,9 +21,9 @@ function reset(){
  w=createBattle(run);w.obstacles=[];w.encounter.budget=0;w.encounter.nextSpawn=10000;
  // Reset cached effects at time zero before jumping a release fixture ahead.
  renderer.draw(w,options);
- if(pressure){w.player.invulnerable=1000;w.enemies.forEach(e=>e.hp=e.maxHp*.2);w.bossClock=0;w.bossTurn=boss==='B2B'?1:2;w.player.y=500;}
- if(id==='sweep'){w.bossClock=0;w.bossTurn=1;w.player.x=1000;w.player.y=300;w.player.shield=5;w.lastDamage=0;}
- if(release){w.bossClock=0;w.bossTurn=release[0];w.player.x=release[2];w.player.y=release[3];w.player.invulnerable=1000;stepBattle(w,{x:0,y:0,dash:false,overload:false},release[1]);}
+ if(pressure){w.player.invulnerable=1000;w.enemies.forEach(e=>e.hp=e.maxHp*.2);w.bossClock=0;w.bossTurn=boss==='B2B'?2:4;w.player.y=500;}
+ if(id==='sweep'){w.bossClock=0;w.bossTurn=2;w.player.x=1000;w.player.y=300;w.player.shield=5;w.lastDamage=0;}
+ if(release){w.bossClock=0;w.bossTurn=release[0]*2;w.player.x=release[2];w.player.y=release[3];w.player.invulnerable=1000;stepBattle(w,{x:0,y:0,dash:false,overload:false},release[1]);}
  if(id==='dense')w.player.hp=w.player.maxHp=10000; // Sustained render fixture; never a natural run.
  if(id==='scrap'){w.drops=[{id:9001,x:650,y:590,value:.8},{id:9002,x:940,y:700,value:2.5},{id:9003,x:770,y:820,value:5}];w.events.push({id:9004,at:0,type:'pickup',x:735,y:640,to:{x:800,y:650},amount:2.5});w.time=.35;}
  if(id==='pursuit'){w.player.invulnerable=1000;for(const [i,id] of ['E07','E09','E10','E11','E06','E12'].entries()){const a=i*Math.PI/3;spawnEnemy(w,{id,x:800+Math.cos(a)*250,y:650+Math.sin(a)*250,elite:false,affix:0,reward:false,cost:0});}}

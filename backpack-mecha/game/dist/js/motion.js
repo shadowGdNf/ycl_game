@@ -94,7 +94,7 @@ export function zoneRole(z) {
 }
 /** A charge rectangle predicts travel; after impact there is no remaining charge. */
 export function zoneVisible(view, z) {
-    if ((z.delay ?? 0) > 0 || z.remaining <= 0)
+    if ((z.delay ?? 0) > 0 && !z.beat || z.remaining <= 0)
         return false;
     if (z.plan?.effect !== 'charge' || !z.active)
         return true;

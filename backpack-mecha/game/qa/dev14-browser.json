@@ -1,0 +1,110 @@
+{
+  "browser": "156.0.8078.74",
+  "checks": [
+    "B1A: live combo title and two-beat telegraphs",
+    "B1B: live combo title and two-beat telegraphs",
+    "B2A: live combo title and two-beat telegraphs",
+    "B2B: live combo title and two-beat telegraphs",
+    "B3A: live combo title and two-beat telegraphs",
+    "B3B: live combo title and two-beat telegraphs",
+    "growing ring gap and mortar follow-ups",
+    "recovery prompt in live HUD",
+    "390x844 reduced-motion touch HUD fits",
+    "touch pause remains available",
+    "844x390 English combo HUD and reduced-motion telegraphs",
+    "320px narrow HUD fits"
+  ],
+  "screenshots": [
+    "qa/dev14-B1A.png",
+    "qa/dev14-B1B.png",
+    "qa/dev14-B2A.png",
+    "qa/dev14-B2B.png",
+    "qa/dev14-B3A.png",
+    "qa/dev14-B3B.png",
+    "qa/dev14-ring-active.png",
+    "qa/dev14-counter-window.png",
+    "qa/dev14-mobile-ring.png",
+    "qa/dev14-mobile-landscape-en.png",
+    "qa/dev14-mobile-narrow.png"
+  ],
+  "timings": [
+    {
+      "boss": "B1A",
+      "turn": 1,
+      "frames": 21,
+      "elapsed": 2.100000023841858
+    },
+    {
+      "boss": "B1B",
+      "turn": 3,
+      "frames": 21,
+      "elapsed": 0.699999988079071
+    },
+    {
+      "boss": "B2A",
+      "turn": 3,
+      "frames": 21,
+      "elapsed": 0.8999999761581421
+    },
+    {
+      "boss": "B2B",
+      "turn": 5,
+      "frames": 21,
+      "elapsed": 1.2000000476837158
+    },
+    {
+      "boss": "B3A",
+      "turn": 3,
+      "frames": 21,
+      "elapsed": 0.699999988079071
+    },
+    {
+      "boss": "B3B",
+      "turn": 1,
+      "frames": 21,
+      "elapsed": 0.6000000238418579
+    },
+    {
+      "boss": "B3A",
+      "turn": 3,
+      "frames": 108,
+      "elapsed": 1.2000000476837158
+    },
+    {
+      "boss": "B2B",
+      "turn": 1,
+      "frames": 132,
+      "elapsed": 0.699999988079071
+    },
+    {
+      "boss": "B3A",
+      "turn": 3,
+      "frames": 36,
+      "elapsed": 2.5
+    },
+    {
+      "boss": "B2B",
+      "turn": 5,
+      "frames": 24,
+      "elapsed": 1.800000011920929
+    },
+    {
+      "boss": "B3B",
+      "turn": 1,
+      "frames": 24,
+      "elapsed": 0.5
+    }
+  ],
+  "layout": {
+    "left": 90.5,
+    "right": 246.5,
+    "bottom": 195.5,
+    "width": 390,
+    "scroll": 390
+  },
+  "errors": [],
+  "limits": [
+    "Explicitly invulnerable fixtures for visual QA only.",
+    "Isolated Chrome desktop and emulated touch viewports; not physical-device validation."
+  ]
+}

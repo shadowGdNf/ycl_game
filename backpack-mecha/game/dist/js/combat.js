@@ -1,10 +1,14 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=430d749de471";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=430d749de471";
-import { activeSupports } from "./economy.js?v=430d749de471";
-import { scrapPerCost, chassisStats } from "./progression.js?v=430d749de471";
-import { chassisSkill } from "./skills.js?v=430d749de471";
-import { nextRandom } from "./random.js?v=430d749de471";
-import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=430d749de471";
+import { contains } from "./hazards.js?v=46fa266b192c";
+export { contains } from "./hazards.js?v=46fa266b192c";
+import { bossAttackSlot } from "./boss-patterns.js?v=46fa266b192c";
+import { guardBossTurn } from "./boss-safety.js?v=46fa266b192c";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=46fa266b192c";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=46fa266b192c";
+import { activeSupports } from "./economy.js?v=46fa266b192c";
+import { scrapPerCost, chassisStats } from "./progression.js?v=46fa266b192c";
+import { chassisSkill } from "./skills.js?v=46fa266b192c";
+import { nextRandom } from "./random.js?v=46fa266b192c";
+import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=46fa266b192c";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -136,7 +140,7 @@ function follow(w, e, target, speed, dt) {
         e.pathAt = 0;
 }
 function addZone(w, plan, sourceId, source = 'hazard', spawn) {
-    const z = { id: w.nextId++, x: plan.x, y: plan.y, kind: plan.kind, radius: plan.radius, w: plan.w, h: plan.h, angle: plan.angle, width: plan.width, innerRadius: plan.innerRadius,
+    const z = { id: w.nextId++, x: plan.x, y: plan.y, kind: plan.kind, radius: plan.radius, w: plan.w, h: plan.h, angle: plan.angle, width: plan.width, innerRadius: plan.innerRadius, gapAngle: plan.gapAngle, gapWidth: plan.gapWidth, beat: plan.beat,
         remaining: plan.warning, duration: plan.warning, active: false, color: '#F05B5B', type: 'warning', damage: plan.damage, plan: { ...plan }, sourceId, source, delay: plan.delay || 0, age: 0, pulse: 0, triggered: false, originalAngle: plan.angle, ...(spawn ? { spawn } : {}) };
     if (plan.sweep) {
         z.kind = 'cone';
@@ -610,17 +614,6 @@ function tickBullets(w, dt) {
     }
     w.bullets = w.bullets.filter(b => b.life > 0);
 }
-export function contains(z, p, radius = 0) {
-    const dx = p.x - z.x, dy = p.y - z.y, d = Math.hypot(dx, dy);
-    if (z.kind === 'circle')
-        return d <= z.radius + radius;
-    if (z.kind === 'ring')
-        return d <= z.radius + radius && d >= Math.max(0, (z.innerRadius ?? z.radius - 22) - radius);
-    if (z.kind === 'cone')
-        return d <= z.radius + radius && d >= Math.max(0, (z.innerRadius || 0) - radius) && Math.abs(angleDiff(Math.atan2(dy, dx), z.angle)) <= (z.width || Math.PI / 2) / 2 + Math.asin(Math.min(1, radius / Math.max(d, 1)));
-    const along = dx * Math.cos(z.angle) + dy * Math.sin(z.angle), across = -dx * Math.sin(z.angle) + dy * Math.cos(z.angle);
-    return along >= -radius && along <= (z.w || z.radius) + radius && Math.abs(across) <= (z.h || z.width || 20) / 2 + radius;
-}
 function difficultyDamage(w) { return w.difficulty >= 4 ? 1.15 : w.difficulty >= 2 ? 1.1 : 1; }
 function triggerZone(w, z) {
     const plan = z.plan, source = w.enemies.find(e => e.eid === z.sourceId);
@@ -629,7 +622,7 @@ function triggerZone(w, z) {
         z.remaining = 0;
         return;
     }
-    event(w, 'enemy-attack', z, { source: z.source, targetId: z.sourceId, angle: z.angle, radius: z.radius, cue: plan.effect ?? z.kind, shape: plan.kind, w: plan.w, h: plan.h, width: plan.width, innerRadius: plan.innerRadius });
+    event(w, 'enemy-attack', z, { source: z.source, targetId: z.sourceId, angle: z.angle, radius: z.radius, cue: plan.effect ?? z.kind, shape: plan.kind, w: plan.w, h: plan.h, width: plan.width, innerRadius: plan.innerRadius, gapAngle: plan.gapAngle, gapWidth: plan.gapWidth });
     if (plan.effect === 'spawn') {
         const existing = w.enemies.filter(e => alive(e) && e.id === plan.enemy && e.summon).length, count = Math.min(plan.count || 1, (plan.limit || 8) - existing, CONFIG.maxEnemies - w.enemies.filter(alive).length);
         for (let i = 0; i < count; i++) {
@@ -677,7 +670,7 @@ function tickZones(w, dt) {
                 if (e) {
                     z.x = e.x;
                     z.y = e.y;
-                    z.angle = angleTo(e, w.player);
+                    z.angle = z.plan.lockTarget ? z.plan.angle : angleTo(e, w.player);
                     z.originalAngle = z.angle;
                     z.plan.x = z.x;
                     z.plan.y = z.y;
@@ -1006,12 +999,24 @@ function tickBoss(w, dt) {
                     b.exposed = phase >= 2;
             }
         }
-        const turn = bossTurn(w.bossId, phase, w.bossTurn++, w.bossCenter || root, w.player, w.difficulty, w.bossEnraged);
+        const sequence = Math.floor(w.bossTurn / 6) * 6 + bossAttackSlot(w.bossTurn), proposed = bossTurn(w.bossId, phase, sequence, w.bossCenter || root, w.player, w.difficulty, w.bossEnraged, w.playerVelocity);
+        const turn = proposed.combo ? guardBossTurn(w, proposed) : proposed;
+        if (!turn) {
+            w.bossClock = .6;
+            return;
+        }
+        w.bossTurn++;
+        if (turn.combo) {
+            const [name, en, hint, hintEn] = turn.combo;
+            w.bossIntent = { name, en, hint, hintEn, recoverAt: w.time + turn.duration, until: w.time + turn.duration + turn.recovery };
+        }
+        else
+            delete w.bossIntent;
         for (const plan of turn.plans)
             addZone(w, { ...plan, damage: plan.damage * (w.difficulty >= 4 ? 1.15 : w.difficulty >= 2 ? 1.1 : 1) }, root.eid, w.bossId);
         w.bossClock = turn.duration + turn.recovery;
     }
-    else if (!w.zones.some(z => z.sourceId === root.eid && z.plan.effect !== 'fire' && z.plan.effect !== 'conveyor') && (!root.charge || root.charge.until <= w.time)) {
+    else if (!(w.bossIntent && w.time < w.bossIntent.until) && !w.zones.some(z => z.sourceId === root.eid && z.plan.effect !== 'fire' && z.plan.effect !== 'conveyor') && (!root.charge || root.charge.until <= w.time)) {
         const center = w.bossCenter || root, a = angleTo(center, w.player), d = distance(center, w.player), speed = bossPursuitSpeed(root.speed, root.phase, w.difficulty, w.bossEnraged) * (1 - enemySlow(w, root));
         if (d > 240) {
             center.x = clamp(center.x + Math.cos(a) * speed * dt, 190, w.width - 190);

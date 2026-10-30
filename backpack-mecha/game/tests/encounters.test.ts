@@ -56,7 +56,7 @@ test('all six bosses expose complete telegraphs and execute phase-specific chore
   }
   const run=newRun('bulwark','full',0,`boss-${boss.id}`);run.wave=boss.act*4;run.bosses[ boss.act-1]=boss.id;run.items=[];
   const world=createBattle(run);world.player.invulnerable=1000;world.enemies.forEach(e=>{e.hp=e.maxHp*.2;});
-  stepBattle(world,idle,30);assert.equal(world.status,'playing');assert.ok(world.bossTurn>=3,`${boss.id} did not complete three actions`);
+  for(let i=0;i<1800;i++)stepBattle(world,{...idle,x:Math.cos(i/240),y:Math.sin(i/240)});assert.equal(world.status,'playing');assert.ok(world.bossTurn>=3,`${boss.id} did not complete three actions`);
   assert.ok(world.enemies.every(e=>Number.isFinite(e.x)&&Number.isFinite(e.y)&&Number.isFinite(e.hp)));
  }
 });

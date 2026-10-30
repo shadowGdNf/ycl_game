@@ -15,6 +15,7 @@ function validBattle(raw:unknown,run:Run):raw is BattleView {
   const numeric=(v:unknown,fields:string[])=>record(v)&&fields.every(k=>finite(v[k]));
   // Missing skill fields are dev.10 saves; malformed new fields must not enter combat.
   const state=raw as Record<string,unknown>;
+  if(b.bossIntent&&(!record(b.bossIntent)||!['name','en','hint','hintEn'].every(k=>typeof (b.bossIntent as unknown as Record<string,unknown>)[k]==='string')||!finite(b.bossIntent.recoverAt)||!finite(b.bossIntent.until)))return false;
   if(['baseDamage','baseAttackSpeed'].some(k=>!finite(state[k])||Number(state[k])<1||Number(state[k])>3))return false;
   if(['skillCooldown','skillTime'].some(k=>{const n=(b.player as unknown as Record<string,unknown>)[k];return n!==undefined&&(!finite(n)||n<0||n>24);})||
    state.skillReleased!==undefined&&typeof state.skillReleased!=='boolean'||state.skillPulseAt!==undefined&&(!finite(state.skillPulseAt)||state.skillPulseAt<0))return false;

@@ -41,7 +41,7 @@ function damageText(c:CanvasRenderingContext2D,value:number,k:number,scale:numbe
  * Keep the impact within the same path as the warning, including safe inner arcs. */
 function enemyAttack(c:CanvasRenderingContext2D,e:CombatEvent,k:number,reduced:boolean):void {
  const alpha=1-k,kind=e.shape??(['rect','cone','line','ring'].includes(e.cue??'')?e.cue as ZoneView['kind']:'circle');
- const shape={kind,radius:e.radius??60,w:e.w,h:e.h,width:e.width,innerRadius:e.innerRadius};
+ const shape={kind,radius:e.radius??60,w:e.w,h:e.h,width:e.width,innerRadius:e.innerRadius,angle:e.angle,gapAngle:e.gapAngle,gapWidth:e.gapWidth};
  c.rotate(e.angle??0);
  if(e.cue==='projectile'){
   c.strokeStyle='#fff0b9';c.lineWidth=3;
@@ -192,7 +192,7 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
 /** Draw inside the authoritative zone transform, beneath its boundary strokes. */
 export function drawHazardEnergy(c:CanvasRenderingContext2D,z:ZoneView,time:number,reduced:boolean):void {
  const effect=z.plan?.effect,progress=clamp(1-z.remaining/Math.max(.001,z.duration));
- c.save();c.lineCap='round';
+ c.save();zonePath(c,z);c.clip('evenodd');c.lineCap='round';
  if(effect==='pull'){
   c.strokeStyle='#9fd5df';c.lineWidth=2;c.globalAlpha=z.active?.5:.2;
   for(let i=0;i<3;i++){const t=reduced?(i+1)/4:(i/3+(z.active?time*.65:0))%1,r=z.radius*(1-t);circle(c,0,0,r);c.stroke();}

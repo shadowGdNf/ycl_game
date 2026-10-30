@@ -28,10 +28,10 @@ test('healer has no hidden fallback contact damage, while its telegraphed pulse 
 });
 
 test('boss contact, projectiles, carrier escorts and lingering fire use the stronger damage exactly once',()=>{
- const {w}=scene('B3B',4);w.player.invulnerable=100;w.bossTurn=1;assert.equal(w.enemies[0].damage,34.5);
+ const {w}=scene('B3B',4);w.player.invulnerable=100;w.bossTurn=2;assert.equal(w.enemies[0].damage,34.5);
  stepBattle(w,idle,1.5);assert.ok(w.enemies.some(e=>e.id==='E02'));assert.ok(w.enemies.filter(e=>e.id==='E02').every(e=>Math.abs(e.damage-13.8)<1e-9));
  assert.ok(w.bullets.filter(b=>b.source==='B3B').every(b=>Math.abs(b.damage-17.25)<1e-9));
- const {w:fire}=scene('B2A',0);fire.bossTurn=1;fire.player.invulnerable=10;stepBattle(fire,idle,1.3);
+ const {w:fire}=scene('B2A',0);fire.bossTurn=2;fire.player.invulnerable=10;stepBattle(fire,idle,1.3);
  const z=fire.zones.find(z=>z.plan.effect==='fire'&&z.active)!;assert.equal(z.plan.damage,24);fire.zones=[z];fire.bullets=[];fire.bossClock=100;
  fire.player.x=z.x;fire.player.y=z.y;fire.player.invulnerable=0;fire.enemies[0].damage=0;stepBattle(fire,idle);assert.equal(fire.stats.damageTaken,9);
 });
@@ -66,7 +66,7 @@ test('every real boss attack cue has both a visible release and sound in normal 
 });
 
 test('sweep release keeps the safe inner arc, and new ranged follow-ups retain complete warnings',()=>{
- const {w}=scene('B1B');w.bossTurn=1;w.player.invulnerable=100;stepBattle(w,idle,1);
+ const {w}=scene('B1B');w.bossTurn=2;w.player.invulnerable=100;stepBattle(w,idle,1);
  const e=w.events.find(e=>e.type==='enemy-attack'&&e.cue==='cone')!,arcs:unknown[][]=[];
  const c=new Proxy({}, {get:(_,key)=>key==='arc'?(...args:unknown[])=>arcs.push(args):()=>{}}) as CanvasRenderingContext2D;
  drawCombatEffect(c,e,.05,.5,false,'zh',1);assert.ok(arcs.some(a=>a[2]===100&&a[5]===true));

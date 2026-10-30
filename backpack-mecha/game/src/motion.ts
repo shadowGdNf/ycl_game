@@ -74,7 +74,7 @@ export function zoneRole(z:ZoneView):'force'|'spawn'|'damage' {
 }
 /** A charge rectangle predicts travel; after impact there is no remaining charge. */
 export function zoneVisible(view:BattleView,z:ZoneView):boolean {
- if((z.delay??0)>0||z.remaining<=0)return false;
+ if((z.delay??0)>0&&!z.beat||z.remaining<=0)return false;
  if(z.plan?.effect!=='charge'||!z.active)return true;
  const source=view.enemies.find(e=>e.eid===z.sourceId);
  return !!source&&source.hp>0&&!!source.charge&&source.charge.until>view.time;

@@ -1,11 +1,11 @@
-import { roundRect } from "./canvas.js?v=430d749de471";
-import { Art } from "./art.js?v=430d749de471";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=430d749de471";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=430d749de471";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=430d749de471";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=430d749de471";
-import { locomotion, easeOut } from "./visual-motion.js?v=430d749de471";
-import { chassisSkill } from "./skills.js?v=430d749de471";
+import { roundRect } from "./canvas.js?v=46fa266b192c";
+import { Art } from "./art.js?v=46fa266b192c";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=46fa266b192c";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=46fa266b192c";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=46fa266b192c";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=46fa266b192c";
+import { locomotion, easeOut } from "./visual-motion.js?v=46fa266b192c";
+import { chassisSkill } from "./skills.js?v=46fa266b192c";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -576,7 +576,8 @@ export class Renderer {
         }
     }
     zone(z, time, warning) {
-        if ((z.delay ?? 0) > 0)
+        const pending = (z.delay ?? 0) > 0;
+        if (pending && !z.beat)
             return;
         const c = this.ctx, progress = clamp(1 - z.remaining / Math.max(.001, z.duration), 0, 1);
         const role = zoneRole(z), damage = role === 'damage', charge = z.plan?.effect === 'charge';
@@ -584,9 +585,9 @@ export class Renderer {
         c.translate(z.x, z.y);
         c.rotate(z.angle);
         zonePath(c, z);
-        const color = damage ? (z.active ? '#ffd1aa' : '#f88478') : role === 'force' ? '#83c6d8' : '#b1cea0';
+        const color = damage ? (z.active ? '#ffd1aa' : z.beat === 2 ? '#efc45c' : '#f88478') : role === 'force' ? '#83c6d8' : '#b1cea0';
         c.fillStyle = warning ? color : z.color;
-        c.globalAlpha = warning ? (charge && z.active ? .06 : z.active ? .2 : .07 + progress * .12) : .12;
+        c.globalAlpha = pending ? .04 : warning ? (charge && z.active ? .06 : z.active ? .2 : .07 + progress * .12) : .12;
         c.fill('evenodd');
         c.globalAlpha = 1;
         if (warning)
@@ -595,7 +596,7 @@ export class Renderer {
         c.strokeStyle = warning ? color : z.color;
         c.lineWidth = warning ? (z.active && !charge ? 3 : 2) : 1.5;
         if (warning && (!z.active || !damage || charge))
-            c.setLineDash(damage ? [10, 6] : [3, 7]);
+            c.setLineDash(pending ? [3, 8] : damage ? [10, 6] : [3, 7]);
         c.stroke();
         c.setLineDash([]);
         if (warning && !z.active && (z.innerRadius ?? 0) === 0) {
@@ -607,6 +608,17 @@ export class Renderer {
         }
         if (warning)
             zoneSymbols(c, z, this.scale);
+        if (warning && !z.active && z.kind === 'ring' && z.plan?.grow) {
+            const radius = z.radius + z.plan.grow * (z.plan.active ?? 0);
+            zonePath(c, { ...z, radius, innerRadius: Math.max(0, radius - 3) });
+            c.globalAlpha = .4;
+            c.strokeStyle = color;
+            c.lineWidth = 1;
+            c.setLineDash([4, 10]);
+            c.stroke();
+            c.setLineDash([]);
+            c.globalAlpha = 1;
+        }
         if (warning && damage && this.options.colorAssist && (z.innerRadius ?? 0) === 0) {
             c.strokeStyle = '#ffe8c5';
             c.lineWidth = 1;

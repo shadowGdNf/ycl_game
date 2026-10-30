@@ -12,7 +12,7 @@ const idle={x:0,y:0,dash:false,overload:false};
 function crane(weapon=false){
  const run=newRun('scavenger','full',0,'CRANE-FEEDBACK-REGRESSION');run.wave=4;run.bosses[0]='B1B';run.phase='battle';
  if(!weapon)run.items=[];
- const w=createBattle(run);w.bossClock=0;w.bossTurn=1;w.player.x=1000;w.player.y=300;return {run,w};
+ const w=createBattle(run);w.bossClock=0;w.bossTurn=2;w.player.x=1000;w.player.y=300;return {run,w};
 }
 
 test('stationary player is hit when the crane sweep crosses between old 500ms pulse samples',()=>{
