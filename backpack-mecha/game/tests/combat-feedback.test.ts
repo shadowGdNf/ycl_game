@@ -18,16 +18,16 @@ function crane(weapon=false){
 test('stationary player is hit when the crane sweep crosses between old 500ms pulse samples',()=>{
  const {w}=crane();w.player.shield=5;w.lastDamage=0;
  stepBattle(w,idle,2.4);
- assert.equal(w.stats.damageTaken,18);assert.equal(w.player.shield,0);assert.equal(w.player.hp,87);
+ assert.equal(w.stats.damageTaken,27);assert.equal(w.player.shield,0);assert.equal(w.player.hp,78);
  const hit=w.events.find(e=>e.type==='player-hit')!;
- assert.equal(hit.shieldDamage,5);assert.equal(hit.hullDamage,13);assert.deepEqual({x:hit.x,y:hit.y},{x:1000,y:300});
+ assert.equal(hit.shieldDamage,5);assert.equal(hit.hullDamage,22);assert.deepEqual({x:hit.x,y:hit.y},{x:1000,y:300});
  assert.deepEqual(hit.from,{x:800,y:300});assert.equal(combatSound(hit),'hurt');
 });
 
 test('sweep preserves the safe inner arc and only hits the traversed outer sector',()=>{
  for(const radius of [85,200,310]){
   const {w}=crane();w.player.x=800+radius;w.enemies[0].damage=0;
-  stepBattle(w,idle,2.4);assert.equal(w.stats.damageTaken,radius===200?18:0,`radius ${radius}`);
+  stepBattle(w,idle,2.4);assert.equal(w.stats.damageTaken,radius===200?27:0,`radius ${radius}`);
  }
 });
 
@@ -43,7 +43,7 @@ test('entering an active area deals damage immediately, then respects its damage
 
 test('dash immunity is preserved, and contact is retried after immunity expires',()=>{
  const {w}=crane();w.player.invulnerable=1.55;
- stepBattle(w,idle,2.4);assert.equal(w.stats.damageTaken,18);
+ stepBattle(w,idle,2.4);assert.equal(w.stats.damageTaken,27);
  const {w:dash}=crane();dash.player.dashTime=2.5;dash.dashAngle=0;
  stepBattle(dash,idle,.1);assert.equal(damagePlayer(dash,18,'B1B'),0);
 });
@@ -74,7 +74,7 @@ test('combat sounds route shield, hull, critical and enemy shots and ignore book
 
 test('crane slam anticipation is visible before the active pull ends',()=>{
  const {w}=crane();w.bossTurn=0;w.player.invulnerable=100;
- stepBattle(w,idle,1/60);const slam=w.zones.find(z=>z.source==='B1B'&&z.plan.damage===22)!;
+ stepBattle(w,idle,1/60);const slam=w.zones.find(z=>z.source==='B1B'&&z.plan.damage===33)!;
  stepBattle(w,idle,slam.remaining-.2);const m=motionFrame(w).get(w.enemies[0].eid)!;
  assert.ok(w.zones.some(z=>z.plan.effect==='pull'&&z.active&&z.remaining>0));
  assert.equal(m.kind,'slam');assert.equal(m.stage,'windup');assert.ok(m.progress>.8);
@@ -94,5 +94,5 @@ test('existing battle saves resume the corrected sweep without discarding the ru
  const saved=sanitizeSave(JSON.parse(JSON.stringify({version:1,profile:freshProfile(),run,battle:w,savedAt:1})));
  assert.equal(saved.run?.phase,'battle');assert.ok(saved.battle);
  const resumed=saved.battle as typeof w;stepBattle(resumed,idle,1.2);stepBattle(w,idle,1.2);
- assert.deepEqual(JSON.parse(JSON.stringify(resumed)),JSON.parse(JSON.stringify(w)));assert.equal(resumed.stats.damageTaken,18);
+ assert.deepEqual(JSON.parse(JSON.stringify(resumed)),JSON.parse(JSON.stringify(w)));assert.equal(resumed.stats.damageTaken,27);
 });

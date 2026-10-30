@@ -1,11 +1,11 @@
-import { roundRect } from "./canvas.js?v=041ed0015b08";
-import { Art } from "./art.js?v=041ed0015b08";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=041ed0015b08";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=041ed0015b08";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=041ed0015b08";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=041ed0015b08";
-import { locomotion, easeOut } from "./visual-motion.js?v=041ed0015b08";
-import { chassisSkill } from "./skills.js?v=041ed0015b08";
+import { roundRect } from "./canvas.js?v=c32c7858f958";
+import { Art } from "./art.js?v=c32c7858f958";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=c32c7858f958";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=c32c7858f958";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=c32c7858f958";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=c32c7858f958";
+import { locomotion, easeOut } from "./visual-motion.js?v=c32c7858f958";
+import { chassisSkill } from "./skills.js?v=c32c7858f958";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -45,7 +45,7 @@ const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const CHASSIS = ['scavenger', 'bulwark', 'kestrel', 'hive'];
 const PALETTE = { ink: '#101b24', cream: '#e8dfc9', orange: '#f39443', cyan: '#48d1c4', danger: '#f05b5b' };
-const VISIBLE_EVENTS = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'skill', 'phase', 'stagger', 'heal', 'defeat', 'scrap-drop', 'pickup']);
+const VISIBLE_EVENTS = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'skill', 'phase', 'boss-overload-warning', 'boss-overload', 'stagger', 'heal', 'defeat', 'scrap-drop', 'pickup']);
 function facing(angle) {
     const x = Math.cos(angle), y = Math.sin(angle);
     return Math.abs(x) > Math.abs(y) ? (x >= 0 ? 1 : 3) : (y >= 0 ? 0 : 2);

@@ -1,4 +1,5 @@
 import {roundRect} from './canvas.ts';
+import {zonePath} from './motion-renderer.ts';
 /** Bounded, deterministic Canvas effects. These helpers never touch battle state. */
 import type {BulletView,CombatEvent,Lang,Point,ZoneView} from './types.ts';
 const TAU=Math.PI*2;
@@ -14,6 +15,7 @@ export function effectLife(e:CombatEvent):number {
  if(e.type==='hit'||e.type==='critical')return .52;
  if(e.type==='kill'||e.type==='defeat')return .65;
  if(e.type==='arc')return .24;
+ if(e.type==='boss-overload-warning'||e.type==='boss-overload')return 1.1;
  if(e.type==='fire')return ['W05','W08','W09'].includes(e.source??'')?.28:.16;
  if(e.type==='explosion'||e.type==='enemy-explosion'||e.type==='enemy-attack')return .5;
  if(e.type==='dash'||e.type==='overload'||e.type==='phase'||e.type==='skill')return .5;
@@ -31,6 +33,50 @@ function damageText(c:CanvasRenderingContext2D,value:number,k:number,scale:numbe
  c.strokeStyle='#14212a';c.lineWidth=4;c.fillStyle=color;
  const text=`${prefix}${Math.max(1,Math.round(value))}${critical?'!':''}`,y=-27-k*30;
  c.strokeText(text,0,y);c.fillText(text,0,y);
+}
+
+/** Release geometry is captured in the event, so short attacks outlive their zone.
+ * Keep the impact within the same path as the warning, including safe inner arcs. */
+function enemyAttack(c:CanvasRenderingContext2D,e:CombatEvent,k:number,reduced:boolean):void {
+ const alpha=1-k,kind=e.shape??(['rect','cone','line','ring'].includes(e.cue??'')?e.cue as ZoneView['kind']:'circle');
+ const shape={kind,radius:e.radius??60,w:e.w,h:e.h,width:e.width,innerRadius:e.innerRadius};
+ c.rotate(e.angle??0);
+ if(e.cue==='projectile'){
+  c.strokeStyle='#fff0b9';c.lineWidth=3;
+  for(let i=-2;i<=2;i++){const a=i*.22,r=18+k*28;line(c,Math.cos(a)*10,Math.sin(a)*10,Math.cos(a)*r,Math.sin(a)*r);}
+  return;
+ }
+ if(e.cue==='spawn'||e.cue==='pull'){
+  c.strokeStyle=e.cue==='spawn'?'#b9f3ba':'#9be5ff';c.lineWidth=3;
+  circle(c,0,0,shape.radius*(e.cue==='pull'?(reduced?.85:1-k*.5):.4+k*.6));c.stroke();return;
+ }
+ zonePath(c,shape);c.save();c.clip('evenodd');
+ const force=e.cue==='conveyor',charge=e.cue==='charge';
+ c.fillStyle=force?'#9be5ff':'#ffaf64';c.strokeStyle=force?'#c5f6ff':'#fff0bf';
+ // The short flash marks release; the fading outline is only an afterimage.
+ if(k<.32&&!charge){c.globalAlpha=alpha*(reduced?.14:.32);c.fill('evenodd');}
+ c.globalAlpha=alpha*.85;c.lineWidth=3;
+ if(kind==='rect'||kind==='line'){
+  const length=shape.w??shape.radius,height=shape.h??20;
+  if(force||charge){
+   const count=Math.min(12,Math.max(2,Math.floor(length/90)));
+   for(let i=0;i<count;i++){const x=(i+.4)*length/count+(reduced?0:k*30);line(c,x-14,-height*.25,x,0);line(c,x,0,x-14,height*.25);}
+  }else{
+   c.globalAlpha=alpha*(reduced?.4:.65);c.lineWidth=height*.45;line(c,0,0,length,0);
+   c.globalAlpha=alpha;c.lineWidth=Math.max(3,height*.08);line(c,0,0,length,0);
+   if(!reduced)for(let i=1;i<8;i++){const x=i*length/8;line(c,x,-height/2,x+18,height/2);}
+  }
+ }else if(kind==='cone'){
+  const inner=shape.innerRadius??0,spread=shape.width??Math.PI/2;
+  for(let i=0;i<7;i++){const a=-spread/2+spread*i/6;line(c,Math.cos(a)*(inner+4),Math.sin(a)*(inner+4),Math.cos(a)*shape.radius,Math.sin(a)*shape.radius);}
+ }else if(kind==='ring'){
+  c.lineWidth=5;circle(c,0,0,Math.max(1,shape.radius-3));c.stroke();
+ }else{
+  circle(c,0,0,shape.radius*(reduced?.9:.65+.3*k));c.lineWidth=5;c.stroke();
+  if(!reduced){c.lineWidth=2;sparks(c,e.id,k,10,shape.radius*.65);}
+ }
+ c.restore();c.globalAlpha=alpha*.65;c.strokeStyle=force?'#9be5ff':'#ffd1a0';c.lineWidth=2;
+ zonePath(c,shape);c.stroke();
 }
 
 export function drawProjectile(c:CanvasRenderingContext2D,b:BulletView,time:number,reduced:boolean):void {
@@ -124,14 +170,13 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
   c.globalAlpha=alpha;c.lineWidth=2;
   if(!reduced){sparks(c,e.id,k,shield?12:10,radius*.9);c.fillStyle=shield?'#8ecbca':'#53616a';for(let i=0;i<6;i++){const a=noise(e.id+i)*TAU,d=k*radius*(.5+noise(i+e.id*2));c.save();c.translate(Math.cos(a)*d,Math.sin(a)*d+k*k*22);c.rotate(a+k*5);c.fillRect(-3,-2,5+i%3,4);c.restore();}}
  }else if(e.type==='enemy-attack'){
-  if(e.cue==='circle'||e.cue==='drill'){
-   const radius=clamp(e.radius??60,20,160),r=radius*(.7+.3*k);c.strokeStyle='#ffba83';c.lineWidth=6*(1-k)+1;circle(c,0,0,r);c.stroke();
-   if(!reduced){c.lineWidth=2;sparks(c,e.id,k,10,radius*.7);}
-  }else if(e.cue==='spawn'){
-   c.strokeStyle='#a3dcb8';c.lineWidth=3;circle(c,0,0,30+k*55);c.stroke();
-  }
+  enemyAttack(c,e,k,reduced);
  }else if(e.type==='enemy-fire'){
   c.fillStyle='#ffb483';circle(c,0,0,5+(1-k)*10);c.fill();
+ }else if(e.type==='boss-overload-warning'||e.type==='boss-overload'){
+  c.strokeStyle='#ff986c';c.lineWidth=3;circle(c,0,0,reduced?95:60+k*90);c.stroke();
+  c.font=`bold ${15/scale}px sans-serif`;c.textAlign='center';c.fillStyle='#ffe0ae';
+  c.fillText(e.type==='boss-overload'?(lang==='zh'?'狂暴过载':'ENRAGED'):(lang==='zh'?'10秒后狂暴':'ENRAGE IN 10s'),0,-105);
  }else if(e.type==='dash'||e.type==='overload'||e.type==='phase'||e.type==='stagger'){
   c.strokeStyle=e.type==='dash'?'#91e8e1':'#ffdb9b';c.lineWidth=2;circle(c,0,0,20+k*(e.type==='phase'?90:45));c.stroke();
  }else if(e.type==='heal'){
@@ -155,6 +200,14 @@ export function drawHazardEnergy(c:CanvasRenderingContext2D,z:ZoneView,time:numb
  }else if(z.active&&z.kind==='line'&&effect!=='projectile'){
   c.strokeStyle='#ffb77f';c.globalAlpha=.3;c.lineWidth=(z.h??20)*.7;line(c,0,0,z.w??z.radius,0);
   c.globalAlpha=.9;c.strokeStyle='#fff0cf';c.lineWidth=4;line(c,0,0,z.w??z.radius,0);
+ }else if(z.active&&z.kind==='ring'){
+  c.strokeStyle='#ffe3aa';c.globalAlpha=.85;c.lineWidth=5;circle(c,0,0,Math.max(1,z.radius-5));c.stroke();
+ }else if(z.active&&z.kind==='rect'&&effect!=='charge'){
+  const length=z.w??z.radius,height=z.h??20;
+  c.strokeStyle=effect==='conveyor'?'#b0eaf8':'#fff0cf';c.globalAlpha=.75;c.lineWidth=3;
+  if(effect==='conveyor'){
+   for(let i=0;i<12;i++){const x=((i/12+(reduced?0:time*.12))%1)*length;line(c,x-15,-height*.22,x,0);line(c,x,0,x-15,height*.22);}
+  }else{c.lineWidth=height*.35;line(c,0,0,length,0);}
  }else if(z.active&&effect==='fire'){
   c.fillStyle='#ffb14c';c.globalAlpha=.5;for(let i=0;i<7;i++){const a=i*TAU/7,r=z.radius*.6,x=Math.cos(a)*r,y=Math.sin(a)*r;c.beginPath();c.ellipse(x,y-5,5,8+(reduced?0:Math.sin(time*8+i)*3),0,0,TAU);c.fill();}
  }else if(z.active&&z.kind==='cone'&&z.source==='B2A'){

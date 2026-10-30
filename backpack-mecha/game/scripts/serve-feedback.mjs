@@ -2,7 +2,7 @@
 import http from 'node:http';
 import path from 'node:path';
 import {readFile} from 'node:fs/promises';
-const root=path.resolve('.'),web=path.join(root,'dist'),baseline='/private/tmp/backpack-mecha-feedback-baseline/dist';
+const root=path.resolve('.'),web=path.join(root,'dist'),baseline=process.env.MECHA_BASELINE?path.join(process.env.MECHA_BASELINE,'dist'):'/private/tmp/backpack-mecha-feedback-baseline/dist';
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.png':'image/png','.css':'text/css'};
 http.createServer(async(req,res)=>{
  try{

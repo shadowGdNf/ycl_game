@@ -16,3 +16,6 @@ qa/*.jpg
 !qa/dev8-shop-mobile.jpg
 !qa/dev8-merge-mobile.jpg
 !qa/dev9-boss-barrage-mobile.jpg
+!qa/dev12-B3B-impact.png
+!qa/dev12-B3A-ring.png
+!qa/dev12-practice-mobile.png

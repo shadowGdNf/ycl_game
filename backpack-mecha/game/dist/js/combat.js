@@ -1,10 +1,10 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=041ed0015b08";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=041ed0015b08";
-import { activeSupports } from "./economy.js?v=041ed0015b08";
-import { scrapPerCost } from "./progression.js?v=041ed0015b08";
-import { chassisSkill } from "./skills.js?v=041ed0015b08";
-import { nextRandom } from "./random.js?v=041ed0015b08";
-import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=041ed0015b08";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=c32c7858f958";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=c32c7858f958";
+import { activeSupports } from "./economy.js?v=c32c7858f958";
+import { scrapPerCost } from "./progression.js?v=c32c7858f958";
+import { chassisSkill } from "./skills.js?v=c32c7858f958";
+import { nextRandom } from "./random.js?v=c32c7858f958";
+import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=c32c7858f958";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -86,7 +86,7 @@ export function spawnEnemy(w, spec) {
     const hp = (boss ? boss.hp : base.hp * [1, 1.65, 2.55][w.act - 1]) * hpDifficulty * (spec.elite ? 1.8 : 1);
     const e = { eid: w.nextId++, id: spec.id, x: spec.x, y: spec.y, hp, maxHp: hp, radius: boss?.radius || base.radius, angle: Math.PI / 2, kind: boss ? 'boss' : spec.elite ? 'elite' : 'normal', phase: 1,
         ...(spec.group ? { group: spec.group } : {}), armor: (boss?.armor || base?.armor || 0) + (spec.elite && spec.affix === 1 ? 10 : 0), speed: (boss?.speed || base?.speed || 0) * (boss ? 1 : [1, 1.06, 1.1][w.act - 1]) * (spec.elite && spec.affix === 0 ? 1.15 : 1),
-        damage: (base?.damage || 20) * (boss ? 1 : [1, 1.25, 1.5][w.act - 1]) * damageDifficulty * (spec.elite ? 1.2 : 1), cost: spec.cost,
+        damage: (boss ? 20 * BOSS_DAMAGE_SCALE : base.damage) * (boss ? 1 : [1, 1.25, 1.5][w.act - 1]) * damageDifficulty * (spec.elite ? 1.2 : 1), cost: spec.cost,
         reward: spec.reward && w.encounter.budget > 0 ? scrapPerCost(w.wave) * spec.cost : 0,
         born: w.time, dead: false, cooldown: boss ? 2 : .5, contactAt: 0, path: [], pathAt: 0, aiUntil: 0, healingUntil: 0, affix: spec.elite ? spec.affix : -1,
         oilUntil: 0, oilAt: 0, chill: 0, chillUntil: 0, chillStrength: .06, frozen: 0, wet: 0, burns: [], stagger: 0, staggerUntil: 0, vulnerableUntil: 0, summon: !spec.reward, exposed: true, offsetX: 0 };
@@ -607,7 +607,7 @@ function triggerZone(w, z) {
         z.remaining = 0;
         return;
     }
-    event(w, 'enemy-attack', z, { source: z.source, targetId: z.sourceId, angle: z.angle, radius: z.radius, cue: plan.effect ?? z.kind });
+    event(w, 'enemy-attack', z, { source: z.source, targetId: z.sourceId, angle: z.angle, radius: z.radius, cue: plan.effect ?? z.kind, shape: plan.kind, w: plan.w, h: plan.h, width: plan.width, innerRadius: plan.innerRadius });
     if (plan.effect === 'spawn') {
         const existing = w.enemies.filter(e => alive(e) && e.id === plan.enemy && e.summon).length, count = Math.min(plan.count || 1, (plan.limit || 8) - existing, CONFIG.maxEnemies - w.enemies.filter(alive).length);
         for (let i = 0; i < count; i++) {
@@ -712,7 +712,7 @@ function tickZones(w, dt) {
         // between global pulse times without hitting them.
         z.pulse = Math.max(0, z.pulse - dt);
         if (z.pulse <= 0 && contains(z, w.player, w.player.radius)) {
-            const amount = z.plan.effect === 'fire' && z.triggered ? 6 * difficultyDamage(w) : z.plan.damage;
+            const amount = z.plan.effect === 'fire' && z.triggered ? 6 * BOSS_DAMAGE_SCALE * difficultyDamage(w) : z.plan.damage;
             if (damagePlayer(w, amount, z.source, z) > 0)
                 z.pulse = z.plan.period || 1000;
         }
@@ -825,7 +825,7 @@ function tickEnemies(w, dt) {
                 e.angle = a;
                 e.cooldown = 3.5;
                 e.aiUntil = w.time + .8;
-                addZone(w, { ...e, kind: 'line', radius: 0, w: 400, h: 10, angle: a, warning: .8, active: .05, damage: 6 * difficultyDamage(w), effect: 'projectile', count: 1, speed: 220 }, e.eid, e.id);
+                addZone(w, { ...e, kind: 'line', radius: 0, w: 400, h: 10, angle: a, warning: .8, active: .05, damage: 8 * difficultyDamage(w), effect: 'projectile', count: 1, speed: 220 }, e.eid, e.id);
             }
             else if (d > 260 || !sight)
                 follow(w, e, target, speed, dt);
@@ -1012,10 +1012,8 @@ function contactDamage(w) {
             continue;
         }
         const charging = e.charge && e.charge.until > w.time;
-        if (distance(e, w.player) < (charging ? e.charge.radius : e.radius) + w.player.radius) {
-            damagePlayer(w, charging ? e.charge.damage : e.damage, e.id, e);
+        if (distance(e, w.player) < (charging ? e.charge.radius : e.radius) + w.player.radius && damagePlayer(w, charging ? e.charge.damage : e.damage, e.id, e) > 0)
             e.contactAt = w.time + 1;
-        }
     }
 }
 function activateSkill(w) {

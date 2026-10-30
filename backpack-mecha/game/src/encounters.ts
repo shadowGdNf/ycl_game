@@ -3,6 +3,7 @@ import {nextRandom} from './random.ts';
 import type {Mode, Point, Rect, Run, WaveDef} from './types.ts';
 
 export const ARENA={width:1600,height:1200};
+export const BOSS_DAMAGE_SCALE=1.5;
 export interface SpawnSpec extends Point {id:string;elite:boolean;affix:number;reward:boolean;cost:number;boss?:boolean;group?:string}
 export interface EncounterState {mode:Mode;budget:number;spent:number;nextSpawn:number;extraElite:boolean;eliteQueued:boolean;wave:WaveDef;variant:number}
 export interface AttackPlan extends Point {
@@ -142,35 +143,35 @@ function landings(p:Point,count:number,spread:number,radius:number,warning:numbe
 }
 /** Pursuit remains slower than the slowest chassis; dashes and charges are separate. */
 export function bossPursuitSpeed(base:number,phase:number,difficulty=0,enraged=false):number {
- return base*(1.4+.1*Math.max(0,phase-1)+.05*Math.max(0,Math.min(4,difficulty))+(enraged?.15:0));
+ return base*(1.6+.08*Math.max(0,phase-1)+.04*Math.max(0,Math.min(4,difficulty))+(enraged?.1:0));
 }
 /** Complete boss choreography. All damage is resolved by combat.ts, never here. */
 export function bossTurn(id:string,phase:number,index:number,boss:Point,player:Point,difficulty=0,enraged=false):BossTurn {
  phase=Math.max(1,Math.min(['B1A','B1B','B2B'].includes(id)?2:3,phase));
  const difficultyLevel=Math.max(0,Math.min(4,difficulty)),a=toward(boss,player),slot=index%3;
- const speedScale=1+.08*(phase-1)+.05*difficultyLevel+(enraged?.12:0);
+ const speedScale=1.12+.08*(phase-1)+.05*difficultyLevel+(enraged?.12:0);
  const fan=(origin:Point,angle:number,count:number,spread:number,speed:number,damage:number,warning=.85,delay=0):AttackPlan=>
   cone(origin,angle,600,spread,warning,damage,{active:.08,effect:'projectile',count,spread,speed,delay,projectileRadius:5});
  let plans:AttackPlan[]=[],recovery=.75;
  if(id==='B1A'){
   if(slot===0){const charge:AttackPlan={...boss,kind:'rect',radius:0,w:660,h:90,angle:a,warning:1,active:1.1,damage:20,effect:'charge',speed:540,target:{...player}};plans=[charge];recovery=.85;
    if(phase>=2){plans.push({...charge,warning:.8,delay:2.15,target:{...player}});recovery=1;}}
-  if(slot===1){plans=[cone(boss,a,185,Math.PI*2/3,.8,18)];recovery=.65;}
+  if(slot===1){plans=[cone(boss,a,220,Math.PI*2/3,.8,18),fan(boss,a,phase===1?5:7,1.65,310,10)];recovery=.65;}
   if(slot===2){plans=[...landings(player,phase===1?5:7,110,45,.8,12),fan(boss,a,phase===1?5:7,1.45,310,10)];recovery=.8;}
  }else if(id==='B1B'){
-  if(slot===0){plans=[circle(boss,450,1,0,{active:1.65,effect:'pull',speed:85}),circle(boss,150,2.65,22)];recovery=.8;}
+  if(slot===0){plans=[circle(boss,450,1,0,{active:1.65,effect:'pull',speed:110}),circle(boss,165,2.65,22),fan(boss,a,phase===1?5:7,1.8,320,10,.85,.8)];recovery=.8;}
   if(slot===1){plans=[cone(boss,a-Math.PI/2,280,Math.PI/5,.9,18,{active:1.25,innerRadius:100,sweep:Math.PI,period:.5})];
    if(phase>=2)plans.push(cone(boss,a+Math.PI/2,280,Math.PI/5,.8,18,{delay:2.2,active:1.25,innerRadius:100,sweep:-Math.PI,period:.5}));}
   if(slot===2)plans=[circle(boss,75,1,0,{effect:'spawn',enemy:'E02',count:phase===1?3:4,limit:8}),fan(boss,a,phase===1?6:8,1.65,320,10,.85,.3)];
  }else if(id==='B2A'){
-  if(slot===0){plans=[cone(boss,a,300,Math.PI/2,1,12,{active:1.35,period:.5})];recovery=.85;
+  if(slot===0){plans=[cone(boss,a,360,Math.PI/2,1,12,{active:1.35,period:.5})];recovery=.85;
    if(phase>=2)plans.push(...landings(player,3,95,50,1.1,16,{delay:2.4,effect:'fire',active:4,period:.5}));}
   if(slot===1)plans=[...landings(player,4+phase,125,50,1.1,16,{effect:'fire',active:4,period:.5}),fan(boss,a,3+phase*2,1.8,330,12,1,.2)];
-  if(slot===2){plans=landings(boss,phase===1?4:6,145,65,.8,20);recovery=.85;}
+  if(slot===2){plans=[...landings(boss,phase===1?4:6,145,65,.8,20),circle(player,70,1.1,20,{effect:'mortar',delay:.25})];recovery=.85;}
  }else if(id==='B2B'){
-  if(slot===0)plans=[{x:boss.x-145,y:boss.y,kind:'line',radius:0,angle:0,w:290,h:22,warning:1,active:1.65,damage:16,period:.5}];
+  if(slot===0)plans=[{x:boss.x-145,y:boss.y,kind:'line',radius:0,angle:0,w:290,h:22,warning:1,active:1.65,damage:16,period:.5},circle(player,65,1.1,16,{delay:.35})];
   if(slot===1){const count=phase===1?6:8;for(let i=0;i<count;i++)plans.push({...boss,x:boss.x+(i%2===0?-145:145),kind:'circle',radius:70,angle:a+(i%2)*Math.PI/count,warning:.8,delay:i*.26,active:.08,damage:12,effect:'projectile',count,spread:Math.PI*2,speed:330});}
-  if(slot===2)plans=[circle(boss,90,1,0,{effect:'spawn',enemy:'E05',count:phase===1?2:3,limit:6})];
+  if(slot===2)plans=[circle(boss,90,1,0,{effect:'spawn',enemy:'E05',count:phase===1?2:3,limit:6}),fan(boss,a,phase===1?5:7,1.8,330,12,.85,.3)];
  }else if(id==='B3A'){
   const s=phase===1?index%2:slot;
   if(s===0){plans=[{...boss,kind:'line',radius:0,w:800,h:36,angle:a-.7,warning:1,active:1.25,damage:14,sweep:1.4,period:.5}];
@@ -188,12 +189,14 @@ export function bossTurn(id:string,phase:number,index:number,boss:Point,player:P
   if(slot===2){for(let i=0;i<5+phase;i++)plans.push(fan(boss,a,9+phase*2,Math.PI*5/3,340,10,1,i*.26));recovery=.95;}
  }
  for(const plan of plans){
+  plan.damage*=BOSS_DAMAGE_SCALE;
+  if(plan.spawnDamage)plan.spawnDamage*=BOSS_DAMAGE_SCALE;
   if(plan.effect==='projectile')plan.speed!*=speedScale;
   // Keep the traveled charge length inside the painted lane when speeding it up.
   if(plan.effect==='charge'){plan.speed!*=speedScale;plan.active/=speedScale;}
   if(plan.grow)plan.grow*=speedScale;
  }
- recovery=Math.max(.4,recovery/(1+.1*(phase-1)+.08*difficultyLevel+(enraged?.2:0)));
+ recovery=Math.max(.4,recovery*.8/(1+.1*(phase-1)+.08*difficultyLevel+(enraged?.2:0)));
  // Lingering fire and conveyors continue after the cast; they must not stall the next turn.
  const duration=plans.reduce((max,p)=>Math.max(max,(p.delay||0)+p.warning+(p.effect==='fire'||p.effect==='conveyor'?Math.min(.15,p.active):p.active)),0);
  return {plans,duration,recovery};

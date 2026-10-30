@@ -207,7 +207,7 @@ export function enemyMotionLabel(c:Context,e:EnemyView,m:EnemyMotion,size:number
 }
 
 /** Same inner/outer geometry as combat.contains, including the crane's safe inner arc. */
-export function zonePath(c:Context,z:ZoneView):void {
+export function zonePath(c:Context,z:Pick<ZoneView,'kind'|'radius'|'innerRadius'|'width'|'w'|'h'>):void {
  c.beginPath();
  if(z.kind==='circle')c.arc(0,0,z.radius,0,TAU);
  else if(z.kind==='ring'){c.arc(0,0,z.radius,0,TAU);c.arc(0,0,z.innerRadius??Math.max(0,z.radius-22),0,TAU,true);}

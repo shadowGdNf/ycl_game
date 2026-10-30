@@ -4,7 +4,7 @@ import {activeSupports} from './economy.ts';
 import {scrapPerCost} from './progression.ts';
 import {chassisSkill} from './skills.ts';
 import {nextRandom} from './random.ts';
-import {ARENA,availableBudget,bossPhase,bossTurn,bossPursuitSpeed,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
+import {ARENA,BOSS_DAMAGE_SCALE,availableBudget,bossPhase,bossTurn,bossPursuitSpeed,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
 import type {AttackPlan,EncounterState,SpawnSpec} from './encounters.ts';
 import type {BattleView,BattleResult,Run,InputFrame,EnemyView,BulletView,ZoneView,WeaponView,Point,CombatStats,CombatEvent,Tier} from './types.ts';
 
@@ -88,7 +88,7 @@ export function spawnEnemy(w:BattleState,spec:SpawnSpec):EnemyState {
  const hp=(boss?boss.hp:base!.hp*[1,1.65,2.55][w.act-1]!)*hpDifficulty*(spec.elite?1.8:1);
  const e:EnemyState={eid:w.nextId++,id:spec.id,x:spec.x,y:spec.y,hp,maxHp:hp,radius:boss?.radius||base!.radius,angle:Math.PI/2,kind:boss?'boss':spec.elite?'elite':'normal',phase:1,
   ...(spec.group?{group:spec.group}:{}),armor:(boss?.armor||base?.armor||0)+(spec.elite&&spec.affix===1?10:0),speed:(boss?.speed||base?.speed||0)*(boss?1:[1,1.06,1.1][w.act-1]!)*(spec.elite&&spec.affix===0?1.15:1),
-  damage:(base?.damage||20)*(boss?1:[1,1.25,1.5][w.act-1]!)*damageDifficulty*(spec.elite?1.2:1),cost:spec.cost,
+  damage:(boss?20*BOSS_DAMAGE_SCALE:base!.damage)*(boss?1:[1,1.25,1.5][w.act-1]!)*damageDifficulty*(spec.elite?1.2:1),cost:spec.cost,
   reward:spec.reward&&w.encounter.budget>0?scrapPerCost(w.wave)*spec.cost:0,
   born:w.time,dead:false,cooldown:boss?2:.5,contactAt:0,path:[],pathAt:0,aiUntil:0,healingUntil:0,affix:spec.elite?spec.affix:-1,
   oilUntil:0,oilAt:0,chill:0,chillUntil:0,chillStrength:.06,frozen:0,wet:0,burns:[],stagger:0,staggerUntil:0,vulnerableUntil:0,summon:!spec.reward,exposed:true,offsetX:0};
@@ -350,7 +350,7 @@ function difficultyDamage(w:BattleState):number{return w.difficulty>=4?1.15:w.di
 function triggerZone(w:BattleState,z:ZoneState):void {
  const plan=z.plan,source=w.enemies.find(e=>e.eid===z.sourceId);
  if(z.spawn){spawnEnemy(w,z.spawn);z.remaining=0;return;}
- event(w,'enemy-attack',z,{source:z.source,targetId:z.sourceId,angle:z.angle,radius:z.radius,cue:plan.effect??z.kind});
+ event(w,'enemy-attack',z,{source:z.source,targetId:z.sourceId,angle:z.angle,radius:z.radius,cue:plan.effect??z.kind,shape:plan.kind,w:plan.w,h:plan.h,width:plan.width,innerRadius:plan.innerRadius});
  if(plan.effect==='spawn'){
   const existing=w.enemies.filter(e=>alive(e)&&e.id===plan.enemy&&e.summon).length,count=Math.min(plan.count||1,(plan.limit||8)-existing,CONFIG.maxEnemies-w.enemies.filter(alive).length);
   for(let i=0;i<count;i++){const a=(i/Math.max(1,count))*Math.PI*2,p={x:clamp(z.x+Math.cos(a)*120,40,w.width-40),y:clamp(z.y+Math.sin(a)*120,40,w.height-40)};
@@ -385,7 +385,7 @@ function tickZones(w:BattleState,dt:number):void {
   // between global pulse times without hitting them.
   z.pulse=Math.max(0,z.pulse-dt);
   if(z.pulse<=0&&contains(z,w.player,w.player.radius)){
-   const amount=z.plan.effect==='fire'&&z.triggered?6*difficultyDamage(w):z.plan.damage;
+   const amount=z.plan.effect==='fire'&&z.triggered?6*BOSS_DAMAGE_SCALE*difficultyDamage(w):z.plan.damage;
    if(damagePlayer(w,amount,z.source,z)>0)z.pulse=z.plan.period||1000;
   }
   if(z.source==='E05'&&!z.triggered){const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){e.dead=true;e.hp=0;event(w,'enemy-explosion',e,{source:e.id,targetId:e.eid,amount:z.radius});}}
@@ -433,7 +433,7 @@ function tickEnemies(w:BattleState,dt:number):void {
    const ally=w.enemies.filter(o=>alive(o)&&o.kind!=='boss'&&o.eid!==e.eid).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp)||distance(e,a)-distance(e,b))[0];
    if(ally){if(distance(e,ally)>160)follow(w,e,ally,speed,dt);if(e.cooldown<=0&&distance(e,ally)<220){e.cooldown=3;e.healingUntil=w.time+2;event(w,'heal',e,{source:e.id,targetId:ally.eid});}}
    else if(d<=400&&sight&&e.cooldown<=0){e.angle=a;e.cooldown=3.5;e.aiUntil=w.time+.8;
-    addZone(w,{...e,kind:'line',radius:0,w:400,h:10,angle:a,warning:.8,active:.05,damage:6*difficultyDamage(w),effect:'projectile',count:1,speed:220},e.eid,e.id);
+    addZone(w,{...e,kind:'line',radius:0,w:400,h:10,angle:a,warning:.8,active:.05,damage:8*difficultyDamage(w),effect:'projectile',count:1,speed:220},e.eid,e.id);
    }else if(d>260||!sight)follow(w,e,target,speed,dt);else e.angle=a;
   }else if(e.id==='E08'){
    if(e.cooldown<=0&&d<650){e.cooldown=5;e.aiUntil=w.time+1.1;
@@ -504,7 +504,7 @@ function contactDamage(w:BattleState):void {
  for(const e of w.enemies){if(!alive(e)||e.frozen>0||w.time-e.born<CONFIG.spawnGrace||w.time<e.contactAt||e.damage<=0)continue;
   if(w.decoy&&w.decoy.until>w.time&&e.kind!=='boss'&&distance(e,w.decoy)<e.radius+16){w.decoy.hp-=e.damage;e.contactAt=w.time+1;continue;}
   const charging=e.charge&&e.charge.until>w.time;
-  if(distance(e,w.player)<(charging?e.charge!.radius:e.radius)+w.player.radius){damagePlayer(w,charging?e.charge!.damage:e.damage,e.id,e);e.contactAt=w.time+1;}
+  if(distance(e,w.player)<(charging?e.charge!.radius:e.radius)+w.player.radius&&damagePlayer(w,charging?e.charge!.damage:e.damage,e.id,e)>0)e.contactAt=w.time+1;
  }
 }
 function activateSkill(w:BattleState):void {

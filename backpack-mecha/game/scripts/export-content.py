@@ -22,8 +22,11 @@ enemies=[dict(id=r[0],name=r[1],en=enames[i],act=r[2],hp=r[3],armor=r[4],speed=r
 enemies+=json.loads((root/'assets'/'source'/'enemies-dev10.json').read_text())
 bnames=['The Compactor','Magnet Crane','Furnace Crab','Storm Twins','Recycler Zero','Orbital Carrier']
 bosses=[{k:v for k,v in dict(**b,en=bnames[i]).items() if k in ['id','name','en','act','hp','armor','radius','speed','attacks','phases','counter']} for i,b in enumerate(data['bosses'])]
-# Keep the original design baseline intact; the live boss guide follows dev.9 choreography.
-boss_guide=json.loads((root/'assets'/'source'/'boss-guide-dev9.json').read_text())
+# Preserve the original design baseline; apply the current combat balance and guide.
+balance=json.loads((root/'assets'/'source'/'combat-balance-dev12.json').read_text())
+enemies=[{**e,'damage':balance['enemyDamage'][e['id']]} for e in enemies]
+bosses=[{**b,'hp':balance['bossHp'][b['id']]} for b in bosses]
+boss_guide=json.loads((root/'assets'/'source'/'boss-guide-dev12.json').read_text())
 bosses=[{**b,**boss_guide.get(b['id'],{})} for b in bosses]
 pnames=['Conductive loop','Ember recovery','Precision calibration','Impact bracing','Coordinated command','Kinetic recovery','Emergency power','Safe recovery','Insulated cutter']
 pdescs=['Wet lasts 2s longer. Electric first hit on a wet target deals +10%.','Oil explosions restore 1 HP on kills (max 10 per wave), +15% damage to bosses.','Direct damage +15% beyond 250 range, −10% within 120.','Shield capacity +20; dash cooldown +0.5s.','Drones deal +20% damage to the selected target.','After dashing, ballistic attack speed +20% for 3s.','Below 35% HP: attack speed +20%; first crossing per wave restores 15 shield.','Recover 8 HP after a normal wave, or 10 extra after a boss.','Direct damage +15% against chilled or frozen targets.']

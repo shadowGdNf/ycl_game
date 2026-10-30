@@ -54,7 +54,7 @@ const TAU=Math.PI*2;
 const clamp=(v:number,a:number,b:number)=>Math.max(a,Math.min(b,v));
 const CHASSIS=['scavenger','bulwark','kestrel','hive'];
 const PALETTE={ink:'#101b24',cream:'#e8dfc9',orange:'#f39443',cyan:'#48d1c4',danger:'#f05b5b'};
-const VISIBLE_EVENTS=new Set(['fire','hit','critical','arc','player-hit','shield-break','kill','explosion','enemy-explosion','enemy-attack','enemy-fire','dash','overload','skill','phase','stagger','heal','defeat','scrap-drop','pickup']);
+const VISIBLE_EVENTS=new Set(['fire','hit','critical','arc','player-hit','shield-break','kill','explosion','enemy-explosion','enemy-attack','enemy-fire','dash','overload','skill','phase','boss-overload-warning','boss-overload','stagger','heal','defeat','scrap-drop','pickup']);
 function facing(angle:number):number{
   const x=Math.cos(angle),y=Math.sin(angle);
   return Math.abs(x)>Math.abs(y)?(x>=0?1:3):(y>=0?0:2);

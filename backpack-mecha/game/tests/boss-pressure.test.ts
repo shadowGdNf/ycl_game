@@ -45,7 +45,7 @@ test('crab can start the next attack while its previous ground fire is still act
 });
 test('all 64 twin projectiles are released once with the tuned velocity',()=>{
  const {w}=scene('B2B',0,2,1);stepBattle(w,idle);w.bossClock=1000;const seen=new Set<number>();
- for(let i=0;i<240;i++){stepBattle(w,idle);for(const b of w.bullets.filter(b=>b.owner==='enemy')){seen.add(b.eid);assert.ok(Math.abs(Math.hypot(b.vx,b.vy)-356.4)<1e-8);}}
+ for(let i=0;i<240;i++){stepBattle(w,idle);for(const b of w.bullets.filter(b=>b.owner==='enemy')){seen.add(b.eid);assert.ok(Math.abs(Math.hypot(b.vx,b.vy)-396)<1e-8);}}
  assert.equal(seen.size,64);
 });
 test('dense boss pressure stays bounded and finite at maximum threat',()=>{

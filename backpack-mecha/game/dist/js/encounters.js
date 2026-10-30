@@ -1,6 +1,7 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=041ed0015b08";
-import { nextRandom } from "./random.js?v=041ed0015b08";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=c32c7858f958";
+import { nextRandom } from "./random.js?v=c32c7858f958";
 export const ARENA = { width: 1600, height: 1200 };
+export const BOSS_DAMAGE_SCALE = 1.5;
 const layouts = [
     [{ x: 320, y: 240, w: 180, h: 100 }, { x: 1100, y: 860, w: 180, h: 100 }, { x: 1100, y: 240, w: 100, h: 160 }, { x: 400, y: 830, w: 100, h: 170 }],
     [{ x: 320, y: 330, w: 120, h: 270 }, { x: 1160, y: 600, w: 120, h: 270 }, { x: 700, y: 160, w: 200, h: 90 }, { x: 700, y: 950, w: 200, h: 90 }],
@@ -190,13 +191,13 @@ function landings(p, count, spread, radius, warning, damage, extra = {}) {
 }
 /** Pursuit remains slower than the slowest chassis; dashes and charges are separate. */
 export function bossPursuitSpeed(base, phase, difficulty = 0, enraged = false) {
-    return base * (1.4 + .1 * Math.max(0, phase - 1) + .05 * Math.max(0, Math.min(4, difficulty)) + (enraged ? .15 : 0));
+    return base * (1.6 + .08 * Math.max(0, phase - 1) + .04 * Math.max(0, Math.min(4, difficulty)) + (enraged ? .1 : 0));
 }
 /** Complete boss choreography. All damage is resolved by combat.ts, never here. */
 export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged = false) {
     phase = Math.max(1, Math.min(['B1A', 'B1B', 'B2B'].includes(id) ? 2 : 3, phase));
     const difficultyLevel = Math.max(0, Math.min(4, difficulty)), a = toward(boss, player), slot = index % 3;
-    const speedScale = 1 + .08 * (phase - 1) + .05 * difficultyLevel + (enraged ? .12 : 0);
+    const speedScale = 1.12 + .08 * (phase - 1) + .05 * difficultyLevel + (enraged ? .12 : 0);
     const fan = (origin, angle, count, spread, speed, damage, warning = .85, delay = 0) => cone(origin, angle, 600, spread, warning, damage, { active: .08, effect: 'projectile', count, spread, speed, delay, projectileRadius: 5 });
     let plans = [], recovery = .75;
     if (id === 'B1A') {
@@ -210,7 +211,7 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
             }
         }
         if (slot === 1) {
-            plans = [cone(boss, a, 185, Math.PI * 2 / 3, .8, 18)];
+            plans = [cone(boss, a, 220, Math.PI * 2 / 3, .8, 18), fan(boss, a, phase === 1 ? 5 : 7, 1.65, 310, 10)];
             recovery = .65;
         }
         if (slot === 2) {
@@ -220,7 +221,7 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
     }
     else if (id === 'B1B') {
         if (slot === 0) {
-            plans = [circle(boss, 450, 1, 0, { active: 1.65, effect: 'pull', speed: 85 }), circle(boss, 150, 2.65, 22)];
+            plans = [circle(boss, 450, 1, 0, { active: 1.65, effect: 'pull', speed: 110 }), circle(boss, 165, 2.65, 22), fan(boss, a, phase === 1 ? 5 : 7, 1.8, 320, 10, .85, .8)];
             recovery = .8;
         }
         if (slot === 1) {
@@ -233,7 +234,7 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
     }
     else if (id === 'B2A') {
         if (slot === 0) {
-            plans = [cone(boss, a, 300, Math.PI / 2, 1, 12, { active: 1.35, period: .5 })];
+            plans = [cone(boss, a, 360, Math.PI / 2, 1, 12, { active: 1.35, period: .5 })];
             recovery = .85;
             if (phase >= 2)
                 plans.push(...landings(player, 3, 95, 50, 1.1, 16, { delay: 2.4, effect: 'fire', active: 4, period: .5 }));
@@ -241,20 +242,20 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
         if (slot === 1)
             plans = [...landings(player, 4 + phase, 125, 50, 1.1, 16, { effect: 'fire', active: 4, period: .5 }), fan(boss, a, 3 + phase * 2, 1.8, 330, 12, 1, .2)];
         if (slot === 2) {
-            plans = landings(boss, phase === 1 ? 4 : 6, 145, 65, .8, 20);
+            plans = [...landings(boss, phase === 1 ? 4 : 6, 145, 65, .8, 20), circle(player, 70, 1.1, 20, { effect: 'mortar', delay: .25 })];
             recovery = .85;
         }
     }
     else if (id === 'B2B') {
         if (slot === 0)
-            plans = [{ x: boss.x - 145, y: boss.y, kind: 'line', radius: 0, angle: 0, w: 290, h: 22, warning: 1, active: 1.65, damage: 16, period: .5 }];
+            plans = [{ x: boss.x - 145, y: boss.y, kind: 'line', radius: 0, angle: 0, w: 290, h: 22, warning: 1, active: 1.65, damage: 16, period: .5 }, circle(player, 65, 1.1, 16, { delay: .35 })];
         if (slot === 1) {
             const count = phase === 1 ? 6 : 8;
             for (let i = 0; i < count; i++)
                 plans.push({ ...boss, x: boss.x + (i % 2 === 0 ? -145 : 145), kind: 'circle', radius: 70, angle: a + (i % 2) * Math.PI / count, warning: .8, delay: i * .26, active: .08, damage: 12, effect: 'projectile', count, spread: Math.PI * 2, speed: 330 });
         }
         if (slot === 2)
-            plans = [circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E05', count: phase === 1 ? 2 : 3, limit: 6 })];
+            plans = [circle(boss, 90, 1, 0, { effect: 'spawn', enemy: 'E05', count: phase === 1 ? 2 : 3, limit: 6 }), fan(boss, a, phase === 1 ? 5 : 7, 1.8, 330, 12, .85, .3)];
     }
     else if (id === 'B3A') {
         const s = phase === 1 ? index % 2 : slot;
@@ -291,6 +292,9 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
         }
     }
     for (const plan of plans) {
+        plan.damage *= BOSS_DAMAGE_SCALE;
+        if (plan.spawnDamage)
+            plan.spawnDamage *= BOSS_DAMAGE_SCALE;
         if (plan.effect === 'projectile')
             plan.speed *= speedScale;
         // Keep the traveled charge length inside the painted lane when speeding it up.
@@ -301,7 +305,7 @@ export function bossTurn(id, phase, index, boss, player, difficulty = 0, enraged
         if (plan.grow)
             plan.grow *= speedScale;
     }
-    recovery = Math.max(.4, recovery / (1 + .1 * (phase - 1) + .08 * difficultyLevel + (enraged ? .2 : 0)));
+    recovery = Math.max(.4, recovery * .8 / (1 + .1 * (phase - 1) + .08 * difficultyLevel + (enraged ? .2 : 0)));
     // Lingering fire and conveyors continue after the cast; they must not stall the next turn.
     const duration = plans.reduce((max, p) => Math.max(max, (p.delay || 0) + p.warning + (p.effect === 'fire' || p.effect === 'conveyor' ? Math.min(.15, p.active) : p.active)), 0);
     return { plans, duration, recovery };
