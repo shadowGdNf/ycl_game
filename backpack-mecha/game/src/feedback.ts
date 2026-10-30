@@ -16,7 +16,7 @@ export function effectLife(e:CombatEvent):number {
  if(e.type==='arc')return .24;
  if(e.type==='fire')return ['W05','W08','W09'].includes(e.source??'')?.28:.16;
  if(e.type==='explosion'||e.type==='enemy-explosion'||e.type==='enemy-attack')return .5;
- if(e.type==='dash'||e.type==='overload'||e.type==='phase')return .5;
+ if(e.type==='dash'||e.type==='overload'||e.type==='phase'||e.type==='skill')return .5;
  return .4;
 }
 function sparks(c:CanvasRenderingContext2D,id:number,k:number,count:number,reach:number,angle?:number):void {
@@ -91,7 +91,9 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
  const k=clamp(age/life),alpha=1-k;if(age<0||k>=1)return;
  c.save();c.translate(e.x,e.y);c.globalAlpha=alpha;c.lineCap='round';c.lineJoin='round';
  c.strokeStyle=e.color??'#ffd58f';c.fillStyle=e.color??'#ffd58f';
- if(e.type==='pickup'){
+ if(e.type==='skill'){
+  c.lineWidth=3/scale;circle(c,0,0,(e.radius??65)*(reduced?1:.25+.75*k));c.stroke();
+ }else if(e.type==='pickup'){
   const target=e.to??e,dx=target.x-e.x,dy=target.y-e.y,travel=reduced?1:1-(1-Math.min(1,k*2.3))**3;
   c.translate(dx*travel,dy*travel-(reduced?0:Math.sin(travel*Math.PI)*20));
   c.fillStyle='#ffd76d';c.strokeStyle='#fff2b5';c.lineWidth=2/scale;circle(c,0,0,5/scale);c.fill();c.stroke();

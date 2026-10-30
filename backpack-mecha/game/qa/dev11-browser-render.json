@@ -1,0 +1,17 @@
+{
+  "scope": "Same browser, same 70-enemy / 160-drop synthetic snapshot, alternating draw order. Render CPU only; not device FPS.",
+  "canvas": [
+    780,
+    1200
+  ],
+  "before": {
+    "samples": 270,
+    "p50Ms": 1.7999999523162842,
+    "p95Ms": 2
+  },
+  "after": {
+    "samples": 270,
+    "p50Ms": 1.199999988079071,
+    "p95Ms": 1.4000000357627869
+  }
+}

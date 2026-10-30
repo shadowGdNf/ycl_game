@@ -65,3 +65,13 @@ body.workshop-active{height:100dvh;overflow:hidden}.workshop-active .topbar{heig
 .weapon-hud span[class*=rarity-]{border-color:var(--rarity);color:var(--rarity)}
 
 .deployment-warnings{padding-left:22px;margin:18px 0;display:grid;gap:12px}.deployment-warnings li::marker{color:var(--orange,#efb56c)}.deployment-warnings strong{color:#efc48b}.deployment-warnings p{margin:5px 0;color:#b7c8c8;font-size:13px;line-height:1.5}
+
+/* The third action sits above dash, leaving the movement half of narrow screens free. */
+#touch-controls{display:grid;grid-template-columns:61px 74px;grid-template-rows:74px 74px;gap:10px;align-items:end;justify-items:center}
+#dash-button{grid-column:2;grid-row:2}#overload-button{grid-column:1;grid-row:2}
+#touch-controls #skill-button{grid-column:2;grid-row:1;border-color:var(--skill-color,#79e4bf);color:var(--skill-color,#79e4bf)}
+#skill-button.active-skill{background:#284c4be6;box-shadow:0 0 12px #79e4bf44}
+#touch-controls #skill-button span{font-size:9px;line-height:1.1;max-width:64px}
+.chassis-skill{border-left:2px solid #79e4bf;padding-left:10px;font-size:12px;line-height:1.6;color:#b4d8d0}.chassis-skill b{color:#8fe2cb}
+@media(max-width:700px){#touch-controls{grid-template-columns:58px 71px;grid-template-rows:71px 71px;gap:9px}}
+@media(max-width:350px){#touch-controls{right:12px}.left-handed #touch-controls{left:12px}}

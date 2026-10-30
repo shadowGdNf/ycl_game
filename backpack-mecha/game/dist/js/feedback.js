@@ -1,4 +1,4 @@
-import { roundRect } from "./canvas.js?v=0ed06082a6ae";
+import { roundRect } from "./canvas.js?v=041ed0015b08";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -23,7 +23,7 @@ export function effectLife(e) {
         return ['W05', 'W08', 'W09'].includes(e.source ?? '') ? .28 : .16;
     if (e.type === 'explosion' || e.type === 'enemy-explosion' || e.type === 'enemy-attack')
         return .5;
-    if (e.type === 'dash' || e.type === 'overload' || e.type === 'phase')
+    if (e.type === 'dash' || e.type === 'overload' || e.type === 'phase' || e.type === 'skill')
         return .5;
     return .4;
 }
@@ -226,7 +226,12 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
     c.lineJoin = 'round';
     c.strokeStyle = e.color ?? '#ffd58f';
     c.fillStyle = e.color ?? '#ffd58f';
-    if (e.type === 'pickup') {
+    if (e.type === 'skill') {
+        c.lineWidth = 3 / scale;
+        circle(c, 0, 0, (e.radius ?? 65) * (reduced ? 1 : .25 + .75 * k));
+        c.stroke();
+    }
+    else if (e.type === 'pickup') {
         const target = e.to ?? e, dx = target.x - e.x, dy = target.y - e.y, travel = reduced ? 1 : 1 - (1 - Math.min(1, k * 2.3)) ** 3;
         c.translate(dx * travel, dy * travel - (reduced ? 0 : Math.sin(travel * Math.PI) * 20));
         c.fillStyle = '#ffd76d';

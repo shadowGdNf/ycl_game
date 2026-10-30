@@ -1,10 +1,11 @@
-import { roundRect } from "./canvas.js?v=0ed06082a6ae";
-import { Art } from "./art.js?v=0ed06082a6ae";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=0ed06082a6ae";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=0ed06082a6ae";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=0ed06082a6ae";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=0ed06082a6ae";
-import { locomotion, easeOut } from "./visual-motion.js?v=0ed06082a6ae";
+import { roundRect } from "./canvas.js?v=041ed0015b08";
+import { Art } from "./art.js?v=041ed0015b08";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=041ed0015b08";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=041ed0015b08";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=041ed0015b08";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=041ed0015b08";
+import { locomotion, easeOut } from "./visual-motion.js?v=041ed0015b08";
+import { chassisSkill } from "./skills.js?v=041ed0015b08";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -44,6 +45,7 @@ const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const CHASSIS = ['scavenger', 'bulwark', 'kestrel', 'hive'];
 const PALETTE = { ink: '#101b24', cream: '#e8dfc9', orange: '#f39443', cyan: '#48d1c4', danger: '#f05b5b' };
+const VISIBLE_EVENTS = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'skill', 'phase', 'stagger', 'heal', 'defeat', 'scrap-drop', 'pickup']);
 function facing(angle) {
     const x = Math.cos(angle), y = Math.sin(angle);
     return Math.abs(x) > Math.abs(y) ? (x >= 0 ? 1 : 3) : (y >= 0 ? 0 : 2);
@@ -179,12 +181,16 @@ export class Renderer {
         ctx.beginPath();
         ctx.rect(0, 0, state.width, state.height);
         ctx.clip();
+        // Canvas clipping still submits offscreen paths/sprites to the browser.
+        // Keep a generous margin for hardware, trails and labels; rules run everywhere.
+        const visible = (p, r) => p.x + r >= this.camera.x && p.x - r <= this.camera.x + vw && p.y + r >= this.camera.y && p.y - r <= this.camera.y + vh;
         for (const zone of state.zones)
             if (zone.type === 'friendly')
                 this.zone(zone, state.time, false);
         for (const drop of state.drops)
-            this.drop(drop.x, drop.y, state.time, drop.id, drop.value);
-        const entities = state.enemies.filter(e => e.exposed !== false && e.hp > 0).sort((a, b) => a.y - b.y || a.eid - b.eid);
+            if (visible(drop, 45))
+                this.drop(drop.x, drop.y, state.time, drop.id, drop.value);
+        const entities = state.enemies.filter(e => e.exposed !== false && e.hp > 0 && visible(e, e.radius * 2 + 100)).sort((a, b) => a.y - b.y || a.eid - b.eid);
         const motions = motionFrame(state);
         for (const [id, m] of motions) {
             const goal = m.control ? 0 : m.stage === 'windup' ? m.progress : m.stage === 'active' ? 1 : 0;
@@ -203,7 +209,8 @@ export class Renderer {
         if (!playerDrawn)
             this.player(state);
         for (const bullet of state.bullets)
-            drawProjectile(ctx, bullet, state.time, options.reducedMotion);
+            if (visible(bullet, 100 + bullet.radius))
+                drawProjectile(ctx, bullet, state.time, options.reducedMotion);
         this.drawEffects(state.time);
         this.playerFeedback(state);
         // Warning geometry is authoritative and always above friendly effects.
@@ -430,6 +437,23 @@ export class Renderer {
             ctx.stroke();
             ctx.restore();
         }
+        if ((p.skillTime ?? 0) > 0) {
+            const skill = chassisSkill(state.chassis);
+            ctx.save();
+            ctx.strokeStyle = skill.color;
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = .7;
+            const radius = state.chassis === 'scavenger' ? 320 : state.chassis === 'bulwark' ? 49 : 38;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, TAU);
+            ctx.stroke();
+            if (state.chassis === 'hive')
+                for (let i = 0; i < 3; i++) {
+                    const a = (this.options.reducedMotion ? 0 : t * 1.8) + i * TAU / 3;
+                    this.art.draw(ctx, 'W11', p.x + Math.cos(a) * 62, p.y + Math.sin(a) * 62, 23, 23, a);
+                }
+            ctx.restore();
+        }
         if (p.invulnerable > 0 && p.dashTime <= 0) {
             ctx.save();
             ctx.strokeStyle = '#fff0cc';
@@ -649,12 +673,11 @@ export class Renderer {
         c.restore();
     }
     captureEvents(state) {
-        const visible = new Set(['fire', 'hit', 'critical', 'arc', 'player-hit', 'shield-break', 'kill', 'explosion', 'enemy-explosion', 'enemy-attack', 'enemy-fire', 'dash', 'overload', 'phase', 'stagger', 'heal', 'defeat', 'scrap-drop', 'pickup']);
         for (const event of state.events) {
             if (this.seenEvents.has(event.id))
                 continue;
             this.seenEvents.add(event.id);
-            if (state.time - event.at > 1.2 || !visible.has(event.type))
+            if (state.time - event.at > 1.2 || !VISIBLE_EVENTS.has(event.type))
                 continue;
             const visualEvent = { ...event };
             // Older saves stored a player hit at the attacker, not the hurt body.

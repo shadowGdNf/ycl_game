@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>dev.11 · 技能与性能验收</title>
+<style>body{margin:20px;background:#14242b;color:#dce9dd;font:14px system-ui}button,select{padding:10px;margin:5px;font:inherit}iframe{display:block;border:1px solid #607b7d;margin:10px auto;background:#14242b}canvas{width:390px;height:600px;display:block;margin:auto}pre{white-space:pre-wrap}#game{display:none}h1{font-size:20px}</style>
+<h1>dev.11 · 本地验收（独立测试存档）</h1>
+<label>机体 <select id="chassis"><option value="scavenger">拾荒者</option><option value="bulwark">堡垒</option><option value="kestrel">游隼</option><option value="hive">蜂巢</option></select></label>
+<button id="play">装入测试战斗</button><button id="shop">装入降价商店</button><button id="mobile">390×844</button><button id="small">320×700</button><button id="desktop">1100×760</button><button id="benchmark">前后绘制对照</button>
+<iframe id="game" width="390" height="844" title="游戏验收"></iframe><canvas id="view"></canvas><pre id="report">就绪</pre>
+<script type="module">
+import {newRun} from '/game/js/economy.js';import {createBattle,spawnEnemy,stepBattle} from '/game/js/combat.js';import {freshProfile,saveGame} from '/game/js/storage.js';import {Renderer} from '/game/js/renderer.js';
+const frame=document.querySelector('iframe'),canvas=document.querySelector('canvas'),report=document.querySelector('#report');
+for(const [id,w,h] of [['mobile',390,844],['small',320,700],['desktop',1100,760]])document.querySelector('#'+id).onclick=()=>{frame.width=w;frame.height=h;};
+async function open(shop){const r=newRun(document.querySelector('#chassis').value,'full',0,'DEV11-BROWSER');r.wave=11;r.gold=600;r.phase=shop?'prep':'battle';r.hp-=15;
+ r.shop=[{id:'W07',tier:4,locked:false},{id:'W02',tier:2,locked:false},{id:'W10',tier:3,locked:false},{id:'S01',tier:3,locked:false}];
+ const w=shop?null:createBattle(r);if(w){w.obstacles=[];w.encounter.nextSpawn=10000;w.drops=[{id:9999,x:1050,y:650,value:12}];for(let i=0;i<6;i++){const a=i*Math.PI/3,e=spawnEnemy(w,{id:'E03',x:800+Math.cos(a)*160,y:650+Math.sin(a)*160,elite:false,affix:0,reward:false,cost:0});e.hp=e.maxHp=10000;e.damage=0;e.speed=0;}w.player.invulnerable=10000;}
+ const profile=freshProfile();profile.tutorial=true;profile.settings.unlockAll=true;profile.settings.music=false;profile.settings.sound=false;
+ if(!await saveGame({version:1,profile,run:r,battle:w,savedAt:Date.now()}))throw Error('Could not save fixture');frame.style.display='block';canvas.style.display='none';frame.src='/game/';report.textContent='测试战斗请点「继续上次远征」再继续；Q或右侧技能按钮。';}
+document.querySelector('#play').onclick=()=>open(false);document.querySelector('#shop').onclick=()=>open(true);
+document.querySelector('#benchmark').onclick=async()=>{
+ frame.style.display='none';canvas.style.display='block';report.textContent='正在对照绘制…';
+ const {Renderer:OldRenderer}=await import('/baseline/js/renderer.js'),old=new OldRenderer(canvas),current=new Renderer(canvas);await old.load();await current.load();
+ const r=newRun('scavenger','full',4,'RENDER-DEV11');r.wave=11;r.items=[];const w=createBattle(r);w.player.invulnerable=10000;w.encounter.nextSpawn=10000;w.obstacles=[];
+ for(let i=0;i<70;i++){const a=i*Math.PI*2/70,e=spawnEnemy(w,{id:`E${String(i%16+1).padStart(2,'0')}`,x:800+Math.cos(a)*570,y:600+Math.sin(a)*470,elite:false,affix:0,reward:false,cost:0});e.speed=0;}
+ for(let i=0;i<160;i++)w.drops.push({id:10000+i,x:80+(i%16)*96,y:100+Math.floor(i/16)*106,value:3});
+ const samples={before:[],after:[]},options={lang:'zh',reducedMotion:false,colorAssist:false};
+ for(let i=0;i<300;i++){await new Promise(requestAnimationFrame);stepBattle(w,{x:0,y:0,dash:false,overload:false});for(const label of i%2?['before','after']:['after','before']){const start=performance.now();(label==='before'?old:current).draw(w,options);if(i>=30)samples[label].push(performance.now()-start);}}
+ const summary=v=>{const sorted=v.toSorted((a,b)=>a-b);return {samples:v.length,p50Ms:sorted[Math.ceil(v.length*.5)-1],p95Ms:sorted[Math.ceil(v.length*.95)-1]};};
+ report.textContent=JSON.stringify({scope:'Same browser, same 70-enemy / 160-drop synthetic snapshot, alternating draw order. Render CPU only; not device FPS.',canvas:[canvas.width,canvas.height],before:summary(samples.before),after:summary(samples.after)},null,2);
+};
+</script></html>

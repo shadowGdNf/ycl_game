@@ -1,6 +1,6 @@
-import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=0ed06082a6ae";
-import { createBattle } from "./combat.js?v=0ed06082a6ae";
-import { sanitizeJournal } from "./journal.js?v=0ed06082a6ae";
+import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=041ed0015b08";
+import { createBattle } from "./combat.js?v=041ed0015b08";
+import { sanitizeJournal } from "./journal.js?v=041ed0015b08";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -17,6 +17,11 @@ function validBattle(raw, run) {
         if (b.version !== 1 || b.wave !== run.wave || b.chassis !== run.chassis || !['playing', 'won', 'lost'].includes(b.status) || b.time < 0 || b.time > 301 || b.enemies.length > 100 || b.bullets.length > 2000 || b.zones.length > 1000)
             return false;
         const numeric = (v, fields) => record(v) && fields.every(k => finite(v[k]));
+        // Missing skill fields are dev.10 saves; malformed new fields must not enter combat.
+        const state = raw;
+        if (['skillCooldown', 'skillTime'].some(k => { const n = b.player[k]; return n !== undefined && (!finite(n) || n < 0 || n > 24); }) ||
+            state.skillReleased !== undefined && typeof state.skillReleased !== 'boolean' || state.skillPulseAt !== undefined && (!finite(state.skillPulseAt) || state.skillPulseAt < 0))
+            return false;
         return b.enemies.every(e => numeric(e, ['eid', 'x', 'y', 'hp', 'maxHp', 'radius', 'angle', 'phase', 'armor', 'speed', 'damage', 'cost', 'reward', 'born', 'cooldown', 'contactAt', 'pathAt', 'aiUntil', 'healingUntil', 'affix', 'oilUntil', 'oilAt', 'chill', 'chillUntil', 'chillStrength', 'frozen', 'wet', 'stagger', 'staggerUntil', 'vulnerableUntil', 'offsetX']) && Array.isArray(e.burns) && Array.isArray(e.path)) && b.bullets.every(e => numeric(e, ['eid', 'x', 'y', 'vx', 'vy', 'radius', 'damage', 'life', 'factor', 'shot', 'pierce', 'bounces', 'bounceFactor', 'traveled', 'range', 'slow']) && record(e.hitAt)) && b.zones.every(e => numeric(e, ['id', 'x', 'y', 'radius', 'angle', 'remaining', 'duration', 'delay', 'age', 'pulse']) && record(e.plan)) && b.weapons.every(e => numeric(e, ['x', 'y', 'angle', 'cooldown', 'shotCount', 'tier', 'targetUntil', 'rectifierAt', 'droneCount']) && MODULE_BY_ID[e.id] && record(e.supports));
     }
     catch {

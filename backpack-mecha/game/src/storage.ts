@@ -12,6 +12,10 @@ function validBattle(raw:unknown,run:Run):raw is BattleView {
  try {if(!record(raw)||!compatible(raw,createBattle(run)))return false;
   const b=raw as unknown as BattleView;if(b.version!==1||b.wave!==run.wave||b.chassis!==run.chassis||!['playing','won','lost'].includes(b.status)||b.time<0||b.time>301||b.enemies.length>100||b.bullets.length>2000||b.zones.length>1000)return false;
   const numeric=(v:unknown,fields:string[])=>record(v)&&fields.every(k=>finite(v[k]));
+  // Missing skill fields are dev.10 saves; malformed new fields must not enter combat.
+  const state=raw as Record<string,unknown>;
+  if(['skillCooldown','skillTime'].some(k=>{const n=(b.player as unknown as Record<string,unknown>)[k];return n!==undefined&&(!finite(n)||n<0||n>24);})||
+   state.skillReleased!==undefined&&typeof state.skillReleased!=='boolean'||state.skillPulseAt!==undefined&&(!finite(state.skillPulseAt)||state.skillPulseAt<0))return false;
   return b.enemies.every(e=>numeric(e,['eid','x','y','hp','maxHp','radius','angle','phase','armor','speed','damage','cost','reward','born','cooldown','contactAt','pathAt','aiUntil','healingUntil','affix','oilUntil','oilAt','chill','chillUntil','chillStrength','frozen','wet','stagger','staggerUntil','vulnerableUntil','offsetX'])&&Array.isArray(e.burns)&&Array.isArray((e as unknown as Record<string,unknown>).path))&&b.bullets.every(e=>numeric(e,['eid','x','y','vx','vy','radius','damage','life','factor','shot','pierce','bounces','bounceFactor','traveled','range','slow'])&&record((e as unknown as Record<string,unknown>).hitAt))&&b.zones.every(e=>numeric(e,['id','x','y','radius','angle','remaining','duration','delay','age','pulse'])&&record((e as unknown as Record<string,unknown>).plan))&&b.weapons.every(e=>numeric(e,['x','y','angle','cooldown','shotCount','tier','targetUntil','rectifierAt','droneCount'])&&MODULE_BY_ID[e.id]&&record((e as unknown as Record<string,unknown>).supports));
  }catch{return false;}
 }

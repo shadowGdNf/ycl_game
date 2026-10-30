@@ -1,9 +1,10 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=0ed06082a6ae";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=0ed06082a6ae";
-import { activeSupports } from "./economy.js?v=0ed06082a6ae";
-import { scrapPerCost } from "./progression.js?v=0ed06082a6ae";
-import { nextRandom } from "./random.js?v=0ed06082a6ae";
-import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=0ed06082a6ae";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=041ed0015b08";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=041ed0015b08";
+import { activeSupports } from "./economy.js?v=041ed0015b08";
+import { scrapPerCost } from "./progression.js?v=041ed0015b08";
+import { chassisSkill } from "./skills.js?v=041ed0015b08";
+import { nextRandom } from "./random.js?v=041ed0015b08";
+import { ARENA, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=041ed0015b08";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -301,8 +302,8 @@ function hitEnemy(w, e, hit) {
         return 0;
     const weapon = hit.weapon, direct = hit.direct !== false, origin = hit.origin || w.player;
     let add = direct && weapon ? support(weapon, 'S01') : 0;
-    if (weapon && w.chassis === 'hive')
-        add += weapon.id === 'W11' ? .15 : direct ? -.1 : 0;
+    if (w.chassis === 'hive')
+        add += hit.kind === 'drone' ? .15 : weapon && direct ? -.1 : 0;
     if (direct && protocol(w, 'P03')) {
         const d = distance(w.player, e);
         add += d > 250 ? .15 : d < 120 ? -.1 : 0;
@@ -323,7 +324,7 @@ function hitEnemy(w, e, hit) {
     const actual = Math.min(e.hp, amount);
     e.hp = Math.max(0, e.hp - amount);
     syncBossHP(w, e);
-    const source = weapon?.id || hit.kind;
+    const source = hit.source || weapon?.id || hit.kind;
     w.stats.damageByModule[source] = (w.stats.damageByModule[source] || 0) + actual;
     event(w, crit ? 'critical' : 'hit', e, { amount: actual, source, targetId: e.eid, color: MODULE_BY_ID[source]?.color, from: { x: origin.x, y: origin.y }, radius: e.radius });
     if (direct && weapon?.supports.S08 && crit && w.time >= weapon.rectifierAt) {
@@ -351,7 +352,7 @@ export function damagePlayer(w, raw, source, at = w.player) {
     const p = w.player;
     if (w.status !== 'playing' || p.dashTime > 0 || p.invulnerable > 0 || raw <= 0)
         return 0;
-    const damage = raw * 100 / (100 + p.armor) * (w.capacitorDefense > w.time ? .7 : 1), beforeShield = p.shield, beforeHP = p.hp;
+    const damage = raw * 100 / (100 + p.armor) * (w.capacitorDefense > w.time ? .7 : 1) * (w.chassis === 'bulwark' && (p.skillTime ?? 0) > 0 ? .5 : 1), beforeShield = p.shield, beforeHP = p.hp;
     const absorbed = Math.min(p.shield, damage);
     p.shield -= absorbed;
     p.hp = Math.max(0, p.hp - (damage - absorbed));
@@ -562,7 +563,10 @@ function tickBullets(w, dt) {
             }
         }
         else if (!b.target) {
-            for (const e of w.enemies.filter(alive).sort((a, z) => distance(before, a) - distance(before, z) || a.eid - z.eid)) {
+            // Sort only actual contacts. Dense volleys previously sorted every living enemy
+            // for every projectile, even when the swept segment touched nothing.
+            const contacts = w.enemies.filter(e => alive(e) && (b.hitAt[groupKey(e)] ?? -100) <= w.time - .3 && segmentDistance(e, before, b) <= e.radius + b.radius);
+            for (const e of contacts.sort((a, z) => distance(before, a) - distance(before, z) || a.eid - z.eid)) {
                 const key = groupKey(e);
                 if ((b.hitAt[key] ?? -100) > w.time - .3 || segmentDistance(e, before, b) > e.radius + b.radius)
                     continue;
@@ -1014,6 +1018,54 @@ function contactDamage(w) {
         }
     }
 }
+function activateSkill(w) {
+    const p = w.player, skill = chassisSkill(w.chassis);
+    p.skillCooldown = skill.cooldown;
+    p.skillTime = skill.duration;
+    event(w, 'skill', p, { source: w.chassis, color: skill.color, radius: w.chassis === 'scavenger' ? 320 : w.chassis === 'bulwark' ? 180 : 65 });
+    if (w.chassis === 'scavenger') {
+        const heal = Math.min(6, p.maxHp - p.hp);
+        p.hp += heal;
+        if (heal > 0)
+            event(w, 'heal', p, { amount: heal, source: 'skill-scavenger' });
+    }
+    if (w.chassis === 'bulwark')
+        areaDamage(w, p, 180, { base: 36, kind: 'melee', direct: false, source: 'skill-bulwark' });
+    if (w.chassis === 'kestrel') {
+        p.dashCooldown = 0;
+        p.invulnerable = Math.max(p.invulnerable, .45);
+    }
+    if (w.chassis === 'hive')
+        w.skillPulseAt = w.time;
+}
+function tickSkill(w) {
+    if (w.chassis !== 'hive' || (w.player.skillTime ?? 0) <= 1e-8 || w.time + 1e-8 < (w.skillPulseAt ?? 0))
+        return;
+    w.skillPulseAt = w.time + .6;
+    for (let i = 0; i < 3; i++) {
+        let target, best = Infinity;
+        for (const e of w.enemies) {
+            if (!alive(e))
+                continue;
+            const d = distance(w.player, e);
+            if (d > 450 + e.radius)
+                continue;
+            if (e.eid === w.priority && w.priorityUntil > w.time) {
+                target = e;
+                break;
+            }
+            if (d < best) {
+                target = e;
+                best = d;
+            }
+        }
+        if (!target)
+            break;
+        const a = w.time * 1.8 + i * Math.PI * 2 / 3, origin = { x: w.player.x + Math.cos(a) * 62, y: w.player.y + Math.sin(a) * 62 };
+        event(w, 'arc', origin, { source: 'skill-hive', to: { x: target.x, y: target.y }, color: chassisSkill('hive').color, targetId: target.eid });
+        hitEnemy(w, target, { base: 6, kind: 'drone', direct: false, source: 'skill-hive', origin });
+    }
+}
 function tickPlayer(w, input, dt) {
     const p = w.player, wasDashing = p.dashTime > 0, previous = { x: p.x, y: p.y };
     p.dashCooldown = Math.max(0, p.dashCooldown - dt);
@@ -1021,6 +1073,8 @@ function tickPlayer(w, input, dt) {
     p.dashTime = Math.max(0, p.dashTime - dt);
     p.overloadTime = Math.max(0, p.overloadTime - dt);
     p.invulnerable = Math.max(0, p.invulnerable - dt);
+    p.skillCooldown = Math.max(0, (p.skillCooldown ?? 0) - dt);
+    p.skillTime = Math.max(0, (p.skillTime ?? 0) - dt);
     if (input.target) {
         const chosen = w.enemies.filter(alive).sort((a, b) => distance(a, input.target) - distance(b, input.target))[0];
         if (chosen && distance(chosen, input.target) < chosen.radius + 55) {
@@ -1038,6 +1092,9 @@ function tickPlayer(w, input, dt) {
     if (w.decoy && (w.decoy.until <= w.time || w.decoy.hp <= 0))
         w.decoy = undefined;
     const length = Math.hypot(input.x, input.y), x = length > 1 ? input.x / length : input.x, y = length > 1 ? input.y / length : input.y;
+    if (input.skill && w.skillReleased !== false && p.skillCooldown <= 0)
+        activateSkill(w);
+    w.skillReleased = !input.skill;
     if (input.dash && w.dashReleased && p.dashCooldown <= 0) {
         w.dashAngle = length > .01 ? Math.atan2(y, x) : p.angle;
         p.dashTime = .18;
@@ -1060,10 +1117,10 @@ function tickPlayer(w, input, dt) {
         move(w, p, Math.cos(w.dashAngle) * p.speed * 3.2 * dt, Math.sin(w.dashAngle) * p.speed * 3.2 * dt);
     }
     else {
-        const slow = w.slowUntil > w.time ? w.slowAmount : 0;
+        const slow = w.slowUntil > w.time ? w.slowAmount : 0, boost = w.chassis === 'kestrel' && p.skillTime > 0 ? 1.35 : 1;
         if (length > .01)
             p.angle = Math.atan2(y, x);
-        move(w, p, x * p.speed * (1 - slow) * dt, y * p.speed * (1 - slow) * dt);
+        move(w, p, x * p.speed * (1 - slow) * boost * dt, y * p.speed * (1 - slow) * boost * dt);
     }
     w.playerVelocity = { x: (p.x - previous.x) / dt, y: (p.y - previous.y) / dt };
     if (w.time - w.lastDamage >= 4)
@@ -1076,7 +1133,7 @@ function tickPlayer(w, input, dt) {
         if (heal)
             event(w, 'heal', p, { amount: heal, source: 'U03' });
     }
-    const pickup = (w.chassis === 'scavenger' ? 90 : CONFIG.pickupBase) + utility(w, 'U04');
+    const pickup = Math.max((w.chassis === 'scavenger' ? 90 : CONFIG.pickupBase) + utility(w, 'U04'), w.chassis === 'scavenger' && p.skillTime > 0 ? 320 : 0);
     w.drops = w.drops.filter(drop => {
         if (distance(drop, p) > pickup)
             return true;
@@ -1109,6 +1166,7 @@ function stepFixed(w, input, dt) {
     tickEnemyStatuses(w, dt);
     tickEnemies(w, dt);
     tickBoss(w, dt);
+    tickSkill(w);
     tickWeapons(w, dt);
     tickBullets(w, dt);
     tickZones(w, dt);

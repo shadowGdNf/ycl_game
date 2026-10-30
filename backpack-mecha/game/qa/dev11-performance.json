@@ -1,0 +1,61 @@
+{
+  "description": "Synthetic Node simulation timings; no browser rendering or real-device FPS. Skills unused for rule parity.",
+  "node": "v24.21.0",
+  "baseline": "/private/tmp/mecha-dev11-baseline.mzGYDU",
+  "results": [
+    {
+      "scene": "navigation",
+      "parityTicks": 360,
+      "before": {
+        "samples": 2160,
+        "p50Ms": 0.07466600000009294,
+        "p95Ms": 0.21220800000003237,
+        "maxMs": 3.5501669999999876,
+        "totalMs": 219.26374900000337
+      },
+      "after": {
+        "samples": 2160,
+        "p50Ms": 0.0679170000000795,
+        "p95Ms": 0.15075000000001637,
+        "maxMs": 2.744042000000036,
+        "totalMs": 178.5370319999986
+      }
+    },
+    {
+      "scene": "projectiles",
+      "parityTicks": 360,
+      "before": {
+        "samples": 2160,
+        "p50Ms": 4.655124999999316,
+        "p95Ms": 5.16491600000154,
+        "maxMs": 149.3650000000016,
+        "totalMs": 10532.429490999999
+      },
+      "after": {
+        "samples": 2160,
+        "p50Ms": 0.6516670000000886,
+        "p95Ms": 0.7763749999994616,
+        "maxMs": 1.227999999999156,
+        "totalMs": 1435.656327000047
+      }
+    },
+    {
+      "scene": "boss",
+      "parityTicks": 360,
+      "before": {
+        "samples": 2160,
+        "p50Ms": 0.0024999999986903276,
+        "p95Ms": 0.01320800000030431,
+        "maxMs": 0.19279099999766913,
+        "totalMs": 11.601474000108283
+      },
+      "after": {
+        "samples": 2160,
+        "p50Ms": 0.002291000000695931,
+        "p95Ms": 0.012958999999682419,
+        "maxMs": 0.2254579999971611,
+        "totalMs": 11.39374299998235
+      }
+    }
+  ]
+}

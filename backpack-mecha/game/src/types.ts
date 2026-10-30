@@ -35,8 +35,8 @@ export interface Run {
 }
 export interface Result {ok:boolean;reason?:string;reasonEn?:string}
 export interface BattleResult {won:boolean;hp:number;shield:number;stats:CombatStats;elapsed:number;insuranceUsed:boolean;reason?:string;rng?:number}
-export interface InputFrame {x:number;y:number;dash:boolean;overload:boolean;target?:Point}
-export interface PlayerView extends Point {hp:number;maxHp:number;shield:number;maxShield:number;radius:number;speed:number;armor:number;angle:number;dashCooldown:number;overloadCooldown:number;dashTime:number;overloadTime:number;invulnerable:number}
+export interface InputFrame {x:number;y:number;dash:boolean;overload:boolean;skill?:boolean;target?:Point}
+export interface PlayerView extends Point {hp:number;maxHp:number;shield:number;maxShield:number;radius:number;speed:number;armor:number;angle:number;dashCooldown:number;overloadCooldown:number;dashTime:number;overloadTime:number;invulnerable:number;skillCooldown?:number;skillTime?:number}
 export type ControlReason='ice'|'impact'|'stagger';
 export interface EnemyView extends Point {eid:number;id:string;hp:number;maxHp:number;radius:number;angle:number;kind:'normal'|'elite'|'boss';phase:number;shielded?:boolean;stagger?:number;frozen?:number;controlReason?:ControlReason;wet?:number;burns?:unknown[];group?:string;exposed?:boolean;offsetX?:number;vulnerableUntil?:number;aiUntil?:number;charge?:{vx:number;vy:number;until:number;radius?:number}}
 export interface BulletView extends Point {eid:number;vx:number;vy:number;radius:number;damage:number;life:number;color:string;owner:'player'|'enemy';weapon?:string}

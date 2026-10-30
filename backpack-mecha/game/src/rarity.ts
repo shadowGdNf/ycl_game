@@ -3,16 +3,16 @@ import {MODULE_BY_ID} from './content.ts';
 
 export const TIERS:readonly Tier[]=[1,2,3,4];
 export const RARITIES=[
- {tier:1,roman:'I',name:'普通',en:'Common',color:'#c1cccf',damage:1,price:1},
- {tier:2,roman:'II',name:'精良',en:'Uncommon',color:'#70b8ff',damage:1.35,price:1.75},
- {tier:3,roman:'III',name:'史诗',en:'Epic',color:'#c595ff',damage:1.8,price:3},
- {tier:4,roman:'IV',name:'传说',en:'Legendary',color:'#ff897d',damage:2.4,price:5},
+ {tier:1,roman:'I',name:'普通',en:'Common',color:'#c1cccf',damage:1,price:1,weaponPrice:1},
+ {tier:2,roman:'II',name:'精良',en:'Uncommon',color:'#70b8ff',damage:1.35,price:1.75,weaponPrice:1.5},
+ {tier:3,roman:'III',name:'史诗',en:'Epic',color:'#c595ff',damage:1.8,price:3,weaponPrice:2.4},
+ {tier:4,roman:'IV',name:'传说',en:'Legendary',color:'#ff897d',damage:2.4,price:5,weaponPrice:3.75},
 ] as const;
 export const validTier=(v:unknown):v is Tier=>TIERS.includes(v as Tier);
 export const rarity=(tier:number)=>RARITIES[tier-1]??RARITIES[0];
 export const rarityName=(tier:number,lang:Lang)=>rarity(tier)[lang==='en'?'en':'name'];
 export const offerTier=(offer:Offer):Tier=>offer.tier??1;
-export const equipmentPrice=(id:string,tier:Tier)=>Math.ceil(MODULE_BY_ID[id].price*rarity(tier).price);
+export const equipmentPrice=(id:string,tier:Tier)=>{const m=MODULE_BY_ID[id],r=rarity(tier);return Math.ceil(m.price*(m.kind==='weapon'?r.weaponPrice:r.price));};
 export const damageScale=(tier:Tier)=>rarity(tier).damage;
 // Explicit values: fractional bonuses, discrete counts and cooldowns need different scaling.
 const legendary:Record<string,number>={S01:.48,S02:.36,S03:.95,S04:.95,S05:.62,S06:54,S07:24,S08:6,S09:19,S10:1.25,S11:.48,S12:.55,

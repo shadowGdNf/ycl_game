@@ -1,9 +1,9 @@
-import { scrapPerCost } from "./progression.js?v=0ed06082a6ae";
-import { offerTier, moduleStat } from "./rarity.js?v=0ed06082a6ae";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=0ed06082a6ae";
-import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=0ed06082a6ae";
-import * as economy from "./economy.js?v=0ed06082a6ae";
-import { supportFeedback } from "./workshop.js?v=0ed06082a6ae";
+import { scrapPerCost } from "./progression.js?v=041ed0015b08";
+import { offerTier, moduleStat } from "./rarity.js?v=041ed0015b08";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=041ed0015b08";
+import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=041ed0015b08";
+import * as economy from "./economy.js?v=041ed0015b08";
+import { supportFeedback } from "./workshop.js?v=041ed0015b08";
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function workshopMarkup(r, o) {
     const t = (zh, en) => o.lang === 'zh' ? zh : en, name = (item) => escape(label(item, o.lang));

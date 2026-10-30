@@ -97,24 +97,38 @@ export function clearPath(start:Point,end:Point,obstacles:Rect[],radius:number,w
  }
  return true;
 }
+type NavigationGrid={cols:number;rows:number;open:Uint8Array;queue:Int32Array;previous:Int32Array};
+// Geometry is static in a battle. Cache passability, not routes or moving targets.
+// Weak keys release a finished battle; the signature also handles edited test arenas.
+const navigationGrids=new WeakMap<Rect[],{signature:string;grids:Map<number,NavigationGrid>}>();
+function navigationGrid(obstacles:Rect[],radius:number,width:number,height:number):NavigationGrid {
+ const signature=`${width},${height}:`+obstacles.map(r=>`${r.x},${r.y},${r.w},${r.h}`).join(';');
+ let entry=navigationGrids.get(obstacles);
+ if(!entry||entry.signature!==signature){entry={signature,grids:new Map()};navigationGrids.set(obstacles,entry);}
+ const cached=entry.grids.get(radius);if(cached)return cached;
+ const cols=Math.ceil(width/50),rows=Math.ceil(height/50),count=cols*rows,open=new Uint8Array(count);
+ for(let i=0;i<count;i++)open[i]=Number(traversable({x:(i%cols+.5)*50,y:(Math.floor(i/cols)+.5)*50},radius+3,obstacles,width,height));
+ const grid={cols,rows,open,queue:new Int32Array(count),previous:new Int32Array(count)};
+ if(entry.grids.size>=24)entry.grids.clear();entry.grids.set(radius,grid);return grid;
+}
 /** Shared navigation service; AI never changes collision rules. Paths are plain JSON. */
 export function findPath(start:Point,end:Point,obstacles:Rect[],radius:number,width=1600,height=1200):Point[] {
- if(!obstacles.length)return [{...end}];
- const size=50,cols=Math.ceil(width/size),rows=Math.ceil(height/size);
+ if(!obstacles.length)return [{x:end.x,y:end.y}];
+ const size=50,{cols,rows,open,queue,previous:prev}=navigationGrid(obstacles,radius,width,height);
  const toCell=(p:Point)=>Math.min(rows-1,Math.max(0,Math.floor(p.y/size)))*cols+Math.min(cols-1,Math.max(0,Math.floor(p.x/size)));
  const center=(i:number)=>({x:(i%cols+.5)*size,y:(Math.floor(i/cols)+.5)*size});
- const a=toCell(start),target=toCell(end),queue=[a],prev:Record<number,number>={[a]:-1};let head=0,best=a,bestD=Infinity;
- while(head<queue.length){const here=queue[head++]!,p=center(here),d=(p.x-end.x)**2+(p.y-end.y)**2;
+ const a=toCell(start),target=toCell(end);prev.fill(-2);prev[a]=-1;queue[0]=a;let head=0,tail=1,best=a,bestD=Infinity;
+ while(head<tail){const here=queue[head++]!,p=center(here),d=(p.x-end.x)**2+(p.y-end.y)**2;
   if(d<bestD){best=here;bestD=d;}if(here===target){best=here;break;}
   for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const x=here%cols+dx!,y=Math.floor(here/cols)+dy!;
    if(x<0||y<0||x>=cols||y>=rows)continue;const next=y*cols+x;
-   if(prev[next]!==undefined||!traversable(center(next),radius+3,obstacles,width,height))continue;
-   prev[next]=here;queue.push(next);
+   if(prev[next]!==-2||!open[next])continue;
+   prev[next]=here;queue[tail++]=next;
   }
  }
  const path:Point[]=[];let node=best;
  while(node!==a&&node>=0){path.push(center(node));node=prev[node]!;}
- path.reverse();if(best===target)path.push({...end});return path;
+ path.reverse();if(best===target)path.push({x:end.x,y:end.y});return path;
 }
 const toward=(a:Point,b:Point)=>Math.atan2(b.y-a.y,b.x-a.x);
 function circle(p:Point,radius:number,warning:number,damage:number,extra:Partial<AttackPlan>={}):AttackPlan {

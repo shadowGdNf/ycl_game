@@ -5,7 +5,7 @@ export function combatSound(e) {
     if (e.type === 'warning')
         return e.source?.startsWith('B') ? 'warning' : undefined;
     const names = { 'shield-break': 'break', critical: 'critical', 'enemy-explosion': 'explosion', 'enemy-fire': 'enemy-shot',
-        'boss-overload-warning': 'warning', 'boss-overload': 'phase', stagger: 'break' };
+        'boss-overload-warning': 'warning', 'boss-overload': 'phase', stagger: 'break', skill: 'overload' };
     if (e.type === 'enemy-attack')
         return e.cue === 'circle' || e.cue === 'drill' ? 'slam' : undefined;
     return names[e.type] ?? (['fire', 'hit', 'kill', 'explosion', 'dash', 'overload', 'phase', 'pickup', 'heal'].includes(e.type) ? e.type : undefined);

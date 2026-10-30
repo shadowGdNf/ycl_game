@@ -2,6 +2,7 @@ import {moduleValue,TIER_EFFECTS,damageScale} from './rarity.ts';
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {activeSupports} from './economy.ts';
 import {scrapPerCost} from './progression.ts';
+import {chassisSkill} from './skills.ts';
 import {nextRandom} from './random.ts';
 import {ARENA,availableBudget,bossPhase,bossTurn,bossPursuitSpeed,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
 import type {AttackPlan,EncounterState,SpawnSpec} from './encounters.ts';
@@ -29,8 +30,9 @@ export interface BattleState extends BattleView {
  bossClock:number;bossTurn:number;bossCenter?:Point;bossStarted:boolean;bossOverloadWarned:boolean;bossEnraged:boolean;slainGroups:string[];
  failureReason?:string;
  playerVelocity?:Point;
+ skillReleased?:boolean;skillPulseAt?:number;
 }
-interface Hit {base:number;kind:DamageKind;weapon?:WeaponState;factor?:number;direct?:boolean;status?:boolean;secondary?:boolean;origin?:Point;arcFirst?:boolean;oilExplosion?:boolean}
+interface Hit {base:number;kind:DamageKind;weapon?:WeaponState;factor?:number;direct?:boolean;status?:boolean;secondary?:boolean;origin?:Point;arcFirst?:boolean;oilExplosion?:boolean;source?:string}
 
 const CONFIG={bulletSpeed:800,waterSpeed:650,iceSpeed:650,oilSpeed:550,missileSpeed:500,droneSpeed:720,bulletRadius:4,
  spawnWarning:.75,spawnGrace:.5,hitGrace:.35,pickupBase:60,maxEnemies:70,softEnemies:45,enemyShotSpeed:240};
@@ -194,7 +196,7 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
  if(!alive(e)||w.status!=='playing')return 0;
  const weapon=hit.weapon,direct=hit.direct!==false,origin=hit.origin||w.player;
  let add=direct&&weapon?support(weapon,'S01'):0;
- if(weapon&&w.chassis==='hive')add+=weapon.id==='W11'?.15:direct?-.1:0;
+ if(w.chassis==='hive')add+=hit.kind==='drone'?.15:weapon&&direct?-.1:0;
  if(direct&&protocol(w,'P03')){const d=distance(w.player,e);add+=d>250?.15:d<120?-.1:0;}
  if(direct&&protocol(w,'P09')&&(e.chill>0||e.frozen>0))add+=.15;
  if(hit.arcFirst&&e.wet>0&&protocol(w,'P01'))add+=.1;
@@ -205,7 +207,7 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
  let amount=hit.base*(weapon?scale(weapon.tier):1)*(1+Math.min(2,add))*(hit.factor??1)*(crit?1.5:1)*Math.min(1.75,1+vulnerable)*100/(100+Math.max(0,e.armor-(direct&&weapon?support(weapon,'S07'):0)));
  if(e.id==='E07'&&Math.abs(angleDiff(angleTo(e,origin),e.angle))<Math.PI/3)amount*=.5;
  const actual=Math.min(e.hp,amount);e.hp=Math.max(0,e.hp-amount);syncBossHP(w,e);
- const source=weapon?.id||hit.kind;w.stats.damageByModule[source]=(w.stats.damageByModule[source]||0)+actual;
+ const source=hit.source||weapon?.id||hit.kind;w.stats.damageByModule[source]=(w.stats.damageByModule[source]||0)+actual;
  event(w,crit?'critical':'hit',e,{amount:actual,source,targetId:e.eid,color:MODULE_BY_ID[source]?.color,from:{x:origin.x,y:origin.y},radius:e.radius});
  if(direct&&weapon?.supports.S08&&crit&&w.time>=weapon.rectifierAt){w.player.shield=Math.min(w.player.maxShield,w.player.shield+support(weapon,'S08'));weapon.rectifierAt=w.time+1;}
  if(hit.status&&weapon)applyStatus(w,e,weapon);
@@ -223,7 +225,7 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
 /** All enemy damage, including hazards, goes through this protection and death ordering. */
 export function damagePlayer(w:BattleState,raw:number,source:string,at:Point=w.player):number {
  const p=w.player;if(w.status!=='playing'||p.dashTime>0||p.invulnerable>0||raw<=0)return 0;
- const damage=raw*100/(100+p.armor)*(w.capacitorDefense>w.time?.7:1),beforeShield=p.shield,beforeHP=p.hp;
+ const damage=raw*100/(100+p.armor)*(w.capacitorDefense>w.time?.7:1)*(w.chassis==='bulwark'&&(p.skillTime??0)>0?.5:1),beforeShield=p.shield,beforeHP=p.hp;
  const absorbed=Math.min(p.shield,damage);p.shield-=absorbed;p.hp=Math.max(0,p.hp-(damage-absorbed));p.invulnerable=CONFIG.hitGrace;w.lastDamage=w.time;
  const actual=Math.min(damage,beforeShield+beforeHP);w.stats.damageTaken+=actual;w.stats.damageTakenBy[source]=(w.stats.damageTakenBy[source]||0)+actual;
  event(w,'player-hit',p,{amount:actual,source,from:{x:at.x,y:at.y},shieldDamage:absorbed,hullDamage:beforeHP-p.hp});
@@ -322,7 +324,10 @@ function tickBullets(w:BattleState,dt:number):void {
    if(w.decoy&&w.decoy.until>w.time&&segmentDistance(w.decoy,before,b)<16+b.radius){w.decoy.hp-=b.damage;b.life=0;continue;}
    if(segmentDistance(w.player,before,b)<w.player.radius+b.radius){const taken=damagePlayer(w,b.damage,b.source,b);if(taken>0&&b.slow>0){w.slowUntil=w.time+2;w.slowAmount=b.slow;}b.life=0;}
   }else if(!b.target){
-   for(const e of w.enemies.filter(alive).sort((a,z)=>distance(before,a)-distance(before,z)||a.eid-z.eid)){
+   // Sort only actual contacts. Dense volleys previously sorted every living enemy
+   // for every projectile, even when the swept segment touched nothing.
+   const contacts=w.enemies.filter(e=>alive(e)&&(b.hitAt[groupKey(e)]??-100)<=w.time-.3&&segmentDistance(e,before,b)<=e.radius+b.radius);
+   for(const e of contacts.sort((a,z)=>distance(before,a)-distance(before,z)||a.eid-z.eid)){
     const key=groupKey(e);if((b.hitAt[key]??-100)>w.time-.3||segmentDistance(e,before,b)>e.radius+b.radius)continue;
     b.hitAt[key]=w.time;hitEnemy(w,e,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:b.applyStatus,origin:before});
     b.pierce--;if(weapon?.id==='W07')b.factor*=.75;
@@ -502,24 +507,48 @@ function contactDamage(w:BattleState):void {
   if(distance(e,w.player)<(charging?e.charge!.radius:e.radius)+w.player.radius){damagePlayer(w,charging?e.charge!.damage:e.damage,e.id,e);e.contactAt=w.time+1;}
  }
 }
+function activateSkill(w:BattleState):void {
+ const p=w.player,skill=chassisSkill(w.chassis);p.skillCooldown=skill.cooldown;p.skillTime=skill.duration;
+ event(w,'skill',p,{source:w.chassis,color:skill.color,radius:w.chassis==='scavenger'?320:w.chassis==='bulwark'?180:65});
+ if(w.chassis==='scavenger'){const heal=Math.min(6,p.maxHp-p.hp);p.hp+=heal;if(heal>0)event(w,'heal',p,{amount:heal,source:'skill-scavenger'});}
+ if(w.chassis==='bulwark')areaDamage(w,p,180,{base:36,kind:'melee',direct:false,source:'skill-bulwark'});
+ if(w.chassis==='kestrel'){p.dashCooldown=0;p.invulnerable=Math.max(p.invulnerable,.45);}
+ if(w.chassis==='hive')w.skillPulseAt=w.time;
+}
+function tickSkill(w:BattleState):void {
+ if(w.chassis!=='hive'||(w.player.skillTime??0)<=1e-8||w.time+1e-8<(w.skillPulseAt??0))return;
+ w.skillPulseAt=w.time+.6;
+ for(let i=0;i<3;i++){
+  let target:EnemyState|undefined,best=Infinity;
+  for(const e of w.enemies){if(!alive(e))continue;const d=distance(w.player,e);if(d>450+e.radius)continue;
+   if(e.eid===w.priority&&w.priorityUntil>w.time){target=e;break;}if(d<best){target=e;best=d;}}
+  if(!target)break;
+  const a=w.time*1.8+i*Math.PI*2/3,origin={x:w.player.x+Math.cos(a)*62,y:w.player.y+Math.sin(a)*62};
+  event(w,'arc',origin,{source:'skill-hive',to:{x:target.x,y:target.y},color:chassisSkill('hive').color,targetId:target.eid});
+  hitEnemy(w,target,{base:6,kind:'drone',direct:false,source:'skill-hive',origin});
+ }
+}
 function tickPlayer(w:BattleState,input:InputFrame,dt:number):void {
  const p=w.player,wasDashing=p.dashTime>0,previous={x:p.x,y:p.y};
  p.dashCooldown=Math.max(0,p.dashCooldown-dt);p.overloadCooldown=Math.max(0,p.overloadCooldown-dt);p.dashTime=Math.max(0,p.dashTime-dt);p.overloadTime=Math.max(0,p.overloadTime-dt);p.invulnerable=Math.max(0,p.invulnerable-dt);
+ p.skillCooldown=Math.max(0,(p.skillCooldown??0)-dt);p.skillTime=Math.max(0,(p.skillTime??0)-dt);
  if(input.target){const chosen=w.enemies.filter(alive).sort((a,b)=>distance(a,input.target!)-distance(b,input.target!))[0];if(chosen&&distance(chosen,input.target)<chosen.radius+55){w.priority=chosen.eid;w.priorityUntil=w.time+2;}}
  if(w.priorityUntil<=w.time||!w.enemies.some(e=>e.eid===w.priority&&alive(e)))w.priority=undefined;
  if(wasDashing&&p.dashTime===0&&w.utilities.U11&&w.time>=w.decoyAt){w.decoyAt=w.time+10;w.decoy={...w.dashOrigin,hp:TIER_EFFECTS.decoyHP[w.utilities.U11-1]!,until:w.time+utility(w,'U11')};event(w,'decoy',w.decoy);}
  if(w.decoy&&(w.decoy.until<=w.time||w.decoy.hp<=0))w.decoy=undefined;
  const length=Math.hypot(input.x,input.y),x=length>1?input.x/length:input.x,y=length>1?input.y/length:input.y;
+ if(input.skill&&w.skillReleased!==false&&p.skillCooldown<=0)activateSkill(w);
+ w.skillReleased=!input.skill;
  if(input.dash&&w.dashReleased&&p.dashCooldown<=0){w.dashAngle=length>.01?Math.atan2(y,x):p.angle;p.dashTime=.18;p.dashCooldown=w.dashBase;w.dashOrigin={x:p.x,y:p.y};w.lastDash=w.time;
   for(const weapon of w.weapons)weapon.springUsed=false;event(w,'dash',p);}
  if(input.overload&&w.overloadReleased&&p.overloadCooldown<=0){p.overloadTime=4;p.overloadCooldown=20;event(w,'overload',p);}
  w.dashReleased=!input.dash;w.overloadReleased=!input.overload;
  if(p.dashTime>0){p.angle=w.dashAngle;move(w,p,Math.cos(w.dashAngle)*p.speed*3.2*dt,Math.sin(w.dashAngle)*p.speed*3.2*dt);}
- else {const slow=w.slowUntil>w.time?w.slowAmount:0;if(length>.01)p.angle=Math.atan2(y,x);move(w,p,x*p.speed*(1-slow)*dt,y*p.speed*(1-slow)*dt);}
+ else {const slow=w.slowUntil>w.time?w.slowAmount:0,boost=w.chassis==='kestrel'&&p.skillTime>0?1.35:1;if(length>.01)p.angle=Math.atan2(y,x);move(w,p,x*p.speed*(1-slow)*boost*dt,y*p.speed*(1-slow)*boost*dt);}
  w.playerVelocity={x:(p.x-previous.x)/dt,y:(p.y-previous.y)/dt};
  if(w.time-w.lastDamage>=4)p.shield=Math.min(p.maxShield,p.shield+w.shieldRegen*dt);
  if(w.utilities.U03&&w.time>=w.repairAt){w.repairAt+=10;const cap=TIER_EFFECTS.repairCap[w.utilities.U03-1]!,heal=Math.max(0,Math.min(utility(w,'U03'),p.maxHp-p.hp,cap-w.repairAmount));p.hp+=heal;w.repairAmount+=heal;if(heal)event(w,'heal',p,{amount:heal,source:'U03'});}
- const pickup=(w.chassis==='scavenger'?90:CONFIG.pickupBase)+utility(w,'U04');
+ const pickup=Math.max((w.chassis==='scavenger'?90:CONFIG.pickupBase)+utility(w,'U04'),w.chassis==='scavenger'&&p.skillTime>0?320:0);
  w.drops=w.drops.filter(drop=>{if(distance(drop,p)>pickup)return true;w.stats.goldEarned+=drop.value;event(w,'pickup',drop,{amount:drop.value,to:{x:p.x,y:p.y}});
   if(w.utilities.U04&&w.time>=w.pickupAt){p.dashCooldown=Math.max(0,p.dashCooldown-.2);w.pickupAt=w.time+1;}return false;});
 }
@@ -528,7 +557,7 @@ function stepFixed(w:BattleState,input:InputFrame,dt:number):void {
  if(!w.bossId&&w.time+dt>=w.duration-1e-8){w.time=w.duration;w.tick++;complete(w,true);return;}
  w.time+=dt;w.tick++;
  if(w.bossId&&w.time>=300){complete(w,false,'timeout');return;}
- tickPlayer(w,input,dt);tickSpawns(w);tickEnemyStatuses(w,dt);tickEnemies(w,dt);tickBoss(w,dt);tickWeapons(w,dt);tickBullets(w,dt);tickZones(w,dt);contactDamage(w);
+ tickPlayer(w,input,dt);tickSpawns(w);tickEnemyStatuses(w,dt);tickEnemies(w,dt);tickBoss(w,dt);tickSkill(w);tickWeapons(w,dt);tickBullets(w,dt);tickZones(w,dt);contactDamage(w);
  if(w.status==='playing'&&w.bossStarted&&!w.enemies.some(e=>e.kind==='boss'&&e.hp>0&&!e.dead))complete(w,true);
  w.enemies=w.enemies.filter(e=>!e.dead);
  w.events=w.events.filter(e=>e.at>=w.time-2).slice(-350);

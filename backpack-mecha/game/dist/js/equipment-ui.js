@@ -1,6 +1,6 @@
-import { MODULE_BY_ID } from "./content.js?v=0ed06082a6ae";
-import { rarity, rarityName, moduleValue, moduleStat, damageScale, TIER_EFFECTS } from "./rarity.js?v=0ed06082a6ae";
-import { supportBenefit } from "./workshop.js?v=0ed06082a6ae";
+import { MODULE_BY_ID } from "./content.js?v=041ed0015b08";
+import { rarity, rarityName, moduleValue, moduleStat, damageScale, TIER_EFFECTS } from "./rarity.js?v=041ed0015b08";
+import { supportBenefit } from "./workshop.js?v=041ed0015b08";
 export function rarityBadge(tier, lang) { return `<span class="rarity-badge rarity-${tier}">${rarity(tier).roman} · ${rarityName(tier, lang)}</span>`; }
 export function equipmentDescription(item, lang) {
     const m = MODULE_BY_ID[item.id], t = item.tier - 1, v = moduleValue(item.id, item.tier), en = lang === 'en', fmt = (n) => Number(n.toFixed(2));

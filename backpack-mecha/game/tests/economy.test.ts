@@ -92,7 +92,7 @@ test('damaged sale and reward journals fail atomically without erasing the activ
 
 test('duplicate combination, standard sale value and once-per-shop repairs',()=>{
  const r=shopRun();r.gold=500;assert.equal(e.upgrade(r,r.items[0].uid).ok,false);item(r,'W01');
- assert.equal(e.upgrade(r,r.items[0].uid).ok,true);assert.equal(r.gold,500);assert.equal(e.standardCost(r.items[0]),42);assert.equal(e.upgrade(r,r.items[0].uid).ok,false);
+ assert.equal(e.upgrade(r,r.items[0].uid).ok,true);assert.equal(r.gold,500);assert.equal(e.standardCost(r.items[0]),36);assert.equal(e.upgrade(r,r.items[0].uid).ok,false);
  r.hp=50;assert.equal(e.repair(r).ok,true);assert.equal(r.hp,80);assert.equal(r.gold,482);assert.equal(e.repair(r).ok,false);
  const price=e.standardCost(r.items[0]);assert.equal(e.sell(r,r.items[0].uid).ok,true);assert.equal(r.gold,482+Math.floor(price*.5));
 });

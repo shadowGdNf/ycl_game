@@ -18,7 +18,7 @@ with ZipFile(static, 'w', ZIP_DEFLATED, compresslevel=9) as archive:
     for file in sorted((root / 'dist').rglob('*')):
         if file.is_file():
             archive.write(file, file.relative_to(root / 'dist'))
-    archive.writestr('START-HERE.txt', f'Backpack Mecha v{version}\nServe this directory over HTTP, for example: python3 -m http.server 4174\nOpen http://localhost:4174. Do not open index.html as file://.\nWASD/Arrows move; Space dash; E overdrive; P pause.\nChinese default; EN button switches language. Progress is local to each browser origin.\n')
+    archive.writestr('START-HERE.txt', f'Backpack Mecha v{version}\nServe this directory over HTTP, for example: python3 -m http.server 4174\nOpen http://localhost:4174. Do not open index.html as file://.\nWASD/Arrows move; Space dash; E overdrive; Q chassis skill; P pause.\nChinese default; EN button switches language. Progress is local to each browser origin.\n')
 
 source = out / f'backpack-mecha-v{version}-source.zip'
 ignored = {'node_modules', '.git', 'dist', '.DS_Store', '.sites-runtime', '.sites-checkout'}
