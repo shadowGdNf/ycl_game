@@ -124,8 +124,10 @@ function weaponEffect(c:CanvasRenderingContext2D,e:CombatEvent,k:number,reduced:
  }else if(id==='W08'||id==='W09'){
   const saw=id==='W09',r=range*(.82+.15*k),a=saw?TAU:Math.PI*2/3;
   c.strokeStyle=saw?'#ffe09d':'#a7f4ef';c.lineWidth=reduced?3:7*(1-k)+2;
-  c.beginPath();c.arc(0,0,r,saw?0:-a/2,saw?TAU:a/2);c.stroke();
-  c.globalAlpha*=.35;c.lineWidth=16;c.beginPath();c.arc(0,0,r*.9,saw?0:-a/2,saw?TAU:a/2);c.stroke();
+  const head=saw||reduced?a/2:-a/2+a*Math.min(1,k*2.5),tail=saw||reduced?-a/2:Math.max(-a/2,head-.85);
+  c.beginPath();c.arc(0,0,r,saw?0:tail,saw?TAU:head);c.stroke();
+  c.globalAlpha*=.35;c.lineWidth=16;c.beginPath();c.arc(0,0,r*.9,saw?0:tail,saw?TAU:head);c.stroke();
+  if(!saw&&!reduced){c.globalAlpha=1-k;c.strokeStyle='#f0ffef';c.lineWidth=3;line(c,Math.cos(head)*r*.72,Math.sin(head)*r*.72,Math.cos(head)*r,Math.sin(head)*r);}
   c.globalAlpha=1-k;c.lineWidth=2;
   if(!reduced)for(let i=0;i<(saw?16:7);i++){const angle=saw?i*TAU/16+e.at*9:-a/2+i*a/6;line(c,Math.cos(angle)*r,Math.sin(angle)*r,Math.cos(angle+.03)*(r+8),Math.sin(angle+.03)*(r+8));}
  }else{
@@ -157,6 +159,10 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
   c.lineWidth=critical?2.8:2;c.strokeStyle=critical?'#ffe390':e.color??'#f6d39f';
   if(!reduced&&age<.24)sparks(c,e.id,clamp(age/.24),critical?10:6,critical?40:23,angle);
   if(age<.12){c.globalAlpha=reduced?.3:(1-age/.12)*.85;circle(c,0,0,(critical?13:8)*(1+k));c.fillStyle='#fff3d5';c.fill();}
+  if(!reduced&&age<.18){
+   c.save();c.rotate(angle??0);c.globalAlpha=(1-age/.18)*.8;c.strokeStyle='#fff2ca';c.lineWidth=critical?3:2;
+   const reach=(critical?24:15)*(1+age*2);line(c,-reach*.45,-reach,reach*.45,reach);line(c,-reach,reach*.4,reach,-reach*.4);c.restore();
+  }
   c.globalAlpha=alpha;if(label)damageText(c,label,k,scale,critical?'#ffe47f':'#fdf0d0',critical);
  }else if(e.type==='arc'){
   const target=e.to??end,dx=target?target.x-e.x:24,dy=target?target.y-e.y:0,n=Math.max(4,Math.ceil(Math.hypot(dx,dy)/32));
@@ -176,7 +182,8 @@ export function drawCombatEffect(c:CanvasRenderingContext2D,e:CombatEvent,age:nu
  }else if(e.type==='enemy-attack'){
   enemyAttack(c,e,k,reduced);
  }else if(e.type==='enemy-fire'){
-  c.fillStyle='#ffb483';circle(c,0,0,5+(1-k)*10);c.fill();
+  c.rotate(e.angle??0);c.fillStyle='#ffb483';circle(c,0,0,5+(1-k)*10);c.fill();
+  if(!reduced){c.strokeStyle='#ffe5b7';c.lineWidth=2;for(let i=-1;i<=1;i++)line(c,8,i*3,15+(1-k)*18,i*9*(1-k));}
  }else if(e.type==='boss-overload-warning'||e.type==='boss-overload'){
   c.strokeStyle='#ff986c';c.lineWidth=3;circle(c,0,0,reduced?95:60+k*90);c.stroke();
   c.font=`bold ${15/scale}px sans-serif`;c.textAlign='center';c.fillStyle='#ffe0ae';

@@ -1,0 +1,210 @@
+{
+  "browser": "156.0.8078.74",
+  "checks": [
+    "active connections carry animated energy while the board is idle",
+    "changing reduced motion settles the workshop immediately",
+    "drag ghost and placement transition render after release",
+    "animated placement remains undoable",
+    "walk and dash render; paused combat remains pixel-stable",
+    "reduced-motion connection display remains pixel-stable",
+    "390 × 844 workbench fits",
+    "18 weapons and 16 enemies render without mutating any simulation field"
+  ],
+  "layout": {
+    "width": 390,
+    "scrollWidth": 390,
+    "bottom": 836
+  },
+  "scenes": {
+    "cases": [
+      {
+        "weapon": "W01",
+        "enemy": "E03",
+        "shots": 7
+      },
+      {
+        "weapon": "W02",
+        "enemy": "E03",
+        "shots": 3
+      },
+      {
+        "weapon": "W03",
+        "enemy": "E03",
+        "shots": 5
+      },
+      {
+        "weapon": "W04",
+        "enemy": "E03",
+        "shots": 4
+      },
+      {
+        "weapon": "W05",
+        "enemy": "E03",
+        "shots": 13
+      },
+      {
+        "weapon": "W06",
+        "enemy": "E03",
+        "shots": 2
+      },
+      {
+        "weapon": "W07",
+        "enemy": "E03",
+        "shots": 2
+      },
+      {
+        "weapon": "W08",
+        "enemy": "E03",
+        "shots": 3
+      },
+      {
+        "weapon": "W09",
+        "enemy": "E03",
+        "shots": 10
+      },
+      {
+        "weapon": "W10",
+        "enemy": "E03",
+        "shots": 2
+      },
+      {
+        "weapon": "W11",
+        "enemy": "E03",
+        "shots": 5
+      },
+      {
+        "weapon": "W12",
+        "enemy": "E03",
+        "shots": 5
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E03",
+        "shots": 19
+      },
+      {
+        "weapon": "W14",
+        "enemy": "E03",
+        "shots": 3
+      },
+      {
+        "weapon": "W15",
+        "enemy": "E03",
+        "shots": 2
+      },
+      {
+        "weapon": "W16",
+        "enemy": "E03",
+        "shots": 3
+      },
+      {
+        "weapon": "W17",
+        "enemy": "E03",
+        "shots": 2
+      },
+      {
+        "weapon": "W18",
+        "enemy": "E03",
+        "shots": 4
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E01",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E02",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E03",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E04",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E05",
+        "shots": 10
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E06",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E07",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E08",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E09",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E10",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E11",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E12",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E13",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E14",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E15",
+        "shots": 19
+      },
+      {
+        "weapon": "W13",
+        "enemy": "E16",
+        "shots": 19
+      }
+    ],
+    "renderSamples": 5250,
+    "renderMs": {
+      "p50": 0,
+      "p95": 0.10000002384185791
+    }
+  },
+  "screenshots": [
+    "qa/dev15-workshop.png",
+    "qa/dev15-drag.png",
+    "qa/dev15-placed.png",
+    "qa/dev15-dash.png",
+    "qa/dev15-workshop-mobile.png",
+    "qa/dev15-combat-fixture.png"
+  ],
+  "errors": [],
+  "limits": [
+    "Isolated desktop Chrome with synthetic states; phone dimensions are not physical-device testing.",
+    "Render timings are synchronous fixture samples, not live frame rate."
+  ]
+}

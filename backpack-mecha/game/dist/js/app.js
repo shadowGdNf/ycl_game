@@ -1,21 +1,23 @@
-import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=46fa266b192c";
-import { chassisSkill, skillName, skillDescription } from "./skills.js?v=46fa266b192c";
-import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=46fa266b192c";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=46fa266b192c";
-import { workshopMarkup } from "./ui-workshop.js?v=46fa266b192c";
-import { TRAINING_PRESETS, trainingRun, chassisUnlocked, difficultyLimit } from "./training.js?v=46fa266b192c";
-import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=46fa266b192c";
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=46fa266b192c";
-import * as economy from "./economy.js?v=46fa266b192c";
-import { createBattle, stepBattle, battleResult } from "./combat.js?v=46fa266b192c";
-import { Renderer } from "./renderer.js?v=46fa266b192c";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=46fa266b192c";
-import { GameAudio } from "./audio.js?v=46fa266b192c";
-import { overloadRequested, FocusGesture } from "./input.js?v=46fa266b192c";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=46fa266b192c";
-import { BUILD_VERSION } from "./version.js?v=46fa266b192c";
-import { ForegroundFrameClock } from "./performance.js?v=46fa266b192c";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=46fa266b192c";
+import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=92ce38fe5a4a";
+import { chassisSkill, skillName, skillDescription } from "./skills.js?v=92ce38fe5a4a";
+import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=92ce38fe5a4a";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=92ce38fe5a4a";
+import { workshopMarkup } from "./ui-workshop.js?v=92ce38fe5a4a";
+import { WorkshopRenderer } from "./workshop-renderer.js?v=92ce38fe5a4a";
+import { snapPlacement } from "./placement-input.js?v=92ce38fe5a4a";
+import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=92ce38fe5a4a";
+import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=92ce38fe5a4a";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=92ce38fe5a4a";
+import * as economy from "./economy.js?v=92ce38fe5a4a";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=92ce38fe5a4a";
+import { Renderer } from "./renderer.js?v=92ce38fe5a4a";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=92ce38fe5a4a";
+import { GameAudio } from "./audio.js?v=92ce38fe5a4a";
+import { overloadRequested, FocusGesture } from "./input.js?v=92ce38fe5a4a";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=92ce38fe5a4a";
+import { BUILD_VERSION } from "./version.js?v=92ce38fe5a4a";
+import { ForegroundFrameClock } from "./performance.js?v=92ce38fe5a4a";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=92ce38fe5a4a";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
@@ -24,6 +26,8 @@ let selectedChassis = 'scavenger', selectedMode = 'full', selectedDifficulty = 0
 let toastTimer = 0, lastFrame = 0, accumulator = 0, lastSave = 0, lastHud = 0, homeTime = 0, assetsReady = false, assetsLoading = false, assetsFailed = false, renderFailed = false, assetsLoaded = 0, tutorialShown = '', activeDialog = '', lastUnlocks = [];
 const renderer = new Renderer($('battle-canvas'));
 const audio = new GameAudio(profile.settings);
+const workshopRenderer = new WorkshopRenderer();
+let workshopTime = 0, lastBoardFrame = 0;
 const keys = new Set();
 let dashQueued = false, overloadQueued = false, skillQueued = false, targetQueued, targetMarker, targetUntil = 0;
 let joy = null;
@@ -42,10 +46,13 @@ const formatTime = (n) => `${Math.floor(n / 60).toString().padStart(2, '0')}:${M
 function resetControls() { frameClock.reset(); keys.clear(); joy = null; dashQueued = false; overloadQueued = false; skillQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
 function seed() { return 'RIG-' + Math.random().toString(36).slice(2, 8).toUpperCase(); }
 let homeSeed = seed();
-let workshopTab = 'shop';
+let workshopTab = 'shop', lastPrepKey = '';
 let catalogTab = 'modules', catalogQuery = '';
 let practiceSetup = { chassis: 'scavenger', boss: 'B1A', difficulty: 0, tier: 2, power: 18, modules: [...TRAINING_PRESETS[0].modules] };
 let careerState = null;
+let practiceDraft = null, practiceSelectedUid = '', practiceRotation = 0, practiceUndo = null, practiceDrag = null;
+const practiceRenderer = new WorkshopRenderer();
+let practiceOptions = [], practiceHover;
 function toast(message) { $('toast').textContent = message; $('toast').classList.add('show'); window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => $('toast').classList.remove('show'), 3500); }
 function persist() { void saveGame({ version: 1, profile, run: careerState ? careerState.run : run, battle: careerState ? careerState.battle : battle, savedAt: Date.now() }).then(ok => { const warn = $('save-warning'); warn.hidden = ok; if (!ok)
     warn.textContent = t('浏览器保存不可用；本次游戏仍可继续。', 'Browser storage unavailable. You can keep playing this session.'); }); }
@@ -79,6 +86,7 @@ async function loadArtwork() {
         assetsReady = true;
         drawIcons();
         drawBoard();
+        drawTrainingBoard();
     }
     catch (error) {
         console.error(error);
@@ -171,6 +179,15 @@ function describe(item) { return escape(equipmentDescription(item, profile.langu
 function renderPrep() {
     if (!run)
         return;
+    const key = `${run.seed}:${run.wave}`;
+    if (displayedScreen !== 'prep' || key !== lastPrepKey) {
+        workshopTab = 'shop';
+        selectedUid = '';
+        pendingBuy = -1;
+        placementArmed = false;
+        heldRotation = 0;
+    }
+    lastPrepKey = key;
     showScreen('prep');
     applySettings();
     audio.stop();
@@ -201,111 +218,23 @@ function drawBoard() {
     const canvas = $('backpack-canvas');
     if (!canvas || !run)
         return;
-    const ctx = canvas.getContext('2d'), size = 750, cell = 150;
-    ctx.clearRect(0, 0, size, size);
-    ctx.fillStyle = '#142126';
-    ctx.fillRect(0, 0, size, size);
-    for (let y = 0; y < 5; y++)
-        for (let x = 0; x < 5; x++) {
-            const corner = x === 0 && y === 0 ? 0 : x === 4 && y === 0 ? 1 : x === 0 && y === 4 ? 2 : x === 4 && y === 4 ? 3 : -1;
-            const locked = corner >= 0 && !run.unlockedCorners.includes(corner);
-            ctx.fillStyle = locked ? '#10191f' : '#1d2e34';
-            ctx.fillRect(x * cell + 5, y * cell + 5, cell - 10, cell - 10);
-            ctx.strokeStyle = '#324b51';
-            ctx.strokeRect(x * cell + 5.5, y * cell + 5.5, cell - 11, cell - 11);
-            if (locked) {
-                ctx.fillStyle = '#516167';
-                ctx.font = '27px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('×', x * cell + 75, y * cell + 85);
-            }
-            else {
-                ctx.fillStyle = '#3d555d';
-                ctx.beginPath();
-                ctx.arc(x * cell + 75, y * cell + 75, 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-    for (const item of run.items.filter(i => !i.stored)) {
-        const m = MODULE_BY_ID[item.id], cells = economy.getCells(item), sel = item.uid === selectedUid;
-        ctx.fillStyle = rarity(item.tier).color + (sel ? '55' : '25');
-        ctx.strokeStyle = sel ? '#fff5d4' : rarity(item.tier).color;
-        ctx.lineWidth = sel ? 4 : 2;
-        for (const p of cells) {
-            ctx.fillRect(p.x * cell + 9, p.y * cell + 9, cell - 18, cell - 18);
-            ctx.strokeRect(p.x * cell + 9, p.y * cell + 9, cell - 18, cell - 18);
-            for (const d of [{ x: 1, y: 0 }, { x: 0, y: 1 }])
-                if (cells.some(q => q.x === p.x + d.x && q.y === p.y + d.y)) {
-                    ctx.fillRect(p.x * cell + (d.x ? cell - 15 : 10), p.y * cell + (d.y ? cell - 15 : 10), d.x ? 30 : cell - 20, d.y ? 30 : cell - 20);
-                }
-        }
-        const center = { x: cells.reduce((n, p) => n + p.x + .5, 0) / cells.length * cell, y: cells.reduce((n, p) => n + p.y + .5, 0) / cells.length * cell };
-        const icon = document.createElement('canvas');
-        icon.width = 128;
-        icon.height = 128;
-        if (assetsReady)
-            renderer.icon(icon, item.id);
-        ctx.drawImage(icon, center.x - 64, center.y - 66, 128, 128);
-        ctx.textAlign = 'left';
-        ctx.font = 'bold 19px monospace';
-        ctx.fillStyle = rarity(item.tier).color;
-        const first = cells.reduce((a, b) => a.y < b.y || a.y === b.y && a.x < b.x ? a : b);
-        ctx.fillText(`${item.id} · ${tier(item.tier)}`, first.x * cell + 16, first.y * cell + 29);
-    }
-    for (const support of run.items.filter(i => !i.stored && i.link)) {
-        const weapon = run.items.find(i => i.uid === support.link);
-        if (!weapon)
-            continue;
-        const a = economy.getCells(support), b = economy.getCells(weapon);
-        let pair;
-        for (const p of a)
-            for (const q of b)
-                if (Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1)
-                    pair = [p, q];
-        if (pair) {
-            ctx.strokeStyle = '#6ff3d3';
-            ctx.lineWidth = 6;
-            ctx.beginPath();
-            ctx.moveTo((pair[0].x + .5) * cell, (pair[0].y + .5) * cell + 35);
-            ctx.lineTo((pair[1].x + .5) * cell, (pair[1].y + .5) * cell + 35);
-            ctx.stroke();
-        }
-    }
-    for (const option of boardOptions) {
-        const item = option.item;
-        if (!item)
-            continue;
-        ctx.beginPath();
-        ctx.arc((item.x + .5) * cell, (item.y + .5) * cell, 12, 0, Math.PI * 2);
-        const unlinked = MODULE_BY_ID[item.id].kind === 'support' && !option.linkedWeapon;
-        ctx.fillStyle = unlinked ? '#f3ac62' : '#6ff3d3';
-        ctx.fill();
-        ctx.strokeStyle = '#10191f';
-        ctx.lineWidth = 4;
-        ctx.stroke();
-        ctx.fillStyle = '#10191f';
-        ctx.font = 'bold 22px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(option.swappedUid ? '⇄' : option.autoRotated ? '↻' : unlinked ? '○' : '+', (item.x + .5) * cell, (item.y + .5) * cell + 8);
-    }
-    const preview = drag?.moved ? dragPreview() : boardHover;
-    if (preview?.item) {
-        ctx.fillStyle = preview.ok ? (preview.swappedUid ? '#f3ac6277' : '#48d1c466') : '#f05b5b66';
-        ctx.strokeStyle = preview.ok ? '#afffe4' : '#ff9d8d';
-        ctx.lineWidth = 5;
-        for (const p of economy.getCells(preview.item)) {
-            ctx.fillRect(p.x * cell + 8, p.y * cell + 8, cell - 16, cell - 16);
-            ctx.strokeRect(p.x * cell + 8, p.y * cell + 8, cell - 16, cell - 16);
-        }
-    }
+    workshopRenderer.draw(canvas, run, { time: workshopTime, reduced: profile.settings.reducedMotion, ready: assetsReady, selected: selectedUid,
+        placements: boardOptions, preview: drag?.moved ? dragPreview() : boardHover,
+        drag: drag?.moved && drag.point ? { uid: drag.uid, point: drag.point } : undefined, icon: (canvas, id) => renderer.icon(canvas, id) });
 }
-function dragPreview() {
-    if (!run || !drag)
-        return;
-    const target = run.items.find(i => i.uid === drag.targetUid);
-    return target ? economy.previewSmartPlacement(run, drag.uid, target.x, target.y, heldRotation, true, true, target.uid) : economy.previewSmartPlacement(run, drag.uid, drag.x, drag.y, heldRotation);
+function dragPreview() { return drag?.preview; }
+function boardCoords(canvas, e) { const c = canvas.getBoundingClientRect(); return { x: (e.clientX - c.left) / c.width * 5, y: (e.clientY - c.top) / c.height * 5 }; }
+function boardPoint(e) { const p = boardCoords($('backpack-canvas'), e); return { x: Math.floor(p.x), y: Math.floor(p.y) }; }
+function updateDrag(canvas, e, d, r, rotation) {
+    const p = boardCoords(canvas, e);
+    d.point = { x: p.x * 150, y: p.y * 150 };
+    if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) > 6)
+        d.moved = true;
+    d.x = Math.round(p.x - d.offsetX);
+    d.y = Math.round(p.y - d.offsetY);
+    if (d.moved)
+        d.preview = snapPlacement(r, d.uid, p, { x: d.offsetX, y: d.offsetY }, rotation);
 }
-function boardPoint(e) { const c = $('backpack-canvas').getBoundingClientRect(); return { x: Math.floor((e.clientX - c.left) / c.width * 5), y: Math.floor((e.clientY - c.top) / c.height * 5) }; }
 function commitEdit(result, before, sound = 'connect') {
     if (result.ok) {
         editUndo = before;
@@ -331,36 +260,39 @@ function bindBoard() {
                 return;
             }
             if (placementArmed && selectedItem()) {
-                const target = run.items.find(i => !i.stored && i.uid !== selectedUid && economy.getCells(i).some(c => c.x === p.x && c.y === p.y));
-                boardHover = target ? economy.previewSmartPlacement(run, selectedUid, target.x, target.y, heldRotation, true, true, target.uid) : economy.previewSmartPlacement(run, selectedUid, p.x, p.y, heldRotation);
+                boardHover = snapPlacement(run, selectedUid, boardCoords(canvas, e), { x: .5, y: .5 }, heldRotation);
                 drawBoard();
             }
             return;
         }
         if (drag.pointerId !== e.pointerId)
             return;
-        if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 6)
-            drag.moved = true;
-        drag.x = p.x - drag.offsetX;
-        drag.y = p.y - drag.offsetY;
-        drag.targetUid = run.items.find(i => !i.stored && i.uid !== drag.uid && economy.getCells(i).some(c => c.x === p.x && c.y === p.y))?.uid;
-        const rack = document.querySelector('.rack');
-        rack?.classList.toggle('drop-target', !!document.elementFromPoint(e.clientX, e.clientY)?.closest('.rack'));
+        updateDrag(canvas, e, drag, run, heldRotation);
+        document.querySelector('.rack')?.classList.toggle('drop-target', !!document.elementFromPoint(e.clientX, e.clientY)?.closest('.rack'));
         drawBoard();
     };
     const release = (e) => {
         if (!drag || drag.pointerId !== e.pointerId || !run)
             return;
         const d = drag;
+        updateDrag(canvas, e, d, run, heldRotation);
         drag = null;
         document.querySelector('.rack')?.classList.remove('drop-target');
         if (!d.moved) {
-            placementArmed = true;
-            renderPrep();
+            if (d.tapUid) {
+                selectedUid = d.tapUid;
+                heldRotation = d.tapRotation ?? 0;
+                const p = boardPoint(e);
+                placeAt(p.x, p.y);
+            }
+            else {
+                placementArmed = true;
+                renderPrep();
+            }
             return;
         }
         const before = structuredClone(run), target = document.elementFromPoint(e.clientX, e.clientY), rack = target?.closest('.rack'), slot = target?.closest('.rack-slot[data-uid]');
-        const result = rack ? (slot?.dataset.uid && slot.dataset.uid !== d.uid ? economy.swapWithReserve(run, d.uid, slot.dataset.uid) : economy.storeItem(run, d.uid)) : d.targetUid ? economy.swapItems(run, d.uid, d.targetUid, heldRotation) : economy.moveItem(run, d.uid, d.x, d.y, heldRotation);
+        const result = rack ? (slot?.dataset.uid && slot.dataset.uid !== d.uid ? economy.swapWithReserve(run, d.uid, slot.dataset.uid) : economy.storeItem(run, d.uid)) : economy.applyPlacement(run, d.uid, d.preview);
         commitEdit(result, before);
         drawBoard();
     };
@@ -373,20 +305,21 @@ function bindBoard() {
     canvas.onpointerdown = e => {
         if (!run || drag || e.button !== 0)
             return;
-        const p = boardPoint(e), item = run.items.find(i => !i.stored && economy.getCells(i).some(c => c.x === p.x && c.y === p.y));
-        if (pendingBuy >= 0 || placementArmed && selectedUid && item?.uid !== selectedUid) {
+        const raw = boardCoords(canvas, e), p = { x: Math.floor(raw.x), y: Math.floor(raw.y) }, item = run.items.find(i => !i.stored && economy.getCells(i).some(c => c.x === p.x && c.y === p.y));
+        if (pendingBuy >= 0) {
             placeAt(p.x, p.y);
             e.preventDefault();
             return;
         }
         if (item) {
+            const tapUid = placementArmed && selectedUid && selectedUid !== item.uid ? selectedUid : undefined, tapRotation = heldRotation;
             pendingBuy = -1;
             workshopTab = 'module';
             heldRotation = selectedUid === item.uid && placementArmed ? heldRotation : item.rotation;
             selectedUid = item.uid;
             boardOptions = economy.smartPlacementOptions(run, item.uid, heldRotation);
             boardHover = undefined;
-            drag = { pointerId: e.pointerId, uid: item.uid, startX: e.clientX, startY: e.clientY, offsetX: p.x - item.x, offsetY: p.y - item.y, x: item.x, y: item.y, moved: false };
+            drag = { pointerId: e.pointerId, uid: item.uid, startX: e.clientX, startY: e.clientY, offsetX: raw.x - item.x, offsetY: raw.y - item.y, x: item.x, y: item.y, moved: false, tapUid, tapRotation };
             canvas.setPointerCapture(e.pointerId);
             drawBoard();
         }
@@ -424,7 +357,7 @@ function bindBoard() {
             heldRotation = item.rotation;
             placementArmed = true;
             boardOptions = economy.smartPlacementOptions(run, item.uid, heldRotation);
-            drag = { pointerId: e.pointerId, uid: item.uid, startX: e.clientX, startY: e.clientY, offsetX: 0, offsetY: 0, x: -1, y: -1, moved: false };
+            drag = { pointerId: e.pointerId, uid: item.uid, startX: e.clientX, startY: e.clientY, offsetX: .5, offsetY: .5, x: -1, y: -1, moved: false };
             slot.setPointerCapture(e.pointerId);
             e.preventDefault();
             drawBoard();
@@ -475,6 +408,8 @@ function showChassisGrowth() {
     openModal(`<div class="eyebrow">CHASSIS / LEVEL ${g.level}</div><h2>${escape(name(CHASSIS_BY_ID[run.chassis]))} · ${t(path.name, path.en)}</h2><p>${t('战后获得经验；升级自动提升三项基础属性，并获得 1 个专精点。成长持续到本次远征结束。', 'Earn XP after victories. Every level raises all three base stats and awards one specialization point for this expedition.')}</p><div class="growth-stats"><span>HP <b>${stats.maxHp}</b></span><span>${t('攻速', 'Attack speed')} <b>${stats.speed}%</b></span><span>${t('攻击', 'Attack')} <b>${stats.attack}%</b></span></div><div class="growth-xp"><i style="width:${g.level === MAX_LEVEL ? 100 : g.xp / levelXP(g.level) * 100}%"></i></div><p>${g.level === MAX_LEVEL ? t('已满级', 'Max level') : `XP ${g.xp} / ${levelXP(g.level)}`} · ${t('可用专精点', 'Available points')} <b>${g.points}</b><br>${t('每级自动成长', 'Automatic growth per level')}：HP +${path.hp} · ${t('攻速', 'Speed')} +${path.speed}% · ${t('攻击', 'Attack')} +${path.attack}%</p><div class="choice-grid growth-choices">${['hp', 'speed', 'attack'].map(stat => `<button class="choice-card ${path.focus === stat ? 'recommended' : ''}" data-action="upgrade-chassis" data-id="${stat}" ${g.points ? '' : 'disabled'}><strong>${names[stat]}</strong><b>+${path[stat]}${stat === 'hp' ? ' HP' : '%'}</b><small>${path.focus === stat ? t('机体推荐方向', 'Recommended path') : t('自由专精', 'Specialization')} · ${t('已投入', 'Allocated')} ${g.choices[stat]}</small></button>`).join('')}</div><p>${t('生命强化同时恢复新增的生命值。攻速影响全部武器，攻击提高武器及机体技能伤害。', 'Hull upgrades restore the added HP. Attack speed affects all weapons; attack power also scales chassis skill damage.')}</p><button data-action="close">${t('返回装配', 'Back to workshop')}</button>`, 'chassis-growth');
 }
 function actResult(result, sound = 'click', rerender = true) { if (!result.ok) {
+    workshopRenderer.reject(selectedUid, workshopTime);
+    drawBoard();
     if (run)
         recordAction(run, `rejected:${result.reasonEn ?? result.reason ?? 'unknown'}`);
     const feedback = $('placement-feedback');
@@ -514,10 +449,10 @@ function openModal(html, kind = 'normal') { if (battle && screen === 'run') {
     paused = true;
     resetControls();
     audio.suspend();
-} activeDialog = kind; $('modal-content').innerHTML = html; const modal = $('modal'); if (!modal.open)
+} activeDialog = kind; $('modal-content').innerHTML = html; const modal = $('modal'); modal.classList.toggle('practice-dialog', kind === 'practice'); if (!modal.open)
     modal.showModal(); drawIcons($('modal-content')); }
 function closeModal() { if (['reward', 'protocol', 'expansion'].includes(activeDialog))
-    deferPending = true; activeDialog = ''; $('modal').close(); if (battle && run?.phase === 'battle' && screen === 'run') {
+    deferPending = true; activeDialog = ''; practiceDrag = null; $('modal').classList.remove('practice-dialog'); $('modal').close(); if (battle && run?.phase === 'battle' && screen === 'run') {
     paused = false;
     resetControls();
     audio.resume();
@@ -558,6 +493,10 @@ function deploy(confirmed = false) {
     }
     if (run.eventId && !run.eventResolved) {
         actResult(economy.startWave(run), 'click', false);
+        return;
+    }
+    if (!confirmed && economy.shouldConfirmNoSpend(run)) {
+        openModal(`<h2>${t('不买装备，直接进入下一关？', 'Continue without shopping?')}</h2><p>${t('本次休整还没有花费碎片。可以先看看商店购买武器或配件，也可以保留碎片直接出击。', 'You have not spent scrap during this stop. Visit the shop for weapons or modules, or save your scrap and deploy.')}</p>${warningMarkup(run)}<div class="modal-actions"><button class="primary" data-action="return-shop">${t('返回商店', 'Back to shop')}</button><button data-action="deploy-confirm">${t('直接出击', 'Deploy anyway')} ↗</button></div>`, 'no-spend');
         return;
     }
     if (!confirmed && confirmInactive(run, 'deploy-confirm'))
@@ -668,8 +607,17 @@ function catalogDetail(id, affix = -1) {
     drawIcons();
 }
 function renderPractice() {
-    const scroll = activeDialog === 'practice' ? (document.querySelector('.practice-modules')?.scrollTop ?? 0) : 0;
-    const preview = trainingRun(practiceSetup), chosen = new Set(practiceSetup.modules), presetIndex = TRAINING_PRESETS.findIndex(p => p.modules.length === chosen.size && p.modules.every(id => chosen.has(id)));
+    const editing = activeDialog === 'practice', scroll = editing ? (document.querySelector('.practice-modules')?.scrollTop ?? 0) : 0, pageScroll = editing ? $('modal').scrollTop : 0;
+    const preview = trainingRun(practiceSetup);
+    practiceDraft = preview.run ?? null;
+    if (practiceDraft && !practiceSetup.layout)
+        practiceSetup.layout = structuredClone(practiceDraft.items);
+    const selected = practiceDraft?.items.find(i => i.uid === practiceSelectedUid);
+    if (!selected)
+        practiceSelectedUid = '';
+    practiceOptions = selected && practiceDraft ? economy.smartPlacementOptions(practiceDraft, selected.uid, practiceRotation) : [];
+    practiceHover = undefined;
+    const chosen = new Set(practiceSetup.modules), presetIndex = TRAINING_PRESETS.findIndex(p => p.modules.length === chosen.size && p.modules.every(id => chosen.has(id)));
     openModal(`<div class="eyebrow">BOSS LAB / FREE LOADOUT</div><h2>${t('首领试炼场', 'Boss lab')}</h2><p class="practice-note">${t('自由选装，直接挑战。练习不替换远征存档，不计入通关与解锁。', 'Choose your kit and fight. Practice preserves your expedition and awards no progression.')}</p><div class="practice-fields">
  <label>${t('机体', 'Chassis')}<select data-practice="chassis">${CHASSIS.map(c => `<option value="${c.id}" ${practiceSetup.chassis === c.id ? 'selected' : ''}>${escape(name(c))}</option>`).join('')}</select></label>
  <label>${t('首领', 'Boss')}<select data-practice="boss">${BOSSES.map(b => `<option value="${b.id}" ${practiceSetup.boss === b.id ? 'selected' : ''}>${escape(name(b))}</option>`).join('')}</select></label>
@@ -677,31 +625,129 @@ function renderPractice() {
  <label>${t('装备稀有度', 'Rarity')}<select data-practice="tier">${TIERS.map(n => `<option value="${n}" ${practiceSetup.tier === n ? 'selected' : ''}>${tier(n)} · ${rarityName(n, profile.language)}</option>`).join('')}</select></label>
  <label>${t('基础电力', 'Base power')}<select data-practice="power">${[10, 14, 18, 24].map(n => `<option ${practiceSetup.power === n ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
  <label>${t('预设构筑', 'Preset')}<select id="practice-preset"><option value="" ${presetIndex < 0 ? 'selected' : ''}>${t('自定义', 'Custom')}</option>${TRAINING_PRESETS.map((preset, i) => `<option value="${i}" ${presetIndex === i ? 'selected' : ''}>${profile.language === 'zh' ? preset.name : preset.en}</option>`).join('')}</select></label></div>
- <p class="chassis-skill"><b>Q · ${escape(skillName(practiceSetup.chassis, profile.language))}</b><br>${escape(skillDescription(practiceSetup.chassis, profile.language))}</p><div class="practice-preview"><canvas id="training-preview" width="250" height="250" aria-label="${t('自动装配预览', 'Auto-arranged loadout preview')}"></canvas><div><strong>${t('已选', 'Selected')} ${chosen.size}/12 · ${t('最多三件武器', 'Up to three weapons')}</strong><p class="${preview.ok ? '' : 'invalid'}" role="status">${preview.ok ? t('装配已排入；如有未生效配件，开战前会列出原因。', 'Loadout fits. Any inactive supports will be listed before battle.') : escape(profile.language === 'zh' ? preview.reason : preview.reasonEn)}</p><button data-action="practice-clear">${t('清空模块', 'Clear modules')}</button></div></div>
- <div class="practice-modules">${MODULES.map(m => `<button class="rarity-${practiceSetup.tier} ${chosen.has(m.id) ? 'selected' : ''}" data-action="practice-module" data-id="${m.id}" aria-pressed="${chosen.has(m.id)}">${canvasIcon(m.id)}<span>${escape(name(m))}</span><small>${moduleStat(m.id, practiceSetup.tier, profile.language)} · ${m.shape.join('').replaceAll('.', '').length}${t('格', ' cells')}</small></button>`).join('')}</div><div class="practice-launch"><button data-action="close">${t('返回', 'Back')}</button><button class="primary" data-action="practice-start" ${preview.ok && assetsReady && !renderFailed ? '' : 'disabled'}>${t('进入首领战', 'Fight boss')} ↗</button></div>`, 'practice');
+ <p class="chassis-skill"><b>Q · ${escape(skillName(practiceSetup.chassis, profile.language))}</b><br>${escape(skillDescription(practiceSetup.chassis, profile.language))}</p>
+ <div class="practice-layout"><section class="practice-workbench" aria-label="${t('自定义背包装配', 'Custom loadout board')}">
+ <div class="board-meta"><span>${t('电力', 'POWER')} <b>${practiceDraft ? practiceDraft.items.reduce((n, i) => n + MODULE_BY_ID[i.id].power, 0) : 0}/${practiceDraft ? economy.getCapacity(practiceDraft) : practiceSetup.power}</b></span><span>${t('占格', 'CELLS')} <b>${practiceDraft ? practiceDraft.items.reduce((n, i) => n + economy.getCells(i).length, 0) : 0}/25</b></span><span>${t('武器', 'GUNS')} <b>${practiceSetup.modules.filter(id => MODULE_BY_ID[id].kind === 'weapon').length}/3</b></span></div>
+ <div class="training-board-holder"><canvas id="training-preview" width="750" height="750" tabindex="0" aria-label="${t('5乘5自定义背包，可拖动、点选放置和旋转模块', '5 by 5 custom loadout. Drag, tap to place, or rotate modules.')}"></canvas></div>
+ <div class="board-actions"><button data-action="practice-rotate" ${selected ? '' : 'disabled'}>↻ ${t('旋转', 'Rotate')}</button><button data-action="practice-arrange" ${practiceDraft?.items.length ? '' : 'disabled'}>▦ ${t('整理', 'Arrange')}</button><button data-action="practice-undo" ${practiceUndo ? '' : 'disabled'}>↶ ${t('撤销', 'Undo')}</button><button data-action="practice-remove" ${selected ? '' : 'disabled'}>${t('移除', 'Remove')}</button></div>
+ <p class="practice-selection">${selected ? escape(name(MODULE_BY_ID[selected.id])) : t('拖动模块到高亮位置 · 自动吸附附近空位', 'Drag to the highlighted position · snaps to nearby space')}</p>
+ ${selected && practiceDraft && MODULE_BY_ID[selected.id].kind === 'support' ? `<select id="practice-link" aria-label="${t('连接武器', 'Linked weapon')}"><option value="">${t('选择相邻武器', 'Link adjacent weapon')}</option>${economy.linkOptions(practiceDraft, selected.uid).map(({ weapon, result }) => `<option value="${weapon.uid}" ${selected.link === weapon.uid ? 'selected' : ''} ${result.ok ? '' : 'disabled'}>${escape(name(MODULE_BY_ID[weapon.id]))}${result.ok ? '' : ' · ' + escape(profile.language === 'zh' ? result.reason : result.reasonEn)}</option>`).join('')}</select><p class="practice-selection">${escape(supportFeedback(practiceDraft, selected.uid, profile.language)?.detail ?? '')}</p>` : ''}
+ <p class="practice-status ${preview.ok ? '' : 'invalid'}" role="status">${preview.ok ? t('可直接调整位置与连接，按当前布局进入首领战。', 'Adjust positions and links; battle uses this exact layout.') : escape(profile.language === 'zh' ? preview.reason : preview.reasonEn)}</p>
+ </section><section class="practice-catalog"><div class="practice-catalog-heading"><strong>${t('选择模块', 'Choose modules')} · ${chosen.size}/12</strong><button data-action="practice-clear">${t('清空', 'Clear')}</button></div>
+ <div class="practice-modules">${MODULES.map(m => `<button class="rarity-${practiceSetup.tier} ${chosen.has(m.id) ? 'selected' : ''}" data-action="practice-module" data-id="${m.id}" aria-pressed="${chosen.has(m.id)}">${canvasIcon(m.id)}<span>${escape(name(m))}</span><small>${moduleStat(m.id, practiceSetup.tier, profile.language)} · ${m.shape.join('').replaceAll('.', '').length}${t('格', ' cells')}</small></button>`).join('')}</div></section></div>
+ <div class="practice-launch"><button data-action="close">${t('返回', 'Back')}</button><button class="primary" data-action="practice-start" ${preview.ok && assetsReady && !renderFailed ? '' : 'disabled'}>${t('进入首领战', 'Fight boss')} ↗</button></div>`, 'practice');
     drawIcons();
-    drawTrainingPreview(preview.run);
+    drawTrainingBoard();
+    bindTrainingBoard();
     document.querySelector('.practice-modules').scrollTop = scroll;
+    $('modal').scrollTop = pageScroll;
+    const link = $('practice-link');
+    if (link)
+        link.onchange = () => { if (!practiceDraft)
+            return; const before = structuredClone(practiceDraft.items); commitPractice(economy.setLink(practiceDraft, practiceSelectedUid, link.value), before); };
 }
-function drawTrainingPreview(preview) {
-    const canvas = $('training-preview'), ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#12252b';
-    ctx.fillRect(0, 0, 250, 250);
-    for (let y = 0; y < 5; y++)
-        for (let x = 0; x < 5; x++) {
-            ctx.strokeStyle = '#46636a';
-            ctx.strokeRect(x * 50 + 2, y * 50 + 2, 46, 46);
-        }
-    if (!preview)
+function drawTrainingBoard() {
+    const canvas = $('training-preview');
+    if (!canvas || !practiceDraft)
         return;
-    for (const item of preview.items) {
-        ctx.fillStyle = rarity(item.tier).color + '88';
-        for (const cell of economy.getCells(item))
-            ctx.fillRect(cell.x * 50 + 4, cell.y * 50 + 4, 42, 42);
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#fff5de';
-        ctx.fillText(item.id, item.x * 50 + 6, item.y * 50 + 22);
+    practiceRenderer.draw(canvas, practiceDraft, { time: workshopTime, reduced: profile.settings.reducedMotion, ready: assetsReady, selected: practiceSelectedUid, placements: practiceOptions,
+        preview: practiceDrag?.moved ? practiceDrag.preview : practiceHover, drag: practiceDrag?.moved && practiceDrag.point ? { uid: practiceDrag.uid, point: practiceDrag.point } : undefined, icon: (canvas, id) => renderer.icon(canvas, id) });
+}
+function commitPractice(result, before, sound = 'connect') {
+    if (!result.ok) {
+        practiceRenderer.reject(practiceSelectedUid, workshopTime);
+        audio.play('invalid');
+        toast((profile.language === 'zh' ? result.reason : result.reasonEn) ?? t('此处放不下', 'No fit here'));
+        drawTrainingBoard();
+        return;
     }
+    if (!practiceDraft)
+        return;
+    practiceUndo = before;
+    practiceSetup.layout = structuredClone(practiceDraft.items);
+    practiceRotation = practiceDraft.items.find(i => i.uid === practiceSelectedUid)?.rotation ?? 0;
+    audio.play(sound);
+    renderPractice();
+}
+function bindTrainingBoard() {
+    const canvas = $('training-preview');
+    if (!canvas)
+        return;
+    canvas.onpointerdown = e => {
+        if (!practiceDraft || practiceDrag || e.button !== 0)
+            return;
+        const raw = boardCoords(canvas, e), item = practiceDraft.items.find(i => economy.getCells(i).some(p => Math.floor(raw.x) === p.x && Math.floor(raw.y) === p.y));
+        if (!item) {
+            if (practiceSelectedUid) {
+                const before = structuredClone(practiceDraft.items);
+                commitPractice(economy.applyPlacement(practiceDraft, practiceSelectedUid, snapPlacement(practiceDraft, practiceSelectedUid, raw, { x: .5, y: .5 }, practiceRotation)), before);
+            }
+            e.preventDefault();
+            return;
+        }
+        const tapUid = practiceSelectedUid && practiceSelectedUid !== item.uid ? practiceSelectedUid : undefined, tapRotation = practiceRotation;
+        practiceSelectedUid = item.uid;
+        practiceRotation = item.rotation;
+        practiceOptions = economy.smartPlacementOptions(practiceDraft, item.uid, item.rotation);
+        practiceDrag = { pointerId: e.pointerId, uid: item.uid, startX: e.clientX, startY: e.clientY, offsetX: raw.x - item.x, offsetY: raw.y - item.y, x: item.x, y: item.y, moved: false, tapUid, tapRotation };
+        canvas.setPointerCapture(e.pointerId);
+        e.preventDefault();
+        drawTrainingBoard();
+    };
+    canvas.onpointermove = e => {
+        if (!practiceDraft)
+            return;
+        if (practiceDrag) {
+            if (e.pointerId !== practiceDrag.pointerId)
+                return;
+            updateDrag(canvas, e, practiceDrag, practiceDraft, practiceRotation);
+        }
+        else if (practiceSelectedUid)
+            practiceHover = snapPlacement(practiceDraft, practiceSelectedUid, boardCoords(canvas, e), { x: .5, y: .5 }, practiceRotation);
+        drawTrainingBoard();
+    };
+    canvas.onpointerup = e => {
+        if (!practiceDrag || practiceDrag.pointerId !== e.pointerId || !practiceDraft)
+            return;
+        const d = practiceDrag;
+        updateDrag(canvas, e, d, practiceDraft, practiceRotation);
+        practiceDrag = null;
+        if (d.moved) {
+            const before = structuredClone(practiceDraft.items);
+            commitPractice(economy.applyPlacement(practiceDraft, d.uid, d.preview), before);
+        }
+        else if (d.tapUid) {
+            practiceSelectedUid = d.tapUid;
+            practiceRotation = d.tapRotation ?? 0;
+            const before = structuredClone(practiceDraft.items);
+            commitPractice(economy.swapItems(practiceDraft, d.tapUid, d.uid, practiceRotation), before);
+        }
+        else
+            renderPractice();
+    };
+    const cancel = (e) => { if (practiceDrag?.pointerId === e.pointerId) {
+        practiceDrag = null;
+        practiceHover = undefined;
+        drawTrainingBoard();
+    } };
+    canvas.onpointercancel = cancel;
+    canvas.onlostpointercapture = cancel;
+    canvas.onpointerleave = () => { if (!practiceDrag) {
+        practiceHover = undefined;
+        drawTrainingBoard();
+    } };
+    canvas.onkeydown = e => { if (e.code === 'KeyR') {
+        e.preventDefault();
+        e.stopPropagation();
+        const button = document.querySelector('[data-action="practice-rotate"]');
+        if (button)
+            void dispatch(button);
+    } if (e.code === 'Escape') {
+        e.preventDefault();
+        practiceSelectedUid = '';
+        practiceDrag = null;
+        renderPractice();
+    } };
 }
 function startPractice(confirmed = false) {
     if (!assetsReady || renderFailed)
@@ -836,19 +882,62 @@ async function dispatch(button) {
         renderPractice();
         return;
     }
-    if (action === 'practice-module') {
-        const selected = practiceSetup.modules.indexOf(id);
-        if (selected >= 0)
-            practiceSetup.modules.splice(selected, 1);
-        else if (practiceSetup.modules.length < 12)
-            practiceSetup.modules.push(id);
+    if (action === 'practice-module' || action === 'practice-remove') {
+        const moduleId = action === 'practice-remove' ? practiceDraft?.items.find(i => i.uid === practiceSelectedUid)?.id : id;
+        if (!moduleId)
+            return;
+        const changed = toggleTrainingModule(practiceSetup, moduleId);
+        if (changed.ok && changed.setup) {
+            practiceUndo = practiceDraft ? structuredClone(practiceDraft.items) : null;
+            practiceSetup = changed.setup;
+            practiceSelectedUid = '';
+            renderPractice();
+        }
         else
-            toast(t('最多选择 12 件模块', 'Choose up to 12 modules'));
-        renderPractice();
+            toast((profile.language === 'zh' ? changed.reason : changed.reasonEn));
+        return;
+    }
+    if (action === 'practice-arrange') {
+        if (practiceDraft) {
+            const before = structuredClone(practiceDraft.items);
+            commitPractice(economy.autoPack(practiceDraft), before);
+        }
+        return;
+    }
+    if (action === 'practice-rotate') {
+        const item = practiceDraft?.items.find(i => i.uid === practiceSelectedUid);
+        if (item && practiceDraft) {
+            practiceRotation = (practiceRotation + 1) % 4;
+            if (practiceDrag) {
+                const cells = economy.getCells({ ...item, x: 0, y: 0, rotation: (practiceRotation + 3) % 4 }), height = Math.max(...cells.map(p => p.y)) + 1, oldX = practiceDrag.offsetX;
+                practiceDrag.offsetX = height - practiceDrag.offsetY;
+                practiceDrag.offsetY = oldX;
+                if (practiceDrag.point)
+                    practiceDrag.preview = snapPlacement(practiceDraft, item.uid, { x: practiceDrag.point.x / 150, y: practiceDrag.point.y / 150 }, { x: practiceDrag.offsetX, y: practiceDrag.offsetY }, practiceRotation);
+                drawTrainingBoard();
+            }
+            else {
+                const before = structuredClone(practiceDraft.items);
+                commitPractice(economy.moveItem(practiceDraft, item.uid, item.x, item.y, practiceRotation, false, false), before, 'rotate');
+            }
+        }
+        return;
+    }
+    if (action === 'practice-undo') {
+        if (practiceUndo) {
+            practiceSetup.modules = practiceUndo.map(i => i.id);
+            practiceSetup.layout = structuredClone(practiceUndo);
+            practiceUndo = null;
+            practiceSelectedUid = '';
+            renderPractice();
+        }
         return;
     }
     if (action === 'practice-clear') {
+        practiceUndo = practiceDraft ? structuredClone(practiceDraft.items) : null;
         practiceSetup.modules = [];
+        practiceSetup.layout = [];
+        practiceSelectedUid = '';
         renderPractice();
         return;
     }
@@ -995,6 +1084,15 @@ async function dispatch(button) {
         renderPrep();
         return;
     }
+    if (action === 'return-shop') {
+        closeModal();
+        workshopTab = 'shop';
+        selectedUid = '';
+        pendingBuy = -1;
+        placementArmed = false;
+        renderPrep();
+        return;
+    }
     if (action === 'deploy' || action === 'deploy-confirm') {
         deploy(action === 'deploy-confirm');
         return;
@@ -1083,11 +1181,11 @@ async function dispatch(button) {
         }
         heldRotation = (heldRotation + 1) % 4;
         if (drag) {
-            const cells = economy.getCells({ ...item, x: 0, y: 0, rotation: (heldRotation + 3) % 4 }), height = Math.max(...cells.map(c => c.y)) + 1, offsetX = height - 1 - drag.offsetY, offsetY = drag.offsetX;
-            drag.x += drag.offsetX - offsetX;
-            drag.y += drag.offsetY - offsetY;
+            const cells = economy.getCells({ ...item, x: 0, y: 0, rotation: (heldRotation + 3) % 4 }), height = Math.max(...cells.map(c => c.y)) + 1, offsetX = height - drag.offsetY, offsetY = drag.offsetX;
             drag.offsetX = offsetX;
             drag.offsetY = offsetY;
+            if (drag.point)
+                drag.preview = snapPlacement(r, drag.uid, { x: drag.point.x / 150, y: drag.point.y / 150 }, { x: offsetX, y: offsetY }, heldRotation);
             drawBoard();
             return;
         }
@@ -1291,6 +1389,9 @@ $('modal-content').addEventListener('change', e => {
     }
     if (field.id === 'practice-preset' && field.value !== '') {
         practiceSetup.modules = [...TRAINING_PRESETS[Number(field.value)].modules];
+        delete practiceSetup.layout;
+        practiceUndo = null;
+        practiceSelectedUid = '';
         renderPractice();
         return;
     }
@@ -1302,6 +1403,8 @@ $('modal-content').addEventListener('change', e => {
     else
         profile.settings[k] = input.checked;
     applySettings();
+    if (k === 'reducedMotion')
+        drawBoard();
     persist();
 });
 $('asset-retry').onclick = () => { if (renderFailed)
@@ -1460,6 +1563,20 @@ function advanceFrame(now) {
     lastFrame = now;
     homeTime += dt;
     const frameMs = frameClock.sample(now, battle && run?.phase === 'battle' && screen === 'run' && !paused && !document.hidden && battle.status === 'playing' ? battle : undefined);
+    if (activeDialog === 'practice' && !document.hidden) {
+        workshopTime += dt;
+        if (now - lastBoardFrame >= 1000 / 30 && practiceRenderer.needsFrame(profile.settings.reducedMotion)) {
+            drawTrainingBoard();
+            lastBoardFrame = now;
+        }
+    }
+    if (displayedScreen === 'prep' && !document.hidden && !activeDialog) {
+        workshopTime += dt;
+        if (now - lastBoardFrame >= 1000 / 30 && workshopRenderer.needsFrame(profile.settings.reducedMotion)) {
+            drawBoard();
+            lastBoardFrame = now;
+        }
+    }
     if (run && screen === 'run' && !document.hidden) {
         if (!['settings', 'codex', 'help', 'confirm'].includes(activeDialog))
             recordPrepTime(run, rawMs / 1000);

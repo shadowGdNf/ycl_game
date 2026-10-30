@@ -88,3 +88,29 @@ body.workshop-active{height:100dvh;overflow:hidden}.workshop-active .topbar{heig
 
 /* Two-beat boss intent: a compact, non-interactive guide below the health bar. */
 .boss-intent{margin:7px auto 0;padding:6px 10px;width:fit-content;max-width:100%;background:#17242ce8;border:1px solid #d5a16b88;border-radius:5px;line-height:1.5}.boss-intent strong{display:block;font-size:12px;color:#ffdb9f}.boss-intent em{display:block;font-size:11px;font-style:normal;color:#d5d6c7}.boss-intent.recovering{border-color:#67caaa88}.boss-intent.recovering strong{color:#9ce4c7}@media(max-width:600px){.boss-hud{left:0;width:100%;top:72px}.boss-intent{padding:4px 7px}.boss-intent strong{font-size:11px}.boss-intent em{font-size:10px}}@media(max-height:500px){.player-hud{width:min(220px,30vw)}.boss-hud{top:0;left:38%;width:42%}.boss-intent{margin-top:3px;padding:2px 7px}.boss-intent em{font-size:10px}}
+
+/* dev.15: tactile controls share the workshop's lift / press / settle rhythm. */
+@keyframes module-reveal{from{opacity:.35;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes deploy-ready{0%,100%{box-shadow:0 0 0 0 #72e4c400}50%{box-shadow:0 0 16px 1px #72e4c426}}
+.compact-workshop .prep-tab-panel:not([hidden]){animation:module-reveal .2s ease-out}
+.compact-workshop .shop-card,.compact-workshop .rack-slot{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.compact-workshop .shop-card canvas,.compact-workshop .rack-slot canvas{transition:transform .24s cubic-bezier(.2,.8,.2,1)}
+@media(hover:hover){.compact-workshop .shop-card:not(.sold):hover{transform:translateY(-2px);box-shadow:0 5px 14px #08151855}.compact-workshop .shop-card:hover canvas{transform:translateY(-3px) rotate(-4deg)}.compact-workshop .rack-slot.filled:hover canvas{transform:translateY(-2px) scale(1.08)}}
+.compact-workshop button:active:not(:disabled),#touch-controls button:active{transform:translateY(2px) scale(.96)}
+.compact-workshop .rack-slot.selected{box-shadow:inset 0 0 0 1px #b2fce3,0 0 12px #67cfb02b}
+.workshop-deploy:has(.loadout-summary:not(.invalid))>.primary:not(:disabled){animation:deploy-ready 2.6s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.compact-workshop *{animation:none!important;transition:none!important}}
+
+/* dev.16: boss practice is an editable workbench, with full-size touch targets. */
+dialog.practice-dialog{width:min(1080px,calc(100vw - 28px));max-width:none;padding:24px;max-height:calc(100dvh - 24px);overflow:auto}
+.practice-dialog .practice-layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,1fr);gap:22px;align-items:start}
+.practice-workbench{min-width:0;padding:12px;background:#15272d;border:1px solid #425f61}
+.training-board-holder{width:100%;max-width:450px;margin:auto}
+#training-preview{display:block;width:100%;height:auto;aspect-ratio:1;touch-action:none;border:1px solid #4b6263;border-radius:3px;user-select:none}
+.practice-workbench .board-meta{justify-content:space-between;gap:8px;margin:0 0 10px;font-size:11px}
+.practice-workbench .board-actions{margin:10px 0;gap:6px;flex-wrap:wrap}.practice-workbench .board-actions button{flex:1;padding:8px 5px;min-height:42px}
+.practice-workbench .practice-selection,.practice-workbench .practice-status{font-size:12px;line-height:1.6;margin:8px 0}.practice-workbench .practice-selection{color:#c4e5d9}.practice-workbench select{width:100%;font-size:12px}
+.practice-catalog{min-width:0}.practice-catalog-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:13px}.practice-catalog-heading button{font-size:12px}
+.practice-dialog .practice-modules{max-height:520px;grid-template-columns:repeat(3,minmax(0,1fr))}.practice-dialog .practice-modules button{min-height:100px}
+.practice-dialog .practice-launch{bottom:-24px;z-index:2;padding:14px 0;background:#1b2c3af5}
+@media(max-width:700px){dialog.practice-dialog{width:calc(100vw - 16px);padding:14px;max-height:calc(100dvh - 16px)}.practice-dialog .practice-layout{grid-template-columns:minmax(0,1fr);gap:16px}.practice-dialog .practice-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.practice-workbench{padding:8px}.practice-dialog .practice-modules{max-height:270px}.practice-dialog .practice-launch{bottom:-14px;gap:10px}.practice-dialog .practice-launch button{flex:1}.practice-dialog .practice-note{font-size:12px}.practice-dialog .chassis-skill{font-size:11px}.practice-workbench .board-meta{font-size:10px}}

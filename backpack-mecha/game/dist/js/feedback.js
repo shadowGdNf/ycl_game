@@ -1,5 +1,5 @@
-import { roundRect } from "./canvas.js?v=46fa266b192c";
-import { zonePath } from "./motion-renderer.js?v=46fa266b192c";
+import { roundRect } from "./canvas.js?v=92ce38fe5a4a";
+import { zonePath } from "./motion-renderer.js?v=92ce38fe5a4a";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -285,14 +285,21 @@ function weaponEffect(c, e, k, reduced) {
         const saw = id === 'W09', r = range * (.82 + .15 * k), a = saw ? TAU : Math.PI * 2 / 3;
         c.strokeStyle = saw ? '#ffe09d' : '#a7f4ef';
         c.lineWidth = reduced ? 3 : 7 * (1 - k) + 2;
+        const head = saw || reduced ? a / 2 : -a / 2 + a * Math.min(1, k * 2.5), tail = saw || reduced ? -a / 2 : Math.max(-a / 2, head - .85);
         c.beginPath();
-        c.arc(0, 0, r, saw ? 0 : -a / 2, saw ? TAU : a / 2);
+        c.arc(0, 0, r, saw ? 0 : tail, saw ? TAU : head);
         c.stroke();
         c.globalAlpha *= .35;
         c.lineWidth = 16;
         c.beginPath();
-        c.arc(0, 0, r * .9, saw ? 0 : -a / 2, saw ? TAU : a / 2);
+        c.arc(0, 0, r * .9, saw ? 0 : tail, saw ? TAU : head);
         c.stroke();
+        if (!saw && !reduced) {
+            c.globalAlpha = 1 - k;
+            c.strokeStyle = '#f0ffef';
+            c.lineWidth = 3;
+            line(c, Math.cos(head) * r * .72, Math.sin(head) * r * .72, Math.cos(head) * r, Math.sin(head) * r);
+        }
         c.globalAlpha = 1 - k;
         c.lineWidth = 2;
         if (!reduced)
@@ -384,6 +391,17 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
             c.fillStyle = '#fff3d5';
             c.fill();
         }
+        if (!reduced && age < .18) {
+            c.save();
+            c.rotate(angle ?? 0);
+            c.globalAlpha = (1 - age / .18) * .8;
+            c.strokeStyle = '#fff2ca';
+            c.lineWidth = critical ? 3 : 2;
+            const reach = (critical ? 24 : 15) * (1 + age * 2);
+            line(c, -reach * .45, -reach, reach * .45, reach);
+            line(c, -reach, reach * .4, reach, -reach * .4);
+            c.restore();
+        }
         c.globalAlpha = alpha;
         if (label)
             damageText(c, label, k, scale, critical ? '#ffe47f' : '#fdf0d0', critical);
@@ -450,9 +468,16 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
         enemyAttack(c, e, k, reduced);
     }
     else if (e.type === 'enemy-fire') {
+        c.rotate(e.angle ?? 0);
         c.fillStyle = '#ffb483';
         circle(c, 0, 0, 5 + (1 - k) * 10);
         c.fill();
+        if (!reduced) {
+            c.strokeStyle = '#ffe5b7';
+            c.lineWidth = 2;
+            for (let i = -1; i <= 1; i++)
+                line(c, 8, i * 3, 15 + (1 - k) * 18, i * 9 * (1 - k));
+        }
     }
     else if (e.type === 'boss-overload-warning' || e.type === 'boss-overload') {
         c.strokeStyle = '#ff986c';

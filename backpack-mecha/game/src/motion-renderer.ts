@@ -3,7 +3,7 @@ import type {Art} from './art.ts';
 import type {EnemyMotion} from './motion.ts';
 import {motionLabel,zoneRole} from './motion.ts';
 import type {EnemyView,Lang,ZoneView} from './types.ts';
-import {smoothStep} from './visual-motion.ts';
+import {smoothStep,impactOffset} from './visual-motion.ts';
 import type {Locomotion} from './visual-motion.ts';
 
 const TAU=Math.PI*2;
@@ -24,14 +24,18 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
  const wind=m.stage==='windup',active=m.stage==='active',free=!m.control;
  const amount=smoothStep(m.intensity??(wind?m.progress:active?1:0));
  const stride=(gait?.stride??0)*TAU,walking=gait?.amount??0;
- const bob=reduced||!free?0:Math.sin(stride*2)*Math.min(2.5,size*.04)*walking+Math.sin(time*2+e.eid)*.35;
+ const bob=reduced||!free?0:Math.sin(stride*2)*Math.min(3.5,size*.06)*walking+Math.sin(time*2+e.eid)*.8;
  const shotKick=m.fireAge===undefined?0:Math.exp(-m.fireAge*22);
- const recoil=reduced||!free?0:(m.hit*.055+shotKick*.045)*size;
+ const recoil=reduced||!free?0:shotKick*.085*size;
+ const impact=impactOffset(m.hitAge??Infinity,m.hitAngle??e.angle+Math.PI,Math.min(16,size*.19),reduced);
+ const strike=reduced||!free?0:m.releaseAge!==undefined?Math.sin(Math.min(1,m.releaseAge/.28)*Math.PI)*Math.min(7,size*.09):wind?-amount*Math.min(5,size*.055):0;
+ const x=e.x+impact.x+Math.cos(m.angle)*(strike-recoil),y=e.y-size*.08+bob+impact.y+Math.sin(m.angle)*(strike-recoil);
+ const squash=reduced||!free?0:(wind?amount*.055:shotKick*.055)+(m.hitAge!==undefined&&m.hitAge<.08?.055:0);
  if(!special(e)){
-  const tilt=m.control==='impact'?-.045:m.control==='stagger'?.045:reduced||!free?0:Math.sin(stride)*.018*walking+(gait?.lean??0)*.02;
-  c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);c.rotate(tilt);
+  const tilt=m.control==='impact'?-.045:m.control==='stagger'?.045:reduced||!free?0:Math.sin(stride)*.035*walking+(gait?.lean??0)*.055;
+  c.save();c.translate(x,y);c.rotate(tilt);c.scale(1+squash*.6,1-squash);
   const part=(u:number,v:number,w:number,h:number,x=0,y=0)=>art.part(c,key,x,y,size,size,u,v,w,h);
-  const strideLift=reduced||!free?0:Math.sin(stride)*size*.035*walking;
+  const strideLift=reduced||!free?0:Math.sin(stride)*size*.06*walking;
   if(['E03','E08','E15'].includes(e.id)){
    // Separate track beds from the sprung hull; each side responds to travel.
    part(0,0,.23,1,0,strideLift*.4);part(.77,0,.23,1,0,-strideLift*.4);
@@ -54,8 +58,8 @@ export function enemyBody(c:Context,art:Art,key:string,e:EnemyView,m:EnemyMotion
   enemyHardware(c,e,m,size,time,reduced);
   c.restore();return;
  }
- c.save();c.translate(e.x-Math.cos(m.angle)*recoil,e.y-size*.08+bob-Math.sin(m.angle)*recoil);
- if(!reduced&&free)c.rotate(Math.sin(stride)*.018*walking);
+ c.save();c.translate(x,y);c.scale(1+squash*.4,1-squash*.6);
+ if(!reduced&&free)c.rotate(Math.sin(stride)*.028*walking);
  if(m.control==='impact')c.rotate(-.045);else if(m.control==='stagger')c.rotate(.045);
  const part=(u:number,v:number,w:number,h:number,x=0,y=0)=>art.part(c,key,x,y,size,size,u,v,w,h);
  if(e.id==='E05'){

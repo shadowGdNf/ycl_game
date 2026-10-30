@@ -1,7 +1,7 @@
-import { normalizeGrowth } from "./progression.js?v=46fa266b192c";
-import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=46fa266b192c";
-import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=46fa266b192c";
-import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=46fa266b192c";
+import { normalizeGrowth } from "./progression.js?v=92ce38fe5a4a";
+import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=92ce38fe5a4a";
+import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=92ce38fe5a4a";
+import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=92ce38fe5a4a";
 const EVENT_LIMIT = 400;
 export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
 const clone = (value) => structuredClone(value);

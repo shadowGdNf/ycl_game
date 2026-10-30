@@ -1,11 +1,11 @@
-import { roundRect } from "./canvas.js?v=46fa266b192c";
-import { Art } from "./art.js?v=46fa266b192c";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=46fa266b192c";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=46fa266b192c";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=46fa266b192c";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=46fa266b192c";
-import { locomotion, easeOut } from "./visual-motion.js?v=46fa266b192c";
-import { chassisSkill } from "./skills.js?v=46fa266b192c";
+import { roundRect } from "./canvas.js?v=92ce38fe5a4a";
+import { Art } from "./art.js?v=92ce38fe5a4a";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=92ce38fe5a4a";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=92ce38fe5a4a";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=92ce38fe5a4a";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=92ce38fe5a4a";
+import { locomotion, easeOut, weaponPose, impactOffset } from "./visual-motion.js?v=92ce38fe5a4a";
+import { chassisSkill } from "./skills.js?v=92ce38fe5a4a";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -159,7 +159,11 @@ export class Renderer {
         this.lastPlayer = { x: state.player.x, y: state.player.y };
         for (const w of state.weapons) {
             const old = this.shotTimes.get(w.uid);
-            if (!old || old.count !== w.shotCount)
+            if (!old) {
+                const recent = state.events.filter(e => e.type === 'fire' && e.source === w.id && e.at <= state.time).at(-1);
+                this.shotTimes.set(w.uid, { count: w.shotCount, at: recent?.at ?? -Infinity });
+            }
+            else if (old.count !== w.shotCount)
                 this.shotTimes.set(w.uid, { count: w.shotCount, at: state.time });
         }
         this.captureEvents(state);
@@ -169,6 +173,14 @@ export class Renderer {
                 const age = state.time - hit.at, power = (1 - age / .18) * (hit.type === 'shield-break' ? 4 : 2.8);
                 this.camera.x -= Math.sin(age * 95) * power;
                 this.camera.y -= Math.cos(age * 73) * power * .65;
+            }
+            else {
+                const impact = state.events.filter(e => (e.type === 'critical' || e.type === 'kill' && (e.radius ?? 0) > 28) && state.time - e.at >= 0 && state.time - e.at < .12).at(-1);
+                if (impact) {
+                    const age = state.time - impact.at, power = (1 - age / .12) * 1.6;
+                    this.camera.x += Math.sin(age * 110) * power;
+                    this.camera.y += Math.cos(age * 85) * power * .5;
+                }
             }
         }
         ctx.fillStyle = '#101b24';
@@ -308,20 +320,20 @@ export class Renderer {
             id = 'scavenger';
         const unit = size / 64;
         const walk = walkPose(dir, gaitTime), amount = this.options.reducedMotion || dashing ? 0 : clamp(moving, 0, 1);
-        const bob = this.options.reducedMotion ? 0 : (walk.rise * amount + Math.sin(time * 2) * .4) * unit;
-        const lean = this.options.reducedMotion ? 0 : (dashing ? .10 : walk.lean * amount);
+        const bob = this.options.reducedMotion ? 0 : (walk.rise * amount * 1.65 + Math.sin(time * 2.7) * .85) * unit;
+        const lean = this.options.reducedMotion ? 0 : (dashing ? .14 : walk.lean * amount * 1.7);
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(lean);
-        const packSway = this.options.reducedMotion ? 0 : Math.sin(gaitTime / .48 * TAU - .6) * amount * 1.3;
+        const packSway = this.options.reducedMotion ? 0 : Math.sin(gaitTime / .48 * TAU - .6) * amount * 2.8;
         this.art.draw(ctx, `${id}.backpack`, packSway * unit, (-14 + packSway * .4) * unit, 39 * unit, 39 * unit, -packSway * .012, .96);
         // Split the existing leg-pair sprite at its waist center in the renderer.
         // The torso covers the joint, while each foot follows its own key pose.
         for (const side of dir === 3 ? [1, 0] : [0, 1]) {
             const leg = side === 0 ? walk.left : walk.right;
             ctx.save();
-            ctx.translate(leg.x * unit * amount, (10 + leg.y * amount) * unit);
-            ctx.rotate(leg.angle * amount);
+            ctx.translate(leg.x * unit * amount * 1.6, (10 + leg.y * amount * 1.6) * unit);
+            ctx.rotate(leg.angle * amount * 1.5);
             ctx.scale(dir === 1 || dir === 3 ? .88 : 1, 1);
             ctx.beginPath();
             ctx.rect(side === 0 ? -24 * unit : 0, -20 * unit, 24 * unit, 45 * unit);
@@ -333,7 +345,7 @@ export class Renderer {
         ctx.strokeStyle = '#809995';
         ctx.lineWidth = 1.6 * unit;
         for (const side of [-1, 1]) {
-            const leg = side < 0 ? walk.left : walk.right, footX = (side * 9 + leg.x * amount) * unit, footY = (18 + leg.y * amount) * unit;
+            const leg = side < 0 ? walk.left : walk.right, footX = (side * 9 + leg.x * amount * 1.6) * unit, footY = (18 + leg.y * amount * 1.6) * unit;
             ctx.beginPath();
             ctx.moveTo(side * 8 * unit, 7 * unit);
             ctx.lineTo(footX, footY - 4 * unit);
@@ -353,10 +365,10 @@ export class Renderer {
         ctx.lineTo(9 * unit, 3 * unit);
         ctx.stroke();
         for (const side of [-1, 1]) {
-            const lift = (side * swing * 1.8 + (dashing ? -1.5 : 0)) * unit;
+            const lift = (side * swing * 3.3 + (dashing ? -2.5 : 0)) * unit;
             ctx.save();
             ctx.translate(side * 18 * unit, -9 * unit + bob);
-            ctx.rotate(side * swing * .045);
+            ctx.rotate(side * swing * .075);
             ctx.translate(-side * 18 * unit, 0);
             this.art.part(ctx, body, 0, lift, 53 * unit, 50 * unit, side < 0 ? 0 : .8, 0, .2, 1);
             ctx.restore();
@@ -366,7 +378,7 @@ export class Renderer {
             ctx.fillStyle = dashing ? 'rgba(112,241,228,.65)' : 'rgba(112,241,228,.2)';
             for (const side of [-1, 1]) {
                 ctx.beginPath();
-                ctx.ellipse(side * 12 * unit, 8 * unit, 2.5 * unit, (dashing ? 9 : 3) * unit, 0, 0, TAU);
+                ctx.ellipse(side * 12 * unit, 8 * unit, 2.5 * unit, (dashing ? 12 + Math.sin(time * 55) * 3 : 3) * unit, 0, 0, TAU);
                 ctx.fill();
             }
         }
@@ -377,6 +389,20 @@ export class Renderer {
     player(state) {
         const ctx = this.ctx, p = state.player, t = state.time;
         this.shadow(p.x, p.y + 16, 26, 10, .38);
+        if (this.movement > .15 && p.dashTime <= 0 && !this.options.reducedMotion) {
+            const stride = this.playerGait?.stride ?? 0;
+            for (const side of [-1, 1]) {
+                const phase = (stride * 2 + (side > 0 ? .5 : 0)) % 1;
+                ctx.save();
+                ctx.globalAlpha = (1 - phase) * this.movement * .28;
+                ctx.strokeStyle = '#bcc6ab';
+                ctx.lineWidth = 1.3;
+                ctx.beginPath();
+                ctx.ellipse(p.x + side * 10 - Math.cos(p.angle) * phase * 13, p.y + 20 - Math.sin(p.angle) * phase * 13, 4 + phase * 9, 2 + phase * 3, 0, 0, TAU);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
         if (this.deathVisualStart !== null) {
             const age = this.options.reducedMotion ? 1 : (performance.now() - this.deathVisualStart) / 1000;
             const keyframes = [0, .08, .2, .38, .62, .85];
@@ -406,6 +432,18 @@ export class Renderer {
         }
         // Preserve combat order so drone muzzle positions match their drawn orbit.
         const guns = state.weapons.slice(0, 3);
+        const hurt = state.events.filter(e => e.type === 'player-hit' && t - e.at >= 0 && t - e.at < .24).at(-1);
+        const impact = hurt ? impactOffset(t - hurt.at, Math.atan2(p.y - (hurt.from?.y ?? p.y - 1), p.x - (hurt.from?.x ?? p.x)), 9, this.options.reducedMotion) : { x: 0, y: 0 };
+        let kickX = 0, kickY = 0;
+        for (const gun of guns) {
+            const shot = this.shotTimes.get(gun.uid), pose = weaponPose(gun.id, t - (shot?.at ?? -Infinity), gun.cooldown, this.options.reducedMotion);
+            kickX -= Math.cos(gun.angle) * pose.recoil * .2;
+            kickY -= Math.sin(gun.angle) * pose.recoil * .2;
+        }
+        ctx.save();
+        ctx.translate(p.x + impact.x + clamp(kickX, -3, 3), p.y + impact.y + clamp(kickY, -3, 3));
+        ctx.rotate(this.options.reducedMotion ? 0 : (this.playerGait?.lean ?? 0) * .045);
+        ctx.translate(-p.x, -p.y);
         for (let i = 0; i < guns.length; i++)
             if (Math.sin(guns[i].angle) < 0)
                 this.weapon(guns[i], i, p, t);
@@ -420,18 +458,18 @@ export class Renderer {
         ctx.globalAlpha = blend;
         this.mech(ctx, state.chassis, p.x, p.y, 64, t, this.lastFacing, this.movement, p.dashTime > 0, gaitTime);
         ctx.restore();
-        const hurt = state.events.filter(e => e.type === 'player-hit' && t - e.at >= 0 && t - e.at < .15).at(-1);
-        if (hurt && !this.options.reducedMotion)
+        if (hurt && t - hurt.at < .15 && !this.options.reducedMotion)
             this.art.flash(ctx, `${state.chassis}.body.${this.lastFacing}`, p.x, p.y - 9, 53, 50, (1 - (t - hurt.at) / .15) * .65, (hurt.hullDamage ?? 1) > 0 ? '#ffe1c4' : '#b7fff4');
         for (let i = 0; i < guns.length; i++)
             if (Math.sin(guns[i].angle) >= 0)
                 this.weapon(guns[i], i, p, t);
+        ctx.restore();
         if (p.overloadTime > 0) {
             ctx.save();
             ctx.strokeStyle = '#f8c16c';
             ctx.lineWidth = 2;
             ctx.setLineDash([6, 5]);
-            ctx.lineDashOffset = -t * 18;
+            ctx.lineDashOffset = this.options.reducedMotion ? 0 : -t * 18;
             ctx.beginPath();
             ctx.arc(p.x, p.y, 44, 0, TAU);
             ctx.stroke();
@@ -476,13 +514,11 @@ export class Renderer {
         const mounts = [{ x: -21, y: 0 }, { x: 21, y: 0 }, { x: 0, y: -29 }];
         const m = mounts[index];
         const shot = this.shotTimes.get(w.uid), age = shot ? time - shot.at : 99;
-        const recoil = this.options.reducedMotion || !w.shotCount || age < 0 || age > .22 ? 0 : (1 - easeOut(age / .22)) * (w.id === 'W07' || w.id === 'W08' ? 7 : 4);
-        let angle = w.angle;
-        if (w.id === 'W08' && age < .3)
-            angle += Math.sin(age / .3 * Math.PI) * .9;
-        if (w.id === 'W09')
-            angle += time * 9;
-        const sway = this.options.reducedMotion ? 0 : Math.sin((this.playerGait?.stride ?? 0) * TAU + (index === 1 ? Math.PI : 0)) * this.movement * 1.8;
+        const pose = weaponPose(w.id, w.shotCount ? age : Infinity, w.cooldown, this.options.reducedMotion), recoil = pose.recoil;
+        let angle = w.angle + pose.swing;
+        if (w.id === 'W09' && !this.options.reducedMotion)
+            angle += time * 14;
+        const sway = this.options.reducedMotion ? 0 : Math.sin((this.playerGait?.stride ?? 0) * TAU + (index === 1 ? Math.PI : 0)) * this.movement * 3;
         const x = p.x + m.x - Math.cos(angle) * recoil + sway * .45, y = p.y + m.y - Math.sin(angle) * recoil + sway;
         ctx.strokeStyle = '#425d64';
         ctx.lineWidth = 3;
@@ -494,20 +530,44 @@ export class Renderer {
         ctx.beginPath();
         ctx.arc(x, y, 3, 0, TAU);
         ctx.fill();
-        const big = w.id === 'W08' || w.id === 'W07';
-        this.art.draw(ctx, w.id, x, y, big ? 40 : 34, big ? 32 : 27, angle, 1, Math.cos(angle) < 0);
-        if (age < .085 && w.shotCount > 0 && !['W11', 'W18', 'W09', 'W15'].includes(w.id)) {
+        const big = ['W08', 'W07', 'W10', 'W17'].includes(w.id);
+        this.art.draw(ctx, w.id, x, y, big ? 45 : 38, big ? 36 : 30, angle, 1, Math.cos(angle) < 0);
+        if (['W04', 'W07', 'W14', 'W15'].includes(w.id) && pose.charge > 0) {
             ctx.save();
-            ctx.translate(x + Math.cos(angle) * 19, y + Math.sin(angle) * 19);
+            ctx.translate(x, y);
+            ctx.strokeStyle = MODULE_BY_ID[w.id]?.color ?? '#9ffff0';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = .3 + pose.charge * .6;
+            const radius = 12 + (this.options.reducedMotion ? 0 : (1 - pose.charge) * 11);
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, -Math.PI / 2, -Math.PI / 2 + pose.charge * TAU);
+            ctx.stroke();
+            ctx.restore();
+        }
+        if (age >= 0 && age < .1 && w.shotCount > 0 && !['W11', 'W18', 'W08', 'W09', 'W15'].includes(w.id)) {
+            ctx.save();
+            ctx.translate(x + Math.cos(angle) * 21, y + Math.sin(angle) * 21);
             ctx.rotate(angle);
-            ctx.globalAlpha = 1 - age / .085;
+            ctx.globalAlpha = (1 - age / .1) * (this.options.reducedMotion ? .45 : 1);
             ctx.fillStyle = MODULE_BY_ID[w.id]?.color ?? '#ffe4ae';
             ctx.beginPath();
-            ctx.moveTo(0, -4);
-            ctx.lineTo(12, 0);
-            ctx.lineTo(0, 4);
+            ctx.moveTo(0, -6);
+            ctx.lineTo(big ? 25 : 18, 0);
+            ctx.lineTo(0, 6);
             ctx.closePath();
             ctx.fill();
+            ctx.fillStyle = '#fff5d2';
+            ctx.fillRect(-2, -2, 9, 4);
+            ctx.restore();
+        }
+        if (['W01', 'W02', 'W13'].includes(w.id) && age >= 0 && age < .28 && !this.options.reducedMotion) {
+            const k = age / .28;
+            ctx.save();
+            ctx.translate(x + Math.sin(angle) * (7 + 23 * k), y - Math.cos(angle) * (7 + 23 * k) - Math.sin(k * Math.PI) * 10 + k * k * 15);
+            ctx.rotate(angle + k * 9);
+            ctx.globalAlpha = 1 - k;
+            ctx.fillStyle = '#dec18b';
+            ctx.fillRect(-3, -1.5, 6, 3);
             ctx.restore();
         }
         if (w.id === 'W11' || w.id === 'W18') {
@@ -516,7 +576,14 @@ export class Renderer {
                 const a = time * 1.2 + n * TAU / Math.max(1, count) + (index % 2 ? Math.PI / 3 : 0);
                 const dx = p.x + Math.cos(a) * 48, dy = p.y + Math.sin(a) * 48;
                 this.shadow(dx, dy + 7, 7, 3, .2);
-                this.art.draw(ctx, w.id, dx, dy, 20, 20, w.angle);
+                if (!this.options.reducedMotion) {
+                    ctx.strokeStyle = '#7bded266';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 48, a - .28, a - .08);
+                    ctx.stroke();
+                }
+                this.art.draw(ctx, w.id, dx, dy, 22, 22, w.angle + (this.options.reducedMotion ? 0 : Math.sin(time * 5 + n) * .07));
             }
         }
     }

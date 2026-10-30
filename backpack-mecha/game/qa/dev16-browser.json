@@ -1,0 +1,37 @@
+{
+  "browser": "156.0.8078.74",
+  "checks": [
+    "off-center and edge drop commits the highlighted nearby position; undo restores inventory",
+    "resuming prep and completing a wave both select Shop",
+    "no-spend dialog cancels to shop or explicitly proceeds without spending",
+    "purchase, refresh and repair each suppress the warning after reload",
+    "large boss board supports drag, rotate, linking and undo; settings and re-entry preserve layout; combat uses its link",
+    "touch drag from a weapon edge snaps to the same placement",
+    "390px phone view exposes a large, editable boss board with working touch drag"
+  ],
+  "geometry": [
+    {
+      "viewport": 1200,
+      "board": 450
+    },
+    {
+      "viewport": 390,
+      "board": 326
+    },
+    {
+      "viewport": 320,
+      "board": 256
+    }
+  ],
+  "screenshots": [
+    "qa/dev16-snap-desktop.png",
+    "qa/dev16-no-spend.png",
+    "qa/dev16-boss-layout-desktop.png",
+    "qa/dev16-boss-layout-mobile.png",
+    "qa/dev16-boss-layout-narrow.png"
+  ],
+  "errors": [],
+  "limits": [
+    "Isolated synthetic saves; mobile viewports use emulated touch, not physical phones."
+  ]
+}

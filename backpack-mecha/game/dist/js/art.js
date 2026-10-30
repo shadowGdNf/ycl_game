@@ -1,4 +1,4 @@
-import { ENEMY_BY_ID, MODULE_BY_ID } from "./content.js?v=46fa266b192c";
+import { ENEMY_BY_ID, MODULE_BY_ID } from "./content.js?v=92ce38fe5a4a";
 const spriteKey = (key) => ENEMY_BY_ID[key]?.sprite ?? String(MODULE_BY_ID[key]?.sprite ?? key);
 const REQUIRED = ['actors', 'modules', 'enemies', 'cargo'];
 export class Art {
@@ -29,7 +29,7 @@ export class Art {
             this.manifest = await this.retry(async () => {
                 const controller = new AbortController(), timer = setTimeout(() => controller.abort(), this.timeoutMs);
                 try {
-                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=46fa266b192c', import.meta.url), { signal: controller.signal });
+                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=92ce38fe5a4a', import.meta.url), { signal: controller.signal });
                     if (!response.ok)
                         throw new Error(`Atlas manifest failed: ${response.status}`);
                     const data = await response.json();

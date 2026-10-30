@@ -30,7 +30,8 @@ function action(e, z) {
     return 'slam';
 }
 export function motionFrame(view) {
-    const byOwner = new Map(), groups = new Map(), hits = new Map(), fires = new Map();
+    const byOwner = new Map(), groups = new Map(), hits = new Map(), hitAngles = new Map(), fires = new Map(), releases = new Map();
+    const contacts = view.events.filter(ev => ev.type === 'player-hit' && ev.from && view.time >= ev.at && view.time - ev.at < .28);
     for (const e of view.enemies)
         if (e.group && !groups.has(e.group))
             groups.set(e.group, e.eid);
@@ -48,8 +49,13 @@ export function motionFrame(view) {
             phaseAt = Math.max(phaseAt, ev.at);
         if (ev.type === 'enemy-fire' && ev.source && ev.at <= view.time && view.time - ev.at < .18)
             fires.set(ev.targetId ?? -1, Math.max(fires.get(ev.targetId ?? -1) ?? -Infinity, ev.at));
-        if (ev.targetId !== undefined && /^(hit|critical)$/.test(ev.type) && ev.at <= view.time)
-            hits.set(ev.targetId, Math.max(hits.get(ev.targetId) ?? -Infinity, ev.at));
+        if (ev.type === 'enemy-attack' && ev.cue !== 'projectile' && ev.targetId !== undefined && ev.at <= view.time && view.time - ev.at < .28)
+            releases.set(ev.targetId, ev.at);
+        if (ev.targetId !== undefined && /^(hit|critical)$/.test(ev.type) && ev.at <= view.time && ev.at >= (hits.get(ev.targetId) ?? -Infinity)) {
+            hits.set(ev.targetId, ev.at);
+            if (ev.from)
+                hitAngles.set(ev.targetId, Math.atan2(ev.y - ev.from.y, ev.x - ev.from.x));
+        }
     }
     const out = new Map();
     for (const e of view.enemies) {
@@ -65,13 +71,17 @@ export function motionFrame(view) {
         const fired = fires.has(e.eid);
         if (fired)
             zone = undefined;
+        // Contact damage has no warning zone; the existing damage event supplies its strike pose.
+        const contact = contacts.filter(ev => ev.source === e.id && Math.hypot(ev.from.x - e.x, ev.from.y - e.y) < 25).at(-1);
+        const released = releases.get(e.eid) ?? contact?.at;
         const control = controlReason(e), charging = !!e.charge && e.charge.until > view.time && !control;
         const weak = (e.vulnerableUntil ?? 0) > view.time;
         const recovery = !zone && !charging && (weak || (e.kind === 'boss' && (view.bossTurn ?? 0) > 0 && (view.bossClock ?? 0) > 0) || (e.aiUntil ?? 0) > view.time);
-        out.set(e.eid, { stage: charging || fired ? 'active' : zone ? (zone.active ? 'active' : 'windup') : recovery ? 'recover' : 'idle',
-            kind: charging ? 'charge' : fired ? 'volley' : zone ? action(e, zone) : 'idle', progress: fired ? 1 : zone ? clamp(1 - zone.remaining / Math.max(.001, zone.duration)) : 0,
+        out.set(e.eid, { stage: charging || fired || (!zone && released !== undefined) ? 'active' : zone ? (zone.active ? 'active' : 'windup') : recovery ? 'recover' : 'idle',
+            kind: charging ? 'charge' : fired ? 'volley' : zone ? action(e, zone) : released !== undefined ? 'slam' : 'idle', progress: fired ? 1 : zone ? clamp(1 - zone.remaining / Math.max(.001, zone.duration)) : 0,
             angle: charging ? Math.atan2(e.charge.vy, e.charge.vx) : zone ? (zone.active ? zone.angle : zone.plan?.angle ?? zone.angle) : e.angle,
-            control, weak, fireAge: fires.has(e.eid) ? view.time - fires.get(e.eid) : undefined, phaseAge: e.kind === 'boss' ? view.time - phaseAt : Infinity, hit: clamp(1 - (view.time - (hits.get(e.eid) ?? -Infinity)) / .16), zone });
+            control, weak, fireAge: fires.has(e.eid) ? view.time - fires.get(e.eid) : undefined, releaseAge: released === undefined ? undefined : view.time - released,
+            phaseAge: e.kind === 'boss' ? view.time - phaseAt : Infinity, hit: clamp(1 - (view.time - (hits.get(e.eid) ?? -Infinity)) / .24), hitAngle: hitAngles.get(e.eid), hitAge: hits.has(e.eid) ? view.time - hits.get(e.eid) : undefined, zone });
     }
     return out;
 }

@@ -1,13 +1,20 @@
-import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=46fa266b192c";
-import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=46fa266b192c";
-import { createEncounter } from "./encounters.js?v=46fa266b192c";
-import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=46fa266b192c";
-import { hashSeed, nextRandom } from "./random.js?v=46fa266b192c";
-import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=46fa266b192c";
+import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=92ce38fe5a4a";
+import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=92ce38fe5a4a";
+import { createEncounter } from "./encounters.js?v=92ce38fe5a4a";
+import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=92ce38fe5a4a";
+import { hashSeed, nextRandom } from "./random.js?v=92ce38fe5a4a";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=92ce38fe5a4a";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
 const extra = (r) => r.extra ?? (r.extra = {});
+function spend(r, amount) { r.gold -= amount; extra(r).spentPrepWave = r.wave; }
+export function spentDuringPrep(r) {
+    if (typeof r.extra?.spentPrepWave === 'number')
+        return r.extra.spentPrepWave === r.wave;
+    return !!r.journal?.events.some(e => e.wave === r.wave && (/^(buy|buy-merge|refresh|repair)$/.test(e.action) || ['event:EV01:0', 'event:EV05:1'].includes(e.detail)));
+}
+export function shouldConfirmNoSpend(r) { return r.phase === 'prep' && r.wave > 1 && !r.extra?.training && !spentDuringPrep(r); }
 const copy = (v) => structuredClone(v);
 const active = (r) => r.items.filter(i => !i.stored);
 const def = (i) => MODULE_BY_ID[i.id];
@@ -252,6 +259,19 @@ export function smartPlacementOptions(r, uid, rotation) {
 export function moveItem(r, uid, x, y, rotation, allowSwap = true, autoRotate = true) {
     return inventoryAction(r, d => {
         const p = previewSmartPlacement(d, uid, x, y, rotation, allowSwap, autoRotate);
+        if (!p.ok || !p.items)
+            return p;
+        d.items = p.items;
+        log(d, `${p.swappedUid ? 'swap' : 'move'}:${uid}:${p.swappedUid ?? ''}:${p.item.x},${p.item.y},${p.item.rotation}`);
+        return ok();
+    });
+}
+/** Revalidate and apply the exact highlighted plan, without choosing another orientation. */
+export function applyPlacement(r, uid, plan) {
+    return inventoryAction(r, d => {
+        if (!plan.ok || !plan.item)
+            return plan;
+        const p = previewSmartPlacement(d, uid, plan.item.x, plan.item.y, plan.item.rotation, true, false, plan.swappedUid);
         if (!p.ok || !p.items)
             return p;
         d.items = p.items;
@@ -581,7 +601,7 @@ export function buy(r, index, placement) {
         const result = receive(d, m.id, placement, offerTier(offer));
         if (!result.ok)
             return result;
-        d.gold -= price;
+        spend(d, price);
         d.shop[index] = { id: '', locked: false };
         log(d, `buy:${m.id}:${price}:tier${offerTier(offer)}`);
         return ok();
@@ -684,7 +704,7 @@ export function buyAndMerge(r, index, uid) {
         const result = mergeDraft(d, uid, material.uid);
         if (!result.ok)
             return result;
-        d.gold -= price;
+        spend(d, price);
         d.shop[index] = { id: '', locked: false };
         log(d, `buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);
         return ok();
@@ -702,7 +722,7 @@ export function repair(r) {
         const price = Math.ceil([18, 24, 30][act(d) - 1] * (d.difficulty >= 3 ? 1.25 : 1));
         if (d.gold < price)
             return fail('碎片不足', 'Not enough scrap.');
-        d.gold -= price;
+        spend(d, price);
         d.hp = Math.min(maxHP(d), d.hp + 30);
         extra(d).repairedWave = d.wave;
         log(d, `repair:${price}`);
@@ -711,13 +731,14 @@ export function repair(r) {
 }
 export function refreshShop(r) { return transaction(r, d => { const access = requireShop(d); if (!access.ok)
     return access; const price = Math.min(10, (d.refreshes + 1) * 2); if (d.gold < price)
-    return fail('碎片不足', 'Not enough scrap.'); d.gold -= price; d.refreshes++; generateShop(d, false); log(d, `refresh:${price}`); return ok(); }); }
+    return fail('碎片不足', 'Not enough scrap.'); spend(d, price); d.refreshes++; generateShop(d, false); log(d, `refresh:${price}`); return ok(); }); }
 export function toggleLock(r, index) { return transaction(r, d => { const access = requireShop(d); if (!access.ok)
     return access; if (!Number.isInteger(index) || !d.shop[index]?.id)
     return fail('请选择有效商品', 'Select an available offer.'); const lock = !d.shop[index].locked; for (const o of d.shop)
     o.locked = false; d.shop[index].locked = lock; return ok(); }); }
 function enterPrep(r) {
     r.phase = 'prep';
+    extra(r).spentPrepWave = 0;
     r.refreshes = 0;
     r.route = 0;
     delete r.saleUndo;
@@ -770,7 +791,7 @@ export function newRun(chassis, mode, difficulty, seed) {
     if (!allowedChassis.includes(chassis))
         chassis = 'scavenger';
     const c = CHASSIS_BY_ID[chassis];
-    const r = { version: 1, mode, seed: seed || 'backpack-mecha', chassis, difficulty: mode === 'full' ? Math.max(0, Math.min(4, Math.floor(difficulty) || 0)) : 0, phase: 'prep', wave: 1, gold: 40, hp: c.hp, shield: c.shield, power: 10, maxTier: 4, unlockedCorners: [], items: [], shop: [], refreshes: 0, shopPity: 0, protocols: [], bosses: [], nextUid: 1, rng: { shop: hashSeed(`${seed}:shop`), map: hashSeed(`${seed}:map`), event: hashSeed(`${seed}:event`), combat: hashSeed(`${seed}:combat`) }, route: 0, rewardOptions: [], protocolOptions: [], eventsSeen: [], eventResolved: true, insuranceUsed: false, stats: emptyStats(), elapsed: 0, history: [], extra: {} };
+    const r = { version: 1, mode, seed: seed || 'backpack-mecha', chassis, difficulty: mode === 'full' ? Math.max(0, Math.min(4, Math.floor(difficulty) || 0)) : 0, phase: 'prep', wave: 1, gold: 40, hp: c.hp, shield: c.shield, power: 10, maxTier: 4, unlockedCorners: [], items: [], shop: [], refreshes: 0, shopPity: 0, protocols: [], bosses: [], nextUid: 1, rng: { shop: hashSeed(`${seed}:shop`), map: hashSeed(`${seed}:map`), event: hashSeed(`${seed}:event`), combat: hashSeed(`${seed}:combat`) }, route: 0, rewardOptions: [], protocolOptions: [], eventsSeen: [], eventResolved: true, insuranceUsed: false, stats: emptyStats(), elapsed: 0, history: [], extra: { spentPrepWave: 0 } };
     const gun = newItem(r, 'W01'), support = newItem(r, 'S01');
     Object.assign(gun, { x: 1, y: 0, stored: false });
     Object.assign(support, { x: 0, y: 1, stored: false, link: gun.uid });
@@ -973,7 +994,7 @@ export function resolveEvent(r, choice) {
         if (id === 'EV01' && choice === 0) {
             if (d.gold < 24)
                 return fail('需要24碎片', 'Requires 24 scrap.');
-            d.gold -= 24;
+            spend(d, 24);
             beginRewards(d, ['U'], 'existingPrep');
         }
         else if (id === 'EV02' && choice === 0) {
@@ -1013,7 +1034,7 @@ export function resolveEvent(r, choice) {
                     return fail('需要12碎片', 'Requires 12 scrap.');
                 if (d.hp >= maxHP(d))
                     return fail('生命已满', 'HP is already full.');
-                d.gold -= 12;
+                spend(d, 12);
                 d.hp = Math.min(maxHP(d), d.hp + 20);
             }
         }

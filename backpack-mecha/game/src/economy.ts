@@ -11,6 +11,12 @@ const CORNERS:Point[]=[{x:0,y:0},{x:4,y:0},{x:0,y:4},{x:4,y:4}];
 const ok=():Result=>({ok:true});
 const fail=(reason:string,reasonEn:string):Result=>({ok:false,reason,reasonEn});
 const extra=(r:Run)=>r.extra??(r.extra={});
+function spend(r:Run,amount:number):void{r.gold-=amount;extra(r).spentPrepWave=r.wave;}
+export function spentDuringPrep(r:Run):boolean {
+ if(typeof r.extra?.spentPrepWave==='number')return r.extra.spentPrepWave===r.wave;
+ return !!r.journal?.events.some(e=>e.wave===r.wave&&(/^(buy|buy-merge|refresh|repair)$/.test(e.action)||['event:EV01:0','event:EV05:1'].includes(e.detail)));
+}
+export function shouldConfirmNoSpend(r:Run):boolean{return r.phase==='prep'&&r.wave>1&&!r.extra?.training&&!spentDuringPrep(r);}
 const copy=<T>(v:T):T=>structuredClone(v);
 const active=(r:Run)=>r.items.filter(i=>!i.stored);
 const def=(i:Item)=>MODULE_BY_ID[i.id];
@@ -177,6 +183,13 @@ export function moveItem(r:Run,uid:string,x:number,y:number,rotation:number,allo
  const p=previewSmartPlacement(d,uid,x,y,rotation,allowSwap,autoRotate);if(!p.ok||!p.items)return p;
  d.items=p.items;log(d,`${p.swappedUid?'swap':'move'}:${uid}:${p.swappedUid??''}:${p.item!.x},${p.item!.y},${p.item!.rotation}`);return ok();
 });}
+/** Revalidate and apply the exact highlighted plan, without choosing another orientation. */
+export function applyPlacement(r:Run,uid:string,plan:SmartPlacement):Result{return inventoryAction(r,d=>{
+ if(!plan.ok||!plan.item)return plan;
+ const p=previewSmartPlacement(d,uid,plan.item.x,plan.item.y,plan.item.rotation,true,false,plan.swappedUid);
+ if(!p.ok||!p.items)return p;
+ d.items=p.items;log(d,`${p.swappedUid?'swap':'move'}:${uid}:${p.swappedUid??''}:${p.item!.x},${p.item!.y},${p.item!.rotation}`);return ok();
+});}
 export function equipItem(r:Run,uid:string):Result{return inventoryAction(r,d=>{
  const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
  const options:SmartPlacement[]=[];
@@ -311,7 +324,7 @@ export function buy(r:Run,index:number,placement?:{x:number;y:number;rotation:nu
  const access=requireShop(d);if(!access.ok)return access;const offer=d.shop[index];if(!Number.isInteger(index)||!offer?.id)return fail('该商品已售出','This offer is unavailable.');
  const m=MODULE_BY_ID[offer.id],price=offerPrice(offer);if(!validTier(offerTier(offer)))return fail('无效商品稀有度','Invalid offer rarity.');if(d.gold<price)return fail('碎片不足','Not enough scrap.');
  if(!placement&&d.items.filter(i=>i.stored).length>=3)return fail('备件架已满，请选择背包位置后购买','Reserve full. Select a backpack placement before buying.');
- const result=receive(d,m.id,placement,offerTier(offer));if(!result.ok)return result;d.gold-=price;d.shop[index]={id:'',locked:false};log(d,`buy:${m.id}:${price}:tier${offerTier(offer)}`);return ok();
+ const result=receive(d,m.id,placement,offerTier(offer));if(!result.ok)return result;spend(d,price);d.shop[index]={id:'',locked:false};log(d,`buy:${m.id}:${price}:tier${offerTier(offer)}`);return ok();
 });}
 export function sell(r:Run,uid:string):Result {return inventoryAction(r,d=>{
  if(d.phase!=='prep'||d.wave===1)return fail('只能在商店出售','Sell equipment at a shop.');const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
@@ -365,18 +378,18 @@ export function buyAndMerge(r:Run,index:number,uid:string):Result{return transac
  const price=offerPrice(offer);if(d.gold<price)return fail('碎片不足','Not enough scrap.');
  const material=newItem(d,offer.id,offerTier(offer));d.items.push(material);
  const result=mergeDraft(d,uid,material.uid);if(!result.ok)return result;
- d.gold-=price;d.shop[index]={id:'',locked:false};log(d,`buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);return ok();
+ spend(d,price);d.shop[index]={id:'',locked:false};log(d,`buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);return ok();
 });}
 export function repair(r:Run):Result {return transaction(r,d=>{
  const access=requireShop(d);if(!access.ok)return access;if(extra(d).repairedWave===d.wave)return fail('本次商店已维修','Repairs have already been used at this shop.');
  if(d.hp>=maxHP(d))return fail('生命已满','HP is already full.');const price=Math.ceil([18,24,30][act(d)-1]*(d.difficulty>=3?1.25:1));
- if(d.gold<price)return fail('碎片不足','Not enough scrap.');d.gold-=price;d.hp=Math.min(maxHP(d),d.hp+30);extra(d).repairedWave=d.wave;log(d,`repair:${price}`);return ok();
+ if(d.gold<price)return fail('碎片不足','Not enough scrap.');spend(d,price);d.hp=Math.min(maxHP(d),d.hp+30);extra(d).repairedWave=d.wave;log(d,`repair:${price}`);return ok();
 });}
-export function refreshShop(r:Run):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;const price=Math.min(10,(d.refreshes+1)*2);if(d.gold<price)return fail('碎片不足','Not enough scrap.');d.gold-=price;d.refreshes++;generateShop(d,false);log(d,`refresh:${price}`);return ok();});}
+export function refreshShop(r:Run):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;const price=Math.min(10,(d.refreshes+1)*2);if(d.gold<price)return fail('碎片不足','Not enough scrap.');spend(d,price);d.refreshes++;generateShop(d,false);log(d,`refresh:${price}`);return ok();});}
 export function toggleLock(r:Run,index:number):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;if(!Number.isInteger(index)||!d.shop[index]?.id)return fail('请选择有效商品','Select an available offer.');const lock=!d.shop[index].locked;for(const o of d.shop)o.locked=false;d.shop[index].locked=lock;return ok();});}
 
 function enterPrep(r:Run):void {
- r.phase='prep';r.refreshes=0;r.route=0;delete r.saleUndo;r.eventResolved=true;delete r.eventId;
+ r.phase='prep';extra(r).spentPrepWave=0;r.refreshes=0;r.route=0;delete r.saleUndo;r.eventResolved=true;delete r.eventId;
  if(r.insuranceUsed){r.items=r.items.filter(i=>i.id!=='U12');repairLinks(r);}
  if(r.mode==='full'&&(r.wave===3||r.wave===7)){
   const events=EVENTS.filter(e=>!r.eventsSeen.includes(e.id)&&(e.id!=='EV03'||act(r)>=2));
@@ -399,7 +412,7 @@ export function newRun(chassis:string,mode:Mode,difficulty:number,seed:string):R
  seed=seed||'backpack-mecha';
  const allowedChassis=mode==='prototype'?['scavenger']:mode==='demo'?['scavenger','bulwark']:CHASSIS.map(c=>c.id);
  if(!allowedChassis.includes(chassis))chassis='scavenger';const c=CHASSIS_BY_ID[chassis];
- const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:4,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{}};
+ const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:4,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{spentPrepWave:0}};
  const gun=newItem(r,'W01'),support=newItem(r,'S01');Object.assign(gun,{x:1,y:0,stored:false});Object.assign(support,{x:0,y:1,stored:false,link:gun.uid});r.items=[gun,support];
  for(let a=1;a<=finalWave(r)/4;a++)r.bosses.push(mode==='full'?pick(r,BOSSES.filter(b=>b.act===a),'map').id:`B${a}A`);
  r.growth=freshGrowth();ensureJournal(r,false);recordAction(r,'new-run');
@@ -461,7 +474,7 @@ export function resolveEvent(r:Run,choice:number):Result {return transaction(r,d
  if(d.phase!=='prep'||d.mode!=='full'||!d.eventId||d.eventResolved)return fail('当前没有可处理的事件','No event is available now.');
  if(![-1,0,1].includes(choice))return fail('事件选项无效','Invalid event choice.');const e=extra(d),id=d.eventId;
  if(choice===-1){d.eventResolved=true;delete d.saleUndo;log(d,`event:${id}:skip`);return ok();}
- if(id==='EV01'&&choice===0){if(d.gold<24)return fail('需要24碎片','Requires 24 scrap.');d.gold-=24;beginRewards(d,['U'],'existingPrep');}
+ if(id==='EV01'&&choice===0){if(d.gold<24)return fail('需要24碎片','Requires 24 scrap.');spend(d,24);beginRewards(d,['U'],'existingPrep');}
  else if(id==='EV02'&&choice===0){if(d.hp<16)return fail('需要至少16生命','Requires at least 16 HP.');d.hp-=15;d.gold+=35;}
  else if(id==='EV03'){
   const candidates=d.items.filter(i=>i.tier===1);if(choice===1||!candidates.length)d.gold+=20;else {const item=candidates.find(i=>i.uid===e.eventTargetUid);if(!item)return fail('请选择一件I级模块','Select a tier I module.');item.tier=2;}
@@ -469,7 +482,7 @@ export function resolveEvent(r:Run,choice:number):Result {return transaction(r,d
  else if(id==='EV04'&&choice===0){if(d.route!==0||e.eventBudgetBonus||e.eventExtraElite)return fail('已有风险合同，请先选择普通路线','Choose the normal route before accepting event risk.');e.eventExtraElite=1;e.eventRewardModule=true;}
  else if(id==='EV05'){
   if(choice===0){const item=d.items.find(i=>i.uid===e.eventTargetUid);if(!item)return fail('请选择要拆解的模块','Select a module to dismantle.');d.gold+=Math.floor(standardCost(item)*.75);d.items=d.items.filter(i=>i.uid!==item.uid);repairLinks(d);}
-  else {if(d.gold<12)return fail('需要12碎片','Requires 12 scrap.');if(d.hp>=maxHP(d))return fail('生命已满','HP is already full.');d.gold-=12;d.hp=Math.min(maxHP(d),d.hp+20);}
+  else {if(d.gold<12)return fail('需要12碎片','Requires 12 scrap.');if(d.hp>=maxHP(d))return fail('生命已满','HP is already full.');spend(d,12);d.hp=Math.min(maxHP(d),d.hp+20);}
  }
  else if(id==='EV06'){
   if(choice===1)d.gold+=12;else {const tag=String(e.eventTargetTag??''),tags=active(d).filter(i=>def(i).kind==='weapon').flatMap(i=>def(i).tags);if(!tag||!tags.includes(tag))return fail('请选择已装备武器的一个标签','Choose a tag from an equipped weapon.');e.guaranteedSupportTag=tag;e.guaranteedSupportFromWave=d.wave+1;}
