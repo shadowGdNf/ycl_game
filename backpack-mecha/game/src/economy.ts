@@ -2,7 +2,8 @@ import {moduleValue,equipmentPrice,offerTier,validTier,rollShopTier} from './rar
 import type {BattleResult,CombatStats,Item,Mode,ModuleDef,Point,Result,Run,Tier} from './types.ts';
 import {BOSSES,CHASSIS,CHASSIS_BY_ID,DEMO_IDS,EVENTS,MODULES,MODULE_BY_ID,PROTOCOLS,PROTOTYPE_IDS,WAVES} from './content.ts';
 import {createEncounter} from './encounters.ts';
-import {waveScrapLimit} from './progression.ts';
+import {waveScrapLimit,chassisStats,awardExperience,freshGrowth} from './progression.ts';
+import type {GrowthStat} from './types.ts';
 import {hashSeed,nextRandom} from './random.ts';
 import {ensureJournal,recordAction,beginWaveRecord,finishWaveRecord,preserveJournal} from './journal.ts';
 
@@ -17,7 +18,7 @@ const act=(r:Run)=>Math.min(3,Math.ceil(r.wave/4));
 const finalWave=(r:Run)=>r.mode==='prototype'?4:r.mode==='demo'?8:12;
 const eligibleIds=(r:Run)=>r.mode==='prototype'?PROTOTYPE_IDS:r.mode==='demo'?DEMO_IDS:MODULES.map(m=>m.id);
 const editable=(r:Run)=>['prep','reward','protocol','expansion'].includes(r.phase);
-const maxHP=(r:Run)=>CHASSIS_BY_ID[r.chassis].hp;
+const maxHP=(r:Run)=>chassisStats(r).maxHp;
 const finite=(v:number)=>Number.isFinite(v)&&v>=0;
 function log(r:Run,message:string):void {r.history.push(message);if(r.history.length>500)r.history.shift();recordAction(r,message);}
 function replace(target:Run,value:Run):void {for(const key of Object.keys(target))delete (target as unknown as Record<string,unknown>)[key];Object.assign(target,value);}
@@ -136,6 +137,71 @@ export function placeItem(r:Run,uid:string,x:number,y:number,rotation:number):Re
  if(!Number.isInteger(rotation))return fail('旋转参数无效','Invalid rotation.');
  Object.assign(item,{x,y,rotation:normalizeRotation(rotation),stored:false});repairLinks(d);
  const result=checkInventory(d,false);if(result.ok)log(d,`place:${uid}:${x},${y},${item.rotation}`);return result;
+});}
+export interface SmartPlacement extends PlacementPreview {swappedUid?:string;items?:Item[];autoRotated?:boolean}
+/** Preview and commit share one atomic plan; failed swaps never displace either item. */
+export function previewSmartPlacement(r:Run,uid:string,x:number,y:number,rotation:number,allowSwap=true,autoRotate=true,swapUid?:string):SmartPlacement {
+ const fallback=previewPlacement(r,uid,x,y,rotation),original=r.items.find(i=>i.uid===uid);
+ if(!original||!editable(r)||![x,y,rotation].every(Number.isInteger)||x<0||y<0||x>=5||y>=5)return fallback;
+ const rotations=autoRotate?[0,1,2,3].map(n=>normalizeRotation(rotation+n)):[normalizeRotation(rotation)];
+ const candidates=rotations.flatMap(rot=>{
+  const pts=shape(original.id,rot),w=Math.max(...pts.map(p=>p.x))+1,h=Math.max(...pts.map(p=>p.y))+1;
+  return [{x,y,rotation:rot},{x:Math.min(x,5-w),y:Math.min(y,5-h),rotation:rot}];
+ });
+ for(const swapping of allowSwap?[false,true]:[false])for(const pos of candidates){
+  if(swapUid&&!swapping)continue;
+  const d=previewRun(r),item=d.items.find(i=>i.uid===uid)!;
+  Object.assign(item,pos,{stored:false});
+  const cells=getCells(item),overlap=active(d).filter(i=>i.uid!==uid&&getCells(i).some(p=>cells.some(q=>p.x===q.x&&p.y===q.y)));
+  if(overlap.length>(swapping?1:0)||swapping&&overlap.length!==1)continue;
+  const other=overlap[0];
+  if(swapUid&&other?.uid!==swapUid)continue;
+  const otherRotations=other&&!original.stored?[0,1,2,3].map(n=>normalizeRotation(other.rotation+n)):[0];
+  for(const rot of otherRotations){
+   if(other)Object.assign(other,original.stored?{stored:true,x:-1,y:-1}:{stored:false,x:original.x,y:original.y,rotation:rot});
+   if(!checkInventory(d,false,false).ok)continue;
+   repairLinks(d);const linkedWeapon=item.link?d.items.find(i=>i.uid===item.link):undefined;
+   return {ok:true,item,items:d.items,swappedUid:other?.uid,autoRotated:pos.rotation!==normalizeRotation(rotation),linkedWeapon,
+    power:active(d).reduce((n,i)=>n+def(i).power,0),capacity:getCapacity(d),cells:active(d).reduce((n,i)=>n+getCells(i).length,0),
+    ready:validateLoadout(d).ok&&(def(item).kind!=='support'||activeSupports(d).some(s=>s.uid===uid))};
+  }
+ }
+ return {...fallback,ok:false,reason:'此处放不下，也无法互换；可旋转、移入备件或整理背包',reasonEn:'No fit or valid swap here. Rotate, store a module, or arrange the backpack.'};
+}
+export function smartPlacementOptions(r:Run,uid:string,rotation:number):SmartPlacement[]{
+ const options:SmartPlacement[]=[];for(let y=0;y<5;y++)for(let x=0;x<5;x++){
+  const p=previewSmartPlacement(r,uid,x,y,rotation);if(p.ok&&p.item?.x===x&&p.item?.y===y)options.push(p);
+ }return options;
+}
+export function moveItem(r:Run,uid:string,x:number,y:number,rotation:number,allowSwap=true,autoRotate=true):Result{return inventoryAction(r,d=>{
+ const p=previewSmartPlacement(d,uid,x,y,rotation,allowSwap,autoRotate);if(!p.ok||!p.items)return p;
+ d.items=p.items;log(d,`${p.swappedUid?'swap':'move'}:${uid}:${p.swappedUid??''}:${p.item!.x},${p.item!.y},${p.item!.rotation}`);return ok();
+});}
+export function equipItem(r:Run,uid:string):Result{return inventoryAction(r,d=>{
+ const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');
+ const options:SmartPlacement[]=[];
+ for(let y=0;y<5;y++)for(let x=0;x<5;x++){const p=previewSmartPlacement(d,uid,x,y,item.rotation,false);if(p.ok)options.push(p);}
+ options.sort((a,b)=>Number(b.ready)-Number(a.ready));const best=options[0];
+ if(!best?.items)return fail('没有空位，请选择一件已装备模块互换，或先整理','No free space. Select equipped gear to swap, or arrange first.');
+ d.items=best.items!;log(d,`equip:${uid}`);return ok();
+});}
+export function swapWithReserve(r:Run,uid:string,reserveUid:string):Result{return inventoryAction(r,d=>{
+ const equipped=d.items.find(i=>i.uid===uid&&!i.stored),reserve=d.items.find(i=>i.uid===reserveUid&&i.stored);
+ if(!equipped||!reserve)return fail('请选择背包与备件中的两件模块','Choose one equipped and one reserve module.');
+ const p=previewSmartPlacement(d,reserve.uid,equipped.x,equipped.y,reserve.rotation,true,true,equipped.uid);
+ if(!p.ok||p.swappedUid!==equipped.uid||!p.items)return fail('两件模块无法在此位置互换，请先腾出空间','These modules cannot swap here. Make room first.');
+ d.items=p.items;log(d,`swap-reserve:${uid}:${reserveUid}`);return ok();
+});}
+export function swapItems(r:Run,uid:string,targetUid:string,rotation:number):Result{return inventoryAction(r,d=>{
+ const target=d.items.find(i=>i.uid===targetUid&&!i.stored&&i.uid!==uid);if(!target)return fail('请选择另一件已装备模块','Choose another equipped module.');
+ const p=previewSmartPlacement(d,uid,target.x,target.y,rotation,true,true,targetUid);if(!p.ok||!p.items)return p;
+ d.items=p.items;log(d,`swap:${uid}:${targetUid}`);return ok();
+});}
+export function upgradeChassis(r:Run,stat:GrowthStat):Result{return inventoryAction(r,d=>{
+ if(!['hp','speed','attack'].includes(stat))return fail('升级方向无效','Invalid upgrade path.');
+ const before=chassisStats(d),g=before.growth;if(!g.points)return fail('升级点不足，完成战斗获取经验','No upgrade points. Complete battles to earn XP.');
+ g.points--;g.choices[stat]++;d.growth=g;d.hp+=maxHP(d)-before.maxHp;
+ delete d.saleUndo;log(d,`chassis-upgrade:${stat}:${g.level}`);return ok();
 });}
 export function storeItem(r:Run,uid:string):Result {return inventoryAction(r,d=>{
  const item=d.items.find(i=>i.uid===uid);if(!item)return fail('找不到模块','Module not found.');if(item.stored)return ok();
@@ -336,7 +402,7 @@ export function newRun(chassis:string,mode:Mode,difficulty:number,seed:string):R
  const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:4,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{}};
  const gun=newItem(r,'W01'),support=newItem(r,'S01');Object.assign(gun,{x:1,y:0,stored:false});Object.assign(support,{x:0,y:1,stored:false,link:gun.uid});r.items=[gun,support];
  for(let a=1;a<=finalWave(r)/4;a++)r.bosses.push(mode==='full'?pick(r,BOSSES.filter(b=>b.act===a),'map').id:`B${a}A`);
- ensureJournal(r,false);recordAction(r,'new-run');
+ r.growth=freshGrowth();ensureJournal(r,false);recordAction(r,'new-run');
  return r;
 }
 export function startWave(r:Run):Result {return transaction(r,d=>{
@@ -353,6 +419,7 @@ export function resolveBattle(r:Run,result:BattleResult):Result {return transact
  d.hp=Math.min(maxHP(d),result.hp);d.shield=result.shield;d.elapsed+=result.elapsed;d.insuranceUsed||=result.insuranceUsed;if(result.rng!==undefined)d.rng.combat=result.rng;
  const s=copy(result.stats);s.goldEarned=Math.max(0,Math.min(waveScrapLimit(d.wave,createEncounter(d).state.budget),Number.isFinite(s.goldEarned)?s.goldEarned:0));mergeStats(d,s);d.gold+=s.goldEarned;
  if(!result.won||d.hp<=0){d.phase='lost';finishWaveRecord(d,{...result,stats:s},s.goldEarned);log(d,`lost:${completed}:${result.reason??''}`);return ok();}
+ const levels=awardExperience(d,s.kills);if(levels)log(d,`level:${d.growth!.level}:+${levels}`);
  const riskGold=wave.kind==='normal'?(d.route===1?30:Number(e.eventRewardGold??0)):0;
  const riskModule=wave.kind==='normal'&&(d.route===2||e.eventRewardModule===true);
  d.gold+=wave.base+riskGold;log(d,`won:${completed}:${wave.base+s.goldEarned+riskGold}`);

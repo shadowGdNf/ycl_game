@@ -81,7 +81,8 @@ for part in layout['parts']:
     rect(parent['atlas'], part['key'], region)
 
 content = json.loads((ROOT / 'assets' / 'content.json').read_text())
-expected = {item['id'] for kind in ('modules', 'enemies', 'bosses') for item in content[kind]}
+# Explicit sprite aliases reuse an inspected atlas region for new variants.
+expected = {item.get('sprite', item['id']) for kind in ('modules', 'enemies', 'bosses') for item in content[kind]}
 for chassis in content['chassis']:
     expected.update(f"{chassis['id']}.{part}" for part in (
         'body.0', 'body.1', 'body.2', 'body.3', 'legs', 'backpack'))

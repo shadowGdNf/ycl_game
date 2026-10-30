@@ -1,5 +1,5 @@
-import { roundRect } from "./canvas.js?v=c32c7858f958";
-import { zonePath } from "./motion-renderer.js?v=c32c7858f958";
+import { roundRect } from "./canvas.js?v=430d749de471";
+import { zonePath } from "./motion-renderer.js?v=430d749de471";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -22,6 +22,10 @@ export function effectLife(e) {
         return .24;
     if (e.type === 'boss-overload-warning' || e.type === 'boss-overload')
         return 1.1;
+    if (e.type === 'fire' && e.source === 'W15')
+        return .34;
+    if (e.type === 'fire' && e.source === 'W14')
+        return .24;
     if (e.type === 'fire')
         return ['W05', 'W08', 'W09'].includes(e.source ?? '') ? .28 : .16;
     if (e.type === 'explosion' || e.type === 'enemy-explosion' || e.type === 'enemy-attack')
@@ -170,7 +174,7 @@ export function drawProjectile(c, b, time, reduced) {
         c.fillStyle = '#713b2b';
         c.fillRect(-5, -5, 5, 10);
     }
-    else if (id === 'W12') {
+    else if ((id === 'W12' || id === 'W16')) {
         c.fillStyle = '#b5f3ff';
         c.strokeStyle = '#63bedf';
         c.lineWidth = 1.5;
@@ -236,8 +240,25 @@ export function drawProjectile(c, b, time, reduced) {
 function weaponEffect(c, e, k, reduced) {
     const id = e.source, range = e.radius ?? 110;
     c.rotate(e.angle ?? 0);
-    if (id === 'W04' || id === 'W11')
+    if (id === 'W04' || id === 'W11' || id === 'W18')
         return;
+    if (id === 'W14') {
+        c.strokeStyle = '#da9fff';
+        c.lineWidth = 12 * (1 - k) + 2;
+        line(c, 0, 0, range, 0);
+        c.strokeStyle = '#fff0ff';
+        c.lineWidth = 3;
+        line(c, 0, 0, range, 0);
+        return;
+    }
+    if (id === 'W15') {
+        c.strokeStyle = '#70f6e0';
+        c.lineWidth = 5 * (1 - k) + 2;
+        c.beginPath();
+        c.arc(0, 0, range * (.6 + .4 * k), 0, TAU);
+        c.stroke();
+        return;
+    }
     if (id === 'W05') {
         const length = range * (.72 + .28 * (1 - k));
         c.globalAlpha *= .55;
@@ -281,7 +302,7 @@ function weaponEffect(c, e, k, reduced) {
             }
     }
     else {
-        const color = id === 'W03' ? '#a0edff' : id === 'W12' ? '#bffaff' : id === 'W07' ? '#ffe6ad' : '#ffd992';
+        const color = id === 'W03' ? '#a0edff' : (id === 'W12' || id === 'W16') ? '#bffaff' : id === 'W07' ? '#ffe6ad' : '#ffd992';
         c.translate(20, 0);
         c.fillStyle = color;
         const length = (id === 'W02' ? 35 : id === 'W07' ? 45 : 24) * (1 - k) + 4;

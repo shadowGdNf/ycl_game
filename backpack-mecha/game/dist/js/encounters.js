@@ -1,5 +1,5 @@
-import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=c32c7858f958";
-import { nextRandom } from "./random.js?v=c32c7858f958";
+import { BOSS_BY_ID, ENEMY_BY_ID, WAVES } from "./content.js?v=430d749de471";
+import { nextRandom } from "./random.js?v=430d749de471";
 export const ARENA = { width: 1600, height: 1200 };
 export const BOSS_DAMAGE_SCALE = 1.5;
 const layouts = [

@@ -1,11 +1,11 @@
-import { roundRect } from "./canvas.js?v=c32c7858f958";
-import { Art } from "./art.js?v=c32c7858f958";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=c32c7858f958";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=c32c7858f958";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=c32c7858f958";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=c32c7858f958";
-import { locomotion, easeOut } from "./visual-motion.js?v=c32c7858f958";
-import { chassisSkill } from "./skills.js?v=c32c7858f958";
+import { roundRect } from "./canvas.js?v=430d749de471";
+import { Art } from "./art.js?v=430d749de471";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=430d749de471";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=430d749de471";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=430d749de471";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=430d749de471";
+import { locomotion, easeOut } from "./visual-motion.js?v=430d749de471";
+import { chassisSkill } from "./skills.js?v=430d749de471";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -496,7 +496,7 @@ export class Renderer {
         ctx.fill();
         const big = w.id === 'W08' || w.id === 'W07';
         this.art.draw(ctx, w.id, x, y, big ? 40 : 34, big ? 32 : 27, angle, 1, Math.cos(angle) < 0);
-        if (age < .085 && w.shotCount > 0 && w.id !== 'W11' && w.id !== 'W09') {
+        if (age < .085 && w.shotCount > 0 && !['W11', 'W18', 'W09', 'W15'].includes(w.id)) {
             ctx.save();
             ctx.translate(x + Math.cos(angle) * 19, y + Math.sin(angle) * 19);
             ctx.rotate(angle);
@@ -510,13 +510,13 @@ export class Renderer {
             ctx.fill();
             ctx.restore();
         }
-        if (w.id === 'W11') {
+        if (w.id === 'W11' || w.id === 'W18') {
             const count = w.droneCount ?? 2;
             for (let n = 0; n < count; n++) {
                 const a = time * 1.2 + n * TAU / Math.max(1, count) + (index % 2 ? Math.PI / 3 : 0);
                 const dx = p.x + Math.cos(a) * 48, dy = p.y + Math.sin(a) * 48;
                 this.shadow(dx, dy + 7, 7, 3, .2);
-                this.art.draw(ctx, 'W11', dx, dy, 20, 20, w.angle);
+                this.art.draw(ctx, w.id, dx, dy, 20, 20, w.angle);
             }
         }
     }

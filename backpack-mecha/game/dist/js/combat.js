@@ -1,10 +1,10 @@
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=c32c7858f958";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=c32c7858f958";
-import { activeSupports } from "./economy.js?v=c32c7858f958";
-import { scrapPerCost } from "./progression.js?v=c32c7858f958";
-import { chassisSkill } from "./skills.js?v=c32c7858f958";
-import { nextRandom } from "./random.js?v=c32c7858f958";
-import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=c32c7858f958";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=430d749de471";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=430d749de471";
+import { activeSupports } from "./economy.js?v=430d749de471";
+import { scrapPerCost, chassisStats } from "./progression.js?v=430d749de471";
+import { chassisSkill } from "./skills.js?v=430d749de471";
+import { nextRandom } from "./random.js?v=430d749de471";
+import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=430d749de471";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -29,6 +29,7 @@ function syncBossHP(w, e) { if (e.group)
         if (other.group === e.group)
             other.hp = e.hp; }
 export function createBattle(run) {
+    const growth = chassisStats(run);
     const chassis = CHASSIS_BY_ID[run.chassis];
     if (!chassis)
         throw new Error(`Unknown chassis ${run.chassis}`);
@@ -42,13 +43,15 @@ export function createBattle(run) {
     const weapons = equipped.filter(i => MODULE_BY_ID[i.id]?.kind === 'weapon').map((i, index) => ({ uid: i.uid, id: i.id, tier: i.tier, x: 800, y: 650, angle: -Math.PI / 2, cooldown: .1 + index * .05, shotCount: 0,
         supports: Object.fromEntries(activeSupports(run).filter(s => s.link === i.uid).map(s => [s.id, s.tier])), targetUntil: 0, rectifierAt: 0, springUsed: true, fuseAt: {}, droneCount: 0 }));
     let drones = 0;
+    const droneLimit = weapons.some(w => w.id === 'W18') ? 9 : 6;
     for (const weapon of weapons)
-        if (weapon.id === 'W11') {
-            weapon.droneCount = Math.min(6 - drones, weapon.supports.S10 ? 3 : 2);
+        if (MODULE_BY_ID[weapon.id].attack === 'drone') {
+            weapon.droneCount = Math.min(droneLimit - drones, (weapon.id === 'W18' ? 3 : 2) + (weapon.supports.S10 ? 1 : 0));
             drones += weapon.droneCount;
         }
     const world = { version: 1, tick: 0, time: 0, wave: run.wave, act: encounter.state.wave.act, difficulty: run.difficulty, status: 'playing', width: ARENA.width, height: ARENA.height,
-        player: { x: 800, y: 650, hp: clamp(run.hp, 0, chassis.hp), maxHp: chassis.hp, shield: maxShield, maxShield, radius: 14, speed, armor: clamp(chassis.armor + value('U06', utilities.U06), 0, 60), angle: -Math.PI / 2, dashCooldown: 0, overloadCooldown: 0, dashTime: 0, overloadTime: 0, invulnerable: 0 },
+        player: { x: 800, y: 650, hp: clamp(run.hp, 0, growth.maxHp), maxHp: growth.maxHp, shield: maxShield, maxShield, radius: 14, speed, armor: clamp(chassis.armor + value('U06', utilities.U06), 0, 60), angle: -Math.PI / 2, dashCooldown: 0, overloadCooldown: 0, dashTime: 0, overloadTime: 0, invulnerable: 0 },
+        baseDamage: growth.attack / 100, baseAttackSpeed: growth.speed / 100,
         enemies: [], bullets: [], zones: [], weapons, drops: [], obstacles: encounter.obstacles, events: [], stats: zeros(), chassis: run.chassis, duration: encounter.state.wave.duration, insuranceUsed: run.insuranceUsed,
         rng: run.rng.combat, nextId: 1, nextEvent: 1, nextShot: 1, remainder: 0, encounter: encounter.state, utilities, protocols: [...run.protocols], lastDamage: -10,
         shieldRegen: 3 + (utilities.U02 ? TIER_EFFECTS.shieldRegen[utilities.U02 - 1] : 0), dashBase, dashAngle: 0, dashOrigin: { x: 800, y: 650 }, dashReleased: true, overloadReleased: true, lastDash: -10,
@@ -264,13 +267,13 @@ function applyStatus(w, e, weapon) {
         e.wet = Math.max(e.wet, 3 + (protocol(w, 'P01') ? 2 : 0));
     if (weapon.id === 'W06')
         e.oilUntil = w.time + 4;
-    if (weapon.id === 'W05' && weapon.shotCount % 2 === 0) {
+    if (weapon.id === 'W17' || weapon.id === 'W05' && weapon.shotCount % 2 === 0) {
         const layer = { expires: w.time + 4, next: w.time + .5, weapon: weapon.uid, damage: 1.5 };
         if (e.burns.length >= 5)
             e.burns.splice(e.burns.reduce((best, b, i) => b.expires < e.burns[best].expires ? i : best, 0), 1);
         e.burns.push(layer);
     }
-    if (weapon.id === 'W12') {
+    if (weapon.id === 'W12' || weapon.id === 'W16') {
         e.chill++;
         e.chillUntil = w.time + 3;
         e.chillStrength = weapon.supports.S12 ? .08 : .06;
@@ -312,13 +315,13 @@ function hitEnemy(w, e, hit) {
         add += .15;
     if (hit.arcFirst && e.wet > 0 && protocol(w, 'P01'))
         add += .1;
-    if (direct && weapon?.id === 'W11' && protocol(w, 'P05') && w.priority === e.eid && w.priorityUntil > w.time)
+    if (direct && hit.kind === 'drone' && protocol(w, 'P05') && w.priority === e.eid && w.priorityUntil > w.time)
         add += .2;
     let vulnerable = (hit.kind === 'electric' && e.wet > 0 ? (weapon?.supports.S05 ? support(weapon, 'S05') : .25) : 0) + (e.vulnerableUntil > w.time ? .25 : 0);
     if (hit.oilExplosion && e.kind === 'boss' && protocol(w, 'P02'))
         add += .15;
     const crit = direct && rand(w) < Math.min(.7, .05 + utility(w, 'U05'));
-    let amount = hit.base * (weapon ? scale(weapon.tier) : 1) * (1 + Math.min(2, add)) * (hit.factor ?? 1) * (crit ? 1.5 : 1) * Math.min(1.75, 1 + vulnerable) * 100 / (100 + Math.max(0, e.armor - (direct && weapon ? support(weapon, 'S07') : 0)));
+    let amount = hit.base * (w.baseDamage ?? 1) * (weapon ? scale(weapon.tier) : 1) * (1 + Math.min(2, add)) * (hit.factor ?? 1) * (crit ? 1.5 : 1) * Math.min(1.75, 1 + vulnerable) * 100 / (100 + Math.max(0, e.armor - (direct && weapon ? support(weapon, 'S07') : 0)));
     if (e.id === 'E07' && Math.abs(angleDiff(angleTo(e, origin), e.angle)) < Math.PI / 3)
         amount *= .5;
     const actual = Math.min(e.hp, amount);
@@ -423,7 +426,26 @@ function fireWeapon(w, weapon, target, extra = false) {
         weapon.springUsed = true;
     }
     event(w, 'fire', origin, { source: weapon.id, targetId: target.eid, angle: a, to: { x: target.x, y: target.y }, radius: (def.range || 100) * (1 + support(weapon, 'S11')) });
-    if (weapon.id === 'W04') {
+    if (def.attack === 'beam') {
+        let length = def.range;
+        while (length > 0 && !clearPath(origin, { x: origin.x + Math.cos(a) * length, y: origin.y + Math.sin(a) * length }, w.obstacles, 0))
+            length -= 8;
+        const end = { x: origin.x + Math.cos(a) * length, y: origin.y + Math.sin(a) * length };
+        w.events[w.events.length - 1].radius = length;
+        const seen = new Set();
+        for (const enemy of w.enemies.filter(e => alive(e) && segmentDistance(e, origin, end) <= e.radius + 5 && distance(e, origin) <= length + e.radius).sort((x, y) => distance(x, origin) - distance(y, origin))) {
+            if (seen.has(groupKey(enemy)))
+                continue;
+            seen.add(groupKey(enemy));
+            hitEnemy(w, enemy, { base: def.damage, kind: 'electric', weapon, factor });
+            if (seen.size >= 5)
+                break;
+        }
+    }
+    else if (def.attack === 'pulse') {
+        areaDamage(w, origin, def.range, { base: def.damage, kind: 'electric', weapon, factor });
+    }
+    else if (weapon.id === 'W04') {
         const maximum = Math.min(5, 3 + (target.wet > 0 ? 1 : 0) + (weapon.supports.S05 ? 1 : 0)), seen = [];
         let current = target, previous = origin;
         for (let chain = 0; chain < maximum && current; chain++) {
@@ -464,24 +486,24 @@ function fireWeapon(w, weapon, target, extra = false) {
         z.duration = .12;
         z.color = def.color;
     }
-    else if (weapon.id === 'W11') {
+    else if (def.attack === 'drone') {
         for (let i = 0; i < weapon.droneCount; i++) {
             const orbit = w.time * 1.2 + (i / Math.max(1, weapon.droneCount)) * Math.PI * 2 + (w.weapons.indexOf(weapon) % 2 ? Math.PI / 3 : 0), p = { x: origin.x + Math.cos(orbit) * 48, y: origin.y + Math.sin(orbit) * 48 };
-            makeBullet(w, p, angleTo(p, target), CONFIG.droneSpeed, 4, 'drone', weapon, { factor: weapon.supports.S10 ? support(weapon, 'S10') : 1 });
+            makeBullet(w, p, angleTo(p, target), CONFIG.droneSpeed, weapon.id === 'W18' ? 5 : 4, 'drone', weapon, { factor: weapon.supports.S10 ? support(weapon, 'S10') : 1 });
         }
     }
     else {
         const split = Boolean(weapon.supports.S03) && def.tags.includes('单弹');
-        const count = weapon.id === 'W02' ? 5 : split ? 2 : 1, spread = weapon.id === 'W02' ? Math.PI * 2 / 9 : split ? .14 : 0;
-        const speed = weapon.id === 'W03' ? CONFIG.waterSpeed : weapon.id === 'W12' ? CONFIG.iceSpeed : weapon.id === 'W06' ? CONFIG.oilSpeed : weapon.id === 'W10' ? CONFIG.missileSpeed : weapon.id === 'W07' ? 1700 : CONFIG.bulletSpeed;
-        const kind = weapon.id === 'W03' ? 'water' : weapon.id === 'W12' ? 'ice' : weapon.id === 'W06' ? 'oil' : weapon.id === 'W10' ? 'explosion' : 'ballistic';
+        const count = weapon.id === 'W02' ? 5 : weapon.id === 'W16' ? 4 : split ? 2 : 1, spread = weapon.id === 'W02' ? Math.PI * 2 / 9 : weapon.id === 'W16' ? Math.PI * 5 / 18 : split ? .14 : 0;
+        const speed = weapon.id === 'W03' ? CONFIG.waterSpeed : ['W12', 'W16'].includes(weapon.id) ? CONFIG.iceSpeed : weapon.id === 'W06' ? CONFIG.oilSpeed : ['W10', 'W17'].includes(weapon.id) ? CONFIG.missileSpeed : weapon.id === 'W07' ? 1700 : CONFIG.bulletSpeed;
+        const kind = weapon.id === 'W03' ? 'water' : ['W12', 'W16'].includes(weapon.id) ? 'ice' : weapon.id === 'W06' ? 'oil' : weapon.id === 'W10' ? 'explosion' : weapon.id === 'W17' ? 'fire' : 'ballistic';
         for (let i = 0; i < count; i++) {
-            const angle = a + (count > 1 ? (i / (count - 1) - .5) * spread : 0), base = weapon.id === 'W02' ? 5 : def.damage || 0;
+            const angle = a + (count > 1 ? (i / (count - 1) - .5) * spread : 0), base = weapon.id === 'W02' ? 5 : weapon.id === 'W16' ? 4 : def.damage || 0;
             // Start collision travel at the body center; a visual muzzle offset must never skip an overlapping enemy.
-            makeBullet(w, { x: origin.x, y: origin.y }, angle, speed, base, kind, weapon, { factor: factor * (split ? support(weapon, 'S03') : 1), pierce: weapon.id === 'W07' ? 3 : 1, ...(weapon.id === 'W06' || weapon.id === 'W10' ? { target: { x: target.x, y: target.y }, radius: 6 } : {}) });
+            makeBullet(w, { x: origin.x, y: origin.y }, angle, speed, base, kind, weapon, { factor: factor * (split ? support(weapon, 'S03') : 1), pierce: weapon.id === 'W07' ? 3 : 1, ...(['W06', 'W10', 'W17'].includes(weapon.id) ? { target: { x: target.x, y: target.y }, radius: 6 } : {}) });
         }
     }
-    if (!extra && w.utilities.U10 && weapon.id !== 'W11' && weapon.shotCount % utility(w, 'U10') === 0)
+    if (!extra && w.utilities.U10 && def.attack !== 'drone' && weapon.shotCount % utility(w, 'U10') === 0)
         fireWeapon(w, weapon, target, true);
 }
 function tickWeapons(w, dt) {
@@ -498,7 +520,7 @@ function tickWeapons(w, dt) {
         let speed = support(weapon, 'S02') + (w.player.overloadTime > 0 ? .35 : 0) + (protocol(w, 'P07') && w.player.hp / w.player.maxHp < .35 ? .2 : 0);
         if (protocol(w, 'P06') && w.time - w.lastDash <= 3 && MODULE_BY_ID[weapon.id].tags.includes('实弹'))
             speed += .2;
-        weapon.cooldown = Math.max(.08, (MODULE_BY_ID[weapon.id].interval || 1) / (1 + Math.min(1.5, speed)));
+        weapon.cooldown = Math.max(weapon.id === 'W13' ? .04 : .08, (MODULE_BY_ID[weapon.id].interval || 1) / ((w.baseAttackSpeed ?? 1) * (1 + Math.min(1.5, speed))));
     }
 }
 function segmentDistance(p, a, b) {
@@ -516,7 +538,7 @@ function tickBullets(w, dt) {
         b.traveled += Math.hypot(b.vx, b.vy) * dt;
         const weapon = b.weaponUid ? w.weapons.find(a => a.uid === b.weaponUid) : undefined;
         if (b.target && distance(before, b.target) <= Math.hypot(b.vx, b.vy) * dt + 7) {
-            areaDamage(w, b.target, b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
+            areaDamage(w, b.target, weapon?.id === 'W17' ? 105 : b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
             b.life = 0;
             continue;
         }
@@ -536,14 +558,14 @@ function tickBullets(w, dt) {
             }
             else {
                 if (b.target && weapon)
-                    areaDamage(w, b, b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
+                    areaDamage(w, b, weapon?.id === 'W17' ? 105 : b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
                 b.life = 0;
             }
             continue;
         }
         if (b.traveled > b.range) {
             if (b.target && weapon)
-                areaDamage(w, b, b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
+                areaDamage(w, b, weapon?.id === 'W17' ? 105 : b.kind === 'oil' ? 70 : 75, { base: b.damage, kind: b.kind, weapon, factor: b.factor, status: true });
             b.life = 0;
             continue;
         }
@@ -1039,7 +1061,7 @@ function activateSkill(w) {
 function tickSkill(w) {
     if (w.chassis !== 'hive' || (w.player.skillTime ?? 0) <= 1e-8 || w.time + 1e-8 < (w.skillPulseAt ?? 0))
         return;
-    w.skillPulseAt = w.time + .6;
+    w.skillPulseAt = w.time + .6 / (w.baseAttackSpeed ?? 1);
     for (let i = 0; i < 3; i++) {
         let target, best = Infinity;
         for (const e of w.enemies) {

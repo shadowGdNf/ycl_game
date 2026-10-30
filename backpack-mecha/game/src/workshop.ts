@@ -13,7 +13,7 @@ export function supportBenefit(item:Item,lang:Lang):string {
  if(item.id==='S02')return en?`Attack speed +${pct}%.`:`攻击速度 +${pct}%。`;
  if(item.id==='S03')return en?`One extra single shot; each shot deals ${pct}% damage. Status effects remain.`:`单弹额外发射 1 枚；每枚伤害变为 ${pct}%，保留状态施加。`;
  if(item.id==='S04')return en?`Two extra wall bounces; damage ×${pct}% per bounce. Repeat hits are at least 0.30s apart.`:`额外碰墙反弹 2 次，每次伤害乘 ${pct}%；同目标重复命中间隔至少 0.30 秒。`;
- if(item.id==='S05')return en?`Wet electric bonus: 25% → ${pct}%; one extra jump, at most 5 targets.`:`潮湿电伤加成 25% → ${pct}%；多跳 1 个目标，全链最多 5 个目标。`;
+ if(item.id==='S05')return en?`Wet electric bonus: 25% → ${pct}%; arc chains gain one extra jump, at most 5 targets.`:`潮湿电伤加成 25% → ${pct}%；电链多跳 1 个目标，全链最多 5 个目标。`;
  if(item.id==='S06')return en?`Igniting oil: explosion base damage 18 → ${format(v)}, radius 80 → 100.`:`引燃油污时：爆炸基础伤害 18 → ${format(v)}，半径 80 → 100。`;
  if(item.id==='S07')return en?`Direct hits ignore ${format(v)} armor, down to zero.`:`直接伤害忽略 ${format(v)} 点护甲，剩余护甲最低为 0。`;
  if(item.id==='S08')return en?`Direct critical hits restore ${format(v)} shield, at most once per second and once per shotgun volley.`:`直接暴击回复 ${format(v)} 护盾，每秒最多 1 次，同轮霰弹最多 1 次。`;

@@ -44,7 +44,7 @@ export class GameAudio {
         this.lastPlayed[key] = t;
         const weapon = source.slice(0, 3);
         if (type === 'fire') {
-            const tones = { W01: [135, .06, 'square', .18], W02: [75, .12, 'sawtooth', .2], W03: [650, .09, 'sine', .14], W04: [420, .12, 'triangle', .18], W05: [94, .06, 'sawtooth', .10], W06: [190, .14, 'triangle', .18], W07: [92, .2, 'square', .25], W08: [55, .16, 'triangle', .3], W09: [110, .07, 'sawtooth', .1], W10: [85, .18, 'sawtooth', .2], W11: [320, .05, 'sine', .12], W12: [840, .09, 'triangle', .13] };
+            const tones = { W01: [135, .06, 'square', .18], W02: [75, .12, 'sawtooth', .2], W03: [650, .09, 'sine', .14], W04: [420, .12, 'triangle', .18], W05: [94, .06, 'sawtooth', .10], W06: [190, .14, 'triangle', .18], W07: [92, .2, 'square', .25], W08: [55, .16, 'triangle', .3], W09: [110, .07, 'sawtooth', .1], W10: [85, .18, 'sawtooth', .2], W11: [320, .05, 'sine', .12], W12: [840, .09, 'triangle', .13], W13: [180, .04, 'square', .1], W14: [920, .18, 'sawtooth', .15], W15: [240, .2, 'sine', .18], W16: [1050, .09, 'triangle', .14], W17: [65, .23, 'sawtooth', .2], W18: [510, .06, 'triangle', .12] };
             const [f, l, k, v] = tones[weapon] ?? tones.W01;
             this.tone(f, l, k, v, .55);
             return;

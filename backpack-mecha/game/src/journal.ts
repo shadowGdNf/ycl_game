@@ -1,3 +1,4 @@
+import {normalizeGrowth} from './progression.ts';
 import type {BattleResult, Run, RunJournal} from './types.ts';
 import {BUILD_VERSION, RULESET_VERSION} from './version.ts';
 import {MODULE_BY_ID,BOSS_BY_ID,PROTOCOL_BY_ID} from './content.ts';
@@ -20,7 +21,7 @@ export function recordAction(run:Run, detail:string):void {
  const journal = ensureJournal(run);
  journal.events.push({
   sequence:journal.nextSequence++, wave:run.wave, action:detail.split(':')[0], detail,
-  gold:run.gold, hp:run.hp, prepSeconds:journal.prepSeconds[run.wave] ?? 0,
+  growth:normalizeGrowth(run.growth), gold:run.gold, hp:run.hp, prepSeconds:journal.prepSeconds[run.wave] ?? 0,
   items:clone(run.items), shop:clone(run.shop), protocols:[...run.protocols],
   rewardOptions:[...run.rewardOptions],protocolOptions:[...run.protocolOptions],route:run.route,
   ...(run.eventId?{eventId:run.eventId}:{}),
@@ -38,7 +39,7 @@ export function beginWaveRecord(run:Run):void {
  journal.waves.push({
   wave:run.wave, ...(run.wave % 4 === 0 ? {boss:run.bosses[Math.ceil(run.wave / 4)-1]} : {}),
   route:run.route, rulesVersion:RULESET_VERSION, prepSeconds:journal.prepSeconds[run.wave] ?? 0,
-  start:{hp:run.hp, shield:run.shield, gold:run.gold, items:clone(run.items), protocols:[...run.protocols]},
+  start:{growth:normalizeGrowth(run.growth),hp:run.hp, shield:run.shield, gold:run.gold, items:clone(run.items), protocols:[...run.protocols]},
  });
 }
 
@@ -84,7 +85,7 @@ export function exportRunReport(run:Run) {
   seed:run.seed, mode:run.mode, chassis:run.chassis, difficulty:run.difficulty,
   status:run.phase, wave:run.wave, battleSeconds:run.elapsed,
   prepSeconds:Object.values(journal.prepSeconds).reduce((sum, seconds) => sum + seconds, 0),
-  stats:run.stats, items:run.items, history:run.history, journal,
+  growth:normalizeGrowth(run.growth),stats:run.stats, items:run.items, history:run.history, journal,
   ...(windows.length?{performance:{version:1,method:'Nearest-rank percentiles of retained foreground battle samples; whole-wave histogram remains in journal.frames.',waves:Object.fromEntries(windows)}}:{}),
  });
 }

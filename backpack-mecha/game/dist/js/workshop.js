@@ -1,7 +1,7 @@
-import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=c32c7858f958";
+import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=430d749de471";
 /** Read-only explanations derived from the same connection and placement checks as play. */
-import { MODULE_BY_ID, label } from "./content.js?v=c32c7858f958";
-import { getCapacity, linkOptions, validateLoadout, activeSupports, inactiveSupports } from "./economy.js?v=c32c7858f958";
+import { MODULE_BY_ID, label } from "./content.js?v=430d749de471";
+import { getCapacity, linkOptions, validateLoadout, activeSupports, inactiveSupports } from "./economy.js?v=430d749de471";
 const format = (n) => Number(n.toFixed(2)).toString();
 export function supportBenefit(item, lang) {
     const m = MODULE_BY_ID[item.id], v = moduleValue(item.id, item.tier), pct = format(v * 100), en = lang === 'en';
@@ -14,7 +14,7 @@ export function supportBenefit(item, lang) {
     if (item.id === 'S04')
         return en ? `Two extra wall bounces; damage ×${pct}% per bounce. Repeat hits are at least 0.30s apart.` : `额外碰墙反弹 2 次，每次伤害乘 ${pct}%；同目标重复命中间隔至少 0.30 秒。`;
     if (item.id === 'S05')
-        return en ? `Wet electric bonus: 25% → ${pct}%; one extra jump, at most 5 targets.` : `潮湿电伤加成 25% → ${pct}%；多跳 1 个目标，全链最多 5 个目标。`;
+        return en ? `Wet electric bonus: 25% → ${pct}%; arc chains gain one extra jump, at most 5 targets.` : `潮湿电伤加成 25% → ${pct}%；电链多跳 1 个目标，全链最多 5 个目标。`;
     if (item.id === 'S06')
         return en ? `Igniting oil: explosion base damage 18 → ${format(v)}, radius 80 → 100.` : `引燃油污时：爆炸基础伤害 18 → ${format(v)}，半径 80 → 100。`;
     if (item.id === 'S07')

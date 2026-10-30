@@ -1,6 +1,7 @@
-import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=c32c7858f958";
-import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=c32c7858f958";
-import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=c32c7858f958";
+import { normalizeGrowth } from "./progression.js?v=430d749de471";
+import { BUILD_VERSION, RULESET_VERSION } from "./version.js?v=430d749de471";
+import { MODULE_BY_ID, BOSS_BY_ID, PROTOCOL_BY_ID } from "./content.js?v=430d749de471";
+import { appendFrame, sanitizeFrameWindow, summarizeFrameWindow } from "./performance.js?v=430d749de471";
 const EVENT_LIMIT = 400;
 export const FRAME_BUCKETS_MS = [17, 25, 34, 50, 100, 250, Infinity];
 const clone = (value) => structuredClone(value);
@@ -16,7 +17,7 @@ export function recordAction(run, detail) {
     const journal = ensureJournal(run);
     journal.events.push({
         sequence: journal.nextSequence++, wave: run.wave, action: detail.split(':')[0], detail,
-        gold: run.gold, hp: run.hp, prepSeconds: journal.prepSeconds[run.wave] ?? 0,
+        growth: normalizeGrowth(run.growth), gold: run.gold, hp: run.hp, prepSeconds: journal.prepSeconds[run.wave] ?? 0,
         items: clone(run.items), shop: clone(run.shop), protocols: [...run.protocols],
         rewardOptions: [...run.rewardOptions], protocolOptions: [...run.protocolOptions], route: run.route,
         ...(run.eventId ? { eventId: run.eventId } : {}),
@@ -33,7 +34,7 @@ export function beginWaveRecord(run) {
     journal.waves.push({
         wave: run.wave, ...(run.wave % 4 === 0 ? { boss: run.bosses[Math.ceil(run.wave / 4) - 1] } : {}),
         route: run.route, rulesVersion: RULESET_VERSION, prepSeconds: journal.prepSeconds[run.wave] ?? 0,
-        start: { hp: run.hp, shield: run.shield, gold: run.gold, items: clone(run.items), protocols: [...run.protocols] },
+        start: { growth: normalizeGrowth(run.growth), hp: run.hp, shield: run.shield, gold: run.gold, items: clone(run.items), protocols: [...run.protocols] },
     });
 }
 export function finishWaveRecord(run, result, income) {
@@ -82,7 +83,7 @@ export function exportRunReport(run) {
         seed: run.seed, mode: run.mode, chassis: run.chassis, difficulty: run.difficulty,
         status: run.phase, wave: run.wave, battleSeconds: run.elapsed,
         prepSeconds: Object.values(journal.prepSeconds).reduce((sum, seconds) => sum + seconds, 0),
-        stats: run.stats, items: run.items, history: run.history, journal,
+        growth: normalizeGrowth(run.growth), stats: run.stats, items: run.items, history: run.history, journal,
         ...(windows.length ? { performance: { version: 1, method: 'Nearest-rank percentiles of retained foreground battle samples; whole-wave histogram remains in journal.frames.', waves: Object.fromEntries(windows) } } : {}),
     });
 }

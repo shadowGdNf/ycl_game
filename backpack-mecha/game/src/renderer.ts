@@ -282,13 +282,13 @@ export class Renderer {
     ctx.strokeStyle='#425d64';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(p.x+m.x*.55,p.y-7);ctx.lineTo(x,y);ctx.stroke();
     ctx.fillStyle='#9ab8b4';ctx.beginPath();ctx.arc(x,y,3,0,TAU);ctx.fill();
     const big=w.id==='W08'||w.id==='W07';this.art.draw(ctx,w.id,x,y,big?40:34,big?32:27,angle,1,Math.cos(angle)<0);
-    if(age<.085&&w.shotCount>0&&w.id!=='W11'&&w.id!=='W09'){
+    if(age<.085&&w.shotCount>0&&!['W11','W18','W09','W15'].includes(w.id)){
       ctx.save();ctx.translate(x+Math.cos(angle)*19,y+Math.sin(angle)*19);ctx.rotate(angle);ctx.globalAlpha=1-age/.085;ctx.fillStyle=MODULE_BY_ID[w.id]?.color??'#ffe4ae';
       ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(12,0);ctx.lineTo(0,4);ctx.closePath();ctx.fill();ctx.restore();
     }
-    if(w.id==='W11'){
+    if(w.id==='W11'||w.id==='W18'){
       const count=(w as WeaponView&{droneCount?:number}).droneCount??2;
-      for(let n=0;n<count;n++){const a=time*1.2+n*TAU/Math.max(1,count)+(index%2?Math.PI/3:0);const dx=p.x+Math.cos(a)*48,dy=p.y+Math.sin(a)*48;this.shadow(dx,dy+7,7,3,.2);this.art.draw(ctx,'W11',dx,dy,20,20,w.angle);}
+      for(let n=0;n<count;n++){const a=time*1.2+n*TAU/Math.max(1,count)+(index%2?Math.PI/3:0);const dx=p.x+Math.cos(a)*48,dy=p.y+Math.sin(a)*48;this.shadow(dx,dy+7,7,3,.2);this.art.draw(ctx,w.id,dx,dy,20,20,w.angle);}
     }
   }
   private enemy(e:EnemyView,time:number,m:EnemyMotion):void{

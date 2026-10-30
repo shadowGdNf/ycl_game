@@ -1,5 +1,5 @@
-import {ENEMY_BY_ID} from './content.ts';
-const spriteKey=(key:string)=>ENEMY_BY_ID[key]?.sprite??key;
+import {ENEMY_BY_ID,MODULE_BY_ID} from './content.ts';
+const spriteKey=(key:string)=>ENEMY_BY_ID[key]?.sprite??String(MODULE_BY_ID[key]?.sprite??key);
 /** Raster atlas access. Atlas rectangles come from alpha inspection, not grid guesses. */
 export interface SpriteRect {atlas:string;x:number;y:number;w:number;h:number}
 interface Manifest {version:number;atlases:Record<string,string>;sprites:Record<string,SpriteRect>}
@@ -67,7 +67,18 @@ export class Art {
     const im=this.images.get(sprite.atlas);if(!im)return false;
     const fit=Math.min(w/sprite.w,h/sprite.h);const dw=sprite.w*fit,dh=sprite.h*fit;
     ctx.save();ctx.translate(x,y);ctx.rotate(angle);if(flip)ctx.scale(1,-1);ctx.globalAlpha*=opacity;
-    ctx.drawImage(im,sprite.x,sprite.y,sprite.w,sprite.h,-dw/2,-dh/2,dw,dh);ctx.restore();return true;
+    ctx.drawImage(im,sprite.x,sprite.y,sprite.w,sprite.h,-dw/2,-dh/2,dw,dh);
+    if(MODULE_BY_ID[key]?.sprite){
+      ctx.strokeStyle=MODULE_BY_ID[key].color;ctx.fillStyle=MODULE_BY_ID[key].color;ctx.lineWidth=Math.max(1.5,w*.035);
+      const n=Number(key.slice(1))-12;
+      if(n===1){for(const offset of [-.16,0,.16]){ctx.beginPath();ctx.moveTo(0,h*offset);ctx.lineTo(w*.42,h*offset);ctx.stroke();}}
+      if(n===2){ctx.beginPath();ctx.moveTo(-w*.2,0);ctx.lineTo(w*.45,0);ctx.stroke();ctx.fillRect(w*.2,-h*.2,w*.09,h*.4);}
+      if(n===3){ctx.beginPath();ctx.arc(0,0,Math.min(w,h)*.38,0,Math.PI*2);ctx.stroke();}
+      if(n===4){for(const offset of [-.15,.15]){ctx.beginPath();ctx.moveTo(w*.12,h*offset);ctx.lineTo(w*.4,h*(offset*1.8));ctx.stroke();}}
+      if(n===5){ctx.beginPath();ctx.moveTo(w*.06,-h*.3);ctx.lineTo(w*.34,0);ctx.lineTo(w*.06,h*.3);ctx.stroke();}
+      if(n===6){for(const offset of [-.28,0,.28]){ctx.beginPath();ctx.arc(w*offset,-h*.22,w*.07,0,Math.PI*2);ctx.fill();}}
+    }
+    ctx.restore();return true;
   }
   /** Bounded cached silhouette; no per-frame pixel reads or mask allocations. */
   flash(ctx:CanvasRenderingContext2D,key:string,x:number,y:number,w:number,h:number,opacity:number,color='#fff1cf'):void{

@@ -1,0 +1,43 @@
+{
+  "browser": "156.0.8078.74",
+  "checks": [
+    "full-reserve tap swap",
+    "board tap swap and undo",
+    "board drag movement",
+    "drag to reserve",
+    "growth allocation and reload",
+    "horizontal weapon auto rotates into vertical-only gap",
+    "one-button auto equip",
+    "touch tap on non-origin cell and touch drag",
+    "390x844 board and controls",
+    "upgraded loadout enters combat",
+    "new weapons selectable and rendered in boss lab",
+    "touch drag from reserve auto-rotates into two-cell column",
+    "320x740 layout",
+    "844x390 layout"
+  ],
+  "geometry": {
+    "board": {
+      "x": 70,
+      "y": 130,
+      "w": 250,
+      "h": 250
+    },
+    "footerBottom": 836,
+    "quickBottom": 461,
+    "width": 390,
+    "viewport": 390
+  },
+  "screenshots": [
+    "qa/dev13-growth-desktop.png",
+    "qa/dev13-workshop-desktop.png",
+    "qa/dev13-workshop-mobile.png",
+    "qa/dev13-growth-mobile.png",
+    "qa/dev13-battle-mobile.png",
+    "qa/dev13-narrow-touch.png"
+  ],
+  "errors": [],
+  "limits": [
+    "Synthetic isolated desktop Chrome; mobile dimensions are not physical-device validation."
+  ]
+}

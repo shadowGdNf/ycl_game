@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-10-30T01:47:35.975Z",
+  "checkedAt": "2026-10-30T02:27:19.657Z",
   "files": 38,
-  "bytes": 1852181,
-  "mib": 1.77,
+  "bytes": 1886581,
+  "mib": 1.8,
   "startupImageBytes": 1177366,
   "spriteRegions": 86,
   "counts": {
-    "modules": 36,
+    "modules": 42,
     "chassis": 4,
     "enemies": 16,
     "bosses": 6,

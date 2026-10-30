@@ -16,6 +16,8 @@ export function effectLife(e:CombatEvent):number {
  if(e.type==='kill'||e.type==='defeat')return .65;
  if(e.type==='arc')return .24;
  if(e.type==='boss-overload-warning'||e.type==='boss-overload')return 1.1;
+ if(e.type==='fire'&&e.source==='W15')return .34;
+ if(e.type==='fire'&&e.source==='W14')return .24;
  if(e.type==='fire')return ['W05','W08','W09'].includes(e.source??'')?.28:.16;
  if(e.type==='explosion'||e.type==='enemy-explosion'||e.type==='enemy-attack')return .5;
  if(e.type==='dash'||e.type==='overload'||e.type==='phase'||e.type==='skill')return .5;
@@ -89,7 +91,7 @@ export function drawProjectile(c:CanvasRenderingContext2D,b:BulletView,time:numb
   c.fillStyle='#ff963f';c.beginPath();c.moveTo(-6,-4);c.lineTo(-18-(reduced?0:Math.sin(time*45)*5),0);c.lineTo(-6,4);c.fill();
   c.fillStyle='#e6ddc3';c.beginPath();c.moveTo(10,0);c.lineTo(3,-4);c.lineTo(-6,-4);c.lineTo(-6,4);c.lineTo(3,4);c.closePath();c.fill();
   c.fillStyle='#713b2b';c.fillRect(-5,-5,5,10);
- }else if(id==='W12'){
+ }else if((id==='W12'||id==='W16')){
   c.fillStyle='#b5f3ff';c.strokeStyle='#63bedf';c.lineWidth=1.5;c.beginPath();c.moveTo(11,0);c.lineTo(-3,-5);c.lineTo(-8,0);c.lineTo(-3,5);c.closePath();c.fill();c.stroke();
   c.fillStyle='#ffffff';c.beginPath();c.moveTo(8,0);c.lineTo(-3,-2);c.lineTo(-3,2);c.fill();
  }else if(id==='W06'){
@@ -110,7 +112,9 @@ export function drawProjectile(c:CanvasRenderingContext2D,b:BulletView,time:numb
 
 function weaponEffect(c:CanvasRenderingContext2D,e:CombatEvent,k:number,reduced:boolean):void {
  const id=e.source,range=e.radius??110;c.rotate(e.angle??0);
- if(id==='W04'||id==='W11')return;
+ if(id==='W04'||id==='W11'||id==='W18')return;
+ if(id==='W14'){c.strokeStyle='#da9fff';c.lineWidth=12*(1-k)+2;line(c,0,0,range,0);c.strokeStyle='#fff0ff';c.lineWidth=3;line(c,0,0,range,0);return;}
+ if(id==='W15'){c.strokeStyle='#70f6e0';c.lineWidth=5*(1-k)+2;c.beginPath();c.arc(0,0,range*(.6+.4*k),0,TAU);c.stroke();return;}
  if(id==='W05'){
   const length=range*(.72+.28*(1-k));
   c.globalAlpha*=.55;c.fillStyle='#ff7a31';c.beginPath();c.moveTo(12,-5);
@@ -125,7 +129,7 @@ function weaponEffect(c:CanvasRenderingContext2D,e:CombatEvent,k:number,reduced:
   c.globalAlpha=1-k;c.lineWidth=2;
   if(!reduced)for(let i=0;i<(saw?16:7);i++){const angle=saw?i*TAU/16+e.at*9:-a/2+i*a/6;line(c,Math.cos(angle)*r,Math.sin(angle)*r,Math.cos(angle+.03)*(r+8),Math.sin(angle+.03)*(r+8));}
  }else{
-  const color=id==='W03'?'#a0edff':id==='W12'?'#bffaff':id==='W07'?'#ffe6ad':'#ffd992';
+  const color=id==='W03'?'#a0edff':(id==='W12'||id==='W16')?'#bffaff':id==='W07'?'#ffe6ad':'#ffd992';
   c.translate(20,0);c.fillStyle=color;const length=(id==='W02'?35:id==='W07'?45:24)*(1-k)+4;
   c.beginPath();c.moveTo(-3,-4);c.lineTo(4,-8*(1-k));c.lineTo(length,0);c.lineTo(4,8*(1-k));c.lineTo(-3,4);c.closePath();c.fill();
   c.fillStyle='#fff6db';c.beginPath();c.ellipse(3,0,7*(1-k)+1,3,0,0,TAU);c.fill();

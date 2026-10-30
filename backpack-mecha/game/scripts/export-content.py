@@ -13,6 +13,7 @@ for i,m in enumerate(data['modules']):
  m={**m,'en':names[i],'effectEn':en[i],'values':values[i],'color':colors[i] if i<12 else '#63C8BC' if i<24 else '#B6BFCC'}
  if i<12:m.update(range=ranges[i],attack=attacks[i])
  mods.append(m)
+mods[12:12]=json.loads((root/'assets'/'source'/'weapons-dev13.json').read_text())
 chassis=[]
 for i,(id,nameen,hp,shield,speed,armor,dash,traiten) in enumerate([('scavenger','Scavenger',100,20,210,0,6,'Pickup radius +30. A versatile salvage rig.'),('bulwark','Bulwark',130,30,180,10,8,'Heavy armor and shields. Slower movement.'),('kestrel','Kestrel',80,15,245,0,5,'Fast movement and short dash cooldown.'),('hive','Hive',90,20,200,0,6,'Drone damage +15%; other direct damage −10%.')]):
  r=data['chassis'][i];chassis.append(dict(id=id,name=r[0],en=nameen,hp=hp,shield=shield,speed=speed,armor=armor,dash=dash,trait=r[6],traitEn=traiten,unlock=r[1]))
@@ -50,4 +51,4 @@ lines.append("export const PROTOTYPE_IDS=['W01','W02','W03','W04','S01','S02','S
 lines.append("export function label(d:{name:string;en:string},lang:Lang):string{return lang==='zh'?d.name:d.en;}")
 lines.append("export const VERSION='0.1.0';")
 (root/'src'/'content.ts').write_text('\n'.join(lines)+'\n')
-print('Exported structured catalog: 36 modules, 4 chassis, 16 enemies, 6 bosses')
+print('Exported structured catalog: 42 modules, 4 chassis, 16 enemies, 6 bosses')

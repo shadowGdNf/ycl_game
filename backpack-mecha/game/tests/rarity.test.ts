@@ -12,7 +12,7 @@ const idle={x:0,y:0,dash:false,overload:false};
 function shop():Run {const r=economy.newRun('scavenger','full',0,'RARITY-QA');r.wave=9;r.gold=1000;r.power=24;r.unlockedCorners=[0,1,2,3];r.shop=[{id:'W01',tier:1,locked:false},{id:'W02',tier:2,locked:false},{id:'S01',tier:3,locked:false},{id:'U01',tier:4,locked:false}];return r;}
 function spare(r:Run,id:string,tier:Tier=1):Item {const item={uid:`i${r.nextUid++}`,id,tier,x:-1,y:-1,rotation:0,stored:true};r.items.push(item);return item;}
 
-test('all 36 modules have finite growing rarity stats, prices and descriptions',()=>{
+test('all 42 modules have finite growing rarity stats, prices and descriptions',()=>{
  for(const m of MODULES){let previous=0,price=0;
   for(const tier of TIERS){const cost=equipmentPrice(m.id,tier);assert.ok(cost>price,m.id);price=cost;
    const stat=m.kind==='weapon'?m.damage!*damageScale(tier):moduleValue(m.id,tier);assert.ok(Number.isFinite(stat),m.id);

@@ -22,6 +22,12 @@ export function equipmentDescription(item:Pick<Item,'id'|'tier'>,lang:Lang):stri
    W09:[`每次 ${d} 伤害；周身攻击，最多命中 6 个目标。`,`${d} damage around the mech; hits up to 6 targets.`],
    W10:[`伤害 ${d}，爆炸半径 75；同一目标只结算一次。`,`${d} damage in radius 75; one hit per target.`],
    W11:[`2 架无人机，每架每次 ${fmt(4*factor)} 伤害。`,`2 drones, ${fmt(4*factor)} damage per drone attack.`],
+   W13:[`高速单发，每枚 ${d} 伤害。`,`Rapid single shots, ${d} damage each.`],
+   W14:[`光束 ${d} 电伤，穿透最多 5 个目标，不穿墙。`,`Beam deals ${d} electric damage to up to 5 targets; blocked by walls.`],
+   W15:[`周身脉冲 ${d} 电伤，命中范围内所有目标。`,`Pulse deals ${d} electric damage to all nearby targets.`],
+   W16:[`4 枚冰弹，每枚 ${fmt(4*factor)} 伤害；50° 散射，每弹叠加寒冷。`,`4 ice pellets × ${fmt(4*factor)} damage; 50° fan, Chill on every hit.`],
+   W17:[`爆炸 ${d} 火伤，半径 105；施加燃烧并引燃油污。`,`${d} fire damage in radius 105; applies Burn and ignites Oil.`],
+   W18:[`3 架突击无人机，每架 ${fmt(5*factor)} 伤害。`,`3 assault drones, ${fmt(5*factor)} damage per drone.`],
    W12:[`伤害 ${d}，每次命中附加一层寒冷。`,`${d} damage; each hit adds one Chill stack.`],
   };
   return `${patterns[item.id][en?1:0]} ${choose(`间隔 ${interval} 秒 · 范围 ${range}。`,`Interval ${interval}s · range ${range}.`)}`;

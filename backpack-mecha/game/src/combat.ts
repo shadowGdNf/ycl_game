@@ -1,7 +1,7 @@
 import {moduleValue,TIER_EFFECTS,damageScale} from './rarity.ts';
 import {CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID} from './content.ts';
 import {activeSupports} from './economy.ts';
-import {scrapPerCost} from './progression.ts';
+import {scrapPerCost,chassisStats} from './progression.ts';
 import {chassisSkill} from './skills.ts';
 import {nextRandom} from './random.ts';
 import {ARENA,BOSS_DAMAGE_SCALE,availableBudget,bossPhase,bossTurn,bossPursuitSpeed,chooseEnemy,circleHitsRect,clearPath,createEncounter,findPath,traversable} from './encounters.ts';
@@ -31,6 +31,7 @@ export interface BattleState extends BattleView {
  failureReason?:string;
  playerVelocity?:Point;
  skillReleased?:boolean;skillPulseAt?:number;
+ baseDamage?:number;baseAttackSpeed?:number;
 }
 interface Hit {base:number;kind:DamageKind;weapon?:WeaponState;factor?:number;direct?:boolean;status?:boolean;secondary?:boolean;origin?:Point;arcFirst?:boolean;oilExplosion?:boolean;source?:string}
 
@@ -56,6 +57,7 @@ function enemySlow(w:BattleState,e:EnemyState):number {return Math.min(e.kind===
 function syncBossHP(w:BattleState,e:EnemyState):void {if(e.group)for(const other of w.enemies)if(other.group===e.group)other.hp=e.hp;}
 
 export function createBattle(run:Run):BattleState {
+ const growth=chassisStats(run);
  const chassis=CHASSIS_BY_ID[run.chassis];if(!chassis)throw new Error(`Unknown chassis ${run.chassis}`);
  const encounter=createEncounter(run),equipped=run.items.filter(i=>!i.stored),utilities:Record<string,Tier>={};
  for(const item of equipped)if(MODULE_BY_ID[item.id]?.kind==='utility')utilities[item.id]=item.tier;
@@ -64,9 +66,10 @@ export function createBattle(run:Run):BattleState {
  const dashBase=Math.max(3.5,chassis.dash-(utilities.U07?TIER_EFFECTS.dashReduction[utilities.U07-1]!:0)+(run.protocols.includes('P04')?.5:0));
  const weapons:WeaponState[]=equipped.filter(i=>MODULE_BY_ID[i.id]?.kind==='weapon').map((i,index)=>({uid:i.uid,id:i.id,tier:i.tier,x:800,y:650,angle:-Math.PI/2,cooldown:.1+index*.05,shotCount:0,
   supports:Object.fromEntries(activeSupports(run).filter(s=>s.link===i.uid).map(s=>[s.id,s.tier])),targetUntil:0,rectifierAt:0,springUsed:true,fuseAt:{},droneCount:0}));
- let drones=0;for(const weapon of weapons)if(weapon.id==='W11'){weapon.droneCount=Math.min(6-drones,weapon.supports.S10?3:2);drones+=weapon.droneCount;}
+ let drones=0;const droneLimit=weapons.some(w=>w.id==='W18')?9:6;for(const weapon of weapons)if(MODULE_BY_ID[weapon.id].attack==='drone'){weapon.droneCount=Math.min(droneLimit-drones,(weapon.id==='W18'?3:2)+(weapon.supports.S10?1:0));drones+=weapon.droneCount;}
  const world:BattleState={version:1,tick:0,time:0,wave:run.wave,act:encounter.state.wave.act,difficulty:run.difficulty,status:'playing',width:ARENA.width,height:ARENA.height,
-  player:{x:800,y:650,hp:clamp(run.hp,0,chassis.hp),maxHp:chassis.hp,shield:maxShield,maxShield,radius:14,speed,armor:clamp(chassis.armor+value('U06',utilities.U06),0,60),angle:-Math.PI/2,dashCooldown:0,overloadCooldown:0,dashTime:0,overloadTime:0,invulnerable:0},
+  player:{x:800,y:650,hp:clamp(run.hp,0,growth.maxHp),maxHp:growth.maxHp,shield:maxShield,maxShield,radius:14,speed,armor:clamp(chassis.armor+value('U06',utilities.U06),0,60),angle:-Math.PI/2,dashCooldown:0,overloadCooldown:0,dashTime:0,overloadTime:0,invulnerable:0},
+  baseDamage:growth.attack/100,baseAttackSpeed:growth.speed/100,
   enemies:[],bullets:[],zones:[],weapons,drops:[],obstacles:encounter.obstacles,events:[],stats:zeros(),chassis:run.chassis,duration:encounter.state.wave.duration,insuranceUsed:run.insuranceUsed,
   rng:run.rng.combat,nextId:1,nextEvent:1,nextShot:1,remainder:0,encounter:encounter.state,utilities,protocols:[...run.protocols],lastDamage:-10,
   shieldRegen:3+(utilities.U02?TIER_EFFECTS.shieldRegen[utilities.U02-1]!:0),dashBase,dashAngle:0,dashOrigin:{x:800,y:650},dashReleased:true,overloadReleased:true,lastDash:-10,
@@ -177,9 +180,9 @@ function stagger(w:BattleState,e:EnemyState,amount:number):void {
 function applyStatus(w:BattleState,e:EnemyState,weapon:WeaponState):void {
  if(weapon.id==='W03')e.wet=Math.max(e.wet,3+(protocol(w,'P01')?2:0));
  if(weapon.id==='W06')e.oilUntil=w.time+4;
- if(weapon.id==='W05'&&weapon.shotCount%2===0){const layer:BurnLayer={expires:w.time+4,next:w.time+.5,weapon:weapon.uid,damage:1.5};
+ if(weapon.id==='W17'||weapon.id==='W05'&&weapon.shotCount%2===0){const layer:BurnLayer={expires:w.time+4,next:w.time+.5,weapon:weapon.uid,damage:1.5};
   if(e.burns.length>=5)e.burns.splice(e.burns.reduce((best,b,i)=>b.expires<e.burns[best]!.expires?i:best,0),1);e.burns.push(layer);}
- if(weapon.id==='W12'){
+ if(weapon.id==='W12'||weapon.id==='W16'){
   e.chill++;e.chillUntil=w.time+3;e.chillStrength=weapon.supports.S12?.08:.06;
   if(e.chill>=5){e.chill=0;
    if(e.kind==='boss')stagger(w,e,15+(weapon.supports.S12?TIER_EFFECTS.cryoStagger[weapon.supports.S12-1]!:0));
@@ -200,11 +203,11 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
  if(direct&&protocol(w,'P03')){const d=distance(w.player,e);add+=d>250?.15:d<120?-.1:0;}
  if(direct&&protocol(w,'P09')&&(e.chill>0||e.frozen>0))add+=.15;
  if(hit.arcFirst&&e.wet>0&&protocol(w,'P01'))add+=.1;
- if(direct&&weapon?.id==='W11'&&protocol(w,'P05')&&w.priority===e.eid&&w.priorityUntil>w.time)add+=.2;
+ if(direct&&hit.kind==='drone'&&protocol(w,'P05')&&w.priority===e.eid&&w.priorityUntil>w.time)add+=.2;
  let vulnerable=(hit.kind==='electric'&&e.wet>0?(weapon?.supports.S05?support(weapon,'S05'):.25):0)+(e.vulnerableUntil>w.time?.25:0);
  if(hit.oilExplosion&&e.kind==='boss'&&protocol(w,'P02'))add+=.15;
  const crit=direct&&rand(w)<Math.min(.7,.05+utility(w,'U05'));
- let amount=hit.base*(weapon?scale(weapon.tier):1)*(1+Math.min(2,add))*(hit.factor??1)*(crit?1.5:1)*Math.min(1.75,1+vulnerable)*100/(100+Math.max(0,e.armor-(direct&&weapon?support(weapon,'S07'):0)));
+ let amount=hit.base*(w.baseDamage??1)*(weapon?scale(weapon.tier):1)*(1+Math.min(2,add))*(hit.factor??1)*(crit?1.5:1)*Math.min(1.75,1+vulnerable)*100/(100+Math.max(0,e.armor-(direct&&weapon?support(weapon,'S07'):0)));
  if(e.id==='E07'&&Math.abs(angleDiff(angleTo(e,origin),e.angle))<Math.PI/3)amount*=.5;
  const actual=Math.min(e.hp,amount);e.hp=Math.max(0,e.hp-amount);syncBossHP(w,e);
  const source=hit.source||weapon?.id||hit.kind;w.stats.damageByModule[source]=(w.stats.damageByModule[source]||0)+actual;
@@ -256,7 +259,15 @@ function fireWeapon(w:BattleState,weapon:WeaponState,target:EnemyState,extra=fal
  if(!extra)weapon.shotCount++;
  let factor=1;if(weapon.supports.S11&&w.time-w.lastDash<=2&&!weapon.springUsed){factor=1+TIER_EFFECTS.springDamage[weapon.supports.S11-1]!;weapon.springUsed=true;}
  event(w,'fire',origin,{source:weapon.id,targetId:target.eid,angle:a,to:{x:target.x,y:target.y},radius:(def.range||100)*(1+support(weapon,'S11'))});
- if(weapon.id==='W04'){
+ if(def.attack==='beam'){
+  let length=def.range!;while(length>0&&!clearPath(origin,{x:origin.x+Math.cos(a)*length,y:origin.y+Math.sin(a)*length},w.obstacles,0))length-=8;
+  const end={x:origin.x+Math.cos(a)*length,y:origin.y+Math.sin(a)*length};w.events[w.events.length-1].radius=length;
+  const seen=new Set<string>();for(const enemy of w.enemies.filter(e=>alive(e)&&segmentDistance(e,origin,end)<=e.radius+5&&distance(e,origin)<=length+e.radius).sort((x,y)=>distance(x,origin)-distance(y,origin))){
+   if(seen.has(groupKey(enemy)))continue;seen.add(groupKey(enemy));hitEnemy(w,enemy,{base:def.damage!,kind:'electric',weapon,factor});if(seen.size>=5)break;
+  }
+ }else if(def.attack==='pulse'){
+  areaDamage(w,origin,def.range!,{base:def.damage!,kind:'electric',weapon,factor});
+ }else if(weapon.id==='W04'){
   const maximum=Math.min(5,3+(target.wet>0?1:0)+(weapon.supports.S05?1:0)),seen:string[]=[];let current:EnemyState|undefined=target,previous:Point=origin;
   for(let chain=0;chain<maximum&&current;chain++){
    seen.push(groupKey(current));event(w,'arc',previous,{targetId:current.eid,source:weapon.id,color:def.color,to:{x:current.x,y:current.y}});
@@ -274,24 +285,24 @@ function fireWeapon(w:BattleState,weapon:WeaponState,target:EnemyState,extra=fal
    if(weapon.id==='W08'&&alive(e)){if(e.kind==='boss')stagger(w,e,20);else{const dir=angleTo(origin,e),push=e.kind==='elite'?20:40;move(w,e,Math.cos(dir)*push,Math.sin(dir)*push);}}
   }
   const z=addZone(w,{...origin,kind:weapon.id==='W09'?'circle':'cone',radius:range,angle:a,width:angle,warning:0,active:.12,damage:0});z.type='friendly';z.active=true;z.remaining=.12;z.duration=.12;z.color=def.color;
- }else if(weapon.id==='W11'){
+ }else if(def.attack==='drone'){
   for(let i=0;i<weapon.droneCount;i++){
    const orbit=w.time*1.2+(i/Math.max(1,weapon.droneCount))*Math.PI*2+(w.weapons.indexOf(weapon)%2?Math.PI/3:0),p={x:origin.x+Math.cos(orbit)*48,y:origin.y+Math.sin(orbit)*48};
-   makeBullet(w,p,angleTo(p,target),CONFIG.droneSpeed,4,'drone',weapon,{factor:weapon.supports.S10?support(weapon,'S10'):1});
+   makeBullet(w,p,angleTo(p,target),CONFIG.droneSpeed,weapon.id==='W18'?5:4,'drone',weapon,{factor:weapon.supports.S10?support(weapon,'S10'):1});
   }
  }else{
   const split=Boolean(weapon.supports.S03)&&def.tags.includes('单弹');
-  const count=weapon.id==='W02'?5:split?2:1,spread=weapon.id==='W02'?Math.PI*2/9:split?.14:0;
-  const speed=weapon.id==='W03'?CONFIG.waterSpeed:weapon.id==='W12'?CONFIG.iceSpeed:weapon.id==='W06'?CONFIG.oilSpeed:weapon.id==='W10'?CONFIG.missileSpeed:weapon.id==='W07'?1700:CONFIG.bulletSpeed;
-  const kind:DamageKind=weapon.id==='W03'?'water':weapon.id==='W12'?'ice':weapon.id==='W06'?'oil':weapon.id==='W10'?'explosion':'ballistic';
+  const count=weapon.id==='W02'?5:weapon.id==='W16'?4:split?2:1,spread=weapon.id==='W02'?Math.PI*2/9:weapon.id==='W16'?Math.PI*5/18:split?.14:0;
+  const speed=weapon.id==='W03'?CONFIG.waterSpeed:['W12','W16'].includes(weapon.id)?CONFIG.iceSpeed:weapon.id==='W06'?CONFIG.oilSpeed:['W10','W17'].includes(weapon.id)?CONFIG.missileSpeed:weapon.id==='W07'?1700:CONFIG.bulletSpeed;
+  const kind:DamageKind=weapon.id==='W03'?'water':['W12','W16'].includes(weapon.id)?'ice':weapon.id==='W06'?'oil':weapon.id==='W10'?'explosion':weapon.id==='W17'?'fire':'ballistic';
   for(let i=0;i<count;i++){
-   const angle=a+(count>1?(i/(count-1)-.5)*spread:0),base=weapon.id==='W02'?5:def.damage||0;
+   const angle=a+(count>1?(i/(count-1)-.5)*spread:0),base=weapon.id==='W02'?5:weapon.id==='W16'?4:def.damage||0;
    // Start collision travel at the body center; a visual muzzle offset must never skip an overlapping enemy.
    makeBullet(w,{x:origin.x,y:origin.y},angle,speed,base,kind,weapon,
-    {factor:factor*(split?support(weapon,'S03'):1),pierce:weapon.id==='W07'?3:1,...(weapon.id==='W06'||weapon.id==='W10'?{target:{x:target.x,y:target.y},radius:6}:{} )});
+    {factor:factor*(split?support(weapon,'S03'):1),pierce:weapon.id==='W07'?3:1,...(['W06','W10','W17'].includes(weapon.id)?{target:{x:target.x,y:target.y},radius:6}:{} )});
   }
  }
- if(!extra&&w.utilities.U10&&weapon.id!=='W11'&&weapon.shotCount%utility(w,'U10')===0)fireWeapon(w,weapon,target,true);
+ if(!extra&&w.utilities.U10&&def.attack!=='drone'&&weapon.shotCount%utility(w,'U10')===0)fireWeapon(w,weapon,target,true);
 }
 function tickWeapons(w:BattleState,dt:number):void {
  for(const weapon of w.weapons){weapon.x=w.player.x;weapon.y=w.player.y;weapon.cooldown=Math.max(0,weapon.cooldown-dt);if(weapon.cooldown>1e-8||w.status!=='playing')continue;
@@ -299,7 +310,7 @@ function tickWeapons(w:BattleState,dt:number):void {
   fireWeapon(w,weapon,target);
   let speed=support(weapon,'S02')+(w.player.overloadTime>0?.35:0)+(protocol(w,'P07')&&w.player.hp/w.player.maxHp<.35?.2:0);
   if(protocol(w,'P06')&&w.time-w.lastDash<=3&&MODULE_BY_ID[weapon.id]!.tags.includes('实弹'))speed+=.2;
-  weapon.cooldown=Math.max(.08,(MODULE_BY_ID[weapon.id]!.interval||1)/(1+Math.min(1.5,speed)));
+  weapon.cooldown=Math.max(weapon.id==='W13'?.04:.08,(MODULE_BY_ID[weapon.id]!.interval||1)/((w.baseAttackSpeed??1)*(1+Math.min(1.5,speed))));
  }
 }
 function segmentDistance(p:Point,a:Point,b:Point):number {
@@ -310,16 +321,16 @@ function tickBullets(w:BattleState,dt:number):void {
  for(const b of w.bullets){if(b.life<=0||w.status!=='playing')continue;const before={x:b.x,y:b.y};b.life-=dt;b.x+=b.vx*dt;b.y+=b.vy*dt;b.traveled+=Math.hypot(b.vx,b.vy)*dt;
   const weapon=b.weaponUid?w.weapons.find(a=>a.uid===b.weaponUid):undefined;
   if(b.target&&distance(before,b.target)<=Math.hypot(b.vx,b.vy)*dt+7){
-   areaDamage(w,b.target,b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;continue;
+   areaDamage(w,b.target,weapon?.id==='W17'?105:b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;continue;
   }
   const wallX=b.x<b.radius||b.x>w.width-b.radius,wallY=b.y<b.radius||b.y>w.height-b.radius,obstacle=w.obstacles.find(r=>circleHitsRect(b,b.radius,r));
   if(wallX||wallY||obstacle){
    if(b.bounces>0){b.bounces--;b.factor*=b.bounceFactor;b.traveled=0;
     if(wallX||obstacle&&!circleHitsRect({x:before.x,y:b.y},b.radius,obstacle))b.vx*=-1;
     else if(wallY||obstacle)b.vy*=-1;b.x=clamp(before.x,b.radius,w.width-b.radius);b.y=clamp(before.y,b.radius,w.height-b.radius);event(w,'ricochet',b,{source:b.weapon});
-   }else {if(b.target&&weapon)areaDamage(w,b,b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;}continue;
+   }else {if(b.target&&weapon)areaDamage(w,b,weapon?.id==='W17'?105:b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;}continue;
   }
-  if(b.traveled>b.range){if(b.target&&weapon)areaDamage(w,b,b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;continue;}
+  if(b.traveled>b.range){if(b.target&&weapon)areaDamage(w,b,weapon?.id==='W17'?105:b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;continue;}
   if(b.owner==='enemy'){
    if(w.decoy&&w.decoy.until>w.time&&segmentDistance(w.decoy,before,b)<16+b.radius){w.decoy.hp-=b.damage;b.life=0;continue;}
    if(segmentDistance(w.player,before,b)<w.player.radius+b.radius){const taken=damagePlayer(w,b.damage,b.source,b);if(taken>0&&b.slow>0){w.slowUntil=w.time+2;w.slowAmount=b.slow;}b.life=0;}
@@ -517,7 +528,7 @@ function activateSkill(w:BattleState):void {
 }
 function tickSkill(w:BattleState):void {
  if(w.chassis!=='hive'||(w.player.skillTime??0)<=1e-8||w.time+1e-8<(w.skillPulseAt??0))return;
- w.skillPulseAt=w.time+.6;
+ w.skillPulseAt=w.time+.6/(w.baseAttackSpeed??1);
  for(let i=0;i<3;i++){
   let target:EnemyState|undefined,best=Infinity;
   for(const e of w.enemies){if(!alive(e))continue;const d=distance(w.player,e);if(d>450+e.radius)continue;

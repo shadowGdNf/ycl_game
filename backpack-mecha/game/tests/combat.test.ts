@@ -128,5 +128,5 @@ test('30Hz and 60Hz rendering inputs produce the same 60Hz simulation',()=>{
 test('safe-recovery protocol is paid once by run settlement, not by both combat and economy',()=>{
  const run=newRun('scavenger','full',0,'settlement');run.hp=50;run.protocols=['P08'];assert.ok(startWave(run).ok);
  const w=createBattle(run);w.time=w.duration-1/60;stepBattle(w,idle);assert.equal(w.player.hp,50);
- assert.ok(resolveBattle(run,battleResult(w)).ok);assert.equal(run.hp,58);
+ assert.ok(resolveBattle(run,battleResult(w)).ok);assert.equal(run.hp,66); // 8 protocol healing + 8 HP gained from the new level.
 });

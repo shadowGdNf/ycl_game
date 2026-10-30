@@ -292,6 +292,159 @@
       "attack": "ice"
     },
     {
+      "id": "W13",
+      "name": "转轮机枪",
+      "en": "Rotary gun",
+      "kind": "weapon",
+      "shape": [
+        "###"
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "damage": 3,
+      "interval": 0.12,
+      "range": 380,
+      "attack": "rapid",
+      "sprite": "W01",
+      "color": "#F6CA6A",
+      "tags": [
+        "实弹",
+        "单弹"
+      ],
+      "effect": "3伤害／0.12秒；高速连续射击，适合攻速与暴击构筑。",
+      "effectEn": "3 damage every 0.12s; rapid single shots for speed and critical builds.",
+      "values": []
+    },
+    {
+      "id": "W14",
+      "name": "等离子光矛",
+      "en": "Plasma lance",
+      "kind": "weapon",
+      "shape": [
+        "#",
+        "#",
+        "#"
+      ],
+      "power": 4,
+      "rarity": "R",
+      "price": 48,
+      "damage": 18,
+      "interval": 0.9,
+      "range": 560,
+      "attack": "beam",
+      "sprite": "W07",
+      "color": "#D999FF",
+      "tags": [
+        "电",
+        "持续"
+      ],
+      "effect": "18伤害／0.90秒；直线光束穿透最多5个目标，不穿墙；享受潮湿电伤加成。",
+      "effectEn": "18 damage every 0.90s; a beam pierces up to 5 enemies, stops at walls, and benefits from Wet.",
+      "values": []
+    },
+    {
+      "id": "W15",
+      "name": "特斯拉脉冲",
+      "en": "Tesla pulse",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "#."
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "damage": 12,
+      "interval": 1.3,
+      "range": 190,
+      "attack": "pulse",
+      "sprite": "W04",
+      "color": "#70F6E0",
+      "tags": [
+        "电"
+      ],
+      "effect": "12伤害／1.30秒；周身190范围脉冲，命中所有目标；享受潮湿电伤加成。",
+      "effectEn": "12 damage every 1.30s to all enemies within 190; benefits from Wet.",
+      "values": []
+    },
+    {
+      "id": "W16",
+      "name": "冰晶霰射器",
+      "en": "Frost scatter",
+      "kind": "weapon",
+      "shape": [
+        "##"
+      ],
+      "power": 2,
+      "rarity": "C",
+      "price": 24,
+      "damage": 16,
+      "interval": 0.9,
+      "range": 280,
+      "attack": "frost-scatter",
+      "sprite": "W12",
+      "color": "#91E5FF",
+      "tags": [
+        "冰",
+        "散射"
+      ],
+      "effect": "4弹丸×4伤害／0.90秒；50度散射，每枚命中叠加寒冷。",
+      "effectEn": "4 pellets × 4 damage every 0.90s in a 50-degree fan; every hit applies Chill.",
+      "values": []
+    },
+    {
+      "id": "W17",
+      "name": "燃烧迫击炮",
+      "en": "Incendiary mortar",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        ".#"
+      ],
+      "power": 4,
+      "rarity": "R",
+      "price": 48,
+      "damage": 22,
+      "interval": 1.8,
+      "range": 480,
+      "attack": "mortar",
+      "sprite": "W10",
+      "color": "#FF8A59",
+      "tags": [
+        "火",
+        "爆炸"
+      ],
+      "effect": "22伤害／1.80秒；半径105爆炸，施加燃烧并引燃油污。",
+      "effectEn": "22 damage every 1.80s in radius 105; applies Burn and ignites Oil.",
+      "values": []
+    },
+    {
+      "id": "W18",
+      "name": "突击蜂群",
+      "en": "Assault swarm",
+      "kind": "weapon",
+      "shape": [
+        "##",
+        "#."
+      ],
+      "power": 3,
+      "rarity": "U",
+      "price": 36,
+      "damage": 15,
+      "interval": 0.8,
+      "range": 500,
+      "attack": "drone",
+      "sprite": "W11",
+      "color": "#A6F096",
+      "tags": [
+        "召唤"
+      ],
+      "effect": "3架突击无人机各5伤害／0.80秒；支持指令中继与蜂巢专精。",
+      "effectEn": "3 assault drones × 5 damage every 0.80s; supports Command relay and Hive specialization.",
+      "values": []
+    },
+    {
       "id": "S01",
       "name": "增幅线圈",
       "kind": "support",

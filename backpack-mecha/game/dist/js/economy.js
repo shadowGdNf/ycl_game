@@ -1,9 +1,9 @@
-import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=c32c7858f958";
-import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=c32c7858f958";
-import { createEncounter } from "./encounters.js?v=c32c7858f958";
-import { waveScrapLimit } from "./progression.js?v=c32c7858f958";
-import { hashSeed, nextRandom } from "./random.js?v=c32c7858f958";
-import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=c32c7858f958";
+import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=430d749de471";
+import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=430d749de471";
+import { createEncounter } from "./encounters.js?v=430d749de471";
+import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=430d749de471";
+import { hashSeed, nextRandom } from "./random.js?v=430d749de471";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=430d749de471";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
@@ -15,7 +15,7 @@ const act = (r) => Math.min(3, Math.ceil(r.wave / 4));
 const finalWave = (r) => r.mode === 'prototype' ? 4 : r.mode === 'demo' ? 8 : 12;
 const eligibleIds = (r) => r.mode === 'prototype' ? PROTOTYPE_IDS : r.mode === 'demo' ? DEMO_IDS : MODULES.map(m => m.id);
 const editable = (r) => ['prep', 'reward', 'protocol', 'expansion'].includes(r.phase);
-const maxHP = (r) => CHASSIS_BY_ID[r.chassis].hp;
+const maxHP = (r) => chassisStats(r).maxHp;
 const finite = (v) => Number.isFinite(v) && v >= 0;
 function log(r, message) { r.history.push(message); if (r.history.length > 500)
     r.history.shift(); recordAction(r, message); }
@@ -200,6 +200,126 @@ export function placeItem(r, uid, x, y, rotation) {
         if (result.ok)
             log(d, `place:${uid}:${x},${y},${item.rotation}`);
         return result;
+    });
+}
+/** Preview and commit share one atomic plan; failed swaps never displace either item. */
+export function previewSmartPlacement(r, uid, x, y, rotation, allowSwap = true, autoRotate = true, swapUid) {
+    const fallback = previewPlacement(r, uid, x, y, rotation), original = r.items.find(i => i.uid === uid);
+    if (!original || !editable(r) || ![x, y, rotation].every(Number.isInteger) || x < 0 || y < 0 || x >= 5 || y >= 5)
+        return fallback;
+    const rotations = autoRotate ? [0, 1, 2, 3].map(n => normalizeRotation(rotation + n)) : [normalizeRotation(rotation)];
+    const candidates = rotations.flatMap(rot => {
+        const pts = shape(original.id, rot), w = Math.max(...pts.map(p => p.x)) + 1, h = Math.max(...pts.map(p => p.y)) + 1;
+        return [{ x, y, rotation: rot }, { x: Math.min(x, 5 - w), y: Math.min(y, 5 - h), rotation: rot }];
+    });
+    for (const swapping of allowSwap ? [false, true] : [false])
+        for (const pos of candidates) {
+            if (swapUid && !swapping)
+                continue;
+            const d = previewRun(r), item = d.items.find(i => i.uid === uid);
+            Object.assign(item, pos, { stored: false });
+            const cells = getCells(item), overlap = active(d).filter(i => i.uid !== uid && getCells(i).some(p => cells.some(q => p.x === q.x && p.y === q.y)));
+            if (overlap.length > (swapping ? 1 : 0) || swapping && overlap.length !== 1)
+                continue;
+            const other = overlap[0];
+            if (swapUid && other?.uid !== swapUid)
+                continue;
+            const otherRotations = other && !original.stored ? [0, 1, 2, 3].map(n => normalizeRotation(other.rotation + n)) : [0];
+            for (const rot of otherRotations) {
+                if (other)
+                    Object.assign(other, original.stored ? { stored: true, x: -1, y: -1 } : { stored: false, x: original.x, y: original.y, rotation: rot });
+                if (!checkInventory(d, false, false).ok)
+                    continue;
+                repairLinks(d);
+                const linkedWeapon = item.link ? d.items.find(i => i.uid === item.link) : undefined;
+                return { ok: true, item, items: d.items, swappedUid: other?.uid, autoRotated: pos.rotation !== normalizeRotation(rotation), linkedWeapon,
+                    power: active(d).reduce((n, i) => n + def(i).power, 0), capacity: getCapacity(d), cells: active(d).reduce((n, i) => n + getCells(i).length, 0),
+                    ready: validateLoadout(d).ok && (def(item).kind !== 'support' || activeSupports(d).some(s => s.uid === uid)) };
+            }
+        }
+    return { ...fallback, ok: false, reason: '此处放不下，也无法互换；可旋转、移入备件或整理背包', reasonEn: 'No fit or valid swap here. Rotate, store a module, or arrange the backpack.' };
+}
+export function smartPlacementOptions(r, uid, rotation) {
+    const options = [];
+    for (let y = 0; y < 5; y++)
+        for (let x = 0; x < 5; x++) {
+            const p = previewSmartPlacement(r, uid, x, y, rotation);
+            if (p.ok && p.item?.x === x && p.item?.y === y)
+                options.push(p);
+        }
+    return options;
+}
+export function moveItem(r, uid, x, y, rotation, allowSwap = true, autoRotate = true) {
+    return inventoryAction(r, d => {
+        const p = previewSmartPlacement(d, uid, x, y, rotation, allowSwap, autoRotate);
+        if (!p.ok || !p.items)
+            return p;
+        d.items = p.items;
+        log(d, `${p.swappedUid ? 'swap' : 'move'}:${uid}:${p.swappedUid ?? ''}:${p.item.x},${p.item.y},${p.item.rotation}`);
+        return ok();
+    });
+}
+export function equipItem(r, uid) {
+    return inventoryAction(r, d => {
+        const item = d.items.find(i => i.uid === uid);
+        if (!item)
+            return fail('找不到模块', 'Module not found.');
+        const options = [];
+        for (let y = 0; y < 5; y++)
+            for (let x = 0; x < 5; x++) {
+                const p = previewSmartPlacement(d, uid, x, y, item.rotation, false);
+                if (p.ok)
+                    options.push(p);
+            }
+        options.sort((a, b) => Number(b.ready) - Number(a.ready));
+        const best = options[0];
+        if (!best?.items)
+            return fail('没有空位，请选择一件已装备模块互换，或先整理', 'No free space. Select equipped gear to swap, or arrange first.');
+        d.items = best.items;
+        log(d, `equip:${uid}`);
+        return ok();
+    });
+}
+export function swapWithReserve(r, uid, reserveUid) {
+    return inventoryAction(r, d => {
+        const equipped = d.items.find(i => i.uid === uid && !i.stored), reserve = d.items.find(i => i.uid === reserveUid && i.stored);
+        if (!equipped || !reserve)
+            return fail('请选择背包与备件中的两件模块', 'Choose one equipped and one reserve module.');
+        const p = previewSmartPlacement(d, reserve.uid, equipped.x, equipped.y, reserve.rotation, true, true, equipped.uid);
+        if (!p.ok || p.swappedUid !== equipped.uid || !p.items)
+            return fail('两件模块无法在此位置互换，请先腾出空间', 'These modules cannot swap here. Make room first.');
+        d.items = p.items;
+        log(d, `swap-reserve:${uid}:${reserveUid}`);
+        return ok();
+    });
+}
+export function swapItems(r, uid, targetUid, rotation) {
+    return inventoryAction(r, d => {
+        const target = d.items.find(i => i.uid === targetUid && !i.stored && i.uid !== uid);
+        if (!target)
+            return fail('请选择另一件已装备模块', 'Choose another equipped module.');
+        const p = previewSmartPlacement(d, uid, target.x, target.y, rotation, true, true, targetUid);
+        if (!p.ok || !p.items)
+            return p;
+        d.items = p.items;
+        log(d, `swap:${uid}:${targetUid}`);
+        return ok();
+    });
+}
+export function upgradeChassis(r, stat) {
+    return inventoryAction(r, d => {
+        if (!['hp', 'speed', 'attack'].includes(stat))
+            return fail('升级方向无效', 'Invalid upgrade path.');
+        const before = chassisStats(d), g = before.growth;
+        if (!g.points)
+            return fail('升级点不足，完成战斗获取经验', 'No upgrade points. Complete battles to earn XP.');
+        g.points--;
+        g.choices[stat]++;
+        d.growth = g;
+        d.hp += maxHP(d) - before.maxHp;
+        delete d.saleUndo;
+        log(d, `chassis-upgrade:${stat}:${g.level}`);
+        return ok();
     });
 }
 export function storeItem(r, uid) {
@@ -657,6 +777,7 @@ export function newRun(chassis, mode, difficulty, seed) {
     r.items = [gun, support];
     for (let a = 1; a <= finalWave(r) / 4; a++)
         r.bosses.push(mode === 'full' ? pick(r, BOSSES.filter(b => b.act === a), 'map').id : `B${a}A`);
+    r.growth = freshGrowth();
     ensureJournal(r, false);
     recordAction(r, 'new-run');
     return r;
@@ -712,6 +833,9 @@ export function resolveBattle(r, result) {
             log(d, `lost:${completed}:${result.reason ?? ''}`);
             return ok();
         }
+        const levels = awardExperience(d, s.kills);
+        if (levels)
+            log(d, `level:${d.growth.level}:+${levels}`);
         const riskGold = wave.kind === 'normal' ? (d.route === 1 ? 30 : Number(e.eventRewardGold ?? 0)) : 0;
         const riskModule = wave.kind === 'normal' && (d.route === 2 || e.eventRewardModule === true);
         d.gold += wave.base + riskGold;

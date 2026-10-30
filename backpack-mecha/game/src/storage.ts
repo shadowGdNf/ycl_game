@@ -1,3 +1,4 @@
+import {normalizeGrowth,chassisStats} from './progression.ts';
 import type {Profile,Run,BattleView} from './types.ts';
 import {CHASSIS_BY_ID,MODULE_BY_ID,PROTOCOL_BY_ID,BOSS_BY_ID,EVENT_BY_ID,DEMO_IDS,PROTOTYPE_IDS} from './content.ts';
 import {createBattle} from './combat.ts';
@@ -14,6 +15,7 @@ function validBattle(raw:unknown,run:Run):raw is BattleView {
   const numeric=(v:unknown,fields:string[])=>record(v)&&fields.every(k=>finite(v[k]));
   // Missing skill fields are dev.10 saves; malformed new fields must not enter combat.
   const state=raw as Record<string,unknown>;
+  if(['baseDamage','baseAttackSpeed'].some(k=>!finite(state[k])||Number(state[k])<1||Number(state[k])>3))return false;
   if(['skillCooldown','skillTime'].some(k=>{const n=(b.player as unknown as Record<string,unknown>)[k];return n!==undefined&&(!finite(n)||n<0||n>24);})||
    state.skillReleased!==undefined&&typeof state.skillReleased!=='boolean'||state.skillPulseAt!==undefined&&(!finite(state.skillPulseAt)||state.skillPulseAt<0))return false;
   return b.enemies.every(e=>numeric(e,['eid','x','y','hp','maxHp','radius','angle','phase','armor','speed','damage','cost','reward','born','cooldown','contactAt','pathAt','aiUntil','healingUntil','affix','oilUntil','oilAt','chill','chillUntil','chillStrength','frozen','wet','stagger','staggerUntil','vulnerableUntil','offsetX'])&&Array.isArray(e.burns)&&Array.isArray((e as unknown as Record<string,unknown>).path))&&b.bullets.every(e=>numeric(e,['eid','x','y','vx','vy','radius','damage','life','factor','shot','pierce','bounces','bounceFactor','traveled','range','slow'])&&record((e as unknown as Record<string,unknown>).hitAt))&&b.zones.every(e=>numeric(e,['id','x','y','radius','angle','remaining','duration','delay','age','pulse'])&&record((e as unknown as Record<string,unknown>).plan))&&b.weapons.every(e=>numeric(e,['x','y','angle','cooldown','shotCount','tier','targetUntil','rectifierAt','droneCount'])&&MODULE_BY_ID[e.id]&&record((e as unknown as Record<string,unknown>).supports));
@@ -39,11 +41,12 @@ export function sanitizeSave(raw:unknown):SaveEnvelope {
  if(finite(x.savedAt)&&x.savedAt>=0)fresh.savedAt=x.savedAt;
  const r=x.run;
  if(r&&r.version===1&&CHASSIS_BY_ID[r.chassis]&&['prototype','demo','full'].includes(r.mode)&&['prep','battle','reward','protocol','expansion','won','lost'].includes(r.phase)&&Number.isInteger(r.wave)&&r.wave>=1&&r.wave<=(r.mode==='full'?12:r.mode==='demo'?8:4)&&finite(r.gold)&&r.gold>=0&&finite(r.hp)&&finite(r.shield)&&finite(r.elapsed)&&finite(r.nextUid)&&[1,2,3,4].includes(r.maxTier)&&finite(r.power)&&finite(r.refreshes)&&finite(r.shopPity)&&Array.isArray(r.items)&&r.items.length<=20&&r.items.every(v=>v&&typeof v.uid==='string'&&MODULE_BY_ID[v.id]&&[1,2,3,4].includes(v.tier)&&Number.isInteger(v.rotation)&&v.rotation>=0&&v.rotation<=3&&finite(v.x)&&finite(v.y)&&typeof v.stored==='boolean')&&new Set(r.items.map(v=>v.uid)).size===r.items.length&&Array.isArray(r.shop)&&r.shop.length<=4&&r.shop.every(o=>o&&typeof o.id==='string'&&typeof o.locked==='boolean'&&(!o.id||MODULE_BY_ID[o.id])&&(o.tier===undefined||[1,2,3,4].includes(o.tier)))&&r.rng&&['shop','map','event','combat'].every(k=>finite((r.rng as unknown as Record<string,unknown>)[k]))&&strings(r.protocols)&&r.protocols.every(id=>PROTOCOL_BY_ID[id])&&strings(r.rewardOptions)&&r.rewardOptions.every(id=>MODULE_BY_ID[id]&&(r.mode==='full'||(r.mode==='demo'?DEMO_IDS:PROTOTYPE_IDS).includes(id)))&&strings(r.protocolOptions)&&r.protocolOptions.every(id=>PROTOCOL_BY_ID[id])&&(r.phase!=='reward'||r.rewardOptions.length>0)&&(r.phase!=='protocol'||r.protocolOptions.length>0)&&(!r.eventId||!!EVENT_BY_ID[r.eventId])&&typeof r.eventResolved==='boolean'&&strings(r.eventsSeen)&&strings(r.history)&&Array.isArray(r.unlockedCorners)&&r.unlockedCorners.every(v=>[0,1,2,3].includes(v))&&strings(r.bosses)&&r.bosses.length>=(r.mode==='full'?3:r.mode==='demo'?2:1)&&r.bosses.every((id,i)=>BOSS_BY_ID[id]?.act===i+1)&&r.stats&&record(r.stats.damageByModule)&&record(r.stats.damageTakenBy)&&Object.values(r.stats.damageByModule).every(finite)&&Object.values(r.stats.damageTakenBy).every(finite)&&['kills','killedBudget','goldEarned','maxChain','damageTaken'].every(k=>finite((r.stats as unknown as Record<string,unknown>)[k]))){
-  fresh.run=structuredClone(r);
+  fresh.run=structuredClone(r);fresh.run.growth=normalizeGrowth(r.growth);
   const journal=sanitizeJournal(r.journal);if(journal)fresh.run.journal=journal;else delete fresh.run.journal;
   if(r.phase==='battle'){
-   const b=x.battle;
-   if(validBattle(b,r)){fresh.battle=structuredClone(b);for(const e of fresh.battle.enemies)if(!['ice','impact','stagger'].includes(e.controlReason??''))delete e.controlReason;}else fresh.run.phase='prep';
+   const b=x.battle?structuredClone(x.battle):null;
+   if(record(b)){const stats=chassisStats(fresh.run);b.baseDamage??=stats.attack/100;b.baseAttackSpeed??=stats.speed/100;}
+   if(validBattle(b,fresh.run)){fresh.battle=structuredClone(b);for(const e of fresh.battle.enemies)if(!['ice','impact','stagger'].includes(e.controlReason??''))delete e.controlReason;}else fresh.run.phase='prep';
   }
  }
  return fresh;
