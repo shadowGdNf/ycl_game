@@ -230,11 +230,12 @@ function hitEnemy(w:BattleState,e:EnemyState,hit:Hit):number {
  return actual;
 }
 /** All enemy damage, including hazards, goes through this protection and death ordering. */
-export function damagePlayer(w:BattleState,raw:number,source:string,at:Point=w.player):number {
+export function damagePlayer(w:BattleState,raw:number,source:string,at:Point=w.player,attack='contact'):number {
  const p=w.player;if(w.status!=='playing'||p.dashTime>0||p.invulnerable>0||raw<=0)return 0;
  const damage=raw*100/(100+p.armor)*(w.capacitorDefense>w.time?.7:1)*(w.chassis==='bulwark'&&(p.skillTime??0)>0?.5:1),beforeShield=p.shield,beforeHP=p.hp;
  const absorbed=Math.min(p.shield,damage);p.shield-=absorbed;p.hp=Math.max(0,p.hp-(damage-absorbed));p.invulnerable=CONFIG.hitGrace;w.lastDamage=w.time;
  const actual=Math.min(damage,beforeShield+beforeHP);w.stats.damageTaken+=actual;w.stats.damageTakenBy[source]=(w.stats.damageTakenBy[source]||0)+actual;
+ const byAttack=w.stats.damageTakenByAttack??(w.stats.damageTakenByAttack={});const attackKey=source+':'+attack;byAttack[attackKey]=(byAttack[attackKey]??0)+actual;
  event(w,'player-hit',p,{amount:actual,source,from:{x:at.x,y:at.y},shieldDamage:absorbed,hullDamage:beforeHP-p.hp});
  if(beforeShield>0&&p.shield<=0){event(w,'shield-break',p);
   if(w.utilities.U08&&w.time>=w.capacitorAt){w.capacitorAt=w.time+8;w.capacitorDefense=w.time+1;areaDamage(w,p,150,{base:utility(w,'U08'),kind:'electric',direct:false,secondary:true});}}
@@ -337,7 +338,7 @@ function tickBullets(w:BattleState,dt:number):void {
   if(b.traveled>b.range){if(b.target&&weapon)areaDamage(w,b,weapon?.id==='W17'?105:b.kind==='oil'?70:75,{base:b.damage,kind:b.kind,weapon,factor:b.factor,status:true});b.life=0;continue;}
   if(b.owner==='enemy'){
    if(w.decoy&&w.decoy.until>w.time&&segmentDistance(w.decoy,before,b)<16+b.radius){w.decoy.hp-=b.damage;b.life=0;continue;}
-   if(segmentDistance(w.player,before,b)<w.player.radius+b.radius){const taken=damagePlayer(w,b.damage,b.source,b);if(taken>0&&b.slow>0){w.slowUntil=w.time+2;w.slowAmount=b.slow;}b.life=0;}
+   if(segmentDistance(w.player,before,b)<w.player.radius+b.radius){const taken=damagePlayer(w,b.damage,b.source,b,'projectile');if(taken>0&&b.slow>0){w.slowUntil=w.time+2;w.slowAmount=b.slow;}b.life=0;}
   }else if(!b.target){
    // Sort only actual contacts. Dense volleys previously sorted every living enemy
    // for every projectile, even when the swept segment touched nothing.
@@ -394,7 +395,7 @@ function tickZones(w:BattleState,dt:number):void {
   z.pulse=Math.max(0,z.pulse-dt);
   if(z.pulse<=0&&contains(z,w.player,w.player.radius)){
    const amount=z.plan.effect==='fire'&&z.triggered?6*BOSS_DAMAGE_SCALE*difficultyDamage(w):z.plan.damage;
-   if(damagePlayer(w,amount,z.source,z)>0)z.pulse=z.plan.period||1000;
+   if(damagePlayer(w,amount,z.source,z,z.kind)>0)z.pulse=z.plan.period||1000;
   }
   if(z.source==='E05'&&!z.triggered){const e=w.enemies.find(e=>e.eid===z.sourceId);if(e){e.dead=true;e.hp=0;event(w,'enemy-explosion',e,{source:e.id,targetId:e.eid,amount:z.radius});}}
   z.triggered=true;
@@ -515,7 +516,7 @@ function contactDamage(w:BattleState):void {
  for(const e of w.enemies){if(!alive(e)||e.frozen>0||w.time-e.born<CONFIG.spawnGrace||w.time<e.contactAt||e.damage<=0)continue;
   if(w.decoy&&w.decoy.until>w.time&&e.kind!=='boss'&&distance(e,w.decoy)<e.radius+16){w.decoy.hp-=e.damage;e.contactAt=w.time+1;continue;}
   const charging=e.charge&&e.charge.until>w.time;
-  if(distance(e,w.player)<(charging?e.charge!.radius:e.radius)+w.player.radius&&damagePlayer(w,charging?e.charge!.damage:e.damage,e.id,e)>0)e.contactAt=w.time+1;
+  if(distance(e,w.player)<(charging?e.charge!.radius:e.radius)+w.player.radius&&damagePlayer(w,charging?e.charge!.damage:e.damage,e.id,e,charging?'charge':'contact')>0)e.contactAt=w.time+1;
  }
 }
 function activateSkill(w:BattleState):void {

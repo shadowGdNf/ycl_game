@@ -129,3 +129,20 @@ dialog.practice-dialog{width:min(1080px,calc(100vw - 28px));max-width:none;paddi
 @keyframes hangar-charge{50%{transform:scaleX(2.5);opacity:.25}}
 @media(prefers-reduced-motion:reduce){.hero-rig:before,.rig-live i,.home-intro h1 em:after{animation:none}}
 @media(max-width:640px){.rig-live{font-size:7px;letter-spacing:.7px;top:14px}.hero-rig canvas{width:76%;margin-left:24%}}
+/* dev.21: keep actionable assembly feedback visible, including compact phones. */
+.compact-workshop .placement-help{display:flex;align-items:center;gap:8px;-webkit-line-clamp:unset;min-height:48px;padding:6px 8px;max-height:none;overflow:visible}
+.placement-copy{min-width:0;flex:1}.placement-copy strong,.placement-copy span{display:block}.placement-copy span{margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.placement-help>button{flex-shrink:0;min-height:36px;padding:5px 8px;font-size:11px}
+.first-connection{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #4b8077;background:#18332f;flex-shrink:0}.first-connection>div{flex:1;min-width:0}.first-connection strong,.first-connection small{display:block;font-size:12px}.first-connection small{font-size:10px;margin-top:3px;color:#b6d4ca}.first-connection button{font-size:11px;padding:6px;min-height:36px;flex-shrink:0}
+.shop-pending{padding:12px;line-height:1.6}.shop-pending strong{color:var(--orange)}.shop-pending p{font-size:12px}.shop-pending button{min-height:44px}
+.build-directions,.last-wave-report{font-size:11px;line-height:1.6;margin:8px 0;padding:8px 0;border-bottom:1px solid var(--line)}.build-directions summary,.last-wave-report summary{cursor:pointer}.build-directions p,.last-wave-report p{margin:5px 0}.build-directions small{color:#b6d4ca}
+.shop-advice{display:block;margin-top:4px;color:var(--cyan);font-size:10px;line-height:1.3;font-style:normal;white-space:normal}.compact-workshop .shop-card{height:162px}.shop-inspect .shop-advice{max-width:100%}
+.merge-impact{padding:12px;border:1px solid var(--line);margin:12px 0;line-height:1.6}.merge-impact.decrease{border-color:var(--orange)}.merge-impact.decrease>strong{color:var(--orange)}.merge-impact p{margin:6px 0}.merge-impact small{color:#b6d4ca}
+@media(max-width:640px){.compact-workshop .placement-help{display:flex;min-height:48px;font-size:10px;line-height:1.4}.compact-workshop .shop-card{height:88px}.first-connection{padding:5px;gap:4px}.first-connection strong{font-size:11px}.first-connection small{font-size:9px}.shop-inspect .shop-advice{font-size:9px}.compact-workshop .prep-tab-panel{flex:1}.build-directions,.last-wave-report{margin:4px 0;padding:5px 0}.compact-workshop .quick-equip button{min-height:36px}.compact-workshop .shop-inspect{align-items:center}}
+@media(max-width:640px) and (max-height:760px){
+ .compact-workshop .workshop-grid{display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+ .compact-workshop .workbench,.compact-workshop .shop-panel{flex-shrink:0;overflow:visible}
+ .compact-workshop .board-holder{flex:none;height:210px;width:100%;max-width:none}
+ .compact-workshop .shop-panel .prep-tab-panel{flex:none;overflow:visible}
+ .compact-workshop .shop-panel{min-height:220px}
+}

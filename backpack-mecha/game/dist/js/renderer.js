@@ -1,12 +1,12 @@
-import { roundRect } from "./canvas.js?v=b24d61249a59";
-import { Art } from "./art.js?v=b24d61249a59";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=b24d61249a59";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=b24d61249a59";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=b24d61249a59";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=b24d61249a59";
-import { locomotion, easeOut, weaponPose, impactOffset } from "./visual-motion.js?v=b24d61249a59";
-import { chassisSkill } from "./skills.js?v=b24d61249a59";
-import { RenderQuality } from "./performance.js?v=b24d61249a59";
+import { roundRect } from "./canvas.js?v=dd56a56e7e0a";
+import { Art } from "./art.js?v=dd56a56e7e0a";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=dd56a56e7e0a";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=dd56a56e7e0a";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=dd56a56e7e0a";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=dd56a56e7e0a";
+import { locomotion, easeOut, weaponPose, impactOffset } from "./visual-motion.js?v=dd56a56e7e0a";
+import { chassisSkill } from "./skills.js?v=dd56a56e7e0a";
+import { RenderQuality } from "./performance.js?v=dd56a56e7e0a";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.

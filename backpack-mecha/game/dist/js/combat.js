@@ -1,14 +1,14 @@
-import { contains } from "./hazards.js?v=b24d61249a59";
-export { contains } from "./hazards.js?v=b24d61249a59";
-import { bossAttackSlot } from "./boss-patterns.js?v=b24d61249a59";
-import { guardBossTurn } from "./boss-safety.js?v=b24d61249a59";
-import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=b24d61249a59";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=b24d61249a59";
-import { activeSupports } from "./economy.js?v=b24d61249a59";
-import { scrapPerCost, chassisStats } from "./progression.js?v=b24d61249a59";
-import { chassisSkill } from "./skills.js?v=b24d61249a59";
-import { nextRandom } from "./random.js?v=b24d61249a59";
-import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=b24d61249a59";
+import { contains } from "./hazards.js?v=dd56a56e7e0a";
+export { contains } from "./hazards.js?v=dd56a56e7e0a";
+import { bossAttackSlot } from "./boss-patterns.js?v=dd56a56e7e0a";
+import { guardBossTurn } from "./boss-safety.js?v=dd56a56e7e0a";
+import { moduleValue, TIER_EFFECTS, damageScale } from "./rarity.js?v=dd56a56e7e0a";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID, BOSS_BY_ID } from "./content.js?v=dd56a56e7e0a";
+import { activeSupports } from "./economy.js?v=dd56a56e7e0a";
+import { scrapPerCost, chassisStats } from "./progression.js?v=dd56a56e7e0a";
+import { chassisSkill } from "./skills.js?v=dd56a56e7e0a";
+import { nextRandom } from "./random.js?v=dd56a56e7e0a";
+import { ARENA, BOSS_DAMAGE_SCALE, availableBudget, bossPhase, bossTurn, bossPursuitSpeed, chooseEnemy, circleHitsRect, clearPath, createEncounter, findPath, traversable } from "./encounters.js?v=dd56a56e7e0a";
 const CONFIG = { bulletSpeed: 800, waterSpeed: 650, iceSpeed: 650, oilSpeed: 550, missileSpeed: 500, droneSpeed: 720, bulletRadius: 4,
     spawnWarning: .75, spawnGrace: .5, hitGrace: .35, pickupBase: 60, maxEnemies: 70, softEnemies: 45, enemyShotSpeed: 240 };
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -355,7 +355,7 @@ function hitEnemy(w, e, hit) {
     return actual;
 }
 /** All enemy damage, including hazards, goes through this protection and death ordering. */
-export function damagePlayer(w, raw, source, at = w.player) {
+export function damagePlayer(w, raw, source, at = w.player, attack = 'contact') {
     const p = w.player;
     if (w.status !== 'playing' || p.dashTime > 0 || p.invulnerable > 0 || raw <= 0)
         return 0;
@@ -368,6 +368,9 @@ export function damagePlayer(w, raw, source, at = w.player) {
     const actual = Math.min(damage, beforeShield + beforeHP);
     w.stats.damageTaken += actual;
     w.stats.damageTakenBy[source] = (w.stats.damageTakenBy[source] || 0) + actual;
+    const byAttack = w.stats.damageTakenByAttack ?? (w.stats.damageTakenByAttack = {});
+    const attackKey = source + ':' + attack;
+    byAttack[attackKey] = (byAttack[attackKey] ?? 0) + actual;
     event(w, 'player-hit', p, { amount: actual, source, from: { x: at.x, y: at.y }, shieldDamage: absorbed, hullDamage: beforeHP - p.hp });
     if (beforeShield > 0 && p.shield <= 0) {
         event(w, 'shield-break', p);
@@ -580,7 +583,7 @@ function tickBullets(w, dt) {
                 continue;
             }
             if (segmentDistance(w.player, before, b) < w.player.radius + b.radius) {
-                const taken = damagePlayer(w, b.damage, b.source, b);
+                const taken = damagePlayer(w, b.damage, b.source, b, 'projectile');
                 if (taken > 0 && b.slow > 0) {
                     w.slowUntil = w.time + 2;
                     w.slowAmount = b.slow;
@@ -728,7 +731,7 @@ function tickZones(w, dt) {
         z.pulse = Math.max(0, z.pulse - dt);
         if (z.pulse <= 0 && contains(z, w.player, w.player.radius)) {
             const amount = z.plan.effect === 'fire' && z.triggered ? 6 * BOSS_DAMAGE_SCALE * difficultyDamage(w) : z.plan.damage;
-            if (damagePlayer(w, amount, z.source, z) > 0)
+            if (damagePlayer(w, amount, z.source, z, z.kind) > 0)
                 z.pulse = z.plan.period || 1000;
         }
         if (z.source === 'E05' && !z.triggered) {
@@ -1039,7 +1042,7 @@ function contactDamage(w) {
             continue;
         }
         const charging = e.charge && e.charge.until > w.time;
-        if (distance(e, w.player) < (charging ? e.charge.radius : e.radius) + w.player.radius && damagePlayer(w, charging ? e.charge.damage : e.damage, e.id, e) > 0)
+        if (distance(e, w.player) < (charging ? e.charge.radius : e.radius) + w.player.radius && damagePlayer(w, charging ? e.charge.damage : e.damage, e.id, e, charging ? 'charge' : 'contact') > 0)
             e.contactAt = w.time + 1;
     }
 }

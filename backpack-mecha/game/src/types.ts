@@ -13,7 +13,7 @@ export interface EventDef {id:string;name:string;en:string;description:string;de
 export interface WaveDef {n:number;act:number;kind:'normal'|'boss';duration:number;budget:number;base:number;bonus:number}
 export interface Item {uid:string;id:string;tier:Tier;x:number;y:number;rotation:number;stored:boolean;link?:string}
 export interface Offer {id:string;locked:boolean;tier?:Tier}
-export interface CombatStats {damageByModule:Record<string,number>;damageTakenBy:Record<string,number>;kills:number;killedBudget:number;goldEarned:number;maxChain:number;damageTaken:number}
+export interface CombatStats {damageTakenByAttack?:Record<string,number>;damageByModule:Record<string,number>;damageTakenBy:Record<string,number>;kills:number;killedBudget:number;goldEarned:number;maxChain:number;damageTaken:number}
 export interface RunEvent {
  growth?:ChassisGrowth;
  sequence:number;wave:number;action:string;detail:string;gold:number;hp:number;prepSeconds:number;

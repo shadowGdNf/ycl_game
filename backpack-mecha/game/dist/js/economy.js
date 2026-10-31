@@ -1,9 +1,9 @@
-import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=b24d61249a59";
-import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=b24d61249a59";
-import { createEncounter } from "./encounters.js?v=b24d61249a59";
-import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=b24d61249a59";
-import { hashSeed, nextRandom } from "./random.js?v=b24d61249a59";
-import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=b24d61249a59";
+import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=dd56a56e7e0a";
+import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=dd56a56e7e0a";
+import { createEncounter } from "./encounters.js?v=dd56a56e7e0a";
+import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=dd56a56e7e0a";
+import { hashSeed, nextRandom } from "./random.js?v=dd56a56e7e0a";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=dd56a56e7e0a";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
@@ -177,7 +177,7 @@ export function linkOptions(r, uid) {
     });
 }
 export function previewPurchase(r, index) {
-    const d = previewRun(r), access = requireShop(d), offer = d.shop[index];
+    const d = previewRun(r), access = shopAccess(d), offer = d.shop[index];
     if (!access.ok)
         return { result: access, placements: [], canReserve: false };
     if (!Number.isInteger(index) || !offer?.id)
@@ -558,7 +558,16 @@ function generateShop(r, visit) {
     }
     recordAction(r, visit ? 'shop:visit' : 'shop:refresh');
 }
-function requireShop(r) { return r.phase === 'prep' && r.wave > 1 && r.shop.length === 4 ? ok() : fail('当前不在商店', 'The shop is not available now.'); }
+/** The workshop and transaction handlers must agree on when these offers are live. */
+export function shopAccess(r) {
+    if (r.phase === 'reward')
+        return fail('请先领取全部战利品，再进入商店', 'Claim all pending salvage before shopping.');
+    if (r.phase === 'expansion')
+        return fail('请先完成背包扩容和协议选择，再进入商店', 'Complete frame expansion and choose a protocol before shopping.');
+    if (r.phase === 'protocol')
+        return fail('请先选择战术协议，再进入商店', 'Choose a protocol before shopping.');
+    return r.phase === 'prep' && r.wave > 1 && r.shop.length === 4 ? ok() : fail('商店在战后休整时开放', 'The shop opens during preparation after a battle.');
+}
 function newItem(r, id, tier = 1) { return { uid: `i${r.nextUid++}`, id, tier, x: -1, y: -1, rotation: 0, stored: true }; }
 function receive(r, id, placement, tier = 1) {
     const item = newItem(r, id, tier);
@@ -585,7 +594,7 @@ function receive(r, id, placement, tier = 1) {
 }
 export function buy(r, index, placement) {
     return transaction(r, d => {
-        const access = requireShop(d);
+        const access = shopAccess(d);
         if (!access.ok)
             return access;
         const offer = d.shop[index];
@@ -684,13 +693,13 @@ export function merge(r, uid, otherUid) { return transaction(r, d => mergeDraft(
 export const upgrade = merge;
 export function purchaseMergeTargets(r, index) {
     const offer = r.shop[index];
-    if (!offer?.id || offerTier(offer) >= 4)
+    if (!shopAccess(r).ok || !offer?.id || offerTier(offer) >= 4)
         return [];
     return r.items.filter(i => i.id === offer.id && i.tier === offerTier(offer)).sort((a, b) => Number(a.stored) - Number(b.stored));
 }
 export function buyAndMerge(r, index, uid) {
     return transaction(r, d => {
-        const access = requireShop(d);
+        const access = shopAccess(d);
         if (!access.ok)
             return access;
         const offer = d.shop[index];
@@ -712,7 +721,7 @@ export function buyAndMerge(r, index, uid) {
 }
 export function repair(r) {
     return transaction(r, d => {
-        const access = requireShop(d);
+        const access = shopAccess(d);
         if (!access.ok)
             return access;
         if (extra(d).repairedWave === d.wave)
@@ -729,10 +738,10 @@ export function repair(r) {
         return ok();
     });
 }
-export function refreshShop(r) { return transaction(r, d => { const access = requireShop(d); if (!access.ok)
+export function refreshShop(r) { return transaction(r, d => { const access = shopAccess(d); if (!access.ok)
     return access; const price = Math.min(10, (d.refreshes + 1) * 2); if (d.gold < price)
     return fail('碎片不足', 'Not enough scrap.'); spend(d, price); d.refreshes++; generateShop(d, false); log(d, `refresh:${price}`); return ok(); }); }
-export function toggleLock(r, index) { return transaction(r, d => { const access = requireShop(d); if (!access.ok)
+export function toggleLock(r, index) { return transaction(r, d => { const access = shopAccess(d); if (!access.ok)
     return access; if (!Number.isInteger(index) || !d.shop[index]?.id)
     return fail('请选择有效商品', 'Select an available offer.'); const lock = !d.shop[index].locked; for (const o of d.shop)
     o.locked = false; d.shop[index].locked = lock; return ok(); }); }
@@ -824,6 +833,12 @@ export function startWave(r) {
     });
 }
 function mergeStats(r, s) {
+    if (s.damageTakenByAttack) {
+        const byAttack = r.stats.damageTakenByAttack ?? (r.stats.damageTakenByAttack = {});
+        for (const [id, value] of Object.entries(s.damageTakenByAttack))
+            if (finite(value))
+                byAttack[id] = (byAttack[id] ?? 0) + value;
+    }
     for (const key of ['damageByModule', 'damageTakenBy'])
         for (const [id, value] of Object.entries(s[key]))
             if (finite(value))

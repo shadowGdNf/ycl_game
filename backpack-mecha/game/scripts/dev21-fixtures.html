@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dev.21 隔离验证</title><style>body{font:16px system-ui;margin:24px;max-width:800px}button,a{display:inline-block;padding:12px;margin:6px}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
+<h1>dev.21 隔离验证</h1><p>仅写入此测试端口的存档。场景使用明确标注的战斗结果夹具，不代表真实通关。</p>
+<button data-scenario="reward">战后待领奖</button><button data-scenario="queue">双重待领奖</button><button data-scenario="event">事件待领奖</button><button data-scenario="boss">首领待扩容</button><button data-scenario="merge">双武器合成</button><button data-scenario="intro">首次装配</button><button data-scenario="result">失败战报</button><button id="inspect">检查测试存档</button><a href="/">返回游戏</a><pre id="output"></pre>
+<script type="module">
+import * as e from './js/economy.js?v=__VERSION__';
+import * as s from './js/storage.js?v=__VERSION__';
+import {createBattle} from './js/combat.js?v=__VERSION__';
+const output=document.querySelector('#output');
+const win=r=>({won:true,hp:r.hp,shield:r.shield,elapsed:40,insuranceUsed:false,stats:{damageByModule:{W01:100},damageTakenBy:{E04:10},damageTakenByAttack:{'E04:projectile':10},kills:5,killedBudget:0,goldEarned:0,maxChain:0,damageTaken:10}});
+const complete=r=>{if(!e.startWave(r).ok||!e.resolveBattle(r,win(r)).ok)throw Error('Fixture failed');};
+for(const button of document.querySelectorAll('[data-scenario]'))button.onclick=async()=>{
+ try{
+  const mode=button.dataset.scenario,r=e.newRun('scavenger','full',0,'DEV21-FIXTURE');complete(r);
+  r.gold=500;r.shop=['W01','W03','S02','U02'].map(id=>({id,tier:1,locked:false}));
+  const profile=s.freshProfile();profile.tutorial=mode!=='intro';profile.settings.music=false;profile.settings.sound=false;
+  if(mode==='reward'||mode==='queue'){if(mode==='queue')e.setRoute(r,2);complete(r);}
+  if(mode==='event'){r.wave=3;r.eventId='EV01';r.eventResolved=false;e.resolveEvent(r,0);}
+  if(mode==='boss'){r.wave=4;complete(r);}
+  if(mode==='intro')e.storeItem(r,r.items[1].uid);
+  if(mode==='merge'){r.items=r.items.filter(i=>i.id==='W01');r.items.push({...r.items[0],uid:`i${r.nextUid++}`,x:1,y:3});}
+  let battle=null;
+  if(mode==='result'){e.startWave(r);battle=createBattle(r);battle.status='lost';battle.player.hp=0;battle.failureReason='B2A';battle.stats={...win(r).stats,damageTakenBy:{B2A:80},damageTakenByAttack:{'B2A:circle':60,'B2A:projectile':20},damageTaken:80};}
+  if(!await s.saveGame({version:1,profile,run:r,battle,savedAt:Date.now()}))throw Error('Cannot save fixture');location.href='/';
+ }catch(error){output.textContent=String(error);}
+};
+document.querySelector('#inspect').onclick=async()=>{const saved=await s.loadSave(),r=saved.run;output.textContent=JSON.stringify(r?{phase:r.phase,wave:r.wave,gold:r.gold,items:r.items,shop:r.shop,rewardOptions:r.rewardOptions,protocolOptions:r.protocolOptions,stats:r.stats}:saved,null,2);};
+</script></html>

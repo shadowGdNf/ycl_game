@@ -1,7 +1,7 @@
 /** A bounded, conservative check before a new combination commits its markers.
  * It needs a walking route after 250ms reaction, never assumes dash or invulnerability.
  * This checks announced geometry and existing projectiles, not a promise about future AI. */
-import { contains } from "./hazards.js?v=b24d61249a59";
+import { contains } from "./hazards.js?v=dd56a56e7e0a";
 const DT = 1 / 30, REACTION = .25, TAU = Math.PI * 2;
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 export function routeInput(route, time) {

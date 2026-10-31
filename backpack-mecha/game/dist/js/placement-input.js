@@ -1,4 +1,4 @@
-import { getCells, previewSmartPlacement } from "./economy.js?v=b24d61249a59";
+import { getCells, previewSmartPlacement } from "./economy.js?v=dd56a56e7e0a";
 /** Board coordinates are continuous grid units; grab preserves the exact point held. */
 export function snapPlacement(run, uid, pointer, grab, rotation) {
     const origin = { x: pointer.x - grab.x, y: pointer.y - grab.y };

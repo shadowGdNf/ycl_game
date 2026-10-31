@@ -125,7 +125,7 @@ export function linkOptions(r:Run,uid:string):{weapon:Item;result:Result;reason:
  });
 }
 export function previewPurchase(r:Run,index:number):{result:Result;placements:PlacementPreview[];canReserve:boolean} {
- const d=previewRun(r),access=requireShop(d),offer=d.shop[index];
+ const d=previewRun(r),access=shopAccess(d),offer=d.shop[index];
  if(!access.ok)return {result:access,placements:[],canReserve:false};
  if(!Number.isInteger(index)||!offer?.id)return {result:fail('该商品已售出','This offer is unavailable.'),placements:[],canReserve:false};
  const canReserve=d.items.filter(i=>i.stored).length<3;
@@ -308,7 +308,13 @@ function generateShop(r:Run,visit:boolean):void {
  if(visit){if(r.shop.some(o=>o.id&&useful(r,MODULE_BY_ID[o.id])))r.shopPity=0;else r.shopPity++;}
  recordAction(r,visit?'shop:visit':'shop:refresh');
 }
-function requireShop(r:Run):Result {return r.phase==='prep'&&r.wave>1&&r.shop.length===4?ok():fail('当前不在商店','The shop is not available now.');}
+/** The workshop and transaction handlers must agree on when these offers are live. */
+export function shopAccess(r:Run):Result {
+ if(r.phase==='reward')return fail('请先领取全部战利品，再进入商店','Claim all pending salvage before shopping.');
+ if(r.phase==='expansion')return fail('请先完成背包扩容和协议选择，再进入商店','Complete frame expansion and choose a protocol before shopping.');
+ if(r.phase==='protocol')return fail('请先选择战术协议，再进入商店','Choose a protocol before shopping.');
+ return r.phase==='prep'&&r.wave>1&&r.shop.length===4?ok():fail('商店在战后休整时开放','The shop opens during preparation after a battle.');
+}
 function newItem(r:Run,id:string,tier:Tier=1):Item {return {uid:`i${r.nextUid++}`,id,tier,x:-1,y:-1,rotation:0,stored:true};}
 function receive(r:Run,id:string,placement?:{x:number;y:number;rotation:number},tier:Tier=1):Result {
  const item=newItem(r,id,tier);r.items.push(item);
@@ -321,7 +327,7 @@ function receive(r:Run,id:string,placement?:{x:number;y:number;rotation:number},
  return fail('备件架已满且背包没有合法位置，请先腾出位置或领取碎片','No reserve or legal backpack space. Make room or take scrap.');
 }
 export function buy(r:Run,index:number,placement?:{x:number;y:number;rotation:number}):Result {return transaction(r,d=>{
- const access=requireShop(d);if(!access.ok)return access;const offer=d.shop[index];if(!Number.isInteger(index)||!offer?.id)return fail('该商品已售出','This offer is unavailable.');
+ const access=shopAccess(d);if(!access.ok)return access;const offer=d.shop[index];if(!Number.isInteger(index)||!offer?.id)return fail('该商品已售出','This offer is unavailable.');
  const m=MODULE_BY_ID[offer.id],price=offerPrice(offer);if(!validTier(offerTier(offer)))return fail('无效商品稀有度','Invalid offer rarity.');if(d.gold<price)return fail('碎片不足','Not enough scrap.');
  if(!placement&&d.items.filter(i=>i.stored).length>=3)return fail('备件架已满，请选择背包位置后购买','Reserve full. Select a backpack placement before buying.');
  const result=receive(d,m.id,placement,offerTier(offer));if(!result.ok)return result;spend(d,price);d.shop[index]={id:'',locked:false};log(d,`buy:${m.id}:${price}:tier${offerTier(offer)}`);return ok();
@@ -369,11 +375,11 @@ export function merge(r:Run,uid:string,otherUid?:string):Result{return transacti
 /** Retained for local probe callers; upgrades now consume a matching copy and never charge scrap. */
 export const upgrade=merge;
 export function purchaseMergeTargets(r:Run,index:number):Item[]{
- const offer=r.shop[index];if(!offer?.id||offerTier(offer)>=4)return [];
+ const offer=r.shop[index];if(!shopAccess(r).ok||!offer?.id||offerTier(offer)>=4)return [];
  return r.items.filter(i=>i.id===offer.id&&i.tier===offerTier(offer)).sort((a,b)=>Number(a.stored)-Number(b.stored));
 }
 export function buyAndMerge(r:Run,index:number,uid:string):Result{return transaction(r,d=>{
- const access=requireShop(d);if(!access.ok)return access;const offer=d.shop[index];
+ const access=shopAccess(d);if(!access.ok)return access;const offer=d.shop[index];
  if(!Number.isInteger(index)||!offer?.id||!purchaseMergeTargets(d,index).some(i=>i.uid===uid))return fail('商品与目标装备不满足合成条件','Offer and equipment do not match for combining.');
  const price=offerPrice(offer);if(d.gold<price)return fail('碎片不足','Not enough scrap.');
  const material=newItem(d,offer.id,offerTier(offer));d.items.push(material);
@@ -381,12 +387,12 @@ export function buyAndMerge(r:Run,index:number,uid:string):Result{return transac
  spend(d,price);d.shop[index]={id:'',locked:false};log(d,`buy-merge:${offer.id}:${price}:tier${offerTier(offer)}`);return ok();
 });}
 export function repair(r:Run):Result {return transaction(r,d=>{
- const access=requireShop(d);if(!access.ok)return access;if(extra(d).repairedWave===d.wave)return fail('本次商店已维修','Repairs have already been used at this shop.');
+ const access=shopAccess(d);if(!access.ok)return access;if(extra(d).repairedWave===d.wave)return fail('本次商店已维修','Repairs have already been used at this shop.');
  if(d.hp>=maxHP(d))return fail('生命已满','HP is already full.');const price=Math.ceil([18,24,30][act(d)-1]*(d.difficulty>=3?1.25:1));
  if(d.gold<price)return fail('碎片不足','Not enough scrap.');spend(d,price);d.hp=Math.min(maxHP(d),d.hp+30);extra(d).repairedWave=d.wave;log(d,`repair:${price}`);return ok();
 });}
-export function refreshShop(r:Run):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;const price=Math.min(10,(d.refreshes+1)*2);if(d.gold<price)return fail('碎片不足','Not enough scrap.');spend(d,price);d.refreshes++;generateShop(d,false);log(d,`refresh:${price}`);return ok();});}
-export function toggleLock(r:Run,index:number):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;if(!Number.isInteger(index)||!d.shop[index]?.id)return fail('请选择有效商品','Select an available offer.');const lock=!d.shop[index].locked;for(const o of d.shop)o.locked=false;d.shop[index].locked=lock;return ok();});}
+export function refreshShop(r:Run):Result {return transaction(r,d=>{const access=shopAccess(d);if(!access.ok)return access;const price=Math.min(10,(d.refreshes+1)*2);if(d.gold<price)return fail('碎片不足','Not enough scrap.');spend(d,price);d.refreshes++;generateShop(d,false);log(d,`refresh:${price}`);return ok();});}
+export function toggleLock(r:Run,index:number):Result {return transaction(r,d=>{const access=shopAccess(d);if(!access.ok)return access;if(!Number.isInteger(index)||!d.shop[index]?.id)return fail('请选择有效商品','Select an available offer.');const lock=!d.shop[index].locked;for(const o of d.shop)o.locked=false;d.shop[index].locked=lock;return ok();});}
 
 function enterPrep(r:Run):void {
  r.phase='prep';extra(r).spentPrepWave=0;r.refreshes=0;
@@ -427,6 +433,7 @@ export function startWave(r:Run):Result {return transaction(r,d=>{
  const valid=validateLoadout(d);if(!valid.ok)return valid;d.shield=getShieldCapacity(d);d.phase='battle';delete d.saleUndo;beginWaveRecord(d);log(d,`start:${d.wave}:${d.route}`);return ok();
 });}
 function mergeStats(r:Run,s:CombatStats):void {
+ if(s.damageTakenByAttack){const byAttack=r.stats.damageTakenByAttack??(r.stats.damageTakenByAttack={});for(const [id,value] of Object.entries(s.damageTakenByAttack))if(finite(value))byAttack[id]=(byAttack[id]??0)+value;}
  for(const key of ['damageByModule','damageTakenBy'] as const)for(const [id,value]of Object.entries(s[key]))if(finite(value))r.stats[key][id]=(r.stats[key][id]??0)+value;
  for(const key of ['kills','killedBudget','goldEarned','damageTaken'] as const)r.stats[key]+=finite(s[key])?s[key]:0;r.stats.maxChain=Math.max(r.stats.maxChain,s.maxChain||0);
 }

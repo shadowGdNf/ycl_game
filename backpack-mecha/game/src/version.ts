@@ -1,3 +1,3 @@
-export const BUILD_VERSION = '0.2.0-dev.20';
+export const BUILD_VERSION = '0.2.0-dev.21';
 // Authored boss combinations, predicted follow-ups and walking escape checks.
 export const RULESET_VERSION = '0.2.6';

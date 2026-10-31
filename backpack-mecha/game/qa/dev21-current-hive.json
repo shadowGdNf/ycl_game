@@ -1,0 +1,1563 @@
+{
+  "probe": "natural-shop-growth-v2",
+  "policy": "current-features-expanded",
+  "chassis": "hive",
+  "currentControls": true,
+  "loadouts": "current",
+  "seedStart": 1,
+  "started": "2026-10-31T06:48:33.513Z",
+  "finished": "2026-10-31T06:48:35.153Z",
+  "sourceHashes": {
+    "src/combat.ts": "31f041d65117472562009c9247820c377a22e3ec60e561b73fe5f6ca8f79bf9d",
+    "src/encounters.ts": "fde9bf3a24e7a372215058685108e9bb0040b4820f1d979729116c42217432e6",
+    "src/economy.ts": "6342e489eea53a58a1e7da28f5bd6249c9c7746fe1a3ad4af95c27500038a9f4",
+    "src/progression.ts": "0ed9db25ce919dbc8fb7771a6c3c708e160969c3e33a53e1a7a3862be2aaa17c",
+    "src/content.ts": "327cdef1a519463e2be8d13c33be4288ffeaac6b1a9a103f652f4b0c3a1983be",
+    "src/types.ts": "5369d48542ce76ba600b32967e8314703f6924d15ab79ab72319623c4c0465a5",
+    "src/random.ts": "641c09b9ef3bc64478b2d11df036c7dd676625d4d733465e6976571ead1a329a",
+    "src/journal.ts": "cf778012ab2d1494b51c9174bacd362d1e55c7736b62a6c09d2306e83aa61787",
+    "src/performance.ts": "303f284d15c3218af1d38785171d3203d5a55af6fb63055b9ca135f71b5126f1",
+    "src/storage.ts": "045a44c8b433537abcb4b9b1a0d59439f4f9c3fffb5db6ffe97844a807bc49a2",
+    "src/version.ts": "bf1e33c30d39377e5d344c3093391625265a817dc98a587e03cc7a010457e4b0",
+    "assets/content.json": "3acd8cf82ec5f3e719428302292f59e43cbfad746edc42f182d6831e7fe00a0b",
+    "scripts/natural-policy.ts": "70e806ff05cab22309e90f8a53188375a3393a5fabbb0fdcace670e70ff31487",
+    "scripts/current-policy.ts": "99bdfe84b6f4a7682563b0f0209ed7192c7496c8de447ee736d8143c4a5eb015",
+    "scripts/purchase-search.ts": "705bf319f2b3ca457818087de57ef4a2da379fc3471cf30db321a1bc5ef57ab8",
+    "scripts/growth-diagnostics.ts": "2830f5573b34329d1a1cb45889ee86b048e07efd86b7bd8e89684d054890100c",
+    "scripts/probe-pilot.ts": "d22fc4b75c5ef33ab604d136c8c7d50427c749aaf6c4c2b5f57003b4b993f006",
+    "scripts/natural-probe.ts": "b9820f6c4f5e1f1ca6f4b83100b10c260487e60fffb5d72450a1a6dd7ab25366"
+  },
+  "seedsPerFamily": 1,
+  "limitations": [
+    "Machine policy outcomes are not human win rates, retention or device performance.",
+    "Selected chassis hive, difficulty 0; only normal routes; events skipped. Non-scavenger runs assume prior unlocks.",
+    "Only normal game APIs buy, equip, sell, upgrade, repair, collect rewards and advance waves. No granted equipment, currency, HP or forced victories.",
+    "Active core counts require equipped weapons and active support links. Module presence alone remains separately reported.",
+    "At most two paid rerolls per shop; a deterministic, bounded policy may miss valid packing, transitions or purchases.",
+    "Each family expresses an equipment preference; missing cores remain missing and every failed run is retained.",
+    "Combat uses fixed 1/60 steps and a visible-state pilot at 10 Hz. Its accurate geometric avoidance is stronger than typical human play.",
+    "No rendering or human preparation delays: combat time excludes real browsing and decision time.",
+    "Every battle lasting ten seconds is saved/restored through production validation, then compared with an uninterrupted branch for up to two seconds.",
+    "The seed reproduces RNG under the same rules and choices; the report is not a full input replay or importable save."
+  ],
+  "summaries": [
+    {
+      "family": "swarm",
+      "name": "突击蜂群",
+      "runs": 1,
+      "wins": 1,
+      "coreAttainedRuns": 1,
+      "coreOfferedRuns": 1,
+      "meanBattleSeconds": 500.76666666666694,
+      "failedWaves": [],
+      "resumeChecks": 12,
+      "anomalies": []
+    }
+  ],
+  "results": [
+    {
+      "family": "swarm",
+      "name": "突击蜂群",
+      "core": [
+        "W18",
+        "S10"
+      ],
+      "attainedAtWaves": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "resumedWaves": 12,
+      "verifiedResume": true,
+      "anomalies": [],
+      "skillActivations": 25,
+      "equippedWeapons": [
+        "W01",
+        "W18",
+        "W11",
+        "W12"
+      ],
+      "activeCoreWaves": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "reportVersion": 1,
+      "buildVersion": "0.2.0-dev.21",
+      "rulesVersion": "0.2.6",
+      "seed": "natural-v02-01",
+      "mode": "full",
+      "chassis": "hive",
+      "difficulty": 0,
+      "status": "won",
+      "wave": 12,
+      "battleSeconds": 500.76666666666694,
+      "prepSeconds": 0,
+      "growth": {
+        "level": 12,
+        "xp": 0,
+        "points": 1,
+        "choices": {
+          "hp": 0,
+          "speed": 0,
+          "attack": 10
+        }
+      },
+      "stats": {
+        "damageByModule": {
+          "skill-hive": 6023.138000000001,
+          "W01": 434.19500000000016,
+          "W18": 13621.388145981547,
+          "W12": 2020.2404624505925,
+          "W11": 6596.898391567867
+        },
+        "damageTakenBy": {
+          "B2A": 16.363636363636363,
+          "B3B": 49.09090909090909
+        },
+        "kills": 514,
+        "killedBudget": 584,
+        "goldEarned": 675.6799999999998,
+        "maxChain": 0,
+        "damageTaken": 65.45454545454545,
+        "damageTakenByAttack": {
+          "B2A:projectile": 16.363636363636363,
+          "B3B:rect": 24.545454545454547,
+          "B3B:circle": 24.545454545454547
+        }
+      },
+      "items": [
+        {
+          "uid": "i2",
+          "id": "S01",
+          "tier": 2,
+          "x": 0,
+          "y": 1,
+          "rotation": 0,
+          "stored": false,
+          "link": "i3"
+        },
+        {
+          "uid": "i3",
+          "id": "W18",
+          "tier": 1,
+          "x": 2,
+          "y": 1,
+          "rotation": 0,
+          "stored": false
+        },
+        {
+          "uid": "i5",
+          "id": "W11",
+          "tier": 1,
+          "x": 3,
+          "y": 2,
+          "rotation": 0,
+          "stored": false
+        },
+        {
+          "uid": "i7",
+          "id": "W12",
+          "tier": 1,
+          "x": 1,
+          "y": 0,
+          "rotation": 0,
+          "stored": false
+        },
+        {
+          "uid": "i9",
+          "id": "S10",
+          "tier": 3,
+          "x": 3,
+          "y": 0,
+          "rotation": 0,
+          "stored": false,
+          "link": "i3"
+        },
+        {
+          "uid": "i10",
+          "id": "U06",
+          "tier": 1,
+          "x": 0,
+          "y": 2,
+          "rotation": 0,
+          "stored": false
+        },
+        {
+          "uid": "i12",
+          "id": "U02",
+          "tier": 3,
+          "x": 1,
+          "y": 3,
+          "rotation": 0,
+          "stored": false
+        },
+        {
+          "uid": "i13",
+          "id": "S02",
+          "tier": 1,
+          "x": 0,
+          "y": 0,
+          "rotation": 0,
+          "stored": false,
+          "link": "i7"
+        },
+        {
+          "uid": "i14",
+          "id": "U03",
+          "tier": 1,
+          "x": 3,
+          "y": 4,
+          "rotation": 0,
+          "stored": false
+        }
+      ],
+      "journal": {
+        "version": 1,
+        "buildVersion": "0.2.0-dev.21",
+        "rulesVersion": "0.2.6",
+        "startedAtWave": 1,
+        "partial": false,
+        "nextSequence": 135,
+        "droppedEvents": 0,
+        "waves": [
+          {
+            "wave": 1,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 1,
+                "xp": 0,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 0
+                }
+              },
+              "hp": 90,
+              "shield": 20,
+              "gold": 40,
+              "items": [
+                {
+                  "uid": "i1",
+                  "id": "W01",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i1"
+                }
+              ],
+              "protocols": []
+            },
+            "end": {
+              "won": true,
+              "hp": 90,
+              "shield": 20,
+              "gold": 78.4,
+              "income": 38.400000000000006,
+              "seconds": 40,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 144.00000000000003,
+                  "W01": 284.8000000000001
+                },
+                "damageTakenBy": {},
+                "kills": 26,
+                "killedBudget": 26,
+                "goldEarned": 10.400000000000004,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 2,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 2,
+                "xp": 26,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 1
+                }
+              },
+              "hp": 96,
+              "shield": 20,
+              "gold": 16.400000000000006,
+              "items": [
+                {
+                  "uid": "i1",
+                  "id": "W01",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i1"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i4",
+                  "id": "U03",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": []
+            },
+            "end": {
+              "won": true,
+              "hp": 96,
+              "shield": 20,
+              "gold": 67.64,
+              "income": 51.239999999999995,
+              "seconds": 45,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 147.99,
+                  "W18": 261.28499999999997,
+                  "W01": 149.395
+                },
+                "damageTakenBy": {},
+                "kills": 37,
+                "killedBudget": 37,
+                "goldEarned": 19.23999999999999,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 3,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 3,
+                "xp": 53,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 2
+                }
+              },
+              "hp": 102,
+              "shield": 20,
+              "gold": 25.64,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i6",
+                  "id": "S02",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": []
+            },
+            "end": {
+              "won": true,
+              "hp": 102,
+              "shield": 20,
+              "gold": 93.64000000000001,
+              "income": 68.00000000000001,
+              "seconds": 50,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 143.256,
+                  "W18": 434.5520000000001,
+                  "W12": 23.676000000000002,
+                  "W11": 120.51600000000002
+                },
+                "damageTakenBy": {},
+                "kills": 48,
+                "killedBudget": 50,
+                "goldEarned": 32.000000000000014,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 4,
+            "boss": "B1A",
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 5,
+                "xp": 1,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 4
+                }
+              },
+              "hp": 114,
+              "shield": 20,
+              "gold": 24.640000000000015,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": []
+            },
+            "end": {
+              "won": true,
+              "hp": 114,
+              "shield": 20,
+              "gold": 84.64000000000001,
+              "income": 60,
+              "seconds": 10.500000000000101,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 339.48000000000013,
+                  "W18": 620.8090909090927,
+                  "W11": 312.0472727272726,
+                  "W12": 157.66363636363633
+                },
+                "damageTakenBy": {},
+                "kills": 1,
+                "killedBudget": 0,
+                "goldEarned": 0,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 5,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 5,
+                "xp": 52,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 4
+                }
+              },
+              "hp": 114,
+              "shield": 65,
+              "gold": 34.640000000000015,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 114,
+              "shield": 65,
+              "gold": 119.52000000000002,
+              "income": 84.88000000000001,
+              "seconds": 45,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 311.1479999999999,
+                  "W18": 542.872,
+                  "W11": 308.2179999999999,
+                  "W12": 101.66199999999998
+                },
+                "damageTakenBy": {},
+                "kills": 47,
+                "killedBudget": 51,
+                "goldEarned": 44.88000000000001,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 6,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 6,
+                "xp": 59,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 5
+                }
+              },
+              "hp": 120,
+              "shield": 65,
+              "gold": 113.52000000000002,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 120,
+              "shield": 65,
+              "gold": 216.52000000000004,
+              "income": 103,
+              "seconds": 50,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 365.7,
+                  "W18": 620.9999999999999,
+                  "W11": 416.1600000000003,
+                  "W12": 98.27999999999996
+                },
+                "damageTakenBy": {},
+                "kills": 53,
+                "killedBudget": 59,
+                "goldEarned": 59,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 7,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 7,
+                "xp": 62,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 6
+                }
+              },
+              "hp": 126,
+              "shield": 65,
+              "gold": 222.52000000000004,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 126,
+              "shield": 65,
+              "gold": 356.76000000000005,
+              "income": 134.24,
+              "seconds": 55,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 609.3840000000001,
+                  "W11": 477.4680000000001,
+                  "W18": 777.2519999999997,
+                  "W12": 129.09599999999998
+                },
+                "damageTakenBy": {},
+                "kills": 67,
+                "killedBudget": 77,
+                "goldEarned": 86.24000000000001,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 8,
+            "boss": "B2A",
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 8,
+                "xp": 62,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 7
+                }
+              },
+              "hp": 132,
+              "shield": 65,
+              "gold": 350.76000000000005,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 132,
+              "shield": 49.886363636363676,
+              "gold": 430.76000000000005,
+              "income": 80,
+              "seconds": 15.150000000000333,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 486.53999999999996,
+                  "W18": 1693.286521739132,
+                  "W11": 885.9756521739122,
+                  "W12": 314.1978260869565
+                },
+                "damageTakenBy": {
+                  "B2A": 16.363636363636363
+                },
+                "kills": 1,
+                "killedBudget": 0,
+                "goldEarned": 0,
+                "maxChain": 0,
+                "damageTaken": 16.363636363636363,
+                "damageTakenByAttack": {
+                  "B2A:projectile": 16.363636363636363
+                }
+              }
+            }
+          },
+          {
+            "wave": 9,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 8,
+                "xp": 133,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 7
+                }
+              },
+              "hp": 132,
+              "shield": 65,
+              "gold": 406.76000000000005,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i13",
+                  "id": "S02",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i7"
+                }
+              ],
+              "protocols": [
+                "P05",
+                "P08"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 132,
+              "shield": 65,
+              "gold": 567.5600000000001,
+              "income": 160.79999999999995,
+              "seconds": 50,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 806.1840000000004,
+                  "W18": 1304.2800000000002,
+                  "W11": 797.4839999999992,
+                  "W12": 274.45199999999994
+                },
+                "damageTakenBy": {},
+                "kills": 64,
+                "killedBudget": 80,
+                "goldEarned": 108.79999999999997,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 10,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 9,
+                "xp": 128,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 8
+                }
+              },
+              "hp": 138,
+              "shield": 65,
+              "gold": 561.5600000000001,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 2,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i13",
+                  "id": "S02",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i7"
+                }
+              ],
+              "protocols": [
+                "P05",
+                "P08"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 138,
+              "shield": 65,
+              "gold": 756.6800000000001,
+              "income": 195.11999999999995,
+              "seconds": 55,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 870.3299999999992,
+                  "W18": 1642.3800000000012,
+                  "W11": 807.1920000000001,
+                  "W12": 232.24799999999988
+                },
+                "damageTakenBy": {},
+                "kills": 75,
+                "killedBudget": 94,
+                "goldEarned": 139.11999999999995,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 11,
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 10,
+                "xp": 113,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 9
+                }
+              },
+              "hp": 144,
+              "shield": 65,
+              "gold": 689.6800000000001,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 3,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i13",
+                  "id": "S02",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i7"
+                },
+                {
+                  "uid": "i14",
+                  "id": "U03",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 4,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05",
+                "P08"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 144,
+              "shield": 65,
+              "gold": 925.68,
+              "income": 235.99999999999986,
+              "seconds": 60,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 1081.5260000000003,
+                  "W11": 890.7208000000008,
+                  "W18": 2182.288199999998,
+                  "W12": 109.06500000000001
+                },
+                "damageTakenBy": {},
+                "kills": 88,
+                "killedBudget": 110,
+                "goldEarned": 175.99999999999986,
+                "maxChain": 0,
+                "damageTaken": 0
+              }
+            }
+          },
+          {
+            "wave": 12,
+            "boss": "B3B",
+            "route": 0,
+            "rulesVersion": "0.2.6",
+            "prepSeconds": 0,
+            "start": {
+              "growth": {
+                "level": 11,
+                "xp": 88,
+                "points": 0,
+                "choices": {
+                  "hp": 0,
+                  "speed": 0,
+                  "attack": 10
+                }
+              },
+              "hp": 150,
+              "shield": 65,
+              "gold": 919.68,
+              "items": [
+                {
+                  "uid": "i2",
+                  "id": "S01",
+                  "tier": 2,
+                  "x": 0,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i3",
+                  "id": "W18",
+                  "tier": 1,
+                  "x": 2,
+                  "y": 1,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i5",
+                  "id": "W11",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i7",
+                  "id": "W12",
+                  "tier": 1,
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i9",
+                  "id": "S10",
+                  "tier": 3,
+                  "x": 3,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i3"
+                },
+                {
+                  "uid": "i10",
+                  "id": "U06",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 2,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i12",
+                  "id": "U02",
+                  "tier": 3,
+                  "x": 1,
+                  "y": 3,
+                  "rotation": 0,
+                  "stored": false
+                },
+                {
+                  "uid": "i13",
+                  "id": "S02",
+                  "tier": 1,
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0,
+                  "stored": false,
+                  "link": "i7"
+                },
+                {
+                  "uid": "i14",
+                  "id": "U03",
+                  "tier": 1,
+                  "x": 3,
+                  "y": 4,
+                  "rotation": 0,
+                  "stored": false
+                }
+              ],
+              "protocols": [
+                "P05",
+                "P08"
+              ]
+            },
+            "end": {
+              "won": true,
+              "hp": 150,
+              "shield": 56.28787878787924,
+              "gold": 1019.68,
+              "income": 100,
+              "seconds": 25.11666666666652,
+              "stats": {
+                "damageByModule": {
+                  "skill-hive": 717.6000000000004,
+                  "W18": 3541.3833333333228,
+                  "W11": 1581.1166666666827,
+                  "W12": 579.9
+                },
+                "damageTakenBy": {
+                  "B3B": 49.09090909090909
+                },
+                "kills": 7,
+                "killedBudget": 0,
+                "goldEarned": 0,
+                "maxChain": 0,
+                "damageTaken": 49.09090909090909,
+                "damageTakenByAttack": {
+                  "B3B:rect": 24.545454545454547,
+                  "B3B:circle": 24.545454545454547
+                }
+              }
+            }
+          }
+        ],
+        "prepSeconds": {},
+        "frames": {}
+      }
+    }
+  ],
+  "rawRuns": "dev21-current-hive-runs.json.gz"
+}

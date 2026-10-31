@@ -125,6 +125,6 @@ export function prepare(run:Run,family:Family,options:PolicyOptions={}):void {
 
 export function pilotBuild(run:Run,family:Family):{preferredSurfaceRange:number;melee:boolean} {
  const main=run.items.filter(i=>!i.stored&&MODULE_BY_ID[i.id].kind==='weapon').sort((a,b)=>worth(b,family)-worth(a,family))[0];
- const range=({W08:64,W09:64,W05:140,W06:180,W02:160,W03:260,W04:275,W11:275,W12:210,W07:360} as Record<string,number>)[main?.id]??210;
+ const range=({W08:64,W09:64,W05:140,W06:180,W02:160,W03:260,W04:275,W11:275,W12:210,W07:360,W13:260,W14:360,W15:120,W16:180,W17:320,W18:320} as Record<string,number>)[main?.id]??210;
  return {preferredSurfaceRange:range,melee:range<100};
 }

@@ -1,23 +1,25 @@
-import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=b24d61249a59";
-import { chassisSkill, skillName, skillDescription } from "./skills.js?v=b24d61249a59";
-import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=b24d61249a59";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=b24d61249a59";
-import { workshopMarkup } from "./ui-workshop.js?v=b24d61249a59";
-import { WorkshopRenderer } from "./workshop-renderer.js?v=b24d61249a59";
-import { snapPlacement } from "./placement-input.js?v=b24d61249a59";
-import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=b24d61249a59";
-import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=b24d61249a59";
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=b24d61249a59";
-import * as economy from "./economy.js?v=b24d61249a59";
-import { createBattle, stepBattle, battleResult } from "./combat.js?v=b24d61249a59";
-import { Renderer } from "./renderer.js?v=b24d61249a59";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=b24d61249a59";
-import { GameAudio } from "./audio.js?v=b24d61249a59";
-import { overloadRequested, FocusGesture, MovementStick } from "./input.js?v=b24d61249a59";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=b24d61249a59";
-import { BUILD_VERSION } from "./version.js?v=b24d61249a59";
-import { ForegroundFrameClock, MAX_FRAME_SECONDS } from "./performance.js?v=b24d61249a59";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=b24d61249a59";
+import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=dd56a56e7e0a";
+import { chassisSkill, skillName, skillDescription } from "./skills.js?v=dd56a56e7e0a";
+import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=dd56a56e7e0a";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=dd56a56e7e0a";
+import { workshopMarkup } from "./ui-workshop.js?v=dd56a56e7e0a";
+import { mergeImpact, shopAdvice, weaponRole } from "./workshop-insights.js?v=dd56a56e7e0a";
+import { damageSourceName, mainThreat } from "./combat-report.js?v=dd56a56e7e0a";
+import { WorkshopRenderer } from "./workshop-renderer.js?v=dd56a56e7e0a";
+import { snapPlacement } from "./placement-input.js?v=dd56a56e7e0a";
+import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=dd56a56e7e0a";
+import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=dd56a56e7e0a";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=dd56a56e7e0a";
+import * as economy from "./economy.js?v=dd56a56e7e0a";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=dd56a56e7e0a";
+import { Renderer } from "./renderer.js?v=dd56a56e7e0a";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=dd56a56e7e0a";
+import { GameAudio } from "./audio.js?v=dd56a56e7e0a";
+import { overloadRequested, FocusGesture, MovementStick } from "./input.js?v=dd56a56e7e0a";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=dd56a56e7e0a";
+import { BUILD_VERSION } from "./version.js?v=dd56a56e7e0a";
+import { ForegroundFrameClock, MAX_FRAME_SECONDS } from "./performance.js?v=dd56a56e7e0a";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=dd56a56e7e0a";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
@@ -136,16 +138,12 @@ function selectedItem() { return run?.items.find(i => i.uid === selectedUid); }
 function renderPlacementHelp() {
     if (!run)
         return '';
-    const item = selectedItem(), support = run.items.find(i => i.id === 'S01');
-    const feedback = item && pendingBuy < 0 ? supportFeedback(run, item.uid, profile.language) : undefined;
-    if (feedback)
-        return `<div class="placement-help support-feedback ${feedback.status === 'active' ? 'connected' : ''}" id="placement-feedback" role="status"><strong>${escape(feedback.title)}</strong><p>${escape(feedback.detail)}</p>${feedback.status !== 'active' ? `<p class="potential-benefit">${t('连接后', 'Once connected')}：${escape(feedback.benefit)}</p>` : ''}</div>`;
-    let message = t('点选模块后点击目标位置，或直接拖动；↻ 自动转向，⇄ 互换。拖到备件区可卸下，操作后可撤销。', 'Select then tap a destination, or drag. ↻ auto rotates; ⇄ swaps. Drop on reserve to store; Undo reverses an edit.');
-    if (pendingBuy >= 0)
-        message = t('点击标记直接购买；横竖方向自动适配空位，R 可切换优先朝向。', 'Tap a marker to buy. Rotation adapts to free space; R changes the preferred orientation.');
-    else if (item?.stored)
-        message = t('点击空位自动适配装入；点已有模块可互换，备件已满也能换。也可点击「自动装入」。', 'Tap a free space to auto-fit, or equipped gear to swap even with a full reserve. Auto equip finds a free position.');
-    return `<div class="placement-help" id="placement-feedback" role="status">${escape(message)}</div>`;
+    const item = selectedItem(), feedback = item && pendingBuy < 0 ? supportFeedback(run, item.uid, profile.language) : undefined;
+    const title = feedback?.title ?? (pendingBuy >= 0 ? t('选择购买位置', 'Choose purchase placement') : t('装配操作', 'Assembly controls'));
+    const detail = feedback ? `${feedback.status === 'active' ? t('当前收益', 'Active benefit') : t('连接后', 'Once connected')}：${feedback.benefit}` :
+        pendingBuy >= 0 ? t('点击背包标记购买；方向自动适配。', 'Tap a board marker to buy; rotation adapts automatically.') :
+            t('点选或拖动放置；拖到备件区卸下。', 'Tap or drag to place; drop on reserve to store.');
+    return `<div class="placement-help ${feedback?.status === 'active' ? 'connected' : ''}" id="placement-feedback" role="status"><div class="placement-copy"><strong>${escape(title)}</strong><span>${escape(detail)}</span></div><button data-action="placement-details">${t('详情', 'Details')}</button></div>`;
 }
 function renderConnectionLesson() {
     if (!run)
@@ -160,18 +158,32 @@ function renderConnectionLesson() {
 function previewPurchase(index) {
     if (!run)
         return;
+    if (!economy.shopAccess(run).ok) {
+        showPending();
+        return;
+    }
     const offer = run.shop[index], m = offer?.id ? MODULE_BY_ID[offer.id] : undefined;
     if (!m)
         return;
     recordAction(run, `inspect:${m.id}`);
     const preview = economy.previewPurchase(run, index), connected = preview.placements.filter(p => p.ready), weapons = [...new Set(preview.placements.flatMap(p => p.linkedWeapon ? [name(MODULE_BY_ID[p.linkedWeapon.id])] : []))];
+    const advice = shopAdvice(run, m.id, profile.language), role = weaponRole(m.id, profile.language);
     const cells = m.shape.reduce((n, row) => n + [...row].filter(c => c === '#').length, 0), after = preview.placements[0], quality = offerTier(offer), mergeTargets = economy.purchaseMergeTargets(run, index);
     const fit = connected.length ? t('当前布局可装入并出战', 'Fits the current loadout and is ready for battle') : preview.placements.length ? t('能放入，但仍需处理未连接的支持件', 'Fits, but a support still needs a connection') : t('当前布局放不下，需旋转、移动或腾出其他模块', 'No fit in the current layout. Rearrange or remove equipment first.');
-    openModal(`<div class="eyebrow">WORKSHOP / FIT CHECK</div><h2>${escape(name(m))} ${rarityBadge(quality, profile.language)}</h2><div class="purchase-preview rarity-${quality}">${canvasIcon(m.id)}<div><div class="module-shape" style="--shape-width:${m.shape[0].length}">${m.shape.flatMap(row => [...row].map(c => `<i class="${c === '#' ? 'filled' : ''}"></i>`)).join('')}</div><p>${cells} ${t('格', cells === 1 ? 'cell' : 'cells')} · ${t('耗电', 'Power')} ${m.power} · ⬡ ${economy.offerPrice(offer)}</p></div></div><p>${escape(equipmentDescription({ id: m.id, tier: quality }, profile.language))}</p>${m.kind === 'support' ? `<p class="purchase-benefit"><strong>${t('连接收益', 'Connection benefit')}</strong><br>${escape(supportBenefit({ uid: 'preview', id: m.id, tier: quality, x: -1, y: -1, rotation: 0, stored: true }, profile.language))}</p>` : ''}<div class="placement-help"><strong>${fit}</strong>${weapons.length ? `<p>${t('可连接', 'Can link to')}：${escape(weapons.join(' / '))}</p>` : ''}<p>${t('当前电力', 'Current power')} ${run.items.filter(i => !i.stored).reduce((n, i) => n + MODULE_BY_ID[i.id].power, 0)} / ${economy.getCapacity(run)}${after ? ` → ${after.power} / ${after.capacity}` : ''} · ${t('备件架', 'Reserve')} ${run.items.filter(i => i.stored).length} / 3</p>${after ? `<p>${t('装入后占格', 'Cells after equipping')} ${after.cells} / ${21 + run.unlockedCorners.length}</p>` : ''}</div>${!preview.result.ok ? `<p class="invalid">${escape(profile.language === 'zh' ? preview.result.reason : preview.result.reasonEn)}</p>` : ''}<div class="modal-actions">${mergeTargets.map(item => `<button class="merge-button" data-action="preview-buy-merge" data-index="${index}" data-uid="${item.uid}" ${run.gold >= economy.offerPrice(offer) ? '' : 'disabled'}>${t('购买并合成', 'Buy & combine')} · ${item.stored ? t('备件', 'Reserve') : t('已装备', 'Equipped')} → ${rarityName(item.tier + 1, profile.language)} · ⬡ ${economy.offerPrice(offer)}</button>`).join('')}<button class="primary" data-action="place-purchase" data-index="${index}" ${preview.result.ok && preview.placements.length ? '' : 'disabled'}>${t('选择位置并装入', 'Choose a placement')}</button><button data-action="buy" data-index="${index}" ${preview.result.ok && preview.canReserve ? '' : 'disabled'}>${t('购买到备件架', 'Buy to reserve')}</button><button data-action="close">${t('返回', 'Back')}</button></div>`, 'purchase');
+    openModal(`<div class="eyebrow">WORKSHOP / FIT CHECK</div><h2>${escape(name(m))} ${rarityBadge(quality, profile.language)}</h2><div class="purchase-preview rarity-${quality}">${canvasIcon(m.id)}<div><div class="module-shape" style="--shape-width:${m.shape[0].length}">${m.shape.flatMap(row => [...row].map(c => `<i class="${c === '#' ? 'filled' : ''}"></i>`)).join('')}</div><p>${cells} ${t('格', cells === 1 ? 'cell' : 'cells')} · ${t('耗电', 'Power')} ${m.power} · ⬡ ${economy.offerPrice(offer)}</p></div></div><p>${escape(role)}</p><p>${escape(equipmentDescription({ id: m.id, tier: quality }, profile.language))}</p>${advice ? `<p class="purchase-benefit">${escape(advice)}</p>` : ''}${m.kind === 'support' ? `<p class="purchase-benefit"><strong>${t('连接收益', 'Connection benefit')}</strong><br>${escape(supportBenefit({ uid: 'preview', id: m.id, tier: quality, x: -1, y: -1, rotation: 0, stored: true }, profile.language))}</p>` : ''}<div class="placement-help"><strong>${fit}</strong>${weapons.length ? `<p>${t('可连接', 'Can link to')}：${escape(weapons.join(' / '))}</p>` : ''}<p>${t('当前电力', 'Current power')} ${run.items.filter(i => !i.stored).reduce((n, i) => n + MODULE_BY_ID[i.id].power, 0)} / ${economy.getCapacity(run)}${after ? ` → ${after.power} / ${after.capacity}` : ''} · ${t('备件架', 'Reserve')} ${run.items.filter(i => i.stored).length} / 3</p>${after ? `<p>${t('装入后占格', 'Cells after equipping')} ${after.cells} / ${21 + run.unlockedCorners.length}</p>` : ''}</div>${!preview.result.ok ? `<p class="invalid">${escape(profile.language === 'zh' ? preview.result.reason : preview.result.reasonEn)}</p>` : ''}<div class="modal-actions">${mergeTargets.map(item => `<button class="merge-button" data-action="preview-buy-merge" data-index="${index}" data-uid="${item.uid}" ${run.gold >= economy.offerPrice(offer) ? '' : 'disabled'}>${t('购买并合成', 'Buy & combine')} · ${item.stored ? t('备件', 'Reserve') : t('已装备', 'Equipped')} → ${rarityName(item.tier + 1, profile.language)} · ⬡ ${economy.offerPrice(offer)}</button>`).join('')}<button class="primary" data-action="place-purchase" data-index="${index}" ${preview.result.ok && preview.placements.length ? '' : 'disabled'}>${t('选择位置并装入', 'Choose a placement')}</button><button data-action="buy" data-index="${index}" ${preview.result.ok && preview.canReserve ? '' : 'disabled'}>${t('购买到备件架', 'Buy to reserve')}</button><button data-action="close">${t('返回', 'Back')}</button></div>`, 'purchase');
 }
 function showRarityHelp() {
     const odds = shopTierChances(run?.wave ?? 2);
     openModal(`<div class="eyebrow">SALVAGE / RARITY</div><h2>${t('装备稀有度', 'Equipment rarity')}</h2><p>${t('两件同名、同稀有度装备可免费合成到下一阶，传说为最高阶。合成不改变形状与耗电。', 'Combine two identical modules of the same rarity for free, up to Legendary. Shape and power draw stay unchanged.')}</p><div class="rarity-comparison">${TIERS.map(level => `<div class="rarity-${level}">${rarityBadge(level, profile.language)}<b>${t('武器伤害', 'Weapon damage')} ×${rarity(level).damage} · ${t('武器价格', 'Weapon price')} ×${rarity(level).weaponPrice}<br>${t('支持 / 功能价格', 'Support / utility price')} ×${rarity(level).price}</b><p>${t('当前商店 / 新战利品概率', 'Current shop / new salvage chance')} ${(odds[level - 1] * 100).toFixed(1)}%</p></div>`).join('')}</div><p>${t('商店与新战利品共用当前概率。高阶装备随远征进度逐步出现：第 2 场可见精良，第 5 场可见史诗，第 9 场可见传说。支持件与功能件按各自效果成长，详情和图鉴显示实际数值。', 'Shop and new salvage share these odds. Higher rarities enter at waves 2 / 5 / 9. Supports and utilities scale their own effects; details and the archive show exact values.')}</p>`, 'rarity-help');
+}
+function renderMergeImpact(uid, shopIndex) {
+    if (!run)
+        return '';
+    const impact = mergeImpact(run, uid, shopIndex);
+    if (!impact)
+        return '';
+    const change = impact.outputChange, format = (n) => Number(n.toFixed(2));
+    return `<div class="merge-impact ${change !== undefined && change < 0 ? 'decrease' : ''}"><strong>${t('当前装配变化', 'Current loadout changes')}</strong><p>${t('武器数量', 'Weapons')} ${impact.beforeWeapons} → ${impact.afterWeapons} · ${t('释放', 'Frees')} ${impact.freedCells} ${t('格', 'cells')} / ${impact.freedPower} ${t('电力', 'power')}</p>${impact.weapon ? `<p>${t('该型号合计基础输出', 'Combined base output of this model')}：${format(impact.beforeOutput)}× → ${format(impact.afterOutput)}×${change === undefined ? '' : `（${change >= 0 ? '+' : ''}${format(change)}%）`}</p><small>${t('以一把普通同型号武器为 1×，仅比较已装备数量与品质；不计配件、护甲、命中和多目标效果。', 'One Common weapon of this model = 1×. Compares equipped quantity and rarity only; excludes supports, armor, hit rate and multi-target effects.')}</small>${change !== undefined && change < 0 ? `<p>${t('两把已装备武器将变为一把，当前基础输出会下降；腾出的武器位和空间可用于新装备。', 'Two equipped weapons become one, reducing base output now. The freed weapon slot and space can hold new gear.')}</p>` : ''}` : ''}</div>`;
 }
 function showMerge(uid, shopIndex) {
     if (!run)
@@ -188,8 +200,15 @@ function showMerge(uid, shopIndex) {
         return;
     }
     const result = preview?.item ?? { ...source, tier: (source.tier + 1) }, price = offer ? economy.offerPrice(offer) : 0;
-    openModal(`<div class="eyebrow">WORKSHOP / COMBINE</div><h2>${t('合成升阶', 'Combine equipment')}</h2><p>${escape(name(MODULE_BY_ID[source.id]))}</p><div class="merge-flow"><div class="rarity-${source.tier}">${canvasIcon(source.id)}${rarityBadge(source.tier, profile.language)}<b>× 2</b></div><span>→</span><div class="rarity-${result.tier}">${canvasIcon(result.id)}${rarityBadge(result.tier, profile.language)}<b>× 1</b></div></div><div class="merge-stats"><p>${moduleStat(source.id, source.tier, profile.language)} → <strong>${moduleStat(result.id, result.tier, profile.language)}</strong></p><p>${escape(equipmentDescription(result, profile.language))}</p></div><p>${buying ? t(`支付 ${price} 碎片购买材料，随即合成；不占备件空间。`, `Buy the material for ${price} scrap and combine immediately; no reserve space needed.`) : t('消耗两件同名同阶装备，合成为一件。无需碎片，优先保留已装备的位置。', 'Consumes two matching modules to create one. No scrap cost; preserves the equipped position when possible.')}</p>${preview?.disconnected?.length ? `<p class="invalid">${t('合成会使部分支持件失去连接；可重新摆放或整理，也可确认后带着失效配件出击。', 'Some supports will disconnect. Reposition, arrange, or confirm deployment with those supports inactive.')}</p>` : ''}<div class="modal-actions"><button class="primary" data-action="${buying ? 'confirm-buy-merge' : 'confirm-merge'}" data-uid="${uid}" ${buying ? `data-index="${shopIndex}"` : ''}>${buying ? t('购买并合成', 'Buy & combine') : t('免费合成', 'Combine for free')} ↑</button><button data-action="close">${t('取消', 'Cancel')}</button></div>`, 'merge');
+    openModal(`<div class="eyebrow">WORKSHOP / COMBINE</div><h2>${t('合成升阶', 'Combine equipment')}</h2><p>${escape(name(MODULE_BY_ID[source.id]))}</p><div class="merge-flow"><div class="rarity-${source.tier}">${canvasIcon(source.id)}${rarityBadge(source.tier, profile.language)}<b>× 2</b></div><span>→</span><div class="rarity-${result.tier}">${canvasIcon(result.id)}${rarityBadge(result.tier, profile.language)}<b>× 1</b></div></div><div class="merge-stats"><p>${moduleStat(source.id, source.tier, profile.language)} → <strong>${moduleStat(result.id, result.tier, profile.language)}</strong></p><p>${escape(equipmentDescription(result, profile.language))}</p></div>${renderMergeImpact(uid, shopIndex)}<p>${buying ? t(`支付 ${price} 碎片购买材料，随即合成；不占备件空间。`, `Buy the material for ${price} scrap and combine immediately; no reserve space needed.`) : t('消耗两件同名同阶装备，合成为一件。无需碎片，优先保留已装备的位置。', 'Consumes two matching modules to create one. No scrap cost; preserves the equipped position when possible.')}</p>${preview?.disconnected?.length ? `<p class="invalid">${t('合成会使部分支持件失去连接；可重新摆放或整理，也可确认后带着失效配件出击。', 'Some supports will disconnect. Reposition, arrange, or confirm deployment with those supports inactive.')}</p>` : ''}<div class="modal-actions"><button class="primary" data-action="${buying ? 'confirm-buy-merge' : 'confirm-merge'}" data-uid="${uid}" ${buying ? `data-index="${shopIndex}"` : ''}>${buying ? t('购买并合成', 'Buy & combine') : t('免费合成', 'Combine for free')} ↑</button><button data-action="close">${t('取消', 'Cancel')}</button></div>`, 'merge');
     drawIcons();
+}
+function renderLastWaveReport() {
+    const wave = run?.journal?.waves.filter(w => w.end).at(-1);
+    if (!wave?.end)
+        return '';
+    const stats = wave.end.stats, threat = mainThreat(stats, profile.language), damage = Object.entries(stats.damageByModule).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]), total = damage.reduce((n, [, value]) => n + value, 0);
+    return `<details class="last-wave-report"><summary>${t('上一场战报', 'Previous wave')} · ${t('第', 'Wave ')}${wave.wave}${t('场', '')}</summary>${damage.length ? `<strong>${t('伤害贡献前三', 'Top damage contributors')}</strong>${damage.slice(0, 3).map(([id, value]) => `<p>${escape(damageSourceName(id, profile.language))} · ${Math.round(value)} · ${(value / total * 100).toFixed(0)}%</p>`).join('')}` : ''}${threat ? `<p>${t('主要威胁', 'Main threat')}：${escape(threat.name)}${threat.attack ? ' · ' + escape(threat.attack) : ''} · ${Math.round(threat.damage)}</p><p>${escape(threat.advice)}</p>` : `<p>${t('本场未受到伤害。', 'No damage taken this wave.')}</p>`}</details>`;
 }
 function renderWaveReport() {
     if (!run?.journal)
@@ -200,9 +219,12 @@ function renderWaveReport() {
 }
 function describe(item) { return escape(equipmentDescription(item, profile.language)); }
 function renderPrep() {
+    const oldGrid = document.querySelector('.compact-workshop .workshop-grid'), oldPanel = document.querySelector('.prep-tab-panel:not([hidden])');
+    const oldScroll = { grid: oldGrid?.scrollTop ?? 0, panel: oldPanel?.scrollTop ?? 0 };
     if (!run)
         return;
-    const key = `${run.seed}:${run.wave}`;
+    const previousKey = lastPrepKey;
+    const key = `${run.seed}:${run.wave}:${run.phase}`;
     if (displayedScreen !== 'prep' || key !== lastPrepKey) {
         workshopTab = 'shop';
         selectedUid = '';
@@ -216,8 +238,15 @@ function renderPrep() {
     audio.stop();
     audio.music('home');
     const r = run, selected = selectedItem();
-    $('prep-screen').innerHTML = workshopMarkup(r, { lang: profile.language, selected, pendingBuy, undo: !!editUndo, tab: workshopTab, icon: canvasIcon, placement: renderPlacementHelp(), event: renderEvent(), tutorial: profile.tutorial });
+    $('prep-screen').innerHTML = workshopMarkup(r, { lang: profile.language, selected, pendingBuy, undo: !!editUndo, tab: workshopTab, icon: canvasIcon, placement: renderPlacementHelp(), event: renderEvent(), tutorial: profile.tutorial, report: renderLastWaveReport() });
     boardOptions = pendingBuy >= 0 ? economy.previewPurchase(r, pendingBuy).placements.sort((a, b) => Number(b.item?.rotation === heldRotation) - Number(a.item?.rotation === heldRotation)) : selected ? economy.smartPlacementOptions(r, selected.uid, heldRotation) : [];
+    if (previousKey === key) {
+        const grid = document.querySelector('.compact-workshop .workshop-grid'), panel = document.querySelector('.prep-tab-panel:not([hidden])');
+        if (grid)
+            grid.scrollTop = oldScroll.grid;
+        if (panel)
+            panel.scrollTop = oldScroll.panel;
+    }
     boardHover = undefined;
     drawIcons($('prep-screen'));
     drawBoard();
@@ -575,7 +604,7 @@ function renderResult() { if (!run)
     return; if (careerState) {
     renderPracticeResult();
     return;
-} showScreen('result'); audio.stop(); audio.music('home'); const r = run, win = r.phase === 'won'; const damage = Object.entries(r.stats.damageByModule).sort((a, b) => b[1] - a[1]).slice(0, 3), max = Math.max(1, ...damage.map(d => d[1])); const taken = Object.entries(r.stats.damageTakenBy).sort((a, b) => b[1] - a[1])[0]; $('result-screen').innerHTML = `<div class="result-wrap"><div class="eyebrow">EXPEDITION / ${win ? 'COMPLETE' : 'SIGNAL LOST'}</div><h1>${win ? t('带着新故事，回来了。', 'Back with a new story.') : t('机体停了，思路还在。', 'The rig fell. The idea lives.')}</h1><p class="result-lead">${win ? t('你夺回了这条回收线路。换一台机体，或者提高警戒等级，再试一套新组合。', 'You reclaimed this salvage route. Try a new chassis, raise the threat level, or build something different.') : t('回收站已接到你的信号。看看这次构筑的表现，下一局再做一次调整。', 'The depot has your signal. Review your build, make one change, and try another expedition.')}</p><div class="result-stats"><div><b>${scoreRun(r).toLocaleString()}</b><span>${t('远征成绩', 'SCORE')}</span></div><div><b>${formatTime(r.elapsed)}</b><span>${t('战斗用时', 'COMBAT TIME')}</span></div><div><b>${r.stats.kills}</b><span>${t('回收敌机', 'ENEMIES RECYCLED')}</span></div><div><b>${r.wave}</b><span>${t('到达场次', 'WAVE REACHED')}</span></div></div><div class="panel-heading"><h2>${t('本局火力贡献', 'Your workhorses')}</h2><span class="serial">DAMAGE / OUTPUT</span></div><div class="contribution">${damage.map(([id, value]) => `<div class="contribution-row"><span>${escape(MODULE_BY_ID[id] ? name(MODULE_BY_ID[id]) : id.startsWith('skill-') ? skillName(id.slice(6), profile.language) : id)}</span><i style="width:${value / max * 100}%"></i><span>${Math.round(value).toLocaleString()}</span></div>`).join('') || `<p class="muted">${t('没有有效伤害记录', 'No damage recorded')}</p>`}</div>${taken ? `<p class="result-lead">${t('主要威胁', 'Main threat')}：${escape(taken[0])} · ${Math.round(taken[1])} ${t('伤害。尝试留出一次冲刺，或增加护盾。', 'damage. Save a dash, or invest in shields.')}</p>` : ''}${renderWaveReport()}${lastUnlocks.length ? `<p class="chip">${t('新机体解锁', 'Chassis unlocked')}：${lastUnlocks.map(id => escape(name(CHASSIS_BY_ID[id]))).join(' / ')}</p>` : ''}<p class="seed-line">SEED / ${escape(r.seed)} · ${r.mode.toUpperCase()} · THREAT ${r.difficulty}</p><div class="result-actions"><button class="primary" data-action="again">${t('再来一局', 'One more run')} ↗</button><button data-action="home">${t('回到回收站', 'Return to depot')}</button><button data-action="copy-seed">${t('复制种子', 'Copy seed')}</button><button data-action="export">${t('导出记录', 'Export log')}</button></div></div>`; }
+} showScreen('result'); audio.stop(); audio.music('home'); const r = run, win = r.phase === 'won'; const damage = Object.entries(r.stats.damageByModule).sort((a, b) => b[1] - a[1]).slice(0, 3), max = Math.max(1, ...damage.map(d => d[1])); const taken = mainThreat(r.stats, profile.language); $('result-screen').innerHTML = `<div class="result-wrap"><div class="eyebrow">EXPEDITION / ${win ? 'COMPLETE' : 'SIGNAL LOST'}</div><h1>${win ? t('带着新故事，回来了。', 'Back with a new story.') : t('机体停了，思路还在。', 'The rig fell. The idea lives.')}</h1><p class="result-lead">${win ? t('你夺回了这条回收线路。换一台机体，或者提高警戒等级，再试一套新组合。', 'You reclaimed this salvage route. Try a new chassis, raise the threat level, or build something different.') : t('回收站已接到你的信号。看看这次构筑的表现，下一局再做一次调整。', 'The depot has your signal. Review your build, make one change, and try another expedition.')}</p><div class="result-stats"><div><b>${scoreRun(r).toLocaleString()}</b><span>${t('远征成绩', 'SCORE')}</span></div><div><b>${formatTime(r.elapsed)}</b><span>${t('战斗用时', 'COMBAT TIME')}</span></div><div><b>${r.stats.kills}</b><span>${t('回收敌机', 'ENEMIES RECYCLED')}</span></div><div><b>${r.wave}</b><span>${t('到达场次', 'WAVE REACHED')}</span></div></div><div class="panel-heading"><h2>${t('本局火力贡献', 'Your workhorses')}</h2><span class="serial">DAMAGE / OUTPUT</span></div><div class="contribution">${damage.map(([id, value]) => `<div class="contribution-row"><span>${escape(damageSourceName(id, profile.language))}</span><i style="width:${value / max * 100}%"></i><span>${Math.round(value).toLocaleString()}</span></div>`).join('') || `<p class="muted">${t('没有有效伤害记录', 'No damage recorded')}</p>`}</div>${taken ? `<p class="result-lead">${t('主要威胁', 'Main threat')}：${escape(taken.name)}${taken.attack ? ' · ' + escape(taken.attack) : ''} · ${Math.round(taken.damage)} ${t('伤害', 'damage')}<br>${escape(taken.advice)}</p>` : ''}${renderWaveReport()}${lastUnlocks.length ? `<p class="chip">${t('新机体解锁', 'Chassis unlocked')}：${lastUnlocks.map(id => escape(name(CHASSIS_BY_ID[id]))).join(' / ')}</p>` : ''}<p class="seed-line">SEED / ${escape(r.seed)} · ${r.mode.toUpperCase()} · THREAT ${r.difficulty}</p><div class="result-actions"><button class="primary" data-action="again">${t('再来一局', 'One more run')} ↗</button><button data-action="home">${t('回到回收站', 'Return to depot')}</button><button data-action="copy-seed">${t('复制种子', 'Copy seed')}</button><button data-action="export">${t('导出记录', 'Export log')}</button></div></div>`; }
 function bossIntentHud(b) {
     const intent = b.bossIntent;
     if (!intent || b.time >= intent.until)
@@ -859,6 +888,19 @@ async function dispatch(button) {
         showRarityHelp();
         return;
     }
+    if (action === 'pending-reward') {
+        pendingBuy = -1;
+        showPending();
+        return;
+    }
+    if (action === 'placement-details') {
+        const item = selectedItem(), feedback = run && item ? supportFeedback(run, item.uid, profile.language) : undefined;
+        if (feedback)
+            openModal(`<h2>${escape(feedback.title)}</h2><p>${escape(feedback.detail)}</p><p>${escape(feedback.benefit)}</p><button data-action="close">${t('返回装配', 'Back to workshop')}</button>`, 'placement-details');
+        else
+            help();
+        return;
+    }
     if (action === 'workshop-tab') {
         workshopTab = id;
         renderPrep();
@@ -1035,6 +1077,9 @@ async function dispatch(button) {
         pendingBuy = -1;
         closeModal();
         renderPrep();
+        const grid = document.querySelector('.compact-workshop .workshop-grid');
+        if (grid)
+            grid.scrollTop = 0;
         return;
     }
     if ((action === 'save-home' || action === 'home') && careerState) {
@@ -1096,6 +1141,14 @@ async function dispatch(button) {
     if (!run)
         return;
     const r = run;
+    if (['preview-buy', 'place-purchase', 'buy', 'preview-buy-merge', 'confirm-buy-merge', 'refresh', 'repair', 'lock', 'sell', 'undo-sale'].includes(action) && !economy.shopAccess(r).ok) {
+        pendingBuy = -1;
+        if (['reward', 'expansion', 'protocol'].includes(r.phase))
+            showPending();
+        else
+            actResult(economy.shopAccess(r));
+        return;
+    }
     if (['refresh', 'buy', 'undo-sale', 'undo-edit', 'event', 'reward', 'protocol', 'expand'].includes(action))
         pendingBuy = -1;
     if (action === 'select') {
@@ -1137,7 +1190,7 @@ async function dispatch(button) {
     }
     if (action === 'buy') {
         const result = economy.buy(r, index);
-        if (!result.ok && r.items.filter(i => i.stored).length >= 3) {
+        if (!result.ok && economy.shopAccess(r).ok && economy.previewPurchase(r, index).result.ok && r.items.filter(i => i.stored).length >= 3) {
             pendingBuy = index;
             pendingOfferId = r.shop[index]?.id ?? '';
             selectedUid = '';

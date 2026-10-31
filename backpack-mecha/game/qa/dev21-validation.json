@@ -1,0 +1,87 @@
+{
+  "buildVersion": "0.2.0-dev.21",
+  "rulesVersion": "0.2.6",
+  "checkedAt": "2026-10-31T06:58:30.158650+00:00",
+  "checks": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 216,
+      "failed": 0
+    },
+    "build": "passed",
+    "bundle": "passed"
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:4204",
+    "isolatedFixtureData": true,
+    "viewports": [
+      [
+        1100,
+        850
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        700
+      ]
+    ],
+    "scenarios": [
+      "pending reward hides stale offers",
+      "all queued rewards precede shop reopening",
+      "ordinary purchase deducts price and marks sold",
+      "buy-and-combine updates tier and support benefit",
+      "two equipped weapons combine and undo",
+      "first connection steps and visible benefit",
+      "previous-wave contribution and localized threat",
+      "loss report with localized boss and attack"
+    ],
+    "smallViewport": {
+      "width": 320,
+      "height": 700,
+      "boardWidth": 210,
+      "boardHeight": 210,
+      "documentScrollWidth": 320
+    },
+    "consoleErrorsOrWarningsObserved": [],
+    "screenshots": [
+      "qa/dev21-merge-preview.jpg",
+      "qa/dev21-mobile-320.jpg",
+      "qa/dev21-result.jpg",
+      "qa/dev21-shop-pending.jpg",
+      "qa/dev21-shop-ready.jpg"
+    ]
+  },
+  "naturalRuns": {
+    "sources": [
+      "qa/dev21-current-bulwark.json",
+      "qa/dev21-current-hive.json",
+      "qa/dev21-current-kestrel.json",
+      "qa/dev21-current-scavenger.json"
+    ],
+    "sourceHashesMatch": true,
+    "runs": 18,
+    "wins": 18,
+    "skillActivations": 451,
+    "resumeComparisons": 216,
+    "equippedNewWeapons": [
+      "W13",
+      "W14",
+      "W15",
+      "W16",
+      "W17",
+      "W18"
+    ],
+    "activeCoreRuns": 12,
+    "anomalies": []
+  },
+  "limitations": [
+    "UI fixtures use synthetic results, not natural victories.",
+    "Machine policies and viewport checks do not establish human win rates or physical-device performance.",
+    "Difficulty 0, normal routes, skipped events; not a full chassis/build matrix.",
+    "No comparable balance improvement claim; no price/drop/damage tuning.",
+    "No push or deployment performed."
+  ]
+}

@@ -1,4 +1,4 @@
-import { MODULE_BY_ID } from "./content.js?v=b24d61249a59";
+import { MODULE_BY_ID } from "./content.js?v=dd56a56e7e0a";
 export const TIERS = [1, 2, 3, 4];
 export const RARITIES = [
     { tier: 1, roman: 'I', name: '普通', en: 'Common', color: '#c1cccf', damage: 1, price: 1, weaponPrice: 1 },
