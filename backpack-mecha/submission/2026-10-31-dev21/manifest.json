@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-31",
+  "buildVersion": "0.2.0-dev.21",
+  "rulesetVersion": "0.2.6",
+  "localCaptureUrl": "http://127.0.0.1:4211/",
+  "publicVersionObserved": "0.2.0-dev.20",
+  "coverTool": "built-in image_gen",
+  "captures": [
+    {
+      "file": "01-home.jpg",
+      "mode": "home",
+      "dimensions": [
+        1280,
+        1195
+      ]
+    },
+    {
+      "file": "02-boss-battle.jpg",
+      "mode": "official-boss-lab",
+      "boss": "压路王",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "difficulty": 0,
+      "note": "Actual official practice gameplay, not natural-run progress"
+    },
+    {
+      "file": "03-workshop.jpg",
+      "mode": "natural-expedition",
+      "seed": "FIRST-LIGHT",
+      "length": "full",
+      "wave": 4,
+      "level": 5,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "difficulty": 0
+    }
+  ],
+  "stateInjection": false,
+  "screenshotEditing": false,
+  "files": [
+    {
+      "name": "00-cover.png",
+      "bytes": 2616859,
+      "sha256": "0e48e3b85a755daff4f6477706a0d45fc0d05a9ef4840c941d94512bae528f63"
+    },
+    {
+      "name": "01-home.jpg",
+      "bytes": 112845,
+      "sha256": "c77015fe68604f6b1e5e3984e786b2f14a6789163e4312d3fa3ac63bf3ce6434"
+    },
+    {
+      "name": "02-boss-battle.jpg",
+      "bytes": 102119,
+      "sha256": "ad3cb57f5a1dfbe927933641990752b9b80965c90b3e07496ae21ca67c8d6bef"
+    },
+    {
+      "name": "03-workshop.jpg",
+      "bytes": 69445,
+      "sha256": "03fc054d7a9c4fb476dc4f7976821a4c00a6b561b98ea4123868d2e35936ed3d"
+    },
+    {
+      "name": "copy-fields.json",
+      "bytes": 1427,
+      "sha256": "0d1b95ae8e95d4054925457a164d0d8c2b072e6dc94cfaab9a78cfd4a67cc383"
+    },
+    {
+      "name": "cover-prompt.txt",
+      "bytes": 2189,
+      "sha256": "c365aa5f326213c63eee236f75429b2acce8c9530e6d2da47507dcf55c8e5b88"
+    },
+    {
+      "name": "submission-info.txt",
+      "bytes": 3877,
+      "sha256": "517c738325f2ac1ecb3c3e8a6801579e9d2abfe636d09defd258949c0033b154"
+    }
+  ]
+}
