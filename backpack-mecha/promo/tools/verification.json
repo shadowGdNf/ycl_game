@@ -1,0 +1,620 @@
+{
+  "duration": 76,
+  "fps": 30,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "hook",
+      "duration": 5,
+      "chassis": "kestrel",
+      "boss": "B2B",
+      "modules": [
+        "W13",
+        "W14",
+        "W17",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "tier": 3,
+      "warm": 4,
+      "title": "把火力，装进背包。",
+      "sub": "自动开火 · 手动走位 · 极限生存",
+      "chapter": "BACKPACK MECHA",
+      "hp": 0.74,
+      "start": 0
+    },
+    {
+      "id": "brand",
+      "duration": 3,
+      "type": "brand",
+      "start": 5
+    },
+    {
+      "id": "assembly",
+      "duration": 10,
+      "type": "assembly",
+      "start": 8
+    },
+    {
+      "id": "electric",
+      "duration": 6,
+      "chassis": "scavenger",
+      "modules": [
+        "W03",
+        "W04",
+        "S01",
+        "S05",
+        "U01",
+        "U02"
+      ],
+      "tier": 3,
+      "warm": 17,
+      "title": "潮湿 × 电弧，连锁清场",
+      "sub": "水压枪 + 电弧线圈 + 导电触点",
+      "chapter": "01 / 背包决定你的火力",
+      "start": 18
+    },
+    {
+      "id": "fire",
+      "duration": 6,
+      "chassis": "bulwark",
+      "modules": [
+        "W05",
+        "W06",
+        "S01",
+        "S06",
+        "U01",
+        "U02"
+      ],
+      "tier": 3,
+      "warm": 16,
+      "title": "燃油 × 烈焰，点燃战场",
+      "sub": "油罐弹射器 + 喷火器 + 燃油催化器",
+      "chapter": "01 / 背包决定你的火力",
+      "color": "#ffad61",
+      "start": 24
+    },
+    {
+      "id": "drone",
+      "duration": 6,
+      "chassis": "hive",
+      "modules": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "tier": 3,
+      "warm": 18,
+      "title": "无人机编队，全面出击",
+      "sub": "无人机巢 + 突击蜂群 + 指令中继",
+      "chapter": "01 / 背包决定你的火力",
+      "start": 30
+    },
+    {
+      "id": "skill-scavenger",
+      "duration": 4,
+      "chassis": "scavenger",
+      "modules": [
+        "W03",
+        "W04",
+        "S01",
+        "S05",
+        "U01",
+        "U02"
+      ],
+      "tier": 2,
+      "warm": 12,
+      "title": "拾荒者 / 磁力回收",
+      "sub": "修复机体，磁吸回收",
+      "chapter": "02 / 四种机体 · 四种专属技能",
+      "skill": true,
+      "color": "#f4ca73",
+      "start": 36
+    },
+    {
+      "id": "skill-bulwark",
+      "duration": 4,
+      "chassis": "bulwark",
+      "modules": [
+        "W08",
+        "W15",
+        "S08",
+        "S01",
+        "U02",
+        "U06"
+      ],
+      "tier": 2,
+      "warm": 12,
+      "title": "堡垒 / 铁壁震波",
+      "sub": "范围震荡，铁壁减伤",
+      "chapter": "02 / 四种机体 · 四种专属技能",
+      "skill": true,
+      "color": "#80c9ff",
+      "start": 40
+    },
+    {
+      "id": "skill-kestrel",
+      "duration": 4,
+      "chassis": "kestrel",
+      "modules": [
+        "W13",
+        "W14",
+        "S01",
+        "S02",
+        "U01",
+        "U02"
+      ],
+      "tier": 2,
+      "warm": 12,
+      "title": "游隼 / 疾风掠影",
+      "sub": "重置冲刺，加速突围",
+      "chapter": "02 / 四种机体 · 四种专属技能",
+      "skill": true,
+      "color": "#b3dfef",
+      "start": 44
+    },
+    {
+      "id": "skill-hive",
+      "duration": 4,
+      "chassis": "hive",
+      "modules": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "tier": 2,
+      "warm": 12,
+      "title": "蜂巢 / 援护蜂群",
+      "sub": "召唤援护，蜂群集火",
+      "chapter": "02 / 四种机体 · 四种专属技能",
+      "skill": true,
+      "color": "#79e4bf",
+      "start": 48
+    },
+    {
+      "id": "boss-roller",
+      "duration": 6,
+      "chassis": "bulwark",
+      "boss": "B1A",
+      "modules": [
+        "W08",
+        "W15",
+        "S08",
+        "S01",
+        "U02",
+        "U06"
+      ],
+      "tier": 2,
+      "warm": 1.5,
+      "title": "迎战「压路王」",
+      "sub": "躲开冲锋，抓住反击窗口",
+      "chapter": "03 / 正面迎战机械巨兽",
+      "color": "#ffad61",
+      "start": 52
+    },
+    {
+      "id": "boss-crab",
+      "duration": 6,
+      "chassis": "kestrel",
+      "boss": "B2A",
+      "modules": [
+        "W13",
+        "W14",
+        "W17",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "tier": 2,
+      "warm": 3,
+      "title": "突破「熔炉蟹」",
+      "sub": "穿越火海，让火力持续倾泻",
+      "chapter": "03 / 正面迎战机械巨兽",
+      "color": "#ffad61",
+      "hp": 0.7,
+      "start": 58
+    },
+    {
+      "id": "boss-carrier",
+      "duration": 6,
+      "chassis": "hive",
+      "boss": "B3B",
+      "modules": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "tier": 3,
+      "warm": 3,
+      "title": "挑战「轨道母舰」",
+      "sub": "多段攻势，考验你的最后一套构筑",
+      "chapter": "03 / 正面迎战机械巨兽",
+      "color": "#ffad61",
+      "hp": 0.48,
+      "start": 64
+    },
+    {
+      "id": "end",
+      "duration": 6,
+      "type": "end",
+      "start": 70
+    }
+  ],
+  "evidence": [
+    {
+      "id": "hook",
+      "loadout": [
+        "W13",
+        "W14",
+        "W17",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W13"
+        }
+      ],
+      "startHp": 80,
+      "startStatus": "playing",
+      "warmup": 4,
+      "initialBossHpFraction": 0.74,
+      "skills": 0,
+      "events": 136,
+      "endHp": 80,
+      "endStatus": "playing",
+      "kills": 0,
+      "remainingBosses": 2
+    },
+    {
+      "id": "electric",
+      "loadout": [
+        "W03",
+        "W04",
+        "S01",
+        "S05",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W03"
+        },
+        {
+          "module": "S05",
+          "weapon": "W04"
+        }
+      ],
+      "startHp": 100,
+      "startStatus": "playing",
+      "warmup": 17,
+      "initialBossHpFraction": 1,
+      "skills": 0,
+      "events": 135,
+      "endHp": 100,
+      "endStatus": "playing",
+      "kills": 22,
+      "remainingBosses": 0
+    },
+    {
+      "id": "fire",
+      "loadout": [
+        "W05",
+        "W06",
+        "S01",
+        "S06",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W05"
+        },
+        {
+          "module": "S06",
+          "weapon": "W05"
+        }
+      ],
+      "startHp": 130,
+      "startStatus": "playing",
+      "warmup": 16,
+      "initialBossHpFraction": 1,
+      "skills": 0,
+      "events": 141,
+      "endHp": 130,
+      "endStatus": "playing",
+      "kills": 24,
+      "remainingBosses": 0
+    },
+    {
+      "id": "drone",
+      "loadout": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S10",
+          "weapon": "W11"
+        },
+        {
+          "module": "S01",
+          "weapon": "W11"
+        }
+      ],
+      "startHp": 90,
+      "startStatus": "playing",
+      "warmup": 18,
+      "initialBossHpFraction": 1,
+      "skills": 0,
+      "events": 102,
+      "endHp": 90,
+      "endStatus": "playing",
+      "kills": 29,
+      "remainingBosses": 0
+    },
+    {
+      "id": "skill-scavenger",
+      "loadout": [
+        "W03",
+        "W04",
+        "S01",
+        "S05",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W03"
+        },
+        {
+          "module": "S05",
+          "weapon": "W04"
+        }
+      ],
+      "startHp": 100,
+      "startStatus": "playing",
+      "warmup": 12,
+      "initialBossHpFraction": 1,
+      "skills": 1,
+      "events": 104,
+      "endHp": 100,
+      "endStatus": "playing",
+      "kills": 13,
+      "remainingBosses": 0
+    },
+    {
+      "id": "skill-bulwark",
+      "loadout": [
+        "W08",
+        "W15",
+        "S08",
+        "S01",
+        "U02",
+        "U06"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S08",
+          "weapon": "W08"
+        },
+        {
+          "module": "S01",
+          "weapon": "W08"
+        }
+      ],
+      "startHp": 130,
+      "startStatus": "playing",
+      "warmup": 12,
+      "initialBossHpFraction": 1,
+      "skills": 1,
+      "events": 51,
+      "endHp": 130,
+      "endStatus": "playing",
+      "kills": 12,
+      "remainingBosses": 0
+    },
+    {
+      "id": "skill-kestrel",
+      "loadout": [
+        "W13",
+        "W14",
+        "S01",
+        "S02",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W13"
+        },
+        {
+          "module": "S02",
+          "weapon": "W13"
+        }
+      ],
+      "startHp": 80,
+      "startStatus": "playing",
+      "warmup": 12,
+      "initialBossHpFraction": 1,
+      "skills": 1,
+      "events": 102,
+      "endHp": 80,
+      "endStatus": "playing",
+      "kills": 13,
+      "remainingBosses": 0
+    },
+    {
+      "id": "skill-hive",
+      "loadout": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S10",
+          "weapon": "W11"
+        },
+        {
+          "module": "S01",
+          "weapon": "W11"
+        }
+      ],
+      "startHp": 90,
+      "startStatus": "playing",
+      "warmup": 12,
+      "initialBossHpFraction": 1,
+      "skills": 1,
+      "events": 114,
+      "endHp": 90,
+      "endStatus": "playing",
+      "kills": 18,
+      "remainingBosses": 0
+    },
+    {
+      "id": "boss-roller",
+      "loadout": [
+        "W08",
+        "W15",
+        "S08",
+        "S01",
+        "U02",
+        "U06"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S08",
+          "weapon": "W08"
+        },
+        {
+          "module": "S01",
+          "weapon": "W08"
+        }
+      ],
+      "startHp": 130,
+      "startStatus": "playing",
+      "warmup": 1.5,
+      "initialBossHpFraction": 1,
+      "skills": 0,
+      "events": 32,
+      "endHp": 130,
+      "endStatus": "playing",
+      "kills": 0,
+      "remainingBosses": 1
+    },
+    {
+      "id": "boss-crab",
+      "loadout": [
+        "W13",
+        "W14",
+        "W17",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S01",
+          "weapon": "W13"
+        }
+      ],
+      "startHp": 80,
+      "startStatus": "playing",
+      "warmup": 3,
+      "initialBossHpFraction": 0.7,
+      "skills": 0,
+      "events": 168,
+      "endHp": 80,
+      "endStatus": "playing",
+      "kills": 0,
+      "remainingBosses": 1
+    },
+    {
+      "id": "boss-carrier",
+      "loadout": [
+        "W11",
+        "W18",
+        "S10",
+        "S01",
+        "U01",
+        "U02"
+      ],
+      "valid": true,
+      "supports": [
+        {
+          "module": "S10",
+          "weapon": "W11"
+        },
+        {
+          "module": "S01",
+          "weapon": "W11"
+        }
+      ],
+      "startHp": 90,
+      "startStatus": "playing",
+      "warmup": 3,
+      "initialBossHpFraction": 0.48,
+      "skills": 0,
+      "events": 109,
+      "endHp": 90,
+      "endStatus": "playing",
+      "kills": 0,
+      "remainingBosses": 3
+    }
+  ],
+  "errors": [],
+  "output": {
+    "file": "背包机甲-宣传片.mp4",
+    "bytes": 21851962,
+    "sha256": "d36d7b08a78ec5335263a8c34355140cc6ddcbccc66f4c58074143e67e0b3dc7",
+    "faststart": true,
+    "decodeCheck": "passed",
+    "video": "H.264 / yuv420p",
+    "audio": "AAC stereo 48kHz",
+    "duration": 76,
+    "resolution": "1280x720",
+    "fps": 30
+  },
+  "production": {
+    "method": "Existing game rules and renderers, staged legal loadouts, fixed-step capture and local edit",
+    "externalMediaUsed": false,
+    "music": "Original local procedural synthesis",
+    "gameVersion": "0.2.0-dev.20",
+    "reference": "https://store.steampowered.com/app/1942280/Brotato/?l=schinese"
+  }
+}
