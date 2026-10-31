@@ -3,6 +3,25 @@ import type {FrameWindow} from './types.ts';
 /** At most one minute at 60 Hz per wave. Exact percentiles describe this window only. */
 export const FRAME_WINDOW_LIMIT=3600;
 
+/** Bound catch-up after a stall. Wall-clock absence must never become combat time. */
+export const MAX_FRAME_SECONDS=3/60;
+
+/** Slow hysteresis prevents resolution changes on one expensive frame or tab return. */
+export class RenderQuality {
+ private slow=0;
+ private fast=0;
+ private level=0;
+ get pixelRatioLimit():number{return [2,1.5,1][this.level];}
+ get simpleEffects():boolean{return this.level>0;}
+ sample(milliseconds:number,intervalMs?:number):void {
+  if(!Number.isFinite(milliseconds)||milliseconds<0)return;
+  this.slow=milliseconds>9||(intervalMs!==undefined&&intervalMs>22&&intervalMs<250)?this.slow+1:Math.max(0,this.slow-1);
+  this.fast=milliseconds<4&&(intervalMs===undefined||intervalMs<18.5)?this.fast+1:0;
+  if(this.slow>=30&&this.level<2){this.level++;this.slow=0;this.fast=0;}
+  else if(this.fast>=300&&this.level>0){this.level--;this.slow=0;this.fast=0;}
+ }
+}
+
 export class ForegroundFrameClock {
  private previous:number|undefined;
  private context:object|undefined;

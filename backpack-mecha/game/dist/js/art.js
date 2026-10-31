@@ -1,4 +1,4 @@
-import { ENEMY_BY_ID, MODULE_BY_ID } from "./content.js?v=92ce38fe5a4a";
+import { ENEMY_BY_ID, MODULE_BY_ID } from "./content.js?v=17e930db7a48";
 const spriteKey = (key) => ENEMY_BY_ID[key]?.sprite ?? String(MODULE_BY_ID[key]?.sprite ?? key);
 const REQUIRED = ['actors', 'modules', 'enemies', 'cargo'];
 export class Art {
@@ -10,6 +10,7 @@ export class Art {
     timeoutMs;
     constructor(timeoutMs = 15000) { this.timeoutMs = timeoutMs; }
     get ready() { return this.manifest !== null && REQUIRED.every(key => this.images.has(key)); }
+    get environmentReady() { return this.images.has('environment'); }
     load(onProgress) {
         if (this.pending)
             return this.pending;
@@ -29,7 +30,7 @@ export class Art {
             this.manifest = await this.retry(async () => {
                 const controller = new AbortController(), timer = setTimeout(() => controller.abort(), this.timeoutMs);
                 try {
-                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=92ce38fe5a4a', import.meta.url), { signal: controller.signal });
+                    const response = await fetch(new URL('../assets/atlas-manifest.json?v=17e930db7a48', import.meta.url), { signal: controller.signal });
                     if (!response.ok)
                         throw new Error(`Atlas manifest failed: ${response.status}`);
                     const data = await response.json();
@@ -70,7 +71,10 @@ export class Art {
                     resolve(img);
             };
             const timer = setTimeout(() => finish(new Error(`Artwork timed out: ${path}`)), this.timeoutMs);
-            img.onload = () => finish();
+            img.onload = () => { if (typeof img.decode === 'function')
+                void img.decode().then(() => finish(), () => finish());
+            else
+                finish(); };
             img.onerror = () => finish(new Error(`Cannot load artwork: ${path}`));
             img.src = new URL(`../assets/${path}`, import.meta.url).href;
         });

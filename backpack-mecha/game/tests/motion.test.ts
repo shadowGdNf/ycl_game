@@ -103,10 +103,14 @@ test('valid legacy battle resumes with absent or invalid presentation metadata w
  }
 });
 
-test('all reachable boss phases render without changing frozen snapshots; pause and reload preserve poses',()=>{
+test('all reachable boss phases render without changing frozen snapshots; pause and reload preserve poses',t=>{
  const freeze=(v:any):any=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
  const c=new Proxy({globalAlpha:1,createRadialGradient:()=>({addColorStop:()=>{}}),measureText:(s:string)=>({width:s.length*7})},{get:(obj,key)=>key in obj?(obj as any)[key]:()=>{}}) as CanvasRenderingContext2D;
  const canvas={getContext:()=>c,getBoundingClientRect:()=>({width:390,height:694}),width:390,height:694} as unknown as HTMLCanvasElement;
+ let surfaces=0;
+ const previousDocument=Object.getOwnPropertyDescriptor(globalThis,'document');
+ Object.defineProperty(globalThis,'document',{configurable:true,value:{createElement:()=>{surfaces++;return {width:0,height:0,getContext:()=>c};}}});
+ t.after(()=>{if(previousDocument)Object.defineProperty(globalThis,'document',previousDocument);else Reflect.deleteProperty(globalThis,'document');});
  const renderer=new Renderer(canvas);
  for(const fixture of fixtures){
   const w=freeze(structuredClone(fixture.world)),before=JSON.stringify(w);
@@ -114,6 +118,7 @@ test('all reachable boss phases render without changing frozen snapshots; pause 
   renderer.draw(w,{lang:'zh',reducedMotion:false,colorAssist:false});renderer.draw(w,{lang:'en',reducedMotion:true,colorAssist:true});
   assert.equal(JSON.stringify(w),before,fixture.id);assert.deepEqual([...motionFrame(w)],a);
  }
+ assert.equal(surfaces,2,'one floor surface and one shared shadow are reused across all battles');
  for(const [id,phases] of [['B1A',2],['B1B',2],['B2A',3],['B2B',2],['B3A',3],['B3B',3]] as const){
   for(let phase=1;phase<=phases;phase++)assert.ok(fixtures.some(f=>f.id.startsWith(`${id}-p${phase}-`)&&f.world.enemies[0].phase===phase));
  }

@@ -114,3 +114,18 @@ dialog.practice-dialog{width:min(1080px,calc(100vw - 28px));max-width:none;paddi
 .practice-dialog .practice-modules{max-height:520px;grid-template-columns:repeat(3,minmax(0,1fr))}.practice-dialog .practice-modules button{min-height:100px}
 .practice-dialog .practice-launch{bottom:-24px;z-index:2;padding:14px 0;background:#1b2c3af5}
 @media(max-width:700px){dialog.practice-dialog{width:calc(100vw - 16px);padding:14px;max-height:calc(100dvh - 16px)}.practice-dialog .practice-layout{grid-template-columns:minmax(0,1fr);gap:16px}.practice-dialog .practice-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.practice-workbench{padding:8px}.practice-dialog .practice-modules{max-height:270px}.practice-dialog .practice-launch{bottom:-14px;gap:10px}.practice-dialog .practice-launch button{flex:1}.practice-dialog .practice-note{font-size:12px}.practice-dialog .chassis-skill{font-size:11px}.practice-workbench .board-meta{font-size:10px}}
+
+/* dev.17: bounded hangar motion; battlefield and hidden pages do no decorative work. */
+.hero-rig{overflow:hidden;isolation:isolate}
+.rig-live{position:absolute;top:8px;left:0;display:flex;align-items:center;gap:8px;color:#8bb6ac;font:9px ui-monospace,monospace;letter-spacing:1.3px;z-index:1}
+.rig-live i{width:5px;height:5px;border-radius:50%;background:#79edc3;animation:hangar-beacon 2.8s ease-in-out infinite}
+.hero-rig:before{border-style:dashed;animation:hangar-orbit 24s linear infinite;pointer-events:none}
+.home-intro h1 em{position:relative}
+.home-intro h1 em:after{content:"";position:absolute;bottom:-7px;left:1%;height:2px;width:26%;background:var(--orange);transform-origin:left;animation:hangar-charge 4s ease-in-out infinite;opacity:.65}
+.page-suspended *,.page-suspended *:before,.page-suspended *:after{animation-play-state:paused!important}
+.reduced-motion *:before,.reduced-motion *:after{animation:none!important}
+@keyframes hangar-beacon{50%{opacity:.35;transform:scale(.75)}}
+@keyframes hangar-orbit{to{transform:rotate(343deg) scaleY(.6)}}
+@keyframes hangar-charge{50%{transform:scaleX(2.5);opacity:.25}}
+@media(prefers-reduced-motion:reduce){.hero-rig:before,.rig-live i,.home-intro h1 em:after{animation:none}}
+@media(max-width:640px){.rig-live{font-size:7px;letter-spacing:.7px;top:14px}.hero-rig canvas{width:76%;margin-left:24%}}

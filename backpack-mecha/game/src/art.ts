@@ -14,6 +14,7 @@ export class Art {
   private timeoutMs:number;
   constructor(timeoutMs=15000){this.timeoutMs=timeoutMs;}
   get ready():boolean{return this.manifest!==null&&REQUIRED.every(key=>this.images.has(key));}
+  get environmentReady():boolean{return this.images.has('environment');}
   load(onProgress?:(progress:ArtProgress)=>void):Promise<void>{
     if(this.pending)return this.pending;
     this.pending=this.fetchAssets(onProgress).finally(()=>{this.pending=null;});
@@ -51,7 +52,7 @@ export class Art {
         if(error){img.src='';reject(error);}else resolve(img);
       };
       const timer=setTimeout(()=>finish(new Error(`Artwork timed out: ${path}`)),this.timeoutMs);
-      img.onload=()=>finish();img.onerror=()=>finish(new Error(`Cannot load artwork: ${path}`));
+      img.onload=()=>{if(typeof img.decode==='function')void img.decode().then(()=>finish(),()=>finish());else finish();};img.onerror=()=>finish(new Error(`Cannot load artwork: ${path}`));
       img.src=new URL(`../assets/${path}`,import.meta.url).href;
     });
   }

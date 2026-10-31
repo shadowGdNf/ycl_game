@@ -389,7 +389,11 @@ export function refreshShop(r:Run):Result {return transaction(r,d=>{const access
 export function toggleLock(r:Run,index:number):Result {return transaction(r,d=>{const access=requireShop(d);if(!access.ok)return access;if(!Number.isInteger(index)||!d.shop[index]?.id)return fail('请选择有效商品','Select an available offer.');const lock=!d.shop[index].locked;for(const o of d.shop)o.locked=false;d.shop[index].locked=lock;return ok();});}
 
 function enterPrep(r:Run):void {
- r.phase='prep';extra(r).spentPrepWave=0;r.refreshes=0;r.route=0;delete r.saleUndo;r.eventResolved=true;delete r.eventId;
+ r.phase='prep';extra(r).spentPrepWave=0;r.refreshes=0;
+ // Boss/intro nodes temporarily use standard rules without erasing the pilot's choice.
+ const remembered=r.preferredRoute??r.route;
+ r.route=r.mode==='prototype'||r.wave===1||WAVES[r.wave-1]?.kind==='boss'?0:remembered;
+ delete r.saleUndo;r.eventResolved=true;delete r.eventId;
  if(r.insuranceUsed){r.items=r.items.filter(i=>i.id!=='U12');repairLinks(r);}
  if(r.mode==='full'&&(r.wave===3||r.wave===7)){
   const events=EVENTS.filter(e=>!r.eventsSeen.includes(e.id)&&(e.id!=='EV03'||act(r)>=2));
@@ -415,7 +419,7 @@ export function newRun(chassis:string,mode:Mode,difficulty:number,seed:string):R
  const r:Run={version:1,mode,seed:seed||'backpack-mecha',chassis,difficulty:mode==='full'?Math.max(0,Math.min(4,Math.floor(difficulty)||0)):0,phase:'prep',wave:1,gold:40,hp:c.hp,shield:c.shield,power:10,maxTier:4,unlockedCorners:[],items:[],shop:[],refreshes:0,shopPity:0,protocols:[],bosses:[],nextUid:1,rng:{shop:hashSeed(`${seed}:shop`),map:hashSeed(`${seed}:map`),event:hashSeed(`${seed}:event`),combat:hashSeed(`${seed}:combat`)},route:0,rewardOptions:[],protocolOptions:[],eventsSeen:[],eventResolved:true,insuranceUsed:false,stats:emptyStats(),elapsed:0,history:[],extra:{spentPrepWave:0}};
  const gun=newItem(r,'W01'),support=newItem(r,'S01');Object.assign(gun,{x:1,y:0,stored:false});Object.assign(support,{x:0,y:1,stored:false,link:gun.uid});r.items=[gun,support];
  for(let a=1;a<=finalWave(r)/4;a++)r.bosses.push(mode==='full'?pick(r,BOSSES.filter(b=>b.act===a),'map').id:`B${a}A`);
- r.growth=freshGrowth();ensureJournal(r,false);recordAction(r,'new-run');
+ r.preferredRoute=0;r.growth=freshGrowth();ensureJournal(r,false);recordAction(r,'new-run');
  return r;
 }
 export function startWave(r:Run):Result {return transaction(r,d=>{
@@ -438,7 +442,7 @@ export function resolveBattle(r:Run,result:BattleResult):Result {return transact
  d.gold+=wave.base+riskGold;log(d,`won:${completed}:${wave.base+s.goldEarned+riskGold}`);
  finishWaveRecord(d,{...result,stats:s},wave.base+s.goldEarned+riskGold);
  for(const key of ['eventBudgetBonus','eventExtraElite','eventRewardGold','eventRewardModule','temporaryShield','eventTargetUid','eventTargetTag'])delete e[key];
- d.shield=Math.min(d.shield,getShieldCapacity(d));d.route=0;
+ d.shield=Math.min(d.shield,getShieldCapacity(d));d.preferredRoute??=d.route;d.route=0;
  if(completed===finalWave(d)){d.phase='won';return ok();}
  if(wave.kind==='boss')d.hp=Math.min(maxHP(d),d.hp+30+(d.protocols.includes('P08')?10:0));else if(d.protocols.includes('P08'))d.hp=Math.min(maxHP(d),d.hp+8);
  d.wave++;delete d.saleUndo;
@@ -468,7 +472,7 @@ export function setRoute(r:Run,route:0|1|2):Result {return transaction(r,d=>{
  if(d.phase!=='prep'||![0,1,2].includes(route))return fail('当前不能更改路线','The route cannot be changed now.');
  if(route!==0&&(d.wave===1||WAVES[d.wave-1]?.kind==='boss'))return fail('此战没有风险合同','This battle has no risk contract.');
  if(route!==0&&(Number(d.extra?.eventBudgetBonus??0)>0||Number(d.extra?.eventExtraElite??0)>0))return fail('事件已附加风险，不能叠加第二个合同','An event already adds risk; contracts cannot stack.');
- d.route=route;log(d,`route:${route}`);return ok();
+ d.route=route;d.preferredRoute=route;log(d,`route:${route}`);return ok();
 });}
 export function resolveEvent(r:Run,choice:number):Result {return transaction(r,d=>{
  if(d.phase!=='prep'||d.mode!=='full'||!d.eventId||d.eventResolved)return fail('当前没有可处理的事件','No event is available now.');

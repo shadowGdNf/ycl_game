@@ -1,0 +1,148 @@
+{
+  "performance": {
+    "scope": "Same browser, same states, alternating draw order, 300 measured frames per version/scene; render CPU only, not device FPS. Adaptive quality not sampled here.",
+    "samples": [
+      {
+        "scenario": "wave2",
+        "canvas": [
+          780,
+          1200
+        ],
+        "enemies": 3,
+        "before": {
+          "samples": 300,
+          "p50Ms": 0.699999988079071,
+          "p95Ms": 1.5,
+          "maxMs": 35.80000001192093
+        },
+        "after": {
+          "samples": 300,
+          "p50Ms": 0.699999988079071,
+          "p95Ms": 1.4000000357627869,
+          "maxMs": 21.5
+        }
+      },
+      {
+        "scenario": "crowded",
+        "canvas": [
+          780,
+          1200
+        ],
+        "enemies": 60,
+        "before": {
+          "samples": 300,
+          "p50Ms": 1.399999976158142,
+          "p95Ms": 1.7000000476837158,
+          "maxMs": 2.300000011920929
+        },
+        "after": {
+          "samples": 300,
+          "p50Ms": 1.300000011920929,
+          "p95Ms": 1.600000023841858,
+          "maxMs": 34.5
+        }
+      }
+    ]
+  },
+  "lifecycle": {
+    "scope": "Synthetic visibilitychange on actual app handlers; not a real mobile background test",
+    "before": {
+      "draws": 234,
+      "heroes": 191,
+      "timer": "00:38"
+    },
+    "hidden": {
+      "draws": 234,
+      "heroes": 191,
+      "timer": "00:38"
+    },
+    "restored": {
+      "draws": 235,
+      "heroes": 191,
+      "timer": "00:38"
+    },
+    "paused": {
+      "draws": 235,
+      "heroes": 191,
+      "timer": "00:38"
+    },
+    "noHiddenDrawing": true,
+    "noPausedRedraw": true,
+    "dialog": "引擎暂歇"
+  },
+  "storage": {
+    "results": [
+      true,
+      true
+    ],
+    "gold": 456,
+    "savedAt": 2,
+    "pass": true
+  },
+  "repeatPerformance": {
+    "scope": "Same browser, same states, alternating draw order, 300 measured frames per version/scene; render CPU only, not device FPS. Adaptive quality not sampled here.",
+    "samples": [
+      {
+        "scenario": "wave2",
+        "canvas": [
+          780,
+          1200
+        ],
+        "enemies": 3,
+        "before": {
+          "samples": 300,
+          "p50Ms": 0.699999988079071,
+          "p95Ms": 1.4000000357627869,
+          "maxMs": 35.89999997615814
+        },
+        "after": {
+          "samples": 300,
+          "p50Ms": 0.699999988079071,
+          "p95Ms": 1.5,
+          "maxMs": 24.900000035762787
+        }
+      },
+      {
+        "scenario": "crowded",
+        "canvas": [
+          780,
+          1200
+        ],
+        "enemies": 60,
+        "before": {
+          "samples": 300,
+          "p50Ms": 1.4000000357627869,
+          "p95Ms": 1.7000000476837158,
+          "maxMs": 2.399999976158142
+        },
+        "after": {
+          "samples": 300,
+          "p50Ms": 1.300000011920929,
+          "p95Ms": 1.699999988079071,
+          "maxMs": 6.5
+        }
+      }
+    ]
+  },
+  "ui": {
+    "saveHomeContinue": "passed",
+    "routeSelection": "freight retained after loading prep save",
+    "mobile": "390x844 home; 320x700 route panel",
+    "reducedMotion": {
+      "before": 297,
+      "after": 298,
+      "settled": 298
+    },
+    "liveCombat": {
+      "draws": 1787,
+      "heroes": 298,
+      "render": {
+        "samples": 1787,
+        "p50Ms": 0.6000000238418579,
+        "p95Ms": 1,
+        "maxMs": 17.200000047683716
+      },
+      "errors": []
+    }
+  }
+}

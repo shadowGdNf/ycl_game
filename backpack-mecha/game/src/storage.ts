@@ -43,6 +43,8 @@ export function sanitizeSave(raw:unknown):SaveEnvelope {
  const r=x.run;
  if(r&&r.version===1&&CHASSIS_BY_ID[r.chassis]&&['prototype','demo','full'].includes(r.mode)&&['prep','battle','reward','protocol','expansion','won','lost'].includes(r.phase)&&Number.isInteger(r.wave)&&r.wave>=1&&r.wave<=(r.mode==='full'?12:r.mode==='demo'?8:4)&&finite(r.gold)&&r.gold>=0&&finite(r.hp)&&finite(r.shield)&&finite(r.elapsed)&&finite(r.nextUid)&&[1,2,3,4].includes(r.maxTier)&&finite(r.power)&&finite(r.refreshes)&&finite(r.shopPity)&&Array.isArray(r.items)&&r.items.length<=20&&r.items.every(v=>v&&typeof v.uid==='string'&&MODULE_BY_ID[v.id]&&[1,2,3,4].includes(v.tier)&&Number.isInteger(v.rotation)&&v.rotation>=0&&v.rotation<=3&&finite(v.x)&&finite(v.y)&&typeof v.stored==='boolean')&&new Set(r.items.map(v=>v.uid)).size===r.items.length&&Array.isArray(r.shop)&&r.shop.length<=4&&r.shop.every(o=>o&&typeof o.id==='string'&&typeof o.locked==='boolean'&&(!o.id||MODULE_BY_ID[o.id])&&(o.tier===undefined||[1,2,3,4].includes(o.tier)))&&r.rng&&['shop','map','event','combat'].every(k=>finite((r.rng as unknown as Record<string,unknown>)[k]))&&strings(r.protocols)&&r.protocols.every(id=>PROTOCOL_BY_ID[id])&&strings(r.rewardOptions)&&r.rewardOptions.every(id=>MODULE_BY_ID[id]&&(r.mode==='full'||(r.mode==='demo'?DEMO_IDS:PROTOTYPE_IDS).includes(id)))&&strings(r.protocolOptions)&&r.protocolOptions.every(id=>PROTOCOL_BY_ID[id])&&(r.phase!=='reward'||r.rewardOptions.length>0)&&(r.phase!=='protocol'||r.protocolOptions.length>0)&&(!r.eventId||!!EVENT_BY_ID[r.eventId])&&typeof r.eventResolved==='boolean'&&strings(r.eventsSeen)&&strings(r.history)&&Array.isArray(r.unlockedCorners)&&r.unlockedCorners.every(v=>[0,1,2,3].includes(v))&&strings(r.bosses)&&r.bosses.length>=(r.mode==='full'?3:r.mode==='demo'?2:1)&&r.bosses.every((id,i)=>BOSS_BY_ID[id]?.act===i+1)&&r.stats&&record(r.stats.damageByModule)&&record(r.stats.damageTakenBy)&&Object.values(r.stats.damageByModule).every(finite)&&Object.values(r.stats.damageTakenBy).every(finite)&&['kills','killedBudget','goldEarned','maxChain','damageTaken'].every(k=>finite((r.stats as unknown as Record<string,unknown>)[k]))){
   fresh.run=structuredClone(r);fresh.run.growth=normalizeGrowth(r.growth);
+  fresh.run.route=[0,1,2].includes(r.route)?r.route:0;
+  fresh.run.preferredRoute=r.preferredRoute===0||r.preferredRoute===1||r.preferredRoute===2?r.preferredRoute:fresh.run.route;
   const journal=sanitizeJournal(r.journal);if(journal)fresh.run.journal=journal;else delete fresh.run.journal;
   if(r.phase==='battle'){
    const b=x.battle?structuredClone(x.battle):null;
@@ -54,5 +56,21 @@ export function sanitizeSave(raw:unknown):SaveEnvelope {
 }
 function openDB():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{if(typeof indexedDB==='undefined'){reject(Error('Storage unavailable'));return;}const request=indexedDB.open(DB,1);request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('saves'))request.result.createObjectStore('saves');};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>reject(Error('Storage blocked'));});}
 export async function loadSave():Promise<SaveEnvelope>{try{const db=await openDB();const raw=await new Promise<unknown>((resolve,reject)=>{const request=db.transaction('saves','readonly').objectStore('saves').get('current');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});db.close();return sanitizeSave(raw);}catch{return sanitizeSave(null);}}
-let queue:Promise<boolean>=Promise.resolve(true);
-export function saveGame(data:SaveEnvelope):Promise<boolean>{const copy=structuredClone(data);queue=queue.then(async()=>{try{const db=await openDB();await new Promise<void>((resolve,reject)=>{const tx=db.transaction('saves','readwrite');tx.objectStore('saves').put(copy,'current');tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);});db.close();return true;}catch{return false;}});return queue;}
+let saveDB:IDBDatabase|null=null,opening:Promise<IDBDatabase>|null=null;
+function writeSave(db:IDBDatabase,data:SaveEnvelope):Promise<boolean>{
+ return new Promise(resolve=>{try{
+  // put takes an immutable structured snapshot synchronously. Do not clone it a second time.
+  // IndexedDB serializes transactions on this store in creation order.
+  const tx=db.transaction('saves','readwrite');tx.objectStore('saves').put(data,'current');
+  tx.oncomplete=()=>resolve(true);tx.onerror=tx.onabort=()=>resolve(false);
+ }catch{saveDB=null;opening=null;resolve(false);}});
+}
+export function saveGame(data:SaveEnvelope):Promise<boolean>{
+ if(saveDB)return writeSave(saveDB,data);
+ try{
+  // The initial async database open still needs an immutable call-time snapshot.
+  const copy=structuredClone(data);
+  opening??=openDB().then(db=>{saveDB=db;db.onversionchange=()=>{db.close();saveDB=null;opening=null;};db.onclose=()=>{saveDB=null;opening=null;};return db;},error=>{opening=null;throw error;});
+  return opening.then(db=>writeSave(db,copy),()=>false);
+ }catch{return Promise.resolve(false);}
+}

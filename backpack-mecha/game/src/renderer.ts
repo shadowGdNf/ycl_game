@@ -8,6 +8,7 @@ import {CHASSIS_BY_ID,MODULE_BY_ID,ENEMY_BY_ID} from './content.ts';
 import {drawCombatEffect,drawProjectile,drawHazardEnergy,effectLife} from './feedback.ts';
 import {locomotion,easeOut,weaponPose,impactOffset} from './visual-motion.ts';
 import {chassisSkill} from './skills.ts';
+import {RenderQuality} from './performance.ts';
 import type {Locomotion} from './visual-motion.ts';
 import type {BattleView,CombatEvent,EnemyView,Lang,Point,WeaponView,ZoneView} from './types.ts';
 
@@ -87,16 +88,25 @@ export class Renderer {
   private deathVisualStart:number|null=null;
   private options:Options={lang:'zh',reducedMotion:false,colorAssist:false};
   private canvas:HTMLCanvasElement;
+  readonly quality=new RenderQuality();
+  private sizeDirty=true;
+  private floorCache:HTMLCanvasElement|null=null;
+  private floorKey='';
+  private shadowCache:HTMLCanvasElement|null=null;
+  private lastBattle:BattleView|null=null;
+  private heroSize:{canvas:HTMLCanvasElement;w:number;h:number;dpr:number}|null=null;
   constructor(canvas:HTMLCanvasElement){
     this.canvas=canvas;
     const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas 2D is unavailable');this.ctx=ctx;
+    if(typeof ResizeObserver==='function')new ResizeObserver(()=>this.invalidateSize()).observe(canvas);
   }
-  load(onProgress?:(progress:ArtProgress)=>void):Promise<void>{return this.art.load(onProgress);}
+  async load(onProgress?:(progress:ArtProgress)=>void):Promise<void>{await this.art.load(onProgress);this.art.prepareEnvironment();}
+  invalidateSize():void{this.sizeDirty=true;this.heroSize=null;}
   private resize():void{
-    const bounds=this.canvas.getBoundingClientRect();
-    this.cssWidth=Math.max(1,bounds.width||this.canvas.width||720);
-    this.cssHeight=Math.max(1,bounds.height||this.canvas.height||720);
-    this.dpr=Math.min(2,globalThis.devicePixelRatio||1);
+    if(this.sizeDirty){const bounds=this.canvas.getBoundingClientRect();
+      this.cssWidth=Math.max(1,bounds.width||this.cssWidth);
+      this.cssHeight=Math.max(1,bounds.height||this.cssHeight);this.sizeDirty=false;}
+    this.dpr=Math.min(this.quality.pixelRatioLimit,globalThis.devicePixelRatio||1);
     const w=Math.round(this.cssWidth*this.dpr),h=Math.round(this.cssHeight*this.dpr);
     if(this.canvas.width!==w||this.canvas.height!==h){this.canvas.width=w;this.canvas.height=h;}
     this.ctx.setTransform(this.dpr,0,0,this.dpr,0,0);this.ctx.imageSmoothingEnabled=true;this.ctx.imageSmoothingQuality='high';
@@ -113,7 +123,7 @@ export class Renderer {
     const vw=this.cssWidth/this.scale,vh=this.cssHeight/this.scale;
     this.camera.x=vw>=state.width?(state.width-vw)/2:clamp(state.player.x-vw/2,0,state.width-vw);
     this.camera.y=vh>=state.height?(state.height-vh)/2:clamp(state.player.y-vh/2,0,state.height-vh);
-    if(state.time<this.lastTime||this.lastTime<0){this.effects=[];this.seenEvents.clear();this.shotTimes.clear();this.lastPlayer=null;this.deathVisualStart=null;this.playerGait=undefined;this.enemyGaits.clear();this.attackBlend.clear();this.movement=0;this.facingBlend=1;}
+    if(state!==this.lastBattle||state.time<this.lastTime||this.lastTime<0){this.effects=[];this.seenEvents.clear();this.shotTimes.clear();this.lastPlayer=null;this.deathVisualStart=null;this.playerGait=undefined;this.enemyGaits.clear();this.attackBlend.clear();this.movement=0;this.facingBlend=1;this.lastTime=state.time;this.lastBattle=state;}
     if(state.status==='lost'&&state.player.hp<=0){if(this.deathVisualStart===null)this.deathVisualStart=performance.now();}else this.deathVisualStart=null;
     const dt=clamp(state.time-this.lastTime,0,.1);this.lastTime=state.time;
     if(this.lastPlayer){
@@ -154,7 +164,7 @@ export class Renderer {
       this.enemy(enemy,state.time,motions.get(enemy.eid)!);
     }
     if(!playerDrawn)this.player(state);
-    for(const bullet of state.bullets)if(visible(bullet,100+bullet.radius))drawProjectile(ctx,bullet,state.time,options.reducedMotion);
+    for(const bullet of state.bullets)if(visible(bullet,100+bullet.radius))drawProjectile(ctx,bullet,state.time,options.reducedMotion||this.quality.simpleEffects);
     this.drawEffects(state.time);
     this.playerFeedback(state);
     // Warning geometry is authoritative and always above friendly effects.
@@ -169,11 +179,17 @@ export class Renderer {
     this.hud(state);
   }
   private floor(state:BattleView):void{
-    const ctx=this.ctx;
+    const key=`${state.act}/${state.width}/${state.height}/${this.art.environmentReady}/`+state.obstacles.map(o=>`${o.x},${o.y},${o.w},${o.h}`).join(';');
+    if(key!==this.floorKey){
+      this.floorCache??=document.createElement('canvas');this.floorCache.width=state.width;this.floorCache.height=state.height;
+      const ctx=this.floorCache.getContext('2d');if(ctx){this.paintFloor(ctx,state);this.floorKey=key;}
+    }
+    if(this.floorCache)this.ctx.drawImage(this.floorCache,0,0);
+  }
+  private paintFloor(ctx:CanvasRenderingContext2D,state:BattleView):void{
     const colors=['#263640','#342e2a','#242f3d'];ctx.fillStyle=colors[(state.act-1)%3];ctx.fillRect(0,0,state.width,state.height);
     const tile=256;
-    const left=Math.max(0,Math.floor(this.camera.x/tile)*tile),top=Math.max(0,Math.floor(this.camera.y/tile)*tile);
-    const right=Math.min(state.width,this.camera.x+this.cssWidth/this.scale+tile),bottom=Math.min(state.height,this.camera.y+this.cssHeight/this.scale+tile);
+    const left=0,top=0,right=state.width,bottom=state.height;
     ctx.save();ctx.globalAlpha=.72;
     for(let y=top;y<bottom;y+=tile)for(let x=left;x<right;x+=tile)this.art.tile(ctx,`floor.${state.act}`,x,y,tile,tile);
     ctx.restore();ctx.fillStyle='rgba(15,28,35,.22)';ctx.fillRect(0,0,state.width,state.height);
@@ -191,12 +207,9 @@ export class Renderer {
     }
   }
   private shadow(x:number,y:number,w:number,h:number,alpha=.28):void{
-    const c=this.ctx;c.save();c.translate(x,y);c.scale(w,h);
-    const fade=c.createRadialGradient(0,0,0,0,0,1);
-    fade.addColorStop(0,`rgba(4,10,15,${alpha})`);
-    fade.addColorStop(.45,`rgba(4,10,15,${alpha*.7})`);
-    fade.addColorStop(1,'rgba(4,10,15,0)');
-    c.fillStyle=fade;c.fillRect(-1,-1,2,2);c.restore();
+    if(!this.shadowCache){const canvas=document.createElement('canvas');canvas.width=96;canvas.height=96;const c=canvas.getContext('2d')!;
+      const fade=c.createRadialGradient(48,48,0,48,48,48);fade.addColorStop(0,'#040a0f');fade.addColorStop(.45,'rgba(4,10,15,.7)');fade.addColorStop(1,'rgba(4,10,15,0)');c.fillStyle=fade;c.fillRect(0,0,96,96);this.shadowCache=canvas;}
+    const c=this.ctx;c.save();c.globalAlpha*=alpha;c.drawImage(this.shadowCache,x-w,y-h,w*2,h*2);c.restore();
   }
   private mech(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,size:number,time:number,dir:number,moving:number,dashing=false,gaitTime=time):void{
     if(!CHASSIS.includes(id))id='scavenger';
@@ -392,7 +405,12 @@ export class Renderer {
     if(this.seenEvents.size>1200)this.seenEvents=new Set(state.events.map(e=>e.id));
   }
   private drawEffects(time:number):void{
-    for(const f of this.effects)drawCombatEffect(this.ctx,f.event,time-f.born,f.life,this.options.reducedMotion,this.options.lang,this.scale,f.label,f.end);
+    const simple=this.options.reducedMotion||this.quality.simpleEffects||this.effects.length>100;
+    for(const f of this.effects){
+      const e=f.event,end=f.end??e.to,pad=Math.max(100,e.radius??0,e.w??0,e.h??0);
+      if(Math.max(e.x,end?.x??e.x)+pad<this.camera.x||Math.min(e.x,end?.x??e.x)-pad>this.camera.x+this.cssWidth/this.scale||Math.max(e.y,end?.y??e.y)+pad<this.camera.y||Math.min(e.y,end?.y??e.y)-pad>this.camera.y+this.cssHeight/this.scale)continue;
+      drawCombatEffect(this.ctx,e,time-f.born,f.life,simple,this.options.lang,this.scale,f.label,end);
+    }
   }
   private screenFeedback(state:BattleView):void{
     const hit=state.events.filter(e=>e.type==='player-hit'&&state.time-e.at>=0&&state.time-e.at<.45).at(-1);if(!hit)return;
@@ -470,5 +488,29 @@ export class Renderer {
     if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
     this.mech(ctx,CHASSIS_BY_ID[chassis]?chassis:'scavenger',w/2,h*.55,Math.min(w,h)*.92,0,direction,0);
+  }
+  /** One shared atlas, 30 Hz while visible; no particle objects or additional asset loads. */
+  hero(canvas:HTMLCanvasElement,chassis:string,time:number,reduced:boolean):void{
+    const c=canvas.getContext('2d');if(!c)return;
+    if(this.heroSize?.canvas!==canvas){const bounds=canvas.getBoundingClientRect();this.heroSize={canvas,w:bounds.width,h:bounds.height,dpr:Math.min(1.5,globalThis.devicePixelRatio||1)};}
+    const {w,h,dpr}=this.heroSize;if(!w||!h)return;
+    if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.imageSmoothingEnabled=true;
+    const t=reduced?0:time,x=w*.5,y=h*.52,size=Math.min(w*.62,h*.7),floor=y+size*.32;
+    c.fillStyle='#080f1680';c.beginPath();c.ellipse(x,floor,size*.44,size*.13,0,0,TAU);c.fill();
+    for(let ring=0;ring<3;ring++){c.strokeStyle=ring===0?'#efaa5866':'#48d1c435';c.lineWidth=ring===0?2:1;c.beginPath();c.ellipse(x,floor,size*(.54+ring*.1),size*(.17+ring*.035),0,0,TAU);c.stroke();}
+    c.save();c.translate(x,floor);c.scale(1,.33);c.strokeStyle='#6de9d3';c.lineWidth=3;c.beginPath();c.arc(0,0,size*.63,t*.55,t*.55+.9);c.stroke();c.restore();
+    const bob=reduced?0:Math.sin(t*1.5)*3;
+    this.mech(c,chassis,x,y+bob,size,t,0,0);
+    for(const side of [-1,1]){
+      const a=side*(.12+Math.sin(t*.8)*.06),wx=x+side*size*.38,wy=y+size*.04+bob;
+      this.art.draw(c,side<0?'W01':'W04',wx,wy,size*.35,size*.26,a,1,side<0);
+      c.fillStyle='#9affdf';c.globalAlpha=reduced?.6:.45+Math.sin(t*3+side)*.25;c.beginPath();c.arc(wx+side*size*.12,wy-4,2.5,0,TAU);c.fill();c.globalAlpha=1;
+    }
+    for(let i=0;i<3;i++){
+      const a=t*.48+i*TAU/3,xx=x+Math.cos(a)*size*.67,yy=floor+Math.sin(a)*size*.21;
+      c.fillStyle='#08141a80';c.beginPath();c.ellipse(xx,yy,12,4,0,0,TAU);c.fill();
+      this.art.draw(c,['S01','W03','U01'][i],xx,yy-22-(reduced?0:Math.sin(t*2+i)*5),25,25,Math.sin(t+i)*.12);
+    }
   }
 }

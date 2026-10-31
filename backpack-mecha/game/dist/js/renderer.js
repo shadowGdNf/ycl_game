@@ -1,11 +1,12 @@
-import { roundRect } from "./canvas.js?v=92ce38fe5a4a";
-import { Art } from "./art.js?v=92ce38fe5a4a";
-import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=92ce38fe5a4a";
-import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=92ce38fe5a4a";
-import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=92ce38fe5a4a";
-import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=92ce38fe5a4a";
-import { locomotion, easeOut, weaponPose, impactOffset } from "./visual-motion.js?v=92ce38fe5a4a";
-import { chassisSkill } from "./skills.js?v=92ce38fe5a4a";
+import { roundRect } from "./canvas.js?v=17e930db7a48";
+import { Art } from "./art.js?v=17e930db7a48";
+import { motionFrame, zoneRole, zoneVisible, chargeContactRadius } from "./motion.js?v=17e930db7a48";
+import { enemyBody, enemyHardware, enemyControl, enemyMotionLabel, zonePath, zoneSymbols } from "./motion-renderer.js?v=17e930db7a48";
+import { CHASSIS_BY_ID, MODULE_BY_ID, ENEMY_BY_ID } from "./content.js?v=17e930db7a48";
+import { drawCombatEffect, drawProjectile, drawHazardEnergy, effectLife } from "./feedback.js?v=17e930db7a48";
+import { locomotion, easeOut, weaponPose, impactOffset } from "./visual-motion.js?v=17e930db7a48";
+import { chassisSkill } from "./skills.js?v=17e930db7a48";
+import { RenderQuality } from "./performance.js?v=17e930db7a48";
 const pose = (lx, ly, la, rx, ry, ra, rise, lean) => ({ left: { x: lx, y: ly, angle: la }, right: { x: rx, y: ry, angle: ra }, rise, lean });
 // Contact, passing, opposite contact, opposite passing. These are runtime poses,
 // not sixteen additional painted frames; each direction has an explicit cycle.
@@ -78,19 +79,32 @@ export class Renderer {
     deathVisualStart = null;
     options = { lang: 'zh', reducedMotion: false, colorAssist: false };
     canvas;
+    quality = new RenderQuality();
+    sizeDirty = true;
+    floorCache = null;
+    floorKey = '';
+    shadowCache = null;
+    lastBattle = null;
+    heroSize = null;
     constructor(canvas) {
         this.canvas = canvas;
         const ctx = canvas.getContext('2d');
         if (!ctx)
             throw new Error('Canvas 2D is unavailable');
         this.ctx = ctx;
+        if (typeof ResizeObserver === 'function')
+            new ResizeObserver(() => this.invalidateSize()).observe(canvas);
     }
-    load(onProgress) { return this.art.load(onProgress); }
+    async load(onProgress) { await this.art.load(onProgress); this.art.prepareEnvironment(); }
+    invalidateSize() { this.sizeDirty = true; this.heroSize = null; }
     resize() {
-        const bounds = this.canvas.getBoundingClientRect();
-        this.cssWidth = Math.max(1, bounds.width || this.canvas.width || 720);
-        this.cssHeight = Math.max(1, bounds.height || this.canvas.height || 720);
-        this.dpr = Math.min(2, globalThis.devicePixelRatio || 1);
+        if (this.sizeDirty) {
+            const bounds = this.canvas.getBoundingClientRect();
+            this.cssWidth = Math.max(1, bounds.width || this.cssWidth);
+            this.cssHeight = Math.max(1, bounds.height || this.cssHeight);
+            this.sizeDirty = false;
+        }
+        this.dpr = Math.min(this.quality.pixelRatioLimit, globalThis.devicePixelRatio || 1);
         const w = Math.round(this.cssWidth * this.dpr), h = Math.round(this.cssHeight * this.dpr);
         if (this.canvas.width !== w || this.canvas.height !== h) {
             this.canvas.width = w;
@@ -114,7 +128,7 @@ export class Renderer {
         const vw = this.cssWidth / this.scale, vh = this.cssHeight / this.scale;
         this.camera.x = vw >= state.width ? (state.width - vw) / 2 : clamp(state.player.x - vw / 2, 0, state.width - vw);
         this.camera.y = vh >= state.height ? (state.height - vh) / 2 : clamp(state.player.y - vh / 2, 0, state.height - vh);
-        if (state.time < this.lastTime || this.lastTime < 0) {
+        if (state !== this.lastBattle || state.time < this.lastTime || this.lastTime < 0) {
             this.effects = [];
             this.seenEvents.clear();
             this.shotTimes.clear();
@@ -125,6 +139,8 @@ export class Renderer {
             this.attackBlend.clear();
             this.movement = 0;
             this.facingBlend = 1;
+            this.lastTime = state.time;
+            this.lastBattle = state;
         }
         if (state.status === 'lost' && state.player.hp <= 0) {
             if (this.deathVisualStart === null)
@@ -222,7 +238,7 @@ export class Renderer {
             this.player(state);
         for (const bullet of state.bullets)
             if (visible(bullet, 100 + bullet.radius))
-                drawProjectile(ctx, bullet, state.time, options.reducedMotion);
+                drawProjectile(ctx, bullet, state.time, options.reducedMotion || this.quality.simpleEffects);
         this.drawEffects(state.time);
         this.playerFeedback(state);
         // Warning geometry is authoritative and always above friendly effects.
@@ -252,13 +268,26 @@ export class Renderer {
         this.hud(state);
     }
     floor(state) {
-        const ctx = this.ctx;
+        const key = `${state.act}/${state.width}/${state.height}/${this.art.environmentReady}/` + state.obstacles.map(o => `${o.x},${o.y},${o.w},${o.h}`).join(';');
+        if (key !== this.floorKey) {
+            this.floorCache ??= document.createElement('canvas');
+            this.floorCache.width = state.width;
+            this.floorCache.height = state.height;
+            const ctx = this.floorCache.getContext('2d');
+            if (ctx) {
+                this.paintFloor(ctx, state);
+                this.floorKey = key;
+            }
+        }
+        if (this.floorCache)
+            this.ctx.drawImage(this.floorCache, 0, 0);
+    }
+    paintFloor(ctx, state) {
         const colors = ['#263640', '#342e2a', '#242f3d'];
         ctx.fillStyle = colors[(state.act - 1) % 3];
         ctx.fillRect(0, 0, state.width, state.height);
         const tile = 256;
-        const left = Math.max(0, Math.floor(this.camera.x / tile) * tile), top = Math.max(0, Math.floor(this.camera.y / tile) * tile);
-        const right = Math.min(state.width, this.camera.x + this.cssWidth / this.scale + tile), bottom = Math.min(state.height, this.camera.y + this.cssHeight / this.scale + tile);
+        const left = 0, top = 0, right = state.width, bottom = state.height;
         ctx.save();
         ctx.globalAlpha = .72;
         for (let y = top; y < bottom; y += tile)
@@ -303,16 +332,23 @@ export class Renderer {
         }
     }
     shadow(x, y, w, h, alpha = .28) {
+        if (!this.shadowCache) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 96;
+            canvas.height = 96;
+            const c = canvas.getContext('2d');
+            const fade = c.createRadialGradient(48, 48, 0, 48, 48, 48);
+            fade.addColorStop(0, '#040a0f');
+            fade.addColorStop(.45, 'rgba(4,10,15,.7)');
+            fade.addColorStop(1, 'rgba(4,10,15,0)');
+            c.fillStyle = fade;
+            c.fillRect(0, 0, 96, 96);
+            this.shadowCache = canvas;
+        }
         const c = this.ctx;
         c.save();
-        c.translate(x, y);
-        c.scale(w, h);
-        const fade = c.createRadialGradient(0, 0, 0, 0, 0, 1);
-        fade.addColorStop(0, `rgba(4,10,15,${alpha})`);
-        fade.addColorStop(.45, `rgba(4,10,15,${alpha * .7})`);
-        fade.addColorStop(1, 'rgba(4,10,15,0)');
-        c.fillStyle = fade;
-        c.fillRect(-1, -1, 2, 2);
+        c.globalAlpha *= alpha;
+        c.drawImage(this.shadowCache, x - w, y - h, w * 2, h * 2);
         c.restore();
     }
     mech(ctx, id, x, y, size, time, dir, moving, dashing = false, gaitTime = time) {
@@ -789,8 +825,13 @@ export class Renderer {
             this.seenEvents = new Set(state.events.map(e => e.id));
     }
     drawEffects(time) {
-        for (const f of this.effects)
-            drawCombatEffect(this.ctx, f.event, time - f.born, f.life, this.options.reducedMotion, this.options.lang, this.scale, f.label, f.end);
+        const simple = this.options.reducedMotion || this.quality.simpleEffects || this.effects.length > 100;
+        for (const f of this.effects) {
+            const e = f.event, end = f.end ?? e.to, pad = Math.max(100, e.radius ?? 0, e.w ?? 0, e.h ?? 0);
+            if (Math.max(e.x, end?.x ?? e.x) + pad < this.camera.x || Math.min(e.x, end?.x ?? e.x) - pad > this.camera.x + this.cssWidth / this.scale || Math.max(e.y, end?.y ?? e.y) + pad < this.camera.y || Math.min(e.y, end?.y ?? e.y) - pad > this.camera.y + this.cssHeight / this.scale)
+                continue;
+            drawCombatEffect(this.ctx, e, time - f.born, f.life, simple, this.options.lang, this.scale, f.label, end);
+        }
     }
     screenFeedback(state) {
         const hit = state.events.filter(e => e.type === 'player-hit' && state.time - e.at >= 0 && state.time - e.at < .45).at(-1);
@@ -973,5 +1014,66 @@ export class Renderer {
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
         this.mech(ctx, CHASSIS_BY_ID[chassis] ? chassis : 'scavenger', w / 2, h * .55, Math.min(w, h) * .92, 0, direction, 0);
+    }
+    /** One shared atlas, 30 Hz while visible; no particle objects or additional asset loads. */
+    hero(canvas, chassis, time, reduced) {
+        const c = canvas.getContext('2d');
+        if (!c)
+            return;
+        if (this.heroSize?.canvas !== canvas) {
+            const bounds = canvas.getBoundingClientRect();
+            this.heroSize = { canvas, w: bounds.width, h: bounds.height, dpr: Math.min(1.5, globalThis.devicePixelRatio || 1) };
+        }
+        const { w, h, dpr } = this.heroSize;
+        if (!w || !h)
+            return;
+        if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
+        }
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, w, h);
+        c.imageSmoothingEnabled = true;
+        const t = reduced ? 0 : time, x = w * .5, y = h * .52, size = Math.min(w * .62, h * .7), floor = y + size * .32;
+        c.fillStyle = '#080f1680';
+        c.beginPath();
+        c.ellipse(x, floor, size * .44, size * .13, 0, 0, TAU);
+        c.fill();
+        for (let ring = 0; ring < 3; ring++) {
+            c.strokeStyle = ring === 0 ? '#efaa5866' : '#48d1c435';
+            c.lineWidth = ring === 0 ? 2 : 1;
+            c.beginPath();
+            c.ellipse(x, floor, size * (.54 + ring * .1), size * (.17 + ring * .035), 0, 0, TAU);
+            c.stroke();
+        }
+        c.save();
+        c.translate(x, floor);
+        c.scale(1, .33);
+        c.strokeStyle = '#6de9d3';
+        c.lineWidth = 3;
+        c.beginPath();
+        c.arc(0, 0, size * .63, t * .55, t * .55 + .9);
+        c.stroke();
+        c.restore();
+        const bob = reduced ? 0 : Math.sin(t * 1.5) * 3;
+        this.mech(c, chassis, x, y + bob, size, t, 0, 0);
+        for (const side of [-1, 1]) {
+            const a = side * (.12 + Math.sin(t * .8) * .06), wx = x + side * size * .38, wy = y + size * .04 + bob;
+            this.art.draw(c, side < 0 ? 'W01' : 'W04', wx, wy, size * .35, size * .26, a, 1, side < 0);
+            c.fillStyle = '#9affdf';
+            c.globalAlpha = reduced ? .6 : .45 + Math.sin(t * 3 + side) * .25;
+            c.beginPath();
+            c.arc(wx + side * size * .12, wy - 4, 2.5, 0, TAU);
+            c.fill();
+            c.globalAlpha = 1;
+        }
+        for (let i = 0; i < 3; i++) {
+            const a = t * .48 + i * TAU / 3, xx = x + Math.cos(a) * size * .67, yy = floor + Math.sin(a) * size * .21;
+            c.fillStyle = '#08141a80';
+            c.beginPath();
+            c.ellipse(xx, yy, 12, 4, 0, 0, TAU);
+            c.fill();
+            this.art.draw(c, ['S01', 'W03', 'U01'][i], xx, yy - 22 - (reduced ? 0 : Math.sin(t * 2 + i) * 5), 25, 25, Math.sin(t + i) * .12);
+        }
     }
 }

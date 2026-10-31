@@ -1,0 +1,46 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>dev.17 流畅度与视觉验收</title>
+<style>body{margin:18px;background:#14242b;color:#dce9dd;font:14px system-ui}button{padding:10px;margin:4px;font:inherit}iframe{display:block;border:1px solid #607b7d;margin:10px auto;background:#14242b}canvas{width:390px;height:600px;display:block;margin:auto}pre{white-space:pre-wrap}h1{font-size:20px}[hidden]{display:none!important}</style>
+<h1>dev.17 · 独立测试存档（4202 端口）</h1>
+<button id="home">首页</button><button id="wave2">第二关实战</button><button id="prep">第二关装配</button><button id="mobile">390×844</button><button id="small">320×700</button><button id="desktop">1100×900</button><button id="lifecycle">后台/恢复自动检查</button><button id="benchmark">前后绘制对照</button><button id="save-test">存档一致性检查</button>
+<iframe id="game" width="1100" height="900" title="游戏验收" src="/game/"></iframe><canvas id="view" hidden></canvas><pre id="report">就绪</pre><pre id="live"></pre>
+<script type="module">
+import {newRun,startWave,setRoute,autoPack} from '/game/js/economy.js';import {createBattle,spawnEnemy,stepBattle} from '/game/js/combat.js';import {freshProfile,saveGame,loadSave} from '/game/js/storage.js';import {Renderer} from '/game/js/renderer.js';
+const frame=document.querySelector('iframe'),canvas=document.querySelector('canvas'),report=document.querySelector('#report'),live=document.querySelector('#live');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms)),summary=v=>{const a=v.toSorted((a,b)=>a-b);return {samples:a.length,p50Ms:a[Math.ceil(a.length*.5)-1],p95Ms:a[Math.ceil(a.length*.95)-1],maxMs:a.at(-1)}};
+for(const [id,w,h] of [['mobile',390,844],['small',320,700],['desktop',1100,900]])document.querySelector('#'+id).onclick=()=>{frame.width=w;frame.height=h;};
+function fixture(){const r=newRun('scavenger','full',0,'DEV17-WAVE2');r.wave=2;r.gold=200;r.power=30;r.unlockedCorners=[0,1,2,3];r.items=['W01','W14','W17'].map((id,i)=>({id,uid:'qa'+i,tier:2,stored:false,x:0,y:0,rotation:0}));autoPack(r);r.shop=['W02','S01','U01','W03'].map(id=>({id,tier:1,locked:false}));return r;}
+async function open(prep){const r=fixture();setRoute(r,1);if(!prep)startWave(r);const b=prep?null:createBattle(r);if(b)b.player.invulnerable=10000;
+const profile=freshProfile();profile.tutorial=true;profile.settings.unlockAll=true;profile.settings.sound=profile.settings.music=false;
+await saveGame({version:1,profile,run:r,battle:b,savedAt:Date.now()});frame.hidden=false;canvas.hidden=true;frame.src='/game/';report.textContent='已装入第二关，点击继续上次远征。';}
+document.querySelector('#wave2').onclick=()=>open(false);document.querySelector('#prep').onclick=()=>open(true);
+document.querySelector('#home').onclick=()=>{frame.hidden=false;canvas.hidden=true;frame.src='/game/';};
+setInterval(()=>{const q=frame.contentWindow?.qa;if(q)live.textContent=JSON.stringify({draws:q.draws,heroes:q.heroes,render:summary(q.frames),errors:q.errors});},1000);
+document.querySelector('#lifecycle').onclick=async()=>{
+ const win=frame.contentWindow,doc=win.document,q=win.qa,reads=()=>({draws:q.draws,heroes:q.heroes,timer:doc.querySelector('.battle-timer strong')?.textContent});
+ const before=reads();Object.defineProperty(doc,'hidden',{configurable:true,value:true});doc.dispatchEvent(new win.Event('visibilitychange'));await sleep(1500);const hidden=reads();
+ delete doc.hidden;doc.dispatchEvent(new win.Event('visibilitychange'));await sleep(300);const restored=reads();await sleep(1000);const paused=reads();
+ report.textContent=JSON.stringify({scope:'Synthetic visibilitychange on actual app handlers; not a real mobile background test',before,hidden,restored,paused,noHiddenDrawing:hidden.draws===before.draws&&hidden.heroes===before.heroes,noPausedRedraw:paused.draws===restored.draws,dialog:doc.querySelector('#modal-content h2')?.textContent},null,2);
+};
+document.querySelector('#save-test').onclick=async()=>{
+ // Do not let a running fixture overwrite this store while checking ordering.
+ frame.src='about:blank';await sleep(100);
+ const r=fixture(),data={version:1,profile:freshProfile(),run:r,battle:null,savedAt:1};
+ r.gold=123;const first=saveGame(data);r.gold=456;const second=saveGame({...data,savedAt:2});r.gold=999;
+ const results=await Promise.all([first,second]),saved=await loadSave();report.textContent=JSON.stringify({results,gold:saved.run.gold,savedAt:saved.savedAt,pass:results.every(Boolean)&&saved.run.gold===456&&saved.savedAt===2});
+};
+document.querySelector('#benchmark').onclick=async()=>{
+ try{frame.hidden=true;frame.src='about:blank';canvas.hidden=false;report.textContent='正在对照同一战斗快照…';
+ const {Renderer:Old}=await import('/baseline/js/renderer.js'),old=new Old(canvas),current=new Renderer(canvas);await old.load();await current.load();
+ const samples=[];
+ for(const scenario of ['wave2','crowded']){
+  const r=fixture(),b=createBattle(r);b.player.invulnerable=10000;
+  if(scenario==='wave2'){for(let i=0;i<2400;i++)stepBattle(b,{x:Math.sin(i/120),y:Math.cos(i/120),dash:false,overload:false});}
+  else {b.encounter.nextSpawn=10000;for(let i=0;i<60;i++){const a=i*Math.PI*2/60,e=spawnEnemy(b,{id:`E${String(i%16+1).padStart(2,'0')}`,x:800+Math.cos(a)*300,y:600+Math.sin(a)*300,elite:false,affix:0,reward:false,cost:0});e.hp=e.maxHp=100000;e.speed=0;e.damage=0;}for(let i=0;i<100;i++)b.drops.push({id:10000+i,x:100+i%10*140,y:100+Math.floor(i/10)*100,value:3});}
+  const times={before:[],after:[]},options={lang:'zh',reducedMotion:false,colorAssist:false};
+  for(let i=0;i<330;i++){await new Promise(requestAnimationFrame);stepBattle(b,{x:Math.sin(i/60)*.4,y:Math.cos(i/60)*.4,dash:false,overload:false});for(const label of i%2?['before','after']:['after','before']){const start=performance.now();(label==='before'?old:current).draw(b,options);if(i>=30)times[label].push(performance.now()-start);}}
+  samples.push({scenario,canvas:[canvas.width,canvas.height],enemies:b.enemies.length,before:summary(times.before),after:summary(times.after)});
+ }
+ report.textContent=JSON.stringify({scope:'Same browser, same states, alternating draw order, 300 measured frames per version/scene; render CPU only, not device FPS. Adaptive quality not sampled here.',samples},null,2);
+ }catch(e){report.textContent=String(e.stack);}
+};
+</script></html>

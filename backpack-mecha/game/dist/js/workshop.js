@@ -1,7 +1,7 @@
-import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=92ce38fe5a4a";
+import { moduleValue, damageScale, TIER_EFFECTS } from "./rarity.js?v=17e930db7a48";
 /** Read-only explanations derived from the same connection and placement checks as play. */
-import { MODULE_BY_ID, label } from "./content.js?v=92ce38fe5a4a";
-import { getCapacity, linkOptions, validateLoadout, activeSupports, inactiveSupports } from "./economy.js?v=92ce38fe5a4a";
+import { MODULE_BY_ID, label } from "./content.js?v=17e930db7a48";
+import { getCapacity, linkOptions, validateLoadout, activeSupports, inactiveSupports } from "./economy.js?v=17e930db7a48";
 const format = (n) => Number(n.toFixed(2)).toString();
 export function supportBenefit(item, lang) {
     const m = MODULE_BY_ID[item.id], v = moduleValue(item.id, item.tier), pct = format(v * 100), en = lang === 'en';

@@ -32,8 +32,8 @@ export class GameAudio {
         void this.ctx.resume();
     }
     catch { } }
-    tone(frequency, length, type = 'sine', volume = .3, slide = 1) { if (!this.ctx || !this.gain)
-        return; const t = this.ctx.currentTime, o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = type; o.frequency.setValueAtTime(frequency, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, frequency * slide), t + length); g.gain.setValueAtTime(.001, t); g.gain.exponentialRampToValueAtTime(Math.max(.002, volume), t + .008); g.gain.exponentialRampToValueAtTime(.001, t + length); o.connect(g); g.connect(this.gain); o.start(t); o.stop(t + length + .02); }
+    tone(frequency, length, type = 'sine', volume = .3, slide = 1) { if (!this.ctx || !this.gain || this.ctx.state !== 'running')
+        return; const t = this.ctx.currentTime, o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = type; o.frequency.setValueAtTime(frequency, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, frequency * slide), t + length); g.gain.setValueAtTime(.001, t); g.gain.exponentialRampToValueAtTime(Math.max(.002, volume), t + .008); g.gain.exponentialRampToValueAtTime(.001, t + length); o.connect(g); g.connect(this.gain); o.onended = () => { o.disconnect(); g.disconnect(); }; o.start(t); o.stop(t + length + .02); }
     play(type, source = '') {
         if (!this.settings.sound || !this.ctx)
             return;

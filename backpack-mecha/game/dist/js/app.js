@@ -1,23 +1,23 @@
-import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=92ce38fe5a4a";
-import { chassisSkill, skillName, skillDescription } from "./skills.js?v=92ce38fe5a4a";
-import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=92ce38fe5a4a";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=92ce38fe5a4a";
-import { workshopMarkup } from "./ui-workshop.js?v=92ce38fe5a4a";
-import { WorkshopRenderer } from "./workshop-renderer.js?v=92ce38fe5a4a";
-import { snapPlacement } from "./placement-input.js?v=92ce38fe5a4a";
-import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=92ce38fe5a4a";
-import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=92ce38fe5a4a";
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=92ce38fe5a4a";
-import * as economy from "./economy.js?v=92ce38fe5a4a";
-import { createBattle, stepBattle, battleResult } from "./combat.js?v=92ce38fe5a4a";
-import { Renderer } from "./renderer.js?v=92ce38fe5a4a";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=92ce38fe5a4a";
-import { GameAudio } from "./audio.js?v=92ce38fe5a4a";
-import { overloadRequested, FocusGesture } from "./input.js?v=92ce38fe5a4a";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=92ce38fe5a4a";
-import { BUILD_VERSION } from "./version.js?v=92ce38fe5a4a";
-import { ForegroundFrameClock } from "./performance.js?v=92ce38fe5a4a";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=92ce38fe5a4a";
+import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=17e930db7a48";
+import { chassisSkill, skillName, skillDescription } from "./skills.js?v=17e930db7a48";
+import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=17e930db7a48";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=17e930db7a48";
+import { workshopMarkup } from "./ui-workshop.js?v=17e930db7a48";
+import { WorkshopRenderer } from "./workshop-renderer.js?v=17e930db7a48";
+import { snapPlacement } from "./placement-input.js?v=17e930db7a48";
+import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=17e930db7a48";
+import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=17e930db7a48";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=17e930db7a48";
+import * as economy from "./economy.js?v=17e930db7a48";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=17e930db7a48";
+import { Renderer } from "./renderer.js?v=17e930db7a48";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=17e930db7a48";
+import { GameAudio } from "./audio.js?v=17e930db7a48";
+import { overloadRequested, FocusGesture } from "./input.js?v=17e930db7a48";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=17e930db7a48";
+import { BUILD_VERSION } from "./version.js?v=17e930db7a48";
+import { ForegroundFrameClock, MAX_FRAME_SECONDS } from "./performance.js?v=17e930db7a48";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=17e930db7a48";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
@@ -33,6 +33,19 @@ let dashQueued = false, overloadQueued = false, skillQueued = false, targetQueue
 let joy = null;
 const focusGesture = new FocusGesture();
 const frameClock = new ForegroundFrameClock();
+let lastSavedBattle = null, lastSavedTime = -1;
+let animationId = 0, battleDirty = true, lastHeroFrame = 0, heroDirty = true, heroVisible = true;
+let heroCanvas = null;
+const heroObserver = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => { heroVisible = entries.some(e => e.isIntersecting); if (heroVisible)
+    heroDirty = true; }) : null;
+function scheduleFrame() { if (!animationId && !document.hidden && !renderFailed)
+    animationId = requestAnimationFrame(frame); }
+function resetFrameTime() { lastFrame = performance.now(); accumulator = 0; frameClock.reset(); battleDirty = true; }
+const hudMarkup = new WeakMap();
+function setHud(element, html) { if (hudMarkup.get(element) !== html) {
+    element.innerHTML = html;
+    hudMarkup.set(element, html);
+} }
 let boardOptions = [];
 let placementArmed = false, boardHover;
 let drag = null;
@@ -43,7 +56,7 @@ const tier = (n) => rarity(n).roman;
 const kind = (k) => k === 'weapon' ? t('武器', 'WEAPON') : k === 'support' ? t('支持', 'SUPPORT') : t('功能', 'UTILITY');
 const stageName = (act) => [t('废料堆场', 'Scrap Yard'), t('熔炼工厂', 'Foundry'), t('轨道货港', 'Orbital Port')][act - 1];
 const formatTime = (n) => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
-function resetControls() { frameClock.reset(); keys.clear(); joy = null; dashQueued = false; overloadQueued = false; skillQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
+function resetControls() { resetFrameTime(); keys.clear(); joy = null; dashQueued = false; overloadQueued = false; skillQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
 function seed() { return 'RIG-' + Math.random().toString(36).slice(2, 8).toUpperCase(); }
 let homeSeed = seed();
 let workshopTab = 'shop', lastPrepKey = '';
@@ -54,12 +67,15 @@ let practiceDraft = null, practiceSelectedUid = '', practiceRotation = 0, practi
 const practiceRenderer = new WorkshopRenderer();
 let practiceOptions = [], practiceHover;
 function toast(message) { $('toast').textContent = message; $('toast').classList.add('show'); window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => $('toast').classList.remove('show'), 3500); }
-function persist() { void saveGame({ version: 1, profile, run: careerState ? careerState.run : run, battle: careerState ? careerState.battle : battle, savedAt: Date.now() }).then(ok => { const warn = $('save-warning'); warn.hidden = ok; if (!ok)
+function persist() { lastSavedBattle = battle; lastSavedTime = battle?.time ?? -1; void saveGame({ version: 1, profile, run: careerState ? careerState.run : run, battle: careerState ? careerState.battle : battle, savedAt: Date.now() }).then(ok => { const warn = $('save-warning'); warn.hidden = ok; if (!ok)
+    lastSavedTime = -1; if (!ok)
     warn.textContent = t('浏览器保存不可用；本次游戏仍可继续。', 'Browser storage unavailable. You can keep playing this session.'); }); }
-function applySettings() { const edition = document.querySelector('.edition'); if (edition)
+function applySettings() { battleDirty = true; heroDirty = true; const edition = document.querySelector('.edition'); if (edition)
     edition.textContent = 'v' + BUILD_VERSION; document.documentElement.lang = profile.language === 'zh' ? 'zh-CN' : 'en'; document.body.classList.toggle('reduced-motion', profile.settings.reducedMotion); document.body.classList.toggle('left-handed', profile.settings.leftHanded); $('codex-button').textContent = t('图鉴', 'Codex'); $('settings-button').textContent = t('设置', 'Settings'); $('language-button').textContent = t('EN', '中文'); $('station-label').textContent = t('回收站 07', 'DEPOT 07'); audio.configure(profile.settings); }
 function showScreen(id) { if (displayedScreen !== id) {
     displayedScreen = id;
+    battleDirty = true;
+    renderer.invalidateSize();
     window.scrollTo(0, 0);
 } for (const key of ['home', 'prep', 'battle', 'result'])
     $(key + '-screen').hidden = key !== id; document.body.classList.toggle('battle-active', id === 'battle'); document.body.classList.toggle('workshop-active', id === 'prep'); }
@@ -84,6 +100,7 @@ async function loadArtwork() {
     try {
         await renderer.load(progress => { assetsLoaded = progress.loaded; updateAssetStatus(); drawIcons(); });
         assetsReady = true;
+        heroDirty = true;
         drawIcons();
         drawBoard();
         drawTrainingBoard();
@@ -103,9 +120,15 @@ function renderHome() {
     audio.music('home');
     applySettings();
     const c = CHASSIS_BY_ID[selectedChassis];
-    $('home-screen').innerHTML = `<div class="home-layout"><div class="home-intro"><div class="eyebrow">FIELD NOTES / 001 <span class="orange">&nbsp; · &nbsp; ${t('废铁也有第二次机会', 'A SECOND LIFE FOR SCRAP')}</span></div><h1>${t('把废铁，<br>装成<em>王牌。</em>', 'Small pack.<br><em>Big firepower.</em>')}</h1><p class="lead">${t('空间有限，组合无限。拼好你的机甲，穿过失控的回收工厂，把每一次失败变成新的打法。', 'Build a better machine from what you find. Fit your weapons, discover a synergy, and take back the runaway factories.')}</p><div class="hero-rig"><canvas id="hero-portrait" width="640" height="480" data-portrait="${c.id}"></canvas><div class="rig-caption"><strong>${escape(name(c))}</strong>${t('模块化回收机体', 'MODULAR SALVAGE RIG')}<br>UNIT / ${String(CHASSIS.indexOf(c) + 1).padStart(2, '0')}</div></div></div><div class="launch-panel"><div class="panel-heading"><h2>${t('选择你的机体', 'Choose your chassis')}</h2><span class="serial">ASSEMBLY / 01</span></div><div class="chassis-list">${CHASSIS.map(ch => `<button class="chassis ${ch.id === c.id ? 'selected' : ''}" data-action="chassis" data-id="${ch.id}" aria-pressed="${ch.id === c.id}" title="${escape(chassisUnlocked(profile, ch.id) ? name(ch) : unlockReason(ch.id))}"><canvas width="192" height="192" data-portrait="${ch.id}"></canvas><span>${escape(name(ch))}</span>${chassisUnlocked(profile, ch.id) ? '' : '<b class="lock-mark">◇</b>'}</button>`).join('')}</div><div class="chassis-description"><strong>${escape(name(c))}</strong><p>${escape(profile.language === 'zh' ? c.trait : c.traitEn)}</p><p class="chassis-skill"><b>Q · ${escape(skillName(c.id, profile.language))}</b><br>${escape(skillDescription(c.id, profile.language))}</p><p class="growth-path">${t('成长方向', 'Growth path')} · ${escape(profile.language === 'zh' ? GROWTH_PATHS[c.id].name : GROWTH_PATHS[c.id].en)}<br>${t('每级', 'Per level')} HP +${GROWTH_PATHS[c.id].hp} · ${t('攻速', 'Atk speed')} +${GROWTH_PATHS[c.id].speed}% · ${t('攻击', 'Attack')} +${GROWTH_PATHS[c.id].attack}%</p><div class="mini-stats"><span>HP ${c.hp}</span><span>${t('护盾', 'SHIELD')} ${c.shield}</span><span>${t('移速', 'SPEED')} ${c.speed}</span></div></div><div class="launch-fields"><label class="field">${t('远征长度', 'EXPEDITION')}<select id="mode-select"><option value="full" ${selectedMode === 'full' ? 'selected' : ''}>${t('三章远征 · 约15分钟', 'Full expedition · ~15 min')}</option><option value="demo" ${selectedMode === 'demo' ? 'selected' : ''}>${t('两章试炼 · 约10分钟', 'Two-act trial · ~10 min')}</option><option value="prototype" ${selectedMode === 'prototype' ? 'selected' : ''}>${t('首章训练 · 约4分钟', 'Act I training · ~4 min')}</option></select></label><label class="field">${t('警戒等级', 'THREAT LEVEL')}<select id="difficulty-select">${Array.from({ length: 5 }, (_, i) => `<option value="${i}" ${i === selectedDifficulty ? 'selected' : ''} ${i > difficultyLimit(profile) || selectedMode !== 'full' && i > 0 ? 'disabled' : ''}>${i === 0 ? t('0 · 标准', '0 · Standard') : i + ' · ' + t('警戒', 'Alert')}${i > difficultyLimit(profile) ? ' ◇' : ''}</option>`).join('')}</select></label><label class="field wide">${t('远征种子 · 可分享相同路线', 'SEED · SHARE THE SAME EXPEDITION')}<input id="seed-input" maxlength="48" value="${escape(homeSeed)}" spellcheck="false"></label></div><button class="primary large" data-action="new-run"><span>${t('启动远征', 'BEGIN EXPEDITION')}</span><span>↗</span></button>${run && !['won', 'lost'].includes(run.phase) ? `<button class="continue" data-action="continue">${t('继续上次远征', 'Continue expedition')} · ${t('第', 'Wave ')}${run.wave}${t('场', '')}</button>` : ''}<p class="milestone">${t('自动攻击 · 手动走位 · 局间拼装 · 随时暂停', 'Auto fire · Manual movement · Build between waves · Pause anytime')}</p></div></div><div class="home-foot"><div><strong>${MODULES.length} ${t('件模块', 'MODULES')}</strong>${t('为每一格找到用途', 'EVERY CELL COUNTS')}</div><div><strong>06 ${t('条构筑路线', 'BUILD FAMILIES')}</strong>${t('在随机中找到组合', 'FIND YOUR SYNERGY')}</div><div><strong>03 ${t('座失控工厂', 'ROGUE FACTORIES')}</strong>${t('六种首领，三场决战', 'SIX BOSSES. THREE SHOWDOWNS.')}</div><div><strong>${String(profile.wins).padStart(2, '0')} ${t('次归来', 'RETURNS')}</strong>${t('带回经验，再次出发', 'REBUILD. RETURN. REPEAT.')}</div></div>`;
+    $('home-screen').innerHTML = `<div class="home-layout"><div class="home-intro"><div class="eyebrow">FIELD NOTES / 001 <span class="orange">&nbsp; · &nbsp; ${t('废铁也有第二次机会', 'A SECOND LIFE FOR SCRAP')}</span></div><h1>${t('把废铁，<br>装成<em>王牌。</em>', 'Small pack.<br><em>Big firepower.</em>')}</h1><p class="lead">${t('空间有限，组合无限。拼好你的机甲，穿过失控的回收工厂，把每一次失败变成新的打法。', 'Build a better machine from what you find. Fit your weapons, discover a synergy, and take back the runaway factories.')}</p><div class="hero-rig"><div class="rig-live"><i></i>${t("机库已上线 · 等待出击", "HANGAR ONLINE · READY TO DEPLOY")}</div><canvas id="hero-portrait" width="640" height="480" aria-label="${escape(name(c))}"></canvas><div class="rig-caption"><strong>${escape(name(c))}</strong>${t('模块化回收机体', 'MODULAR SALVAGE RIG')}<br>UNIT / ${String(CHASSIS.indexOf(c) + 1).padStart(2, '0')}</div></div></div><div class="launch-panel"><div class="panel-heading"><h2>${t('选择你的机体', 'Choose your chassis')}</h2><span class="serial">ASSEMBLY / 01</span></div><div class="chassis-list">${CHASSIS.map(ch => `<button class="chassis ${ch.id === c.id ? 'selected' : ''}" data-action="chassis" data-id="${ch.id}" aria-pressed="${ch.id === c.id}" title="${escape(chassisUnlocked(profile, ch.id) ? name(ch) : unlockReason(ch.id))}"><canvas width="192" height="192" data-portrait="${ch.id}"></canvas><span>${escape(name(ch))}</span>${chassisUnlocked(profile, ch.id) ? '' : '<b class="lock-mark">◇</b>'}</button>`).join('')}</div><div class="chassis-description"><strong>${escape(name(c))}</strong><p>${escape(profile.language === 'zh' ? c.trait : c.traitEn)}</p><p class="chassis-skill"><b>Q · ${escape(skillName(c.id, profile.language))}</b><br>${escape(skillDescription(c.id, profile.language))}</p><p class="growth-path">${t('成长方向', 'Growth path')} · ${escape(profile.language === 'zh' ? GROWTH_PATHS[c.id].name : GROWTH_PATHS[c.id].en)}<br>${t('每级', 'Per level')} HP +${GROWTH_PATHS[c.id].hp} · ${t('攻速', 'Atk speed')} +${GROWTH_PATHS[c.id].speed}% · ${t('攻击', 'Attack')} +${GROWTH_PATHS[c.id].attack}%</p><div class="mini-stats"><span>HP ${c.hp}</span><span>${t('护盾', 'SHIELD')} ${c.shield}</span><span>${t('移速', 'SPEED')} ${c.speed}</span></div></div><div class="launch-fields"><label class="field">${t('远征长度', 'EXPEDITION')}<select id="mode-select"><option value="full" ${selectedMode === 'full' ? 'selected' : ''}>${t('三章远征 · 约15分钟', 'Full expedition · ~15 min')}</option><option value="demo" ${selectedMode === 'demo' ? 'selected' : ''}>${t('两章试炼 · 约10分钟', 'Two-act trial · ~10 min')}</option><option value="prototype" ${selectedMode === 'prototype' ? 'selected' : ''}>${t('首章训练 · 约4分钟', 'Act I training · ~4 min')}</option></select></label><label class="field">${t('警戒等级', 'THREAT LEVEL')}<select id="difficulty-select">${Array.from({ length: 5 }, (_, i) => `<option value="${i}" ${i === selectedDifficulty ? 'selected' : ''} ${i > difficultyLimit(profile) || selectedMode !== 'full' && i > 0 ? 'disabled' : ''}>${i === 0 ? t('0 · 标准', '0 · Standard') : i + ' · ' + t('警戒', 'Alert')}${i > difficultyLimit(profile) ? ' ◇' : ''}</option>`).join('')}</select></label><label class="field wide">${t('远征种子 · 可分享相同路线', 'SEED · SHARE THE SAME EXPEDITION')}<input id="seed-input" maxlength="48" value="${escape(homeSeed)}" spellcheck="false"></label></div><button class="primary large" data-action="new-run"><span>${t('启动远征', 'BEGIN EXPEDITION')}</span><span>↗</span></button>${run && !['won', 'lost'].includes(run.phase) ? `<button class="continue" data-action="continue">${t('继续上次远征', 'Continue expedition')} · ${t('第', 'Wave ')}${run.wave}${t('场', '')}</button>` : ''}<p class="milestone">${t('自动攻击 · 手动走位 · 局间拼装 · 随时暂停', 'Auto fire · Manual movement · Build between waves · Pause anytime')}</p></div></div><div class="home-foot"><div><strong>${MODULES.length} ${t('件模块', 'MODULES')}</strong>${t('为每一格找到用途', 'EVERY CELL COUNTS')}</div><div><strong>06 ${t('条构筑路线', 'BUILD FAMILIES')}</strong>${t('在随机中找到组合', 'FIND YOUR SYNERGY')}</div><div><strong>03 ${t('座失控工厂', 'ROGUE FACTORIES')}</strong>${t('六种首领，三场决战', 'SIX BOSSES. THREE SHOWDOWNS.')}</div><div><strong>${String(profile.wins).padStart(2, '0')} ${t('次归来', 'RETURNS')}</strong>${t('带回经验，再次出发', 'REBUILD. RETURN. REPEAT.')}</div></div>`;
     $('home-screen').querySelector('.launch-fields').insertAdjacentHTML('beforebegin', `<label class="unlock-switch"><span><strong>${t('自由解锁', 'Unlock all')}</strong><small>${t('开放全部机体与 0–4 难度，可随时关闭', 'All chassis and threat levels; switch off anytime')}</small></span><input id="unlock-all" type="checkbox" role="switch" aria-label="${t('解锁全部角色和难度', 'Unlock all chassis and difficulties')}" ${profile.settings.unlockAll ? 'checked' : ''}></label>`);
     $('home-screen').querySelector('.launch-panel').insertAdjacentHTML('beforeend', `<div class="home-entries"><button data-action="catalog"><b>▦</b><span>${t('完整图鉴', 'Full archive')}<small>${t('模块 · 小怪 · 精英 · 首领', 'Modules · Enemies · Elites · Bosses')}</small></span><i>↗</i></button><button data-action="practice"><b>◎</b><span>${t('首领试炼场', 'Boss lab')}<small>${t('自由选配 · 直接挑战', 'Build a loadout · Challenge any boss')}</small></span><i>↗</i></button></div>`);
+    heroObserver?.disconnect();
+    heroCanvas = $('hero-portrait');
+    heroVisible = true;
+    heroDirty = true;
+    heroObserver?.observe(heroCanvas);
+    renderer.invalidateSize();
     drawIcons($('home-screen'));
     updateAssetStatus();
 }
@@ -458,7 +481,7 @@ function closeModal() { if (['reward', 'protocol', 'expansion'].includes(activeD
     audio.resume();
     lastFrame = performance.now();
 } }
-function setPause() { if (!battle || run?.phase !== 'battle')
+function setPause() { if (!battle || run?.phase !== 'battle' || paused && !!activeDialog)
     return; paused = true; resetControls(); audio.suspend(); persist(); openModal(`<div class="eyebrow">SYSTEM / PAUSED</div><h2>${t('引擎暂歇', 'Engines on hold')}</h2><p>${t('战斗与冷却已暂停。当前装配只能在休整时调整。', 'Combat and cooldowns are paused. Equipment can be changed between waves.')}</p><div class="protocol-list">${run.items.filter(i => !i.stored).map(i => `<span class="chip rarity-${i.tier}">${escape(name(MODULE_BY_ID[i.id]))} ${rarityBadge(i.tier, profile.language)}</span>`).join('')}</div><div class="modal-actions"><button class="primary" data-action="resume">${t('继续战斗', 'Resume')}</button><button data-action="save-home">${careerState ? t('退出练习，回到首页', 'Exit practice') : t('保存并回到回收站', 'Save & return to depot')}</button><button data-action="settings">${t('设置', 'Settings')}</button></div>`, 'pause'); }
 function showPending() { if (!run)
     return; deferPending = false; const r = run; if (r.phase === 'reward') {
@@ -561,12 +584,12 @@ function bossIntentHud(b) {
     return `<div class="boss-intent ${recovering ? 'recovering' : ''}"><strong>${recovering ? t('收招 · 反击时机', 'RECOVERY · COUNTER NOW') : '① → ② ' + escape(profile.language === 'zh' ? intent.name : intent.en)}</strong><em>${recovering ? t('保持走位，抓紧输出', 'Keep moving and return fire') : escape(profile.language === 'zh' ? intent.hint : intent.hintEn)}</em></div>`;
 }
 function updateHud() { if (!battle || !run)
-    return; const b = battle, p = b.player, bosses = b.enemies.filter(e => e.kind === 'boss'), boss = bosses[0]; $('battle-hud').innerHTML = `<div class="player-hud"><div class="hud-label"><span>${escape(name(CHASSIS_BY_ID[run.chassis]))} · Lv.${chassisStats(run).growth.level}</span><span>${Math.ceil(p.hp)} / ${p.maxHp}</span></div><div class="health-track"><b style="width:${Math.max(0, p.hp / p.maxHp * 100)}%"></b></div><div class="health-track shield"><b style="width:${p.maxShield ? Math.max(0, p.shield / p.maxShield * 100) : 0}%"></b></div><div class="hud-label"><span>${t('护盾', 'SHIELD')} ${Math.ceil(p.shield)}</span><span class="hud-scrap ${b.events.some(e => e.type === 'pickup' && b.time - e.at < .65) ? 'collecting' : ''}">⬡ ${Number((run.gold + b.stats.goldEarned).toFixed(1))}</span></div></div><div class="battle-timer"><strong>${formatTime(b.bossId ? b.time : Math.max(0, b.duration - b.time))}</strong><small>${escape(stageName(b.act))} / ${String(b.wave).padStart(2, '0')}</small></div>${boss ? `<div class="boss-hud"><span>${escape(name(BOSS_BY_ID[b.bossId]))}</span><div class="health-track"><b style="width:${Math.max(0, boss.hp / boss.maxHp * 100)}%"></b></div><small>${Math.ceil(boss.hp)} / ${boss.maxHp}${b.bossEnraged ? ' · ' + t('狂暴过载中', 'ENRAGED') : b.bossOverloadWarned ? ' · ' + t('即将过载', 'OVERLOAD IMMINENT') : ''}</small>${bossIntentHud(b)}</div>` : ''}`; $('battle-bottom').innerHTML = `<div>${p.overloadTime > 0 ? '<span class="orange">ϟ ' + t('超载中', 'OVERDRIVE') + '</span>' : t('自动攻击已接通', 'AUTO FIRE ONLINE')}</div><div class="weapon-hud">${b.weapons.map(w => `<span class="rarity-${w.tier}">${escape(name(MODULE_BY_ID[w.id]))} ${tier(w.tier)}</span>`).join('')}</div><div class="touch-hint">WASD / ↑↓←→ · ${t('空格冲刺 · E超载 · Q技能 · P暂停', 'SPACE DASH · E OVERDRIVE · Q SKILL · P PAUSE')}</div>`; updateSkillHud(b); const d = $('dash-button'), o = $('overload-button'); d.classList.toggle('cooling', p.dashCooldown > 0); o.classList.toggle('cooling', p.overloadCooldown > 0); d.innerHTML = `<b>${p.dashCooldown > 0 ? p.dashCooldown.toFixed(1) : '↗'}</b><span>${t('冲刺', 'DASH')}</span>`; o.innerHTML = `<b>${p.overloadCooldown > 0 ? Math.ceil(p.overloadCooldown) : 'ϟ'}</b><span>${t('超载', 'BOOST')}</span>`; }
+    return; const b = battle, p = b.player, bosses = b.enemies.filter(e => e.kind === 'boss'), boss = bosses[0]; setHud($('battle-hud'), `<div class="player-hud"><div class="hud-label"><span>${escape(name(CHASSIS_BY_ID[run.chassis]))} · Lv.${chassisStats(run).growth.level}</span><span>${Math.ceil(p.hp)} / ${p.maxHp}</span></div><div class="health-track"><b style="width:${Math.max(0, p.hp / p.maxHp * 100)}%"></b></div><div class="health-track shield"><b style="width:${p.maxShield ? Math.max(0, p.shield / p.maxShield * 100) : 0}%"></b></div><div class="hud-label"><span>${t('护盾', 'SHIELD')} ${Math.ceil(p.shield)}</span><span class="hud-scrap ${b.events.some(e => e.type === 'pickup' && b.time - e.at < .65) ? 'collecting' : ''}">⬡ ${Number((run.gold + b.stats.goldEarned).toFixed(1))}</span></div></div><div class="battle-timer"><strong>${formatTime(b.bossId ? b.time : Math.max(0, b.duration - b.time))}</strong><small>${escape(stageName(b.act))} / ${String(b.wave).padStart(2, '0')}</small></div>${boss ? `<div class="boss-hud"><span>${escape(name(BOSS_BY_ID[b.bossId]))}</span><div class="health-track"><b style="width:${Math.max(0, boss.hp / boss.maxHp * 100)}%"></b></div><small>${Math.ceil(boss.hp)} / ${boss.maxHp}${b.bossEnraged ? ' · ' + t('狂暴过载中', 'ENRAGED') : b.bossOverloadWarned ? ' · ' + t('即将过载', 'OVERLOAD IMMINENT') : ''}</small>${bossIntentHud(b)}</div>` : ''}`); setHud($('battle-bottom'), `<div>${p.overloadTime > 0 ? '<span class="orange">ϟ ' + t('超载中', 'OVERDRIVE') + '</span>' : t('自动攻击已接通', 'AUTO FIRE ONLINE')}</div><div class="weapon-hud">${b.weapons.map(w => `<span class="rarity-${w.tier}">${escape(name(MODULE_BY_ID[w.id]))} ${tier(w.tier)}</span>`).join('')}</div><div class="touch-hint">WASD / ↑↓←→ · ${t('空格冲刺 · E超载 · Q技能 · P暂停', 'SPACE DASH · E OVERDRIVE · Q SKILL · P PAUSE')}</div>`); updateSkillHud(b); const d = $('dash-button'), o = $('overload-button'); d.classList.toggle('cooling', p.dashCooldown > 0); o.classList.toggle('cooling', p.overloadCooldown > 0); setHud(d, `<b>${p.dashCooldown > 0 ? p.dashCooldown.toFixed(1) : '↗'}</b><span>${t('冲刺', 'DASH')}</span>`); setHud(o, `<b>${p.overloadCooldown > 0 ? Math.ceil(p.overloadCooldown) : 'ϟ'}</b><span>${t('超载', 'BOOST')}</span>`); }
 function updateSkillHud(b) {
     const p = b.player, s = chassisSkill(b.chassis), button = $('skill-button'), cooldown = p.skillCooldown ?? 0, active = (p.skillTime ?? 0) > 0;
     button.classList.toggle('cooling', cooldown > 0 && !active);
     button.classList.toggle('active-skill', active);
-    button.innerHTML = `<b>${active ? (p.skillTime ?? 0).toFixed(1) : cooldown > 0 ? Math.ceil(cooldown) : s.icon}</b><span>${escape(skillName(b.chassis, profile.language))}</span>`;
+    setHud(button, `<b>${active ? (p.skillTime ?? 0).toFixed(1) : cooldown > 0 ? Math.ceil(cooldown) : s.icon}</b><span>${escape(skillName(b.chassis, profile.language))}</span>`);
     button.title = `Q · ${skillName(b.chassis, profile.language)} — ${skillDescription(b.chassis, profile.language)}`;
     button.setAttribute('aria-label', `${button.title} ${active ? t('生效中', 'Active') : cooldown > 0 ? t('冷却中', 'Cooling down') : t('就绪', 'Ready')}`);
     button.style.setProperty('--skill-color', s.color);
@@ -1517,26 +1540,48 @@ battleCanvas.addEventListener('pointercancel', releasePointer);
 battleCanvas.addEventListener('lostpointercapture', releasePointer);
 window.addEventListener('orientationchange', () => { resetControls(); if (battle && screen === 'run')
     setPause(); });
-document.addEventListener('visibilitychange', () => { if (document.hidden) {
-    if (battle && screen === 'run')
-        setPause();
+function suspendPage() {
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = 0;
+    }
+    resetControls();
     audio.suspend();
-    persist();
+    document.body.classList.add('page-suspended');
+    if (battle && screen === 'run') {
+        if (!paused)
+            setPause();
+        else if (lastSavedBattle !== battle || lastSavedTime !== battle.time)
+            persist();
+    }
+    else
+        persist();
 }
-else if (!paused)
-    audio.resume(); });
-window.addEventListener('pagehide', () => { resetControls(); if (battle && screen === 'run')
-    setPause();
-else
-    persist(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden)
+    suspendPage();
+else {
+    document.body.classList.remove('page-suspended');
+    resetFrameTime();
+    heroDirty = true;
+    if (!paused)
+        audio.resume();
+    scheduleFrame();
+} });
+window.addEventListener('pagehide', () => { if (!document.hidden)
+    suspendPage(); });
 window.addEventListener('pageshow', e => { if (e.persisted) {
     resetControls();
-    accumulator = 0;
-    lastFrame = performance.now();
-    if (battle && screen === 'run')
+    renderer.invalidateSize();
+    if (battle && screen === 'run' && !paused)
         setPause();
+    document.body.classList.remove('page-suspended');
+    scheduleFrame();
 } });
+window.addEventListener('resize', () => { renderer.invalidateSize(); battleDirty = true; heroDirty = true; });
 function frame(now) {
+    animationId = 0;
+    if (document.hidden)
+        return;
     try {
         advanceFrame(now);
     }
@@ -1559,10 +1604,15 @@ function frame(now) {
 }
 function advanceFrame(now) {
     const rawMs = Math.max(0, now - lastFrame);
-    const dt = Math.min(.1, rawMs / 1000);
+    const dt = Math.min(MAX_FRAME_SECONDS, rawMs / 1000);
     lastFrame = now;
     homeTime += dt;
     const frameMs = frameClock.sample(now, battle && run?.phase === 'battle' && screen === 'run' && !paused && !document.hidden && battle.status === 'playing' ? battle : undefined);
+    if (screen === 'home' && heroCanvas && assetsReady && heroVisible && !activeDialog && (heroDirty || !profile.settings.reducedMotion && now - lastHeroFrame >= 1000 / 30)) {
+        renderer.hero(heroCanvas, selectedChassis, homeTime, profile.settings.reducedMotion);
+        lastHeroFrame = now;
+        heroDirty = false;
+    }
     if (activeDialog === 'practice' && !document.hidden) {
         workshopTime += dt;
         if (now - lastBoardFrame >= 1000 / 30 && practiceRenderer.needsFrame(profile.settings.reducedMotion)) {
@@ -1581,7 +1631,7 @@ function advanceFrame(now) {
         if (!['settings', 'codex', 'help', 'confirm'].includes(activeDialog))
             recordPrepTime(run, rawMs / 1000);
     }
-    if (battle && run?.phase === 'battle' && screen === 'run') {
+    if (battle && run?.phase === 'battle' && screen === 'run' && (!paused || battleDirty)) {
         if (!paused && !document.hidden) {
             const focus = focusGesture.take(now);
             if (focus) {
@@ -1589,9 +1639,9 @@ function advanceFrame(now) {
                 targetMarker = targetQueued;
                 targetUntil = now + 2000;
             }
-            accumulator += dt;
+            accumulator = Math.min(MAX_FRAME_SECONDS, accumulator + dt);
             let steps = 0;
-            while (accumulator >= 1 / 60 && steps < 6 && battle.status === 'playing') {
+            while (accumulator >= 1 / 60 && steps < 3 && battle.status === 'playing') {
                 const input = { x: (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0) + (joy?.dx ?? 0), y: (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0) - (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) + (joy?.dy ?? 0), dash: dashQueued, skill: skillQueued, overload: overloadRequested(overloadQueued, profile.settings.autoOverload, battle.player.overloadCooldown), target: targetQueued };
                 dashQueued = false;
                 overloadQueued = false;
@@ -1612,7 +1662,7 @@ function advanceFrame(now) {
                 const hold = profile.settings.reducedMotion ? .12 : battle.status === 'lost' ? .65 : .35;
                 if (terminalElapsed >= hold) {
                     completeBattle();
-                    requestAnimationFrame(frame);
+                    scheduleFrame();
                     return;
                 }
             }
@@ -1624,6 +1674,9 @@ function advanceFrame(now) {
         const renderStart = performance.now();
         renderer.draw(battle, { lang: profile.language, reducedMotion: profile.settings.reducedMotion, colorAssist: profile.settings.colorAssist, target: now < targetUntil ? targetMarker : undefined });
         const renderMs = performance.now() - renderStart;
+        if (!paused && !battleDirty)
+            renderer.quality.sample(renderMs, frameMs);
+        battleDirty = false;
         if (frameMs !== undefined)
             recordFrame(run, frameMs, renderMs, JSON.stringify({ build: BUILD_VERSION, browser: navigator.userAgent, viewport: [innerWidth, innerHeight], canvas: [battleCanvas.width, battleCanvas.height], dpr: devicePixelRatio, reducedMotion: profile.settings.reducedMotion, colorAssist: profile.settings.colorAssist }));
         if (now - lastHud > 100) {
@@ -1631,7 +1684,7 @@ function advanceFrame(now) {
             lastHud = now;
         }
     }
-    requestAnimationFrame(frame);
+    scheduleFrame();
 }
-async function boot() { const saved = await loadSave(); profile = saved.profile; run = saved.run; battle = saved.battle; selectedChassis = run?.chassis ?? 'scavenger'; selectedMode = run?.mode ?? 'full'; selectedDifficulty = run?.difficulty ?? 0; audio.configure(profile.settings); applySettings(); renderHome(); lastFrame = performance.now(); requestAnimationFrame(frame); void loadArtwork(); }
+async function boot() { const saved = await loadSave(); profile = saved.profile; run = saved.run; battle = saved.battle; selectedChassis = run?.chassis ?? 'scavenger'; selectedMode = run?.mode ?? 'full'; selectedDifficulty = run?.difficulty ?? 0; audio.configure(profile.settings); applySettings(); renderHome(); resetFrameTime(); scheduleFrame(); void loadArtwork(); }
 void boot();

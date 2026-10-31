@@ -1,5 +1,5 @@
-import { roundRect } from "./canvas.js?v=92ce38fe5a4a";
-import { zonePath } from "./motion-renderer.js?v=92ce38fe5a4a";
+import { roundRect } from "./canvas.js?v=17e930db7a48";
+import { zonePath } from "./motion-renderer.js?v=17e930db7a48";
 const TAU = Math.PI * 2;
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const noise = (n) => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); };
@@ -142,6 +142,16 @@ function enemyAttack(c, e, k, reduced) {
 }
 export function drawProjectile(c, b, time, reduced) {
     const angle = Math.atan2(b.vy, b.vx), enemy = b.owner === 'enemy', id = b.weapon ?? '', r = b.radius;
+    if (!enemy && !reduced) {
+        c.save();
+        c.translate(b.x + 3, b.y + 9);
+        c.rotate(angle);
+        c.fillStyle = '#07131b55';
+        c.beginPath();
+        c.ellipse(0, 0, id === 'W10' ? 12 : 8, Math.max(2, r * .65), 0, 0, TAU);
+        c.fill();
+        c.restore();
+    }
     c.save();
     c.translate(b.x, b.y);
     c.rotate(angle);
@@ -155,7 +165,7 @@ export function drawProjectile(c, b, time, reduced) {
     c.lineWidth = id === 'W07' ? 2 : 2.5;
     line(c, -trail * .75, 0, 2, 0);
     c.globalAlpha = 1;
-    if (id === 'W10') {
+    if (id === 'W10' || id === 'W17') {
         c.fillStyle = '#ff963f';
         c.beginPath();
         c.moveTo(-6, -4);
@@ -173,6 +183,10 @@ export function drawProjectile(c, b, time, reduced) {
         c.fill();
         c.fillStyle = '#713b2b';
         c.fillRect(-5, -5, 5, 10);
+        c.fillStyle = '#fff1cb';
+        c.fillRect(-4, -3, 8, 2);
+        c.fillStyle = '#66554a';
+        c.fillRect(-4, 2, 8, 2);
     }
     else if ((id === 'W12' || id === 'W16')) {
         c.fillStyle = '#b5f3ff';
@@ -225,6 +239,16 @@ export function drawProjectile(c, b, time, reduced) {
         c.fillStyle = '#fff9e7';
         circle(c, 4, 0, 3);
         c.fill();
+        if (!reduced) {
+            c.strokeStyle = '#ffd48a';
+            c.lineWidth = 1.3;
+            c.globalAlpha = .65;
+            for (let i = 0; i < 2; i++) {
+                c.beginPath();
+                c.ellipse(-18 - i * 25, 0, 3, 7 + i * 2, 0, 0, TAU);
+                c.stroke();
+            }
+        }
     }
     else {
         c.fillStyle = enemy ? '#ff754f' : b.color;
@@ -239,16 +263,45 @@ export function drawProjectile(c, b, time, reduced) {
 }
 function weaponEffect(c, e, k, reduced) {
     const id = e.source, range = e.radius ?? 110;
+    if (!reduced && (id === 'W14' || id === 'W08' || id === 'W09' || id === 'W15')) {
+        c.save();
+        c.translate(3, 10);
+        c.rotate(e.angle ?? 0);
+        c.strokeStyle = '#07121d';
+        c.globalAlpha = (1 - k) * .32;
+        c.lineWidth = id === 'W14' ? 14 : 8;
+        if (id === 'W14')
+            line(c, 0, 0, range, 0);
+        else {
+            c.beginPath();
+            c.ellipse(0, 0, range * (.6 + .4 * k), range * (.35 + .2 * k), 0, 0, TAU);
+            c.stroke();
+        }
+        c.restore();
+    }
     c.rotate(e.angle ?? 0);
     if (id === 'W04' || id === 'W11' || id === 'W18')
         return;
     if (id === 'W14') {
+        c.strokeStyle = '#8759cc';
+        c.lineWidth = 18 * (1 - k) + 2;
+        line(c, 0, 2, range, 2);
         c.strokeStyle = '#da9fff';
-        c.lineWidth = 12 * (1 - k) + 2;
-        line(c, 0, 0, range, 0);
+        c.lineWidth = 9 * (1 - k) + 2;
+        line(c, 0, -1, range, -1);
         c.strokeStyle = '#fff0ff';
         c.lineWidth = 3;
-        line(c, 0, 0, range, 0);
+        line(c, 0, -2, range, -2);
+        if (!reduced) {
+            c.strokeStyle = '#e2c6ff';
+            c.lineWidth = 1.5;
+            for (let i = 1; i <= 3; i++) {
+                const x = range * (i / 4);
+                c.beginPath();
+                c.ellipse(x, 0, 4, 12 * (1 - k) + 3, 0, 0, TAU);
+                c.stroke();
+            }
+        }
         return;
     }
     if (id === 'W15') {
@@ -257,6 +310,13 @@ function weaponEffect(c, e, k, reduced) {
         c.beginPath();
         c.arc(0, 0, range * (.6 + .4 * k), 0, TAU);
         c.stroke();
+        if (!reduced) {
+            c.strokeStyle = '#ddfff2';
+            c.lineWidth = 1.5;
+            c.beginPath();
+            c.ellipse(0, -9 * (1 - k), range * (.6 + .4 * k), range * (.36 + .24 * k), 0, Math.PI, TAU);
+            c.stroke();
+        }
         return;
     }
     if (id === 'W05') {
@@ -443,6 +503,30 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
         const r = 8 + radius * (1 - (1 - k) ** 3);
         circle(c, 0, 0, r);
         c.stroke();
+        if (!reduced && !shield) {
+            c.save();
+            c.globalAlpha = alpha * .22;
+            c.fillStyle = '#07121d';
+            c.beginPath();
+            c.ellipse(4, 12, r, r * .35, 0, 0, TAU);
+            c.fill();
+            c.strokeStyle = '#ffb257';
+            c.lineWidth = 2;
+            c.globalAlpha = alpha * .65;
+            c.stroke();
+            if (age < .22) {
+                c.globalAlpha = alpha * .8;
+                c.fillStyle = '#ef8738';
+                c.beginPath();
+                c.ellipse(0, -r * .22, r * .43, r * .52, 0, 0, TAU);
+                c.fill();
+                c.fillStyle = '#fff0be';
+                c.beginPath();
+                c.ellipse(-r * .08, -r * .35, r * .24, r * .29, -.3, 0, TAU);
+                c.fill();
+            }
+            c.restore();
+        }
         if (age < .14) {
             c.globalAlpha = alpha * (reduced ? .12 : .28);
             c.fillStyle = shield ? '#a4f7ef' : '#ffc783';
@@ -453,13 +537,17 @@ export function drawCombatEffect(c, e, age, life, reduced, lang, scale, label, e
         c.lineWidth = 2;
         if (!reduced) {
             sparks(c, e.id, k, shield ? 12 : 10, radius * .9);
-            c.fillStyle = shield ? '#8ecbca' : '#53616a';
             for (let i = 0; i < 6; i++) {
-                const a = noise(e.id + i) * TAU, d = k * radius * (.5 + noise(i + e.id * 2));
+                const a = noise(e.id + i) * TAU, d = k * radius * (.5 + noise(i + e.id * 2)), x = Math.cos(a) * d, y = Math.sin(a) * d * .65 + k * k * 22, lift = Math.sin(k * Math.PI) * (18 + i * 3);
                 c.save();
-                c.translate(Math.cos(a) * d, Math.sin(a) * d + k * k * 22);
+                c.fillStyle = '#0b182655';
+                c.fillRect(x - 3, y + 8, 6, 2);
+                c.translate(x, y - lift);
                 c.rotate(a + k * 5);
+                c.fillStyle = shield ? '#8ecbca' : '#53616a';
                 c.fillRect(-3, -2, 5 + i % 3, 4);
+                c.fillStyle = shield ? '#c6ffef' : '#b9c5b6';
+                c.fillRect(-3, -2, 5 + i % 3, 1);
                 c.restore();
             }
         }

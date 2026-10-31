@@ -32,6 +32,7 @@ export interface RunJournal {
  prepSeconds:Record<string,number>;frames:Record<string,FrameRecord>;
 }
 export interface Run {
+ preferredRoute?:0|1|2;
  growth?:ChassisGrowth;
  version:1;mode:Mode;seed:string;chassis:string;difficulty:number;phase:'prep'|'battle'|'reward'|'protocol'|'expansion'|'won'|'lost';wave:number;gold:number;hp:number;shield:number;power:number;maxTier:Tier;unlockedCorners:number[];items:Item[];shop:Offer[];refreshes:number;shopPity:number;protocols:string[];bosses:string[];nextUid:number;rng:{shop:number;map:number;event:number;combat:number};route:0|1|2;rewardOptions:string[];protocolOptions:string[];eventsSeen:string[];eventId?:string;eventResolved:boolean;insuranceUsed:boolean;stats:CombatStats;elapsed:number;history:string[];saleUndo?:string;extra?:Record<string,number|string|boolean>;journal?:RunJournal;
 }

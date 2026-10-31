@@ -1,9 +1,9 @@
-import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=92ce38fe5a4a";
-import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=92ce38fe5a4a";
-import { createEncounter } from "./encounters.js?v=92ce38fe5a4a";
-import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=92ce38fe5a4a";
-import { hashSeed, nextRandom } from "./random.js?v=92ce38fe5a4a";
-import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=92ce38fe5a4a";
+import { moduleValue, equipmentPrice, offerTier, validTier, rollShopTier } from "./rarity.js?v=17e930db7a48";
+import { BOSSES, CHASSIS, CHASSIS_BY_ID, DEMO_IDS, EVENTS, MODULES, MODULE_BY_ID, PROTOCOLS, PROTOTYPE_IDS, WAVES } from "./content.js?v=17e930db7a48";
+import { createEncounter } from "./encounters.js?v=17e930db7a48";
+import { waveScrapLimit, chassisStats, awardExperience, freshGrowth } from "./progression.js?v=17e930db7a48";
+import { hashSeed, nextRandom } from "./random.js?v=17e930db7a48";
+import { ensureJournal, recordAction, beginWaveRecord, finishWaveRecord, preserveJournal } from "./journal.js?v=17e930db7a48";
 const CORNERS = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 0, y: 4 }, { x: 4, y: 4 }];
 const ok = () => ({ ok: true });
 const fail = (reason, reasonEn) => ({ ok: false, reason, reasonEn });
@@ -740,7 +740,9 @@ function enterPrep(r) {
     r.phase = 'prep';
     extra(r).spentPrepWave = 0;
     r.refreshes = 0;
-    r.route = 0;
+    // Boss/intro nodes temporarily use standard rules without erasing the pilot's choice.
+    const remembered = r.preferredRoute ?? r.route;
+    r.route = r.mode === 'prototype' || r.wave === 1 || WAVES[r.wave - 1]?.kind === 'boss' ? 0 : remembered;
     delete r.saleUndo;
     r.eventResolved = true;
     delete r.eventId;
@@ -798,6 +800,7 @@ export function newRun(chassis, mode, difficulty, seed) {
     r.items = [gun, support];
     for (let a = 1; a <= finalWave(r) / 4; a++)
         r.bosses.push(mode === 'full' ? pick(r, BOSSES.filter(b => b.act === a), 'map').id : `B${a}A`);
+    r.preferredRoute = 0;
     r.growth = freshGrowth();
     ensureJournal(r, false);
     recordAction(r, 'new-run');
@@ -865,6 +868,7 @@ export function resolveBattle(r, result) {
         for (const key of ['eventBudgetBonus', 'eventExtraElite', 'eventRewardGold', 'eventRewardModule', 'temporaryShield', 'eventTargetUid', 'eventTargetTag'])
             delete e[key];
         d.shield = Math.min(d.shield, getShieldCapacity(d));
+        d.preferredRoute ??= d.route;
         d.route = 0;
         if (completed === finalWave(d)) {
             d.phase = 'won';
@@ -974,6 +978,7 @@ export function setRoute(r, route) {
         if (route !== 0 && (Number(d.extra?.eventBudgetBonus ?? 0) > 0 || Number(d.extra?.eventExtraElite ?? 0) > 0))
             return fail('事件已附加风险，不能叠加第二个合同', 'An event already adds risk; contracts cannot stack.');
         d.route = route;
+        d.preferredRoute = route;
         log(d, `route:${route}`);
         return ok();
     });
