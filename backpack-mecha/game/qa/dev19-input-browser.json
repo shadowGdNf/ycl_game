@@ -1,0 +1,65 @@
+{
+  "version": "0.2.0-dev.19",
+  "checkedAt": "2026-10-31T06:03:51.514Z",
+  "checks": [
+    {
+      "name": "mouse reverses on both axes before crossing the press point; no joystick; release stops",
+      "passed": true,
+      "start": {
+        "x": 800,
+        "y": 650,
+        "time": 0.016666666666666666,
+        "target": null,
+        "joystick": "none"
+      },
+      "right": {
+        "x": 838.5,
+        "y": 650,
+        "time": 0.21666666666666665,
+        "target": null,
+        "joystick": "none"
+      },
+      "left": {
+        "x": 800,
+        "y": 650,
+        "time": 0.39999999999999997,
+        "target": null,
+        "joystick": "none"
+      },
+      "down": {
+        "x": 800,
+        "y": 688.5,
+        "time": 0.5833333333333335,
+        "target": null,
+        "joystick": "none"
+      },
+      "up": {
+        "x": 800,
+        "y": 650,
+        "time": 0.7666666666666674,
+        "target": null,
+        "joystick": "none"
+      }
+    },
+    {
+      "name": "right-click focus and keyboard movement remain available",
+      "passed": true
+    },
+    {
+      "name": "pause clears held mouse movement",
+      "passed": true
+    },
+    {
+      "name": "touch default: visible anchored analog stick, center stops, reverse past center, second-finger focus, release stops",
+      "passed": true,
+      "analogSpeed": 105
+    },
+    {
+      "name": "touch left-handed: visible anchored analog stick, center stops, reverse past center, second-finger focus, release stops",
+      "passed": true,
+      "analogSpeed": 105
+    }
+  ],
+  "errors": [],
+  "note": "Desktop Chromium and emulated mobile touch input; not a physical-phone performance test."
+}

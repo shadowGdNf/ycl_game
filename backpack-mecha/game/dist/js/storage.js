@@ -1,7 +1,7 @@
-import { normalizeGrowth, chassisStats } from "./progression.js?v=17e930db7a48";
-import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=17e930db7a48";
-import { createBattle } from "./combat.js?v=17e930db7a48";
-import { sanitizeJournal } from "./journal.js?v=17e930db7a48";
+import { normalizeGrowth, chassisStats } from "./progression.js?v=b24d61249a59";
+import { CHASSIS_BY_ID, MODULE_BY_ID, PROTOCOL_BY_ID, BOSS_BY_ID, EVENT_BY_ID, DEMO_IDS, PROTOTYPE_IDS } from "./content.js?v=b24d61249a59";
+import { createBattle } from "./combat.js?v=b24d61249a59";
+import { sanitizeJournal } from "./journal.js?v=b24d61249a59";
 const DB = 'backpack-mecha-v1';
 const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const record = (v) => !!v && typeof v === 'object' && !Array.isArray(v);

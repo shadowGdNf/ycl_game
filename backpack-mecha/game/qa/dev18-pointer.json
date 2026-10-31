@@ -1,0 +1,51 @@
+{
+  "method": "Native browser mouse drags and right click; positions read from development-only renderer overlay.",
+  "before": {
+    "x": 800,
+    "y": 650,
+    "time": 5.433333333333319,
+    "target": null,
+    "joystick": "none"
+  },
+  "rightDrag": {
+    "x": 837.0833333333331,
+    "y": 650,
+    "time": 5.966666666666651,
+    "target": null,
+    "joystick": "none"
+  },
+  "afterRelease": {
+    "x": 837.0833333333331,
+    "y": 650,
+    "time": 11.350000000000144,
+    "target": null,
+    "joystick": "none"
+  },
+  "rightClick": {
+    "x": 837.0833333333331,
+    "y": 650,
+    "time": 11.650000000000158,
+    "target": {
+      "x": 1097.083333333333,
+      "y": 610
+    },
+    "joystick": "none"
+  },
+  "upDrag": {
+    "x": 837.0833333333331,
+    "y": 626.3333333333333,
+    "time": 12.016666666666843,
+    "target": {
+      "x": 1097.083333333333,
+      "y": 610
+    },
+    "joystick": "none"
+  },
+  "stopped": {
+    "x": 837.0833333333331,
+    "y": 626.3333333333333,
+    "time": 38.56666666666576,
+    "target": null,
+    "joystick": "none"
+  }
+}

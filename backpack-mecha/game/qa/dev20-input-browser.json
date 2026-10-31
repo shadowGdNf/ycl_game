@@ -1,0 +1,137 @@
+{
+  "version": "0.2.0-dev.20",
+  "checkedAt": "2026-10-31T06:08:39.670Z",
+  "checks": [
+    {
+      "name": "press without dragging moves toward cursor; direction uses player position; center and release stop; no joystick",
+      "passed": true,
+      "start": {
+        "x": 800,
+        "y": 650,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.016666666666666666,
+        "target": null,
+        "joystick": "none"
+      },
+      "right": {
+        "x": 835,
+        "y": 650,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.19999999999999998,
+        "target": null,
+        "joystick": "none"
+      },
+      "stillRight": {
+        "x": 873.5,
+        "y": 650,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.3833333333333333,
+        "target": null,
+        "joystick": "none"
+      },
+      "left": {
+        "x": 835,
+        "y": 650,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.5666666666666668,
+        "target": null,
+        "joystick": "none"
+      },
+      "up": {
+        "x": 835,
+        "y": 611.5,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.7500000000000007,
+        "target": null,
+        "joystick": "none"
+      },
+      "down": {
+        "x": 835,
+        "y": 650,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 0.9333333333333346,
+        "target": null,
+        "joystick": "none"
+      },
+      "diagonal": {
+        "x": 862.2236110756817,
+        "y": 622.7763889243183,
+        "screenX": 599.9999999999915,
+        "screenY": 449.99999999999363,
+        "time": 1.1166666666666676,
+        "target": null,
+        "joystick": "none"
+      }
+    },
+    {
+      "name": "right-click focus and keyboard movement remain available",
+      "passed": true
+    },
+    {
+      "name": "pause clears held mouse movement",
+      "passed": true
+    },
+    {
+      "name": "off-center rig follows cursor correctly with camera clamped at map edge",
+      "passed": true,
+      "start": {
+        "x": 140,
+        "y": 200,
+        "screenX": 175,
+        "screenY": 250,
+        "time": 0.016666666666666666,
+        "target": null,
+        "joystick": "none"
+      },
+      "moved": {
+        "x": 175,
+        "y": 200,
+        "screenX": 218.75,
+        "screenY": 250,
+        "time": 0.19999999999999998,
+        "target": null,
+        "joystick": "none"
+      }
+    },
+    {
+      "name": "off-center rig follows cursor correctly with camera clamped at map edge",
+      "passed": true,
+      "start": {
+        "x": 1460,
+        "y": 1100,
+        "screenX": 1025.0000000000582,
+        "screenY": 774.999999999989,
+        "time": 0.016666666666666666,
+        "target": null,
+        "joystick": "none"
+      },
+      "moved": {
+        "x": 1425,
+        "y": 1100,
+        "screenX": 981.2500000000558,
+        "screenY": 774.999999999989,
+        "time": 0.19999999999999998,
+        "target": null,
+        "joystick": "none"
+      }
+    },
+    {
+      "name": "touch default: visible anchored analog stick, center stops, reverse past center, second-finger focus, release stops",
+      "passed": true,
+      "analogSpeed": 105
+    },
+    {
+      "name": "touch left-handed: visible anchored analog stick, center stops, reverse past center, second-finger focus, release stops",
+      "passed": true,
+      "analogSpeed": 105
+    }
+  ],
+  "errors": [],
+  "note": "Desktop Chromium and emulated mobile touch input; not a physical-phone performance test."
+}

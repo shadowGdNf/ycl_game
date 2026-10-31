@@ -1,7 +1,7 @@
 /** Scrap per unit of enemy cost. Later waves never dilute an individual kill. */
 export const scrapPerCost = (wave) => .4 + .12 * (Math.max(1, Math.min(12, Math.floor(wave) || 1)) - 1);
 export const waveScrapLimit = (wave, budget) => budget * scrapPerCost(wave);
-import { CHASSIS_BY_ID } from "./content.js?v=17e930db7a48";
+import { CHASSIS_BY_ID } from "./content.js?v=b24d61249a59";
 export const MAX_LEVEL = 12;
 export const GROWTH_PATHS = {
     scavenger: { name: '全能回收', en: 'Versatile salvage', hp: 8, speed: 4, attack: 5, focus: 'attack' },

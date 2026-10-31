@@ -1,23 +1,23 @@
-import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=17e930db7a48";
-import { chassisSkill, skillName, skillDescription } from "./skills.js?v=17e930db7a48";
-import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=17e930db7a48";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=17e930db7a48";
-import { workshopMarkup } from "./ui-workshop.js?v=17e930db7a48";
-import { WorkshopRenderer } from "./workshop-renderer.js?v=17e930db7a48";
-import { snapPlacement } from "./placement-input.js?v=17e930db7a48";
-import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=17e930db7a48";
-import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=17e930db7a48";
-import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=17e930db7a48";
-import * as economy from "./economy.js?v=17e930db7a48";
-import { createBattle, stepBattle, battleResult } from "./combat.js?v=17e930db7a48";
-import { Renderer } from "./renderer.js?v=17e930db7a48";
-import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=17e930db7a48";
-import { GameAudio } from "./audio.js?v=17e930db7a48";
-import { overloadRequested, FocusGesture } from "./input.js?v=17e930db7a48";
-import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=17e930db7a48";
-import { BUILD_VERSION } from "./version.js?v=17e930db7a48";
-import { ForegroundFrameClock, MAX_FRAME_SECONDS } from "./performance.js?v=17e930db7a48";
-import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=17e930db7a48";
+import { chassisStats, GROWTH_PATHS, levelXP, MAX_LEVEL } from "./progression.js?v=b24d61249a59";
+import { chassisSkill, skillName, skillDescription } from "./skills.js?v=b24d61249a59";
+import { rarity, rarityName, TIERS, offerTier, equipmentPrice, moduleStat, shopTierChances } from "./rarity.js?v=b24d61249a59";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=b24d61249a59";
+import { workshopMarkup } from "./ui-workshop.js?v=b24d61249a59";
+import { WorkshopRenderer } from "./workshop-renderer.js?v=b24d61249a59";
+import { snapPlacement } from "./placement-input.js?v=b24d61249a59";
+import { TRAINING_PRESETS, trainingRun, toggleTrainingModule, chassisUnlocked, difficultyLimit } from "./training.js?v=b24d61249a59";
+import { ENEMY_TACTICS, ELITE_AFFIXES, localized } from "./bestiary.js?v=b24d61249a59";
+import { MODULES, MODULE_BY_ID, CHASSIS, CHASSIS_BY_ID, ENEMIES, ENEMY_BY_ID, BOSSES, BOSS_BY_ID, PROTOCOL_BY_ID, EVENT_BY_ID, label } from "./content.js?v=b24d61249a59";
+import * as economy from "./economy.js?v=b24d61249a59";
+import { createBattle, stepBattle, battleResult } from "./combat.js?v=b24d61249a59";
+import { Renderer } from "./renderer.js?v=b24d61249a59";
+import { loadSave, saveGame, freshProfile, applyProgress, scoreRun } from "./storage.js?v=b24d61249a59";
+import { GameAudio } from "./audio.js?v=b24d61249a59";
+import { overloadRequested, FocusGesture, MovementStick } from "./input.js?v=b24d61249a59";
+import { exportRunReport, preserveJournal, recordAction, recordPrepTime, recordFrame } from "./journal.js?v=b24d61249a59";
+import { BUILD_VERSION } from "./version.js?v=b24d61249a59";
+import { ForegroundFrameClock, MAX_FRAME_SECONDS } from "./performance.js?v=b24d61249a59";
+import { supportFeedback, supportBenefit, connectionLesson, workshopHints, deploymentWarnings } from "./workshop.js?v=b24d61249a59";
 const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let profile = freshProfile(), run = null, battle = null, screen = 'home', paused = false;
@@ -30,7 +30,7 @@ const workshopRenderer = new WorkshopRenderer();
 let workshopTime = 0, lastBoardFrame = 0;
 const keys = new Set();
 let dashQueued = false, overloadQueued = false, skillQueued = false, targetQueued, targetMarker, targetUntil = 0;
-let joy = null;
+const movementStick = new MovementStick();
 const focusGesture = new FocusGesture();
 const frameClock = new ForegroundFrameClock();
 let lastSavedBattle = null, lastSavedTime = -1;
@@ -56,7 +56,7 @@ const tier = (n) => rarity(n).roman;
 const kind = (k) => k === 'weapon' ? t('武器', 'WEAPON') : k === 'support' ? t('支持', 'SUPPORT') : t('功能', 'UTILITY');
 const stageName = (act) => [t('废料堆场', 'Scrap Yard'), t('熔炼工厂', 'Foundry'), t('轨道货港', 'Orbital Port')][act - 1];
 const formatTime = (n) => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
-function resetControls() { resetFrameTime(); keys.clear(); joy = null; dashQueued = false; overloadQueued = false; skillQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
+function resetControls() { resetFrameTime(); keys.clear(); movementStick.clear(); dashQueued = false; overloadQueued = false; skillQueued = false; targetQueued = undefined; targetMarker = undefined; targetUntil = 0; focusGesture.clear(); drag = null; $('joystick').style.display = 'none'; }
 function seed() { return 'RIG-' + Math.random().toString(36).slice(2, 8).toUpperCase(); }
 let homeSeed = seed();
 let workshopTab = 'shop', lastPrepKey = '';
@@ -557,7 +557,7 @@ function beginNewRun() { if (!assetsReady || renderFailed)
         economy.storeItem(run, support.uid);
 } deploy(); if (!profile.tutorial) {
     paused = true;
-    openModal(`<div class="eyebrow">FIRST LIGHT / 01</div><h2>${t('欢迎驾驶，维修师。', 'Welcome aboard, pilot.')}</h2><div class="guide-steps"><div class="guide-step"><b>01</b><p>${t('WASD / 方向键，或左侧拖动摇杆移动。武器会自动攻击。', 'Move with WASD / arrow keys, or drag on the left. Weapons fire automatically.')}</p></div><div class="guide-step"><b>02</b><p>${t('空格 / 右侧箭头冲刺。E / 闪电按钮开启短时超载。', 'Space / arrow button to dash. E / lightning button to overdrive.')}</p></div><div class="guide-step"><b>03</b><p>${t('避开红色预警。战后用碎片买模块，把支持装在武器旁。', 'Avoid red warnings. Buy modules after battle and connect supports beside weapons.')}</p></div></div><div class="modal-actions"><button class="primary" data-action="resume">${t('准备好了 · 出发', 'Ready · Deploy')}</button><button data-action="skip-tutorial">${t('熟悉操作 · 略过引导', 'Skip guide')}</button></div>`, 'tutorial');
+    openModal(`<div class="eyebrow">FIRST LIGHT / 01</div><h2>${t('欢迎驾驶，维修师。', 'Welcome aboard, pilot.')}</h2><div class="guide-steps"><div class="guide-step"><b>01</b><p>${t('WASD / 方向键、按住鼠标左键朝指针位置移动，或触屏左侧摇杆移动；松开停止。武器会自动攻击。', 'Move with WASD / arrows, hold the left mouse button to move toward the cursor, or use the left touch stick. Release to stop. Weapons fire automatically.')}</p></div><div class="guide-step"><b>02</b><p>${t('空格 / 右侧箭头冲刺。E / 闪电按钮开启短时超载。', 'Space / arrow button to dash. E / lightning button to overdrive.')}</p></div><div class="guide-step"><b>03</b><p>${t('避开红色预警。战后用碎片买模块，把支持装在武器旁。', 'Avoid red warnings. Buy modules after battle and connect supports beside weapons.')}</p></div></div><div class="modal-actions"><button class="primary" data-action="resume">${t('准备好了 · 出发', 'Ready · Deploy')}</button><button data-action="skip-tutorial">${t('熟悉操作 · 略过引导', 'Skip guide')}</button></div>`, 'tutorial');
 } persist(); }
 function completeBattle() { if (!run || !battle)
     return; if (careerState) {
@@ -567,7 +567,7 @@ function completeBattle() { if (!run || !battle)
     toast(t('结算异常，请暂停后重试', 'Settlement failed. Pause and retry.'));
     return;
 } if (chassisStats(run).growth.level > previousLevel)
-    toast(t(`机体升至 Lv.${chassisStats(run).growth.level}！生命、攻速与攻击提高，装配台可分配专精点。`, `Level ${chassisStats(run).growth.level}! Base stats increased; allocate points at the workshop.`)); lastUnlocks.push(...applyProgress(profile, run, completedWave, result.won, usedDrones)); updateCodex(); audio.play(result.won ? 'win' : 'lose'); battle = null; keys.clear(); joy = null; $('joystick').style.display = 'none'; paused = false; render(); persist(); if (result.won && run.wave === 2 && !profile.tutorial && tutorialShown !== run.seed) {
+    toast(t(`机体升至 Lv.${chassisStats(run).growth.level}！生命、攻速与攻击提高，装配台可分配专精点。`, `Level ${chassisStats(run).growth.level}! Base stats increased; allocate points at the workshop.`)); lastUnlocks.push(...applyProgress(profile, run, completedWave, result.won, usedDrones)); updateCodex(); audio.play(result.won ? 'win' : 'lose'); battle = null; keys.clear(); movementStick.clear(); $('joystick').style.display = 'none'; paused = false; render(); persist(); if (result.won && run.wave === 2 && !profile.tutorial && tutorialShown !== run.seed) {
     tutorialShown = run.seed;
     openModal(`<div class="eyebrow">WORKSHOP / FIRST CONNECTION</div><h2>${t('第一次改装', 'Your first upgrade')}</h2><p>${t('备件架中有一件免费增幅线圈。点击它，再点击铆钉枪旁的空格；青色连接线表示生效；装好后会显示这次连接的当前增益。', 'A free Amplifier is waiting in reserve. Select it, then tap a free cell beside the Rivet gun. A cyan line confirms the link; the current benefit appears after placement.')}</p><p>${t('你也可以购买第二把武器。先查看装配，再选择直接装入或放进备件架；备件装入背包才会生效。', 'Inspect a second weapon before buying. Equip it directly or keep it in reserve; reserve items are inactive until equipped.')}</p><div class="modal-actions"><button class="primary" data-action="guide-select">${t('选择免费线圈', 'Select free Amplifier')}</button><button data-action="skip-tutorial">${t('略过引导', 'Skip guide')}</button></div>`, 'guide');
 } }
@@ -584,7 +584,7 @@ function bossIntentHud(b) {
     return `<div class="boss-intent ${recovering ? 'recovering' : ''}"><strong>${recovering ? t('收招 · 反击时机', 'RECOVERY · COUNTER NOW') : '① → ② ' + escape(profile.language === 'zh' ? intent.name : intent.en)}</strong><em>${recovering ? t('保持走位，抓紧输出', 'Keep moving and return fire') : escape(profile.language === 'zh' ? intent.hint : intent.hintEn)}</em></div>`;
 }
 function updateHud() { if (!battle || !run)
-    return; const b = battle, p = b.player, bosses = b.enemies.filter(e => e.kind === 'boss'), boss = bosses[0]; setHud($('battle-hud'), `<div class="player-hud"><div class="hud-label"><span>${escape(name(CHASSIS_BY_ID[run.chassis]))} · Lv.${chassisStats(run).growth.level}</span><span>${Math.ceil(p.hp)} / ${p.maxHp}</span></div><div class="health-track"><b style="width:${Math.max(0, p.hp / p.maxHp * 100)}%"></b></div><div class="health-track shield"><b style="width:${p.maxShield ? Math.max(0, p.shield / p.maxShield * 100) : 0}%"></b></div><div class="hud-label"><span>${t('护盾', 'SHIELD')} ${Math.ceil(p.shield)}</span><span class="hud-scrap ${b.events.some(e => e.type === 'pickup' && b.time - e.at < .65) ? 'collecting' : ''}">⬡ ${Number((run.gold + b.stats.goldEarned).toFixed(1))}</span></div></div><div class="battle-timer"><strong>${formatTime(b.bossId ? b.time : Math.max(0, b.duration - b.time))}</strong><small>${escape(stageName(b.act))} / ${String(b.wave).padStart(2, '0')}</small></div>${boss ? `<div class="boss-hud"><span>${escape(name(BOSS_BY_ID[b.bossId]))}</span><div class="health-track"><b style="width:${Math.max(0, boss.hp / boss.maxHp * 100)}%"></b></div><small>${Math.ceil(boss.hp)} / ${boss.maxHp}${b.bossEnraged ? ' · ' + t('狂暴过载中', 'ENRAGED') : b.bossOverloadWarned ? ' · ' + t('即将过载', 'OVERLOAD IMMINENT') : ''}</small>${bossIntentHud(b)}</div>` : ''}`); setHud($('battle-bottom'), `<div>${p.overloadTime > 0 ? '<span class="orange">ϟ ' + t('超载中', 'OVERDRIVE') + '</span>' : t('自动攻击已接通', 'AUTO FIRE ONLINE')}</div><div class="weapon-hud">${b.weapons.map(w => `<span class="rarity-${w.tier}">${escape(name(MODULE_BY_ID[w.id]))} ${tier(w.tier)}</span>`).join('')}</div><div class="touch-hint">WASD / ↑↓←→ · ${t('空格冲刺 · E超载 · Q技能 · P暂停', 'SPACE DASH · E OVERDRIVE · Q SKILL · P PAUSE')}</div>`); updateSkillHud(b); const d = $('dash-button'), o = $('overload-button'); d.classList.toggle('cooling', p.dashCooldown > 0); o.classList.toggle('cooling', p.overloadCooldown > 0); setHud(d, `<b>${p.dashCooldown > 0 ? p.dashCooldown.toFixed(1) : '↗'}</b><span>${t('冲刺', 'DASH')}</span>`); setHud(o, `<b>${p.overloadCooldown > 0 ? Math.ceil(p.overloadCooldown) : 'ϟ'}</b><span>${t('超载', 'BOOST')}</span>`); }
+    return; const b = battle, p = b.player, bosses = b.enemies.filter(e => e.kind === 'boss'), boss = bosses[0]; setHud($('battle-hud'), `<div class="player-hud"><div class="hud-label"><span>${escape(name(CHASSIS_BY_ID[run.chassis]))} · Lv.${chassisStats(run).growth.level}</span><span>${Math.ceil(p.hp)} / ${p.maxHp}</span></div><div class="health-track"><b style="width:${Math.max(0, p.hp / p.maxHp * 100)}%"></b></div><div class="health-track shield"><b style="width:${p.maxShield ? Math.max(0, p.shield / p.maxShield * 100) : 0}%"></b></div><div class="hud-label"><span>${t('护盾', 'SHIELD')} ${Math.ceil(p.shield)}</span><span class="hud-scrap ${b.events.some(e => e.type === 'pickup' && b.time - e.at < .65) ? 'collecting' : ''}">⬡ ${Number((run.gold + b.stats.goldEarned).toFixed(1))}</span></div></div><div class="battle-timer"><strong>${formatTime(b.bossId ? b.time : Math.max(0, b.duration - b.time))}</strong><small>${escape(stageName(b.act))} / ${String(b.wave).padStart(2, '0')}</small></div>${boss ? `<div class="boss-hud"><span>${escape(name(BOSS_BY_ID[b.bossId]))}</span><div class="health-track"><b style="width:${Math.max(0, boss.hp / boss.maxHp * 100)}%"></b></div><small>${Math.ceil(boss.hp)} / ${boss.maxHp}${b.bossEnraged ? ' · ' + t('狂暴过载中', 'ENRAGED') : b.bossOverloadWarned ? ' · ' + t('即将过载', 'OVERLOAD IMMINENT') : ''}</small>${bossIntentHud(b)}</div>` : ''}`); setHud($('battle-bottom'), `<div>${p.overloadTime > 0 ? '<span class="orange">ϟ ' + t('超载中', 'OVERDRIVE') + '</span>' : t('自动攻击已接通', 'AUTO FIRE ONLINE')}</div><div class="weapon-hud">${b.weapons.map(w => `<span class="rarity-${w.tier}">${escape(name(MODULE_BY_ID[w.id]))} ${tier(w.tier)}</span>`).join('')}</div><div class="touch-hint">${t('WASD / 方向键 / 按住左键朝指针移动 · 右键集火', 'WASD / ARROWS / HOLD LMB TOWARD CURSOR · RIGHT CLICK FOCUS')}<br>${t('空格冲刺 · E超载 · Q技能 · P暂停', 'SPACE DASH · E OVERDRIVE · Q SKILL · P PAUSE')}</div>`); updateSkillHud(b); const d = $('dash-button'), o = $('overload-button'); d.classList.toggle('cooling', p.dashCooldown > 0); o.classList.toggle('cooling', p.overloadCooldown > 0); setHud(d, `<b>${p.dashCooldown > 0 ? p.dashCooldown.toFixed(1) : '↗'}</b><span>${t('冲刺', 'DASH')}</span>`); setHud(o, `<b>${p.overloadCooldown > 0 ? Math.ceil(p.overloadCooldown) : 'ϟ'}</b><span>${t('超载', 'BOOST')}</span>`); }
 function updateSkillHud(b) {
     const p = b.player, s = chassisSkill(b.chassis), button = $('skill-button'), cooldown = p.skillCooldown ?? 0, active = (p.skillTime ?? 0) > 0;
     button.classList.toggle('cooling', cooldown > 0 && !active);
@@ -844,7 +844,7 @@ function renderPracticeResult() {
     const won = run.phase === 'won';
     $('result-screen').innerHTML = `<div class="result-wrap"><div class="eyebrow">BOSS LAB / ${won ? 'CLEAR' : 'RETRY'}</div><h1>${won ? t('首领已击破', 'Boss defeated') : t('调整一下，再试一次', 'Rebuild and retry')}</h1><p>${escape(name(BOSS_BY_ID[practiceSetup.boss]))} · ${t('难度', 'Threat')} ${practiceSetup.difficulty} · ${formatTime(run.elapsed)}</p><p>${t('练习结束，远征存档保持原样。', 'Practice complete. Your expedition is preserved.')}</p><div class="result-actions"><button class="primary" data-action="practice-start">${t('同配置再战', 'Rematch')}</button><button data-action="practice-edit">${t('调整装备', 'Edit loadout')}</button><button data-action="practice-exit">${t('回到首页', 'Return home')}</button></div></div>`;
 }
-function help() { openModal(`<div class="eyebrow">PILOT / MANUAL</div><h2>${t('操作说明', 'Pilot manual')}</h2><p>${t('电脑：WASD或方向键移动，空格冲刺，E超载，Q机体技能，P/Esc暂停。右键敌人设置2秒优先目标。', 'Desktop: WASD / arrows to move, Space to dash, E to overdrive, Q for the chassis skill, P / Esc to pause. Right-click an enemy to focus it for two seconds.')}</p><p>${t('手机：拖动左半屏移动，右下角按钮冲刺、超载和释放机体技能。长按右半屏目标集火。', 'Touch: drag on the left to move; use the lower-right skill buttons. Hold a target on the right to focus fire.')}</p><p>${t('装配：选择备件后点击空格，也可以拖动备件或已有模块。方向自动适配，R/旋转按钮选择朝向；点击其他模块可互换，拖到备件区可卸下，操作后可撤销。支持必须贴着兼容武器，最多每枪两个。', 'Workshop: select a reserve item then tap a cell, or drag a reserve or placed item. Rotation adapts automatically. R chooses orientation; tap gear to swap, drop on reserve to store, Undo to reverse. Supports must touch compatible weapons, at most two per weapon.')}</p><p>${t('所有伤害与危险预警按固定逻辑运行；红色预警期间离开范围，利用Boss后摇攻击。', 'Combat runs at a fixed simulation rate. Leave red telegraphs and strike during boss recovery windows.')}</p><button class="primary" data-action="close">${t('明白了', 'Got it')}</button>`, 'help'); }
+function help() { openModal(`<div class="eyebrow">PILOT / MANUAL</div><h2>${t('操作说明', 'Pilot manual')}</h2><p>${t('电脑：WASD / 方向键，或在战场按住鼠标左键，角色朝鼠标所在方位移动；拖动鼠标可调整方向，松开停止。空格冲刺，E超载，Q机体技能，P/Esc暂停。右键敌人设置2秒优先目标。', 'Desktop: WASD / arrows, or hold the left mouse button on the battlefield to move toward the cursor; drag to steer and release to stop. Space to dash, E to overdrive, Q for the chassis skill, P / Esc to pause. Right-click an enemy to focus it for two seconds.')}</p><p>${t('手机：拖动左半屏移动，右下角按钮冲刺、超载和释放机体技能。长按右半屏目标集火。', 'Touch: drag on the left to move; use the lower-right skill buttons. Hold a target on the right to focus fire.')}</p><p>${t('装配：选择备件后点击空格，也可以拖动备件或已有模块。方向自动适配，R/旋转按钮选择朝向；点击其他模块可互换，拖到备件区可卸下，操作后可撤销。支持必须贴着兼容武器，最多每枪两个。', 'Workshop: select a reserve item then tap a cell, or drag a reserve or placed item. Rotation adapts automatically. R chooses orientation; tap gear to swap, drop on reserve to store, Undo to reverse. Supports must touch compatible weapons, at most two per weapon.')}</p><p>${t('所有伤害与危险预警按固定逻辑运行；红色预警期间离开范围，利用Boss后摇攻击。', 'Combat runs at a fixed simulation rate. Leave red telegraphs and strike during boss recovery windows.')}</p><button class="primary" data-action="close">${t('明白了', 'Got it')}</button>`, 'help'); }
 async function dispatch(button) {
     const action = button.dataset.action;
     if (!action)
@@ -1501,40 +1501,40 @@ battleCanvas.addEventListener('contextmenu', e => { e.preventDefault(); if (batt
     targetMarker = targetQueued;
     targetUntil = performance.now() + 2000;
 } });
-battleCanvas.addEventListener('pointerdown', e => { if (!battle || paused)
-    return; audio.unlock(); if (e.pointerType === 'mouse') {
-    if (e.button === 0) {
-        targetQueued = renderer.toWorld(e.clientX, e.clientY);
-        targetMarker = targetQueued;
-        targetUntil = performance.now() + 2000;
+function updateJoystick() {
+    const stick = movementStick.state, j = $('joystick'), visible = stick && stick.pointerType !== 'mouse';
+    j.style.display = visible ? 'block' : 'none';
+    if (!visible)
+        return;
+    j.style.left = stick.x + 'px';
+    j.style.top = stick.y + 'px';
+    j.firstElementChild.style.transform = `translate(${stick.dx * 33}px,${stick.dy * 33}px)`;
+}
+battleCanvas.addEventListener('pointerdown', e => {
+    if (!battle || screen !== 'run' || run?.phase !== 'battle' || paused || e.button !== 0)
+        return;
+    audio.unlock();
+    const moveSide = profile.settings.leftHanded ? e.clientX > window.innerWidth * .45 : e.clientX < window.innerWidth * .55;
+    if (movementStick.begin(e.pointerId, e.pointerType, e.button, e.clientX, e.clientY, moveSide)) {
+        battleCanvas.setPointerCapture(e.pointerId);
+        updateJoystick();
     }
-    return;
-} const moveSide = profile.settings.leftHanded ? e.clientX > window.innerWidth * .45 : e.clientX < window.innerWidth * .55; if (moveSide && !joy) {
-    joy = { id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0, dy: 0 };
-    battleCanvas.setPointerCapture(e.pointerId);
-    const j = $('joystick');
-    j.firstElementChild.style.transform = 'translate(0px,0px)';
-    j.style.display = 'block';
-    j.style.left = e.clientX + 'px';
-    j.style.top = e.clientY + 'px';
-}
-else if (!moveSide) {
-    focusGesture.begin(e.pointerId, e.clientX, e.clientY, performance.now());
-    battleCanvas.setPointerCapture(e.pointerId);
-} e.preventDefault(); });
-battleCanvas.addEventListener('pointermove', e => { if (joy?.id === e.pointerId) {
-    const dx = e.clientX - joy.x, dy = e.clientY - joy.y, len = Math.max(42, Math.hypot(dx, dy));
-    joy.dx = dx / len;
-    joy.dy = dy / len;
-    const knob = $('joystick').firstElementChild;
-    knob.style.transform = `translate(${joy.dx * 33}px,${joy.dy * 33}px)`;
-}
-else
-    focusGesture.move(e.pointerId, e.clientX, e.clientY); });
-function releasePointer(e) { if (joy?.id === e.pointerId) {
-    joy = null;
-    $('joystick').style.display = 'none';
-} focusGesture.end(e.pointerId); }
+    else if (e.pointerType !== 'mouse' && !moveSide) {
+        focusGesture.begin(e.pointerId, e.clientX, e.clientY, performance.now());
+        battleCanvas.setPointerCapture(e.pointerId);
+    }
+    e.preventDefault();
+});
+battleCanvas.addEventListener('pointermove', e => {
+    if (movementStick.move(e.pointerId, e.clientX, e.clientY, e.buttons)) {
+        updateJoystick();
+        e.preventDefault();
+    }
+    else
+        focusGesture.move(e.pointerId, e.clientX, e.clientY);
+});
+function releasePointer(e) { if (movementStick.end(e.pointerId))
+    updateJoystick(); focusGesture.end(e.pointerId); }
 battleCanvas.addEventListener('pointerup', releasePointer);
 battleCanvas.addEventListener('pointercancel', releasePointer);
 battleCanvas.addEventListener('lostpointercapture', releasePointer);
@@ -1639,10 +1639,13 @@ function advanceFrame(now) {
                 targetMarker = targetQueued;
                 targetUntil = now + 2000;
             }
+            const pointer = movementStick.state, mouseTarget = pointer?.pointerType === 'mouse' ? renderer.toWorld(pointer.x, pointer.y) : undefined;
             accumulator = Math.min(MAX_FRAME_SECONDS, accumulator + dt);
             let steps = 0;
             while (accumulator >= 1 / 60 && steps < 3 && battle.status === 'playing') {
-                const input = { x: (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0) + (joy?.dx ?? 0), y: (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0) - (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) + (joy?.dy ?? 0), dash: dashQueued, skill: skillQueued, overload: overloadRequested(overloadQueued, profile.settings.autoOverload, battle.player.overloadCooldown), target: targetQueued };
+                if (mouseTarget)
+                    movementStick.aimMouse(battle.player, mouseTarget);
+                const input = { x: (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) - (keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0) + (movementStick.state?.dx ?? 0), y: (keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0) - (keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0) + (movementStick.state?.dy ?? 0), dash: dashQueued, skill: skillQueued, overload: overloadRequested(overloadQueued, profile.settings.autoOverload, battle.player.overloadCooldown), target: targetQueued };
                 dashQueued = false;
                 overloadQueued = false;
                 skillQueued = false;

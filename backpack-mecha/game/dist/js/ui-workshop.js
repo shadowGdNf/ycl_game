@@ -1,9 +1,9 @@
-import { scrapPerCost, chassisStats } from "./progression.js?v=17e930db7a48";
-import { offerTier, moduleStat } from "./rarity.js?v=17e930db7a48";
-import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=17e930db7a48";
-import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=17e930db7a48";
-import * as economy from "./economy.js?v=17e930db7a48";
-import { supportFeedback } from "./workshop.js?v=17e930db7a48";
+import { scrapPerCost, chassisStats } from "./progression.js?v=b24d61249a59";
+import { offerTier, moduleStat } from "./rarity.js?v=b24d61249a59";
+import { rarityBadge, equipmentDescription } from "./equipment-ui.js?v=b24d61249a59";
+import { MODULE_BY_ID, CHASSIS_BY_ID, BOSS_BY_ID, WAVES, label } from "./content.js?v=b24d61249a59";
+import * as economy from "./economy.js?v=b24d61249a59";
+import { supportFeedback } from "./workshop.js?v=b24d61249a59";
 const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function workshopMarkup(r, o) {
     const t = (zh, en) => o.lang === 'zh' ? zh : en, name = (item) => escape(label(item, o.lang));
